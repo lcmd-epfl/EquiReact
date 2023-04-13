@@ -34,7 +34,8 @@ class GDB7RXN(Dataset):
 
         mean = torch.mean(labels)
         std = torch.std(labels)
-        self.labels = (labels - mean) / std
+        #TODO to normalise in train/test/val split
+        self.labels = (labels - mean)/std
 
         indices = data['idx'].to_list()
         self.indices = indices

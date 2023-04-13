@@ -176,14 +176,12 @@ class EquiReact(nn.Module):
 
         # MLP
         energy = self.predictor(reaction_rep)
+        print("energy", energy)
 
         return energy
 
-    def build_graph(self, data, use_bound_pos: bool = False):
-        if use_bound_pos:
-            pos = data.pos_T
-        else:
-            pos = data.pos_0
+    def build_graph(self, data):
+        pos = data.pos
 
         radius_edges = radius_graph(pos, self.max_radius, data.batch)
 

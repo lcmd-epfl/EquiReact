@@ -162,7 +162,7 @@ def get_graph(mol, coords, y, radius=20, max_neighbor=24):
     edge_index = torch.tensor([src_list, dst_list], dtype=torch.long)
     edge_attr = torch.tensor(dist_list)
     # assign to graph
-    data = Data(x=x, edge_index=edge_index, edge_attr=edge_attr, y=y)
+    data = Data(x=x, edge_index=edge_index, edge_attr=edge_attr, y=y, pos=coords)
 
     return data
 
