@@ -165,7 +165,6 @@ class Trainer():
                 #    raise Exception
 
         # evaluate on best checkpoint
-	#TODO stupid that this is still based on pytorch
         checkpoint = torch.load(os.path.join(self.writer.log_dir, 'best_checkpoint.pt'), map_location=self.device)
         self.model.load_state_dict(checkpoint['model_state_dict'])
         return self.evaluation(val_loader, data_split='val_best_checkpoint')

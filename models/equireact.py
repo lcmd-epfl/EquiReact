@@ -125,7 +125,17 @@ class EquiReact(nn.Module):
              nn.Dropout(dropout_p),
              nn.Linear(self.n_s, 1)
         )
+    def build_graph(self, data):
+        pos = data.pos
 
+        radius_edges = radius_graph(pos, self.max_radius, data.batch)
+
+        src, dst = radius_edges
+        edge_vec = pos[dst.long()] - pos[src.long()]
+        edge_length_emb = self.dist_expansion(edge_vec.norm(dim=-1))
+
+        edge_sh = o3.spherical_harmonics(self.sh_irreps, edge_vec, normalize=True, normalization='component')
+        return data.x, radius_edges, edge_length_emb, edge_sh
     def forward_molecule(self, data):
         """
         :param data: graph of molecule
@@ -179,15 +189,3 @@ class EquiReact(nn.Module):
         print("energy", energy)
 
         return energy
-
-    def build_graph(self, data):
-        pos = data.pos
-
-        radius_edges = radius_graph(pos, self.max_radius, data.batch)
-
-        src, dst = radius_edges
-        edge_vec = pos[dst.long()] - pos[src.long()]
-        edge_length_emb = self.dist_expansion(edge_vec.norm(dim=-1))
-
-        edge_sh = o3.spherical_harmonics(self.sh_irreps, edge_vec, normalize=True, normalization='component')
-        return data.x, radius_edges, edge_length_emb, edge_sh

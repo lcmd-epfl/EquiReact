@@ -61,6 +61,7 @@ def parse_arguments():
     p.add_argument('--subset', type=int, default=None, help='size of a subset to use instead of the full set (tr+te+va)')
     p.add_argument('--wandb_name', type=str, default=None, help='name of wandb run')
     p.add_argument('--logdir', type=str, default='logs', help='log dir')
+    p.add_argument('--process', type=str, default=False, help='(re-)process data by force (if data is already there, default is to not reprocess)?')
 
     args = p.parse_args()
 
@@ -74,7 +75,7 @@ def train(run_dir,
           #TODO implement CV as an option rather than commenting out (do later)
           device='cuda:0', seed=123, eval_on_test=True,
           #dataset args
-          subset=None, tr_frac = 0.75, te_frac = 0.125, process=True,
+          subset=None, tr_frac = 0.75, te_frac = 0.125, process=False,
           #sampling / dataloader args
           batch_size=8, num_workers=0, pin_memory=True,
           #graph args

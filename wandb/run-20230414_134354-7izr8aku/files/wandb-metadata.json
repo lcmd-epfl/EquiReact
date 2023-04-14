@@ -1,0 +1,82 @@
+{
+    "os": "Linux-5.19.0-38-generic-x86_64-with-glibc2.35",
+    "python": "3.10.10",
+    "heartbeatAt": "2023-04-14T11:43:55.176637",
+    "startedAt": "2023-04-14T11:43:54.625749",
+    "docker": null,
+    "cuda": null,
+    "args": [
+        "--device=cpu",
+        "--num_epochs=1",
+        "--subset=1000",
+        "--experiment_name=debug"
+    ],
+    "state": "running",
+    "program": "/home/puck/projects/NequiReact/train.py",
+    "codePath": "train.py",
+    "git": {
+        "remote": "https://github.com/puckvg/NequiReact.git",
+        "commit": "6a49ebb593e7c66506acc76acae1fb4ac25230ff"
+    },
+    "email": "puck.vangerwen@gmail.com",
+    "root": "/home/puck/projects/NequiReact",
+    "host": "puck-epfl",
+    "username": "puck",
+    "executable": "/home/puck/anaconda3/envs/nequireact/bin/python",
+    "cpu_count": 4,
+    "cpu_count_logical": 8,
+    "cpu_freq": {
+        "current": 4.034625,
+        "min": 800.0,
+        "max": 4500.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 4.473,
+            "min": 800.0,
+            "max": 4500.0
+        },
+        {
+            "current": 4.2,
+            "min": 800.0,
+            "max": 4500.0
+        },
+        {
+            "current": 1.526,
+            "min": 800.0,
+            "max": 4500.0
+        },
+        {
+            "current": 4.402,
+            "min": 800.0,
+            "max": 4500.0
+        },
+        {
+            "current": 4.464,
+            "min": 800.0,
+            "max": 4500.0
+        },
+        {
+            "current": 4.413,
+            "min": 800.0,
+            "max": 4500.0
+        },
+        {
+            "current": 4.399,
+            "min": 800.0,
+            "max": 4500.0
+        },
+        {
+            "current": 4.4,
+            "min": 800.0,
+            "max": 4500.0
+        }
+    ],
+    "disk": {
+        "total": 467.8895797729492,
+        "used": 205.6195831298828
+    },
+    "memory": {
+        "total": 62.67887878417969
+    }
+}
