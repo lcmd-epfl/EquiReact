@@ -10,7 +10,7 @@ class ReactTrainer(Trainer):
                                           optim=Adam,
                                           main_metric_goal='min',
                                           **kwargs)
-        log(f"In trainer, metrics is {kwargs['metrics']}")
+        print(f"In trainer, metrics is {kwargs['metrics']}")
 
     def forward_pass(self, batch):
         r_graph, r_atomtypes, r_coords, p_graph, p_atomtypes, p_coords, targets = tuple(batch)

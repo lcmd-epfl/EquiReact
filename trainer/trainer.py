@@ -17,7 +17,33 @@ from torch.optim import Adam
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 
-from commons.utils import move_to_device, list_detach, concat_if_list, log
+
+def move_to_device(element, device):
+    '''
+    takes arbitrarily nested list and moves everything in it to device if it is a dgl graph or a torch tensor
+    :param element: arbitrarily nested list
+    :param device:
+    :return:
+    '''
+    if isinstance(element, list):
+        return [move_to_device(x, device) for x in element]
+    else:
+        return element.to(device) if isinstance(element,(torch.Tensor, dgl.DGLGraph)) else element
+
+def list_detach(element):
+    '''
+    takes arbitrarily nested list and detaches everyting from computation graph
+    :param element: arbitrarily nested list
+    :return:
+    '''
+    if isinstance(element, list):
+        return [list_detach(x) for x in element]
+    else:
+        return element.detach()
+
+def concat_if_list(tensor_or_tensors):
+    return torch.cat(tensor_or_tensors) if isinstance(tensor_or_tensors, list) else tensor_or_tensors
+
 
 class Trainer():
     def __init__(self, model, metrics: Dict[str, Callable], main_metric: str, device: torch.device,
@@ -82,7 +108,7 @@ class Trainer():
         #for i, param_group in enumerate(self.optim.param_groups):
         #    param_group['lr'] = 0.0003
         self.epoch = self.start_epoch
-        log(f'Log directory: {self.writer.log_dir}')
+        print(f'Log directory: {self.writer.log_dir}')
         self.hparams = {'checkpoint':checkpoint, 'num epochs':num_epochs,
                         'eval_per_epochs':eval_per_epochs, 'patience':patience,
                         'minimum_epochs':minimum_epochs, 'models_to_save':models_to_save,
@@ -91,7 +117,7 @@ class Trainer():
                         'factor':factor, 'min_lr':min_lr, 'mode':mode,
                         'lr_scheduler_patience':lr_scheduler_patience, 'lr_verbose':lr_verbose}
         for key, value in self.hparams.items():
-            log(f'{key}: {value}')
+            print(f'{key}: {value}')
 
     def run_per_epoch_evaluations(self, loader):
         pass
@@ -117,7 +143,7 @@ class Trainer():
 
                 val_loss = metrics[type(self.loss_func).__name__]
                 wandb.log({"val_loss": val_loss, "val_score":val_score})
-                log('[Epoch %d] %s: %.6f val loss: %.6f' % (epoch, self.main_metric, val_score, val_loss))
+                print('[Epoch %d] %s: %.6f val loss: %.6f' % (epoch, self.main_metric, val_score, val_loss))
                 # save the model with the best main_metric depending on wether we want to maximize or minimize the main metric
                 if val_score >= self.best_val_score and self.main_metric_goal == 'max' or val_score <= self.best_val_score and self.main_metric_goal == 'min':
                     epochs_no_improve = 0
@@ -126,10 +152,10 @@ class Trainer():
                 else:
                     epochs_no_improve += 1
                 self.save_checkpoint(epoch, checkpoint_name='last_checkpoint.pt')
-                log('Epochs with no improvement: [', epochs_no_improve, '] and the best  ', self.main_metric,
+                print('Epochs with no improvement: [', epochs_no_improve, '] and the best  ', self.main_metric,
                     ' was in ', epoch - epochs_no_improve)
                 if epochs_no_improve >= self.patience and epoch >= self.minimum_epochs:  # stopping criterion
-                    log(f'Early stopping criterion based on -{self.main_metric}- that should be {self.main_metric_goal}-imized reached after {epoch} epochs. Best model checkpoint was in epoch {epoch - epochs_no_improve}.')
+                    print(f'Early stopping criterion based on -{self.main_metric}- that should be {self.main_metric_goal}-imized reached after {epoch} epochs. Best model checkpoint was in epoch {epoch - epochs_no_improve}.')
                     break
                 if epoch in self.models_to_save:
                     shutil.copyfile(os.path.join(self.writer.log_dir, 'best_checkpoint.pt'),
@@ -178,7 +204,7 @@ class Trainer():
                 if self.optim_steps % self.log_iterations == 0 and optim != None:
                     metrics = self.evaluate_metrics(predictions, targets)
                     metrics[type(self.loss_func).__name__] = loss.item()
-                    log('[Epoch %d; Iter %5d/%5d] %s: loss: %.7f' % (
+                    print('[Epoch %d; Iter %5d/%5d] %s: loss: %.7f' % (
                         self.epoch, i + 1, len(data_loader), 'train', loss.item()))
                     wandb.log({"train loss":loss.item(), "epoch":self.epoch})
                 if optim == None and self.val_per_batch:  # during validation or testing when we want to average metrics over all the data in that dataloader
@@ -232,10 +258,10 @@ class Trainer():
         metrics, predictions, targets = self.predict(data_loader, return_pred=return_pred)
 
         with open(os.path.join(self.writer.log_dir, 'evaluation_' + data_split + '.txt'), 'w') as file:
-            log('Statistics on ', data_split)
+            print('Statistics on ', data_split)
             for key, value in metrics.items():
                 file.write(f'{key}: {value}\n')
-                log(f'{key}: {value}')
+                print(f'{key}: {value}')
         return metrics, predictions, targets
 
     def step_schedulers(self, metrics=None):

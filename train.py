@@ -6,9 +6,6 @@ import traceback
 from datetime import datetime
 import getpass  # os.getlogin() won't work on a cluster
 
-from commons.logger import Logger
-from commons.utils import log, get_CV_splits
-
 from models import *  # do not remove
 from torch.nn import *  # do not remove
 from torch.optim import *  # do not remove
@@ -33,6 +30,27 @@ from process.samplers import HardSampler
 
 import wandb
 
+import sys
+from datetime import datetime
+
+
+class Logger(object):
+    def __init__(self, logpath, syspart=sys.stdout):
+        self.terminal = syspart
+        self.log = open(logpath, "a")
+
+    def write(self, message):
+
+        self.terminal.write(message)
+        self.log.write(message)
+        self.log.flush()
+
+    def flush(self):
+        # this flush method is needed for python 3 compatibility.
+        # this handles the flush command by doing nothing.
+        # you might want to specify some extra behavior here.
+        pass
+
 def parse_arguments():
     # sparse for now, will be expanded once things are working
     p = argparse.ArgumentParser()
@@ -42,6 +60,7 @@ def parse_arguments():
     p.add_argument('--device', type=str, help='cuda or cpu')
     p.add_argument('--subset', type=int, default=None, help='size of a subset to use instead of the full set (tr+te+va)')
     p.add_argument('--wandb_name', type=str, default=None, help='name of wandb run')
+    p.add_argument('--logdir', type=str, default='logs', help='log dir')
 
     args = p.parse_args()
 
@@ -61,7 +80,6 @@ def train(run_dir,
           #graph args
           radius=10,
           #NN args
-          n_lays=8,
           #trainer args
           val_per_batch=True, checkpoint=False, num_epochs=1000000, eval_per_epochs=0, patience=150,
           minimum_epochs=0, models_to_save=[], clip_grad=100, log_iterations=100,
@@ -96,7 +114,7 @@ def train(run_dir,
 
     # train sample
     r_graph_0, r_atoms_0, r_coords_0, p_graph_0, p_atoms_0, p_coords_0, label_0, idx_0 = train_data[0]
-    input_node_feats_dim = r_graph_0.x.shape[1]
+    input_node_feats_dim = r_graph_0[0].x.shape[1]
     print(f"input node feats dim {input_node_feats_dim}")
     input_edge_feats_dim = 1
     print(f"input edge feats dim {input_edge_feats_dim}")
