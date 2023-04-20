@@ -24,9 +24,8 @@ from trainer.metrics import MAE
 from trainer.trainer import Trainer
 from trainer.react_trainer import ReactTrainer
 from models.equireact import EquiReact
-from process.dataloader import GDB7RXN
+from process.dataloader import Cyclo23TS
 from process.collate import custom_collate
-from process.samplers import HardSampler
 
 import wandb
 
@@ -93,7 +92,7 @@ def train(run_dir,
 
     device = torch.device("cuda:0" if torch.cuda.is_available() and device == 'cuda' else "cpu")
 
-    data = GDB7RXN(device=device, radius=radius, process=process)
+    data = Cyclo23TS(device=device, radius=radius, process=process)
 
     # for now arbitrary data split
     indices = np.arange(len(data))
@@ -114,8 +113,8 @@ def train(run_dir,
     test_data = Subset(data, te_indices)
 
     # train sample
-    r_graph_0, r_atoms_0, r_coords_0, p_graph_0, p_atoms_0, p_coords_0, label_0, idx_0 = train_data[0]
-    input_node_feats_dim = r_graph_0[0].x.shape[1]
+    r_0_graph, r_0_atomtypes, r_0_coords, r_1_graph, r_1_atomtypes, r_1_coords, p_graph, p_atomtypes, p_coords, label, idx = train_data[0]
+    input_node_feats_dim = r_0_graph[0].x.shape[1]
     print(f"input node feats dim {input_node_feats_dim}")
     input_edge_feats_dim = 1
     print(f"input edge feats dim {input_edge_feats_dim}")
