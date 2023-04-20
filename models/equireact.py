@@ -116,15 +116,27 @@ class EquiReact(nn.Module):
             conv_layers.append(layer)
         self.conv_layers = nn.ModuleList(conv_layers)
 
-        self.predictor = nn.Sequential(
-             nn.Linear(1 + distance_emb_dim, 2 * self.n_s),
-             nn.ReLU(),
-             nn.Dropout(dropout_p),
-             nn.Linear(2 * self.n_s, self.n_s),
-             nn.ReLU(),
-             nn.Dropout(dropout_p),
-             nn.Linear(self.n_s, 1)
+        self.score_predictor_edges = nn.Sequential(
+            nn.Linear(4 * self.n_s + distance_emb_dim if n_conv_layers >= 3 else 2 * self.n_s + distance_emb_dim,
+                      self.n_s),
+            nn.ReLU(),
+            nn.Dropout(dropout_p),
+            nn.Linear(self.n_s, self.n_s),
+            nn.ReLU(),
+            nn.Dropout(dropout_p),
+            nn.Linear(self.n_s, 1)
         )
+
+        self.score_predictor_nodes = nn.Sequential(
+            nn.Linear(2 * self.n_s if n_conv_layers >= 3 else self.n_s, 2 * self.n_s),
+            nn.ReLU(),
+            nn.Dropout(dropout_p),
+            nn.Linear(2 * self.n_s, self.n_s),
+            nn.ReLU(),
+            nn.Dropout(dropout_p),
+            nn.Linear(self.n_s, 1)
+        )
+
     def build_graph(self, data):
         pos = data.pos
 
@@ -136,18 +148,13 @@ class EquiReact(nn.Module):
 
         edge_sh = o3.spherical_harmonics(self.sh_irreps, edge_vec, normalize=True, normalization='component')
         return data.x, radius_edges, edge_length_emb, edge_sh
+
     def forward_molecule(self, data):
-        """
-        :param data: graph of molecule
-        :return: learned rep of molecule
-        """
-        # original features
         x, edge_index, edge_attr, edge_sh = self.build_graph(data)
         src, dst = edge_index
         x = self.node_embedding(x)
         edge_attr_emb = self.edge_embedding(edge_attr)
 
-        # conv update
         for i in range(self.n_conv_layers):
             edge_attr_ = torch.cat([edge_attr_emb, x[dst, :self.n_s], x[src, :self.n_s]], dim=-1)
             x_update = self.conv_layers[i](x, edge_index, edge_attr_, edge_sh)
@@ -155,14 +162,22 @@ class EquiReact(nn.Module):
             x = F.pad(x, (0, x_update.shape[-1] - x.shape[-1]))
             x = x + x_update
 
-        # right now learned per atom
-        # ideally would take diff atom-mapped
-        # for now sum over atoms
-        print('dims before sum', x.shape)
-        global_x = torch.sum(x, dim=0)
-        print('dims after sum', global_x.shape)
+        x_src = torch.cat([x[src, :self.n_s], x[src, -self.n_s:]], dim=1) if self.n_conv_layers >= 3 else x[src,
+                                                                                                          :self.n_s]
+        x_dst = torch.cat([x[dst, :self.n_s], x[dst, -self.n_s:]], dim=1) if self.n_conv_layers >= 3 else x[dst,
+                                                                                                          :self.n_s]
+        x_feats = torch.cat([x_src, x_dst], dim=-1)
 
-        return global_x
+        score_inputs_edges = torch.cat([edge_attr, x_feats], dim=-1)
+        score_inputs_nodes = torch.cat([x[:, :self.n_s], x[:, -self.n_s:]], dim=1) if self.n_conv_layers >= 3 else x[:,
+                                                                                                                   :self.n_s]
+
+        scores_nodes = self.score_predictor_nodes(score_inputs_nodes)
+        scores_edges = self.score_predictor_edges(score_inputs_edges)
+
+        edge_batch = data.batch[src]
+        score = scatter_add(scores_edges, index=edge_batch, dim=0) + scatter_add(scores_nodes, index=data.batch, dim=0)
+        return score
 
     def forward(self, reactants_data, products_data):
         """
@@ -170,22 +185,18 @@ class EquiReact(nn.Module):
         :param products_data: assuming list of product graphs
         :return: energy prediction
         """
-        reactant_reps = []
-        for reactant_graph in reactants_data:
-            reactant_reps.append(self.forward_molecule(reactant_graph))
-        reactant_rep = torch.sum(torch.tensor(reactant_reps), dim=0)
-        print("summed reactant rep", reactant_rep.shape)
-        product_reps = []
-        for product_graph in products_data:
-            product_reps.append(self.forward_molecule(product_graph))
-        product_rep = torch.sum(torch.tensor(product_reps), dim=0)
-        print("summed product rep", product_rep.shape)
+        reactant_energy = 0.0
+        for i, reactant_graph in enumerate(reactants_data):
+            print("Reactant",i)
+            reactant_energy += float(self.forward_molecule(reactant_graph))
+            print("Reactants energy",reactant_energy)
 
-        reaction_rep = product_rep - reactant_rep
-        print("reaction rep", reaction_rep.shape)
+        product_energy = 0.0
+        for i, product_graph in enumerate(products_data):
+            print("Product",i)
+            product_energy += float(self.forward_molecule(product_graph))
+            print("Reactants energy",product_energy)
 
-        # MLP
-        energy = self.predictor(reaction_rep)
-        print("energy", energy)
+        reaction_energy = product_energy - reactant_energy
 
-        return energy
+        return reaction_energy
