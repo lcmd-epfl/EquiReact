@@ -13,8 +13,12 @@ class ReactTrainer(Trainer):
         print(f"In trainer, metrics is {kwargs['metrics']}")
 
     def forward_pass(self, batch):
-        r_graph, r_atomtypes, r_coords, p_graph, p_atomtypes, p_coords, targets = tuple(batch)
+        #import code; code.interact(local=locals())
+        r1_graph, r1_atomtypes, r1_coords, \
+                r2_graph, r2_atomtypes, r2_coords, \
+                p_graph, p_atomtypes, p_coords, \
+                targets = tuple(batch)
         targets = torch.tensor(targets).float().reshape(-1, 1).to(self.device) # TODO nicer
-        y_pred = self.model(r_graph, p_graph, epoch=self.epoch)
+        y_pred = self.model([r1_graph, r2_graph], [p_graph])
         loss = self.loss_func(y_pred, targets)
         return loss, y_pred, targets

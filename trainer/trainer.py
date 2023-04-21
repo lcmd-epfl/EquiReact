@@ -20,7 +20,8 @@ from torch.utils.tensorboard import SummaryWriter
 
 def move_to_device(element, device):
     '''
-    takes arbitrarily nested list and moves everything in it to device if it is a dgl graph or a torch tensor
+    TODO maybe add other types
+    takes arbitrarily nested list and moves everything in it to device if it is a torch tensor
     :param element: arbitrarily nested list
     :param device:
     :return:
@@ -28,7 +29,7 @@ def move_to_device(element, device):
     if isinstance(element, list):
         return [move_to_device(x, device) for x in element]
     else:
-        return element.to(device) if isinstance(element,(torch.Tensor, dgl.DGLGraph)) else element
+        return element.to(device) if isinstance(element,(torch.Tensor)) else element
 
 def list_detach(element):
     '''
