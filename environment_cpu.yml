@@ -5,6 +5,9 @@ channels:
   - conda-forge
   - defaults
 dependencies:
+  - wandb=0.15.0
+  - tensorboard=2.11.0
+  - pyaml=20.4.0
   - _libgcc_mutex=0.1=conda_forge
   - _openmp_mutex=4.5=2_kmp_llvm
   - appdirs=1.4.4=pyhd3eb1b0_0
@@ -133,8 +136,6 @@ dependencies:
     - torch-cluster==1.6.1
     - torch-geometric==2.3.0
     - torch-scatter==2.1.1
-    - torchaudio==2.0.0
-    - torchvision==0.15.0
     - tornado==6.2
     - tqdm==4.65.0
     - typing-extensions==4.4.0
