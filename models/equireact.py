@@ -139,7 +139,7 @@ class EquiReact(nn.Module):
         )
 
     def build_graph(self, data):
-        pos = torch.from_numpy(np.vstack(data.pos))   # TODO do something so it's not nparray
+        pos = torch.from_numpy(np.vstack(data.pos)).to(torch.float32)   # TODO do something so it's not nparray
 
         radius_edges = radius_graph(pos, self.max_radius, data.batch)
 
@@ -154,7 +154,7 @@ class EquiReact(nn.Module):
         x, edge_index, edge_attr, edge_sh = self.build_graph(data)
         src, dst = edge_index
         x = self.node_embedding(x)
-        edge_attr_emb = self.edge_embedding(edge_attr.to(torch.float32))
+        edge_attr_emb = self.edge_embedding(edge_attr)
 
         for i in range(self.n_conv_layers):
             edge_attr_ = torch.cat([edge_attr_emb, x[dst, :self.n_s], x[src, :self.n_s]], dim=-1)
