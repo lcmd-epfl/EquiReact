@@ -1,3 +1,6 @@
 *.pt
 *.pyc
 *.swp
+
+wandb/
+events.out.tfevents.*
