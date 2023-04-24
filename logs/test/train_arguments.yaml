@@ -11,6 +11,6 @@ min_lr: 8.0e-06
 minimum_epochs: 0
 mode: max
 models_to_save: []
-'num epochs': 8
+'num epochs': 128
 patience: 150
 'weight decay': 0.0001
