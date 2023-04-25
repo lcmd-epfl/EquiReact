@@ -53,9 +53,10 @@ class Trainer():
                  checkpoint=None, num_epochs=0, eval_per_epochs=0, patience=0,
                  minimum_epochs=0, models_to_save=[], clip_grad=None, log_iterations=0, lr=0.0001,
                  weight_decay=0.0001, lr_scheduler=None, factor=0, min_lr=0, mode='max', lr_scheduler_patience=0,
-                 lr_verbose=True, val_per_batch=True):
+                 lr_verbose=True, val_per_batch=True, std=1):
 
         self.device = device
+        self.std = std # stdev of data. to adjust val scores.
         self.model = model.to(self.device)
         self.loss_func = loss_func
        # self.tensorboard_functions = tensorboard_functions
@@ -133,7 +134,7 @@ class Trainer():
             self.model.eval()
             with torch.no_grad():
                 metrics, _, _ = self.predict(val_loader)
-                val_score = metrics[self.main_metric]
+                val_score = metrics[self.main_metric] * self.std
 
                 if self.lr_scheduler!=None and not self.scheduler_step_per_batch:
                     self.step_schedulers(metrics=val_score)

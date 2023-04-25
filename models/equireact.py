@@ -181,7 +181,7 @@ class EquiReact(nn.Module):
         score = scatter_add(scores_edges, index=edge_batch, dim=0) + scatter_add(scores_nodes, index=data.batch, dim=0)
         return score
 
-    def forward(self, reactants_data, products_data):
+    def forward(self, reactants_data, product_data):
         """
         :param reactants_data: assuming list of reactant graphs
         :param products_data: assuming list of product graphs
@@ -192,16 +192,17 @@ class EquiReact(nn.Module):
 
         reactant_energy = torch.zeros((batch_size, 1))
         for i, reactant_graph in enumerate(reactants_data):
-            # print(f"Reactant {i}")
-            reactant_energy += self.forward_molecule(reactant_graph)
-            # print(f"{reactant_energy=}")
+         #   print(f"Reactant {i}")
+            energy = self.forward_molecule(reactant_graph)
+         #   print(f"reactant energy={energy}")
+            reactant_energy += energy
+          #  print(f"summed energy={reactant_energy}")
 
-        product_energy = torch.zeros((batch_size, 1))
-        for i, product_graph in enumerate(products_data):
-            # print(f"Product {i}")
-            product_energy += self.forward_molecule(product_graph)
-            # print(f"{product_energy=}")
+
+        product_energy = self.forward_molecule(product_data)
+       # print(f"product energy={product_energy}")
 
         reaction_energy = product_energy - reactant_energy
+      #  print("reaction energy", reaction_energy)
 
         return reaction_energy
