@@ -192,16 +192,21 @@ class EquiReact(nn.Module):
 
         reactant_energy = torch.zeros((batch_size, 1))
         for i, reactant_graph in enumerate(reactants_data):
-            # print(f"Reactant {i}")
-            reactant_energy += self.forward_molecule(reactant_graph)
-            # print(f"{reactant_energy=}")
+            print("Reactant",i)
+            energy = self.forward_molecule(reactant_graph)
+            print("energy", energy)
+            reactant_energy += energy 
+            print("summed energy=", reactant_energy)
 
         product_energy = torch.zeros((batch_size, 1))
         for i, product_graph in enumerate(products_data):
-            # print(f"Product {i}")
-            product_energy += self.forward_molecule(product_graph)
-            # print(f"{product_energy=}")
+            print("Product", i)
+            energy = self.forward_molecule(product_graph)
+            print("energy=", energy)
+            product_energy += energy
+            print("summed energy=", product_energy)
 
         reaction_energy = product_energy - reactant_energy
+        print("reaction energy", reaction_energy)
 
         return reaction_energy
