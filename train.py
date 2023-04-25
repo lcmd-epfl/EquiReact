@@ -93,6 +93,9 @@ def train(run_dir,
     device = torch.device("cuda:0" if torch.cuda.is_available() and device == 'cuda' else "cpu")
 
     data = Cyclo23TS(device=device, radius=radius, process=process)
+    labels = data.labels
+    std = data.std
+    print("Data stdev", std)
 
     # for now arbitrary data split
     indices = np.arange(len(data))
@@ -107,8 +110,6 @@ def train(run_dir,
     tr_indices, te_indices, val_indices = np.split(indices, [tr_size, tr_size+te_size])
     print('total / train / test / val:', len(indices), len(tr_indices), len(te_indices), len(val_indices))
     train_data = Subset(data, tr_indices)
-
-    # here should normalise data
     val_data = Subset(data, val_indices)
     test_data = Subset(data, te_indices)
 
@@ -132,7 +133,7 @@ def train(run_dir,
     val_loader = DataLoader(val_data, batch_size=batch_size, collate_fn=custom_collate, pin_memory=pin_memory,
                             num_workers=num_workers)
 
-    trainer = ReactTrainer(model=model, device=device, metrics={'mae':MAE()},
+    trainer = ReactTrainer(model=model, std=std, device=device, metrics={'mae':MAE()},
                             run_dir=run_dir, sampler=sampler, val_per_batch=val_per_batch,
                             checkpoint=checkpoint, num_epochs=num_epochs,
                             eval_per_epochs=eval_per_epochs, patience=patience,
