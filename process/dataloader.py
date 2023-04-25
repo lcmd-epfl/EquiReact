@@ -34,6 +34,7 @@ class Cyclo23TS(Dataset):
 
         mean = torch.mean(labels)
         std = torch.std(labels)
+        self.std = std
         #TODO to normalise in train/test/val split
         self.labels = (labels - mean)/std
 
