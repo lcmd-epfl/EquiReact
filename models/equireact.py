@@ -61,8 +61,10 @@ class EquiReact(nn.Module):
 
     def __init__(self, node_fdim: int, edge_fdim: int, sh_lmax: int = 2,
                  n_s: int = 16, n_v: int = 16, n_conv_layers: int = 2,
-                 max_radius: float = 10.0, max_neighbors: int = 24,
-                 distance_emb_dim: int = 32, dropout_p: float = 0.2, **kwargs
+                 # n_s, n_v were 16 originally
+                 # maybe radius 5, maybe n_s, n_v 8
+                 max_radius: float = 10.0, max_neighbors: int = 20,
+                 distance_emb_dim: int = 32, dropout_p: float = 0.1, **kwargs
                  ):
 
         super().__init__(**kwargs)
@@ -153,26 +155,41 @@ class EquiReact(nn.Module):
 
     def forward_molecule(self, data):
         x, edge_index, edge_attr, edge_sh = self.build_graph(data)
+        print('dim of x', x.shape)
+        print('dim of radius_graph (edges)', edge_index.shape)
+        print('dim of edge length emb (gaussians)', edge_attr.shape)
+        print('dim of edge sph harmonics', edge_sh.shape)
         src, dst = edge_index
         x = self.node_embedding(x)
+        print('dim of x after node embedding', x.shape)
         edge_attr_emb = self.edge_embedding(edge_attr)
+        print('dim of radius_graph (edges) after embedding', edge_attr_emb.shape)
 
         for i in range(self.n_conv_layers):
+            print('conv layer', i+1, '/', self.n_conv_layers)
             edge_attr_ = torch.cat([edge_attr_emb, x[dst, :self.n_s], x[src, :self.n_s]], dim=-1)
             x_update = self.conv_layers[i](x, edge_index, edge_attr_, edge_sh)
-
+            print('after update, new xdims', x_update.shape)
             x = F.pad(x, (0, x_update.shape[-1] - x.shape[-1]))
+            print('after pad, new xdims', x.shape)
             x = x + x_update
+            print('after conv, new x dims', x.shape)
 
         x_src = torch.cat([x[src, :self.n_s], x[src, -self.n_s:]], dim=1) if self.n_conv_layers >= 3 else x[src,
                                                                                                           :self.n_s]
+        print('x_src dims', x_src.shape)
         x_dst = torch.cat([x[dst, :self.n_s], x[dst, -self.n_s:]], dim=1) if self.n_conv_layers >= 3 else x[dst,
                                                                                                           :self.n_s]
+        print('x_dst dims', x_dst.shape)
         x_feats = torch.cat([x_src, x_dst], dim=-1)
+        print('concat x_feats dims', x_feats.shape)
 
+        # not sure about this part
         score_inputs_edges = torch.cat([edge_attr, x_feats], dim=-1)
+        print('concatenated score_inputs_edges dims', score_inputs_edges.shape)
         score_inputs_nodes = torch.cat([x[:, :self.n_s], x[:, -self.n_s:]], dim=1) if self.n_conv_layers >= 3 else x[:,
                                                                                                                    :self.n_s]
+        print('score_inputs_nodes dims', score_inputs_nodes.shape)
 
         scores_nodes = self.score_predictor_nodes(score_inputs_nodes)
         scores_edges = self.score_predictor_edges(score_inputs_edges)
@@ -183,8 +200,8 @@ class EquiReact(nn.Module):
 
     def forward(self, reactants_data, product_data):
         """
-        :param reactants_data: assuming list of reactant graphs
-        :param products_data: assuming list of product graphs
+        :param reactants_data: reactant_0, reactant_1
+        :param product_data: single product graph
         :return: energy prediction
         """
 

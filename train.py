@@ -39,7 +39,6 @@ class Logger(object):
         self.log = open(logpath, "a")
 
     def write(self, message):
-
         self.terminal.write(message)
         self.log.write(message)
         self.log.flush()
@@ -71,7 +70,6 @@ def parse_arguments():
 
 def train(run_dir,
           #setup args
-          #TODO implement CV as an option rather than commenting out (do later)
           device='cuda:0', seed=123, eval_on_test=True,
           #dataset args
           subset=None, tr_frac = 0.75, te_frac = 0.125, process=False,
@@ -89,6 +87,10 @@ def train(run_dir,
           lr_scheduler=ReduceLROnPlateau, factor=0.6, min_lr=8.0e-6, mode='max', lr_scheduler_patience=60,
           lr_verbose=True,
           ):
+    if seed:
+        torch.manual_seed(seed)
+        torch.cuda.manual_seed(1)
+        np.random.seed(seed)
 
     device = torch.device("cuda:0" if torch.cuda.is_available() and device == 'cuda' else "cpu")
 
@@ -99,7 +101,6 @@ def train(run_dir,
 
     # for now arbitrary data split
     indices = np.arange(len(data))
-    np.random.seed(seed)
     np.random.shuffle(indices)
 
     if subset:
@@ -124,7 +125,6 @@ def train(run_dir,
     model = EquiReact(node_fdim=input_node_feats_dim, edge_fdim=1)
 
     print('trainable params in model: ', sum(p.numel() for p in model.parameters() if p.requires_grad))
-
 
     sampler = None
     train_loader = DataLoader(train_data, batch_size=batch_size, shuffle=True, collate_fn=custom_collate,
@@ -173,7 +173,9 @@ if __name__ == '__main__':
     if not os.path.exists(run_dir):
         print(f"creating run dir {run_dir}")
         os.mkdir(run_dir)
+    # naming is kind of horrible
     logpath = os.path.join(run_dir, f'{datetime.now().strftime("%y%m%d-%H%M%S")}-{getpass.getuser()}-{os.uname()[1]}.log')
+    print('stdout to', logpath)
     sys.stdout = Logger(logpath=logpath, syspart=sys.stdout)
     sys.stderr = Logger(logpath=logpath, syspart=sys.stderr)
 
@@ -182,10 +184,4 @@ if __name__ == '__main__':
         wandb.run.name = args.wandb_name
         print(args.wandb_name)
 
-    with open(os.path.join('logs', f'{start_time}.log'), "w") as file:
-        try:
-            #train(run_dir, CV=args.CV, device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint)
-            train(run_dir, device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint, subset=args.subset)
-        except Exception as e:
-            traceback.print_exc(file=file)
-            raise
+    train(run_dir, device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint, subset=args.subset)
