@@ -175,20 +175,13 @@ class EquiReact(nn.Module):
             x = x + x_update
             print('after conv, new x dims', x.shape)
 
-        x_src = torch.cat([x[src, :self.n_s], x[src, -self.n_s:]], dim=1) if self.n_conv_layers >= 3 else x[src,
-                                                                                                          :self.n_s]
-        print('x_src dims', x_src.shape)
-        x_dst = torch.cat([x[dst, :self.n_s], x[dst, -self.n_s:]], dim=1) if self.n_conv_layers >= 3 else x[dst,
-                                                                                                          :self.n_s]
-        print('x_dst dims', x_dst.shape)
-        x_feats = torch.cat([x_src, x_dst], dim=-1)
-        print('concat x_feats dims', x_feats.shape)
 
-        # not sure about this part
-        score_inputs_edges = torch.cat([edge_attr, x_feats], dim=-1)
+        # remove extra stuff from x
+        x = torch.cat([x[:, :self.n_s], x[:, -self.n_s:]], dim=1) if self.n_conv_layers >= 3 else x[:, :self.n_s]
+
+        score_inputs_edges = torch.cat([edge_attr, x[src], x[dst]], dim=-1)
         print('concatenated score_inputs_edges dims', score_inputs_edges.shape)
-        score_inputs_nodes = torch.cat([x[:, :self.n_s], x[:, -self.n_s:]], dim=1) if self.n_conv_layers >= 3 else x[:,
-                                                                                                                   :self.n_s]
+        score_inputs_nodes = x
         print('score_inputs_nodes dims', score_inputs_nodes.shape)
 
         scores_nodes = self.score_predictor_nodes(score_inputs_nodes)
@@ -212,7 +205,7 @@ class EquiReact(nn.Module):
             print("Reactant",i)
             energy = self.forward_molecule(reactant_graph)
             print("energy", energy)
-            reactant_energy += energy 
+            reactant_energy += energy
             print("summed energy=", reactant_energy)
 
         product_energy = self.forward_molecule(product_data)
