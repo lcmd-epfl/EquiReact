@@ -66,6 +66,10 @@ def parse_arguments():
 
     args = p.parse_args()
 
+    if type(args.verbose) == str:
+        args.verbose = literal_eval(args.verbose)
+    if type(args.process) == str:
+        args.process = literal_eval(args.process)
     if type(args.num_epochs) == str:
         args.num_epochs = int(args.num_epochs)
     return args
@@ -91,7 +95,6 @@ def train(run_dir,
           lr_verbose=True,
           verbose=False
           ):
-    verbose = literal_eval(verbose)
     if seed:
         torch.manual_seed(seed)
         torch.cuda.manual_seed(1)
