@@ -62,10 +62,10 @@ class EquiReact(nn.Module):
     def __init__(self, node_fdim: int, edge_fdim: int, sh_lmax: int = 2,
                  n_s: int = 16, n_v: int = 16, n_conv_layers: int = 2,
                  # n_s, n_v were 16 originally
-                 # maybe radius 5, maybe n_s, n_v 8
+                 # maybe radius 5
                  max_radius: float = 10.0, max_neighbors: int = 20,
                  distance_emb_dim: int = 32, dropout_p: float = 0.1,
-                 edge_in_score=False, **kwargs
+                 edge_in_score=False, verbose=False, **kwargs
                  ):
 
         super().__init__(**kwargs)
@@ -79,6 +79,8 @@ class EquiReact(nn.Module):
 
         self.max_radius = max_radius
         self.max_neighbors = max_neighbors
+
+        self.verbose = verbose
 
         irrep_seq = [
             f"{n_s}x0e",
@@ -157,40 +159,53 @@ class EquiReact(nn.Module):
 
     def forward_molecule(self, data):
         x, edge_index, edge_attr, edge_sh = self.build_graph(data)
-     #   print('dim of x', x.shape)
-     #   print('dim of radius_graph (edges)', edge_index.shape)
-      #  print('dim of edge length emb (gaussians)', edge_attr.shape)
-      #  print('dim of edge sph harmonics', edge_sh.shape)
+        if self.verbose:
+            print('dim of x', x.shape)
+            print('dim of radius_graph (edges)', edge_index.shape)
+            print('dim of edge length emb (gaussians)', edge_attr.shape)
+            print('dim of edge sph harmonics', edge_sh.shape)
         src, dst = edge_index
         x = self.node_embedding(x)
-      #  print('dim of x after node embedding', x.shape)
+        if self.verbose:
+            print('dim of x after node embedding', x.shape)
         edge_attr_emb = self.edge_embedding(edge_attr)
-       # print('dim of radius_graph (edges) after embedding', edge_attr_emb.shape)
+        if self.verbose:
+            print('dim of radius_graph (edges) after embedding', edge_attr_emb.shape)
 
         for i in range(self.n_conv_layers):
-          #  print('conv layer', i+1, '/', self.n_conv_layers)
+            if self.verbose:
+                print('conv layer', i+1, '/', self.n_conv_layers)
             edge_attr_ = torch.cat([edge_attr_emb, x[dst, :self.n_s], x[src, :self.n_s]], dim=-1)
             x_update = self.conv_layers[i](x, edge_index, edge_attr_, edge_sh)
-          #  print('after update, new xdims', x_update.shape)
+            if self.verbose:
+                print('after update, new xdims', x_update.shape)
             x = F.pad(x, (0, x_update.shape[-1] - x.shape[-1]))
-           # print('after pad, new xdims', x.shape)
-            x = x + x_update
-          #  print('after conv, new x dims', x.shape)
 
+            if self.verbose:
+                print('after pad, new xdims', x.shape)
+            x = x + x_update
+
+            if self.verbose:
+                print('after conv, new x dims', x.shape)
 
         # remove extra stuff from x
         x = torch.cat([x[:, :self.n_s], x[:, -self.n_s:]], dim=1) if self.n_conv_layers >= 3 else x[:, :self.n_s]
-   #     print('concat x dims', x.shape)
+        if self.verbose:
+            print('concat x dims', x.shape)
 
         score_inputs_edges = torch.cat([edge_attr, x[src], x[dst]], dim=-1)
-     #   print('concatenated score_inputs_edges dims', score_inputs_edges.shape)
+        if self.verbose:
+            print('concatenated score_inputs_edges dims', score_inputs_edges.shape)
         score_inputs_nodes = x
-      #  print('score_inputs_nodes dims', score_inputs_nodes.shape)
+        if self.verbose:
+            print('score_inputs_nodes dims', score_inputs_nodes.shape)
 
         scores_nodes = self.score_predictor_nodes(score_inputs_nodes)
         scores_edges = self.score_predictor_edges(score_inputs_edges)
 
         edge_batch = data.batch[src]
+
+        # want to make sure that we are adding per-atom contributions (and per-bond)?
         if self.edge_in_score:
             score = scatter_add(scores_edges, index=edge_batch, dim=0) + scatter_add(scores_nodes, index=data.batch, dim=0)
         else:

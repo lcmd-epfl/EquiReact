@@ -32,6 +32,8 @@ import wandb
 import sys
 from datetime import datetime
 
+from ast import literal_eval
+
 
 class Logger(object):
     def __init__(self, logpath, syspart=sys.stdout):
@@ -60,9 +62,14 @@ def parse_arguments():
     p.add_argument('--wandb_name', type=str, default=None, help='name of wandb run')
     p.add_argument('--logdir', type=str, default='logs', help='log dir')
     p.add_argument('--process', type=str, default=False, help='(re-)process data by force (if data is already there, default is to not reprocess)?')
+    p.add_argument('--verbose', type=str, default=False, help='Print dims throughout the training process')
 
     args = p.parse_args()
 
+    if type(args.verbose) == str:
+        args.verbose = literal_eval(args.verbose)
+    if type(args.process) == str:
+        args.process = literal_eval(args.process)
     if type(args.num_epochs) == str:
         args.num_epochs = int(args.num_epochs)
     return args
@@ -86,6 +93,7 @@ def train(run_dir,
           # lr scheduler params
           lr_scheduler=ReduceLROnPlateau, factor=0.6, min_lr=8.0e-6, mode='max', lr_scheduler_patience=60,
           lr_verbose=True,
+          verbose=False
           ):
     if seed:
         torch.manual_seed(seed)
@@ -93,10 +101,12 @@ def train(run_dir,
         np.random.seed(seed)
 
     device = torch.device("cuda:0" if torch.cuda.is_available() and device == 'cuda' else "cpu")
+    print("Running on device", device)
 
     data = Cyclo23TS(device=device, radius=radius, process=process)
     labels = data.labels
     std = data.std
+
     print("Data stdev", std)
 
     # for now arbitrary data split
@@ -122,7 +132,7 @@ def train(run_dir,
     input_edge_feats_dim = 1
     print(f"input edge feats dim {input_edge_feats_dim}")
 
-    model = EquiReact(node_fdim=input_node_feats_dim, edge_fdim=1, edge_in_score=edge_in_score)
+    model = EquiReact(node_fdim=input_node_feats_dim, edge_fdim=1, edge_in_score=edge_in_score, verbose=verbose)
 
     print('trainable params in model: ', sum(p.numel() for p in model.parameters() if p.requires_grad))
 
@@ -163,7 +173,7 @@ if __name__ == '__main__':
     if not os.path.exists('logs'):
         os.mkdir('logs')
     if not os.path.exists(args.logdir):
-        print(f"creating run dir {args.logdir}")
+        print(f"creating log dir {args.logdir}")
         os.mkdir(args.logdir)
 
     if args.checkpoint:
@@ -182,6 +192,10 @@ if __name__ == '__main__':
     wandb.init(project='nequireact')
     if args.wandb_name:
         wandb.run.name = args.wandb_name
-        print(args.wandb_name)
+        print('wandb name', args.wandb_name)
 
+<<<<<<< HEAD
     train(run_dir, device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint, subset=args.subset)
+=======
+    train(run_dir, device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint, subset=args.subset, verbose=args.verbose)
+>>>>>>> 07a24db704620556f2d2c3d81b876a4a1ab8f7a9
