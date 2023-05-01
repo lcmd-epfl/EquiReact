@@ -32,6 +32,8 @@ import wandb
 import sys
 from datetime import datetime
 
+from ast import literal_eval
+
 
 class Logger(object):
     def __init__(self, logpath, syspart=sys.stdout):
@@ -60,6 +62,7 @@ def parse_arguments():
     p.add_argument('--wandb_name', type=str, default=None, help='name of wandb run')
     p.add_argument('--logdir', type=str, default='logs', help='log dir')
     p.add_argument('--process', type=str, default=False, help='(re-)process data by force (if data is already there, default is to not reprocess)?')
+    p.add_argument('--verbose', type=str, default=False, help='Print dims throughout the training process')
 
     args = p.parse_args()
 
@@ -86,7 +89,9 @@ def train(run_dir,
           # lr scheduler params
           lr_scheduler=ReduceLROnPlateau, factor=0.6, min_lr=8.0e-6, mode='max', lr_scheduler_patience=60,
           lr_verbose=True,
+          verbose=False
           ):
+    verbose = literal_eval(verbose)
     if seed:
         torch.manual_seed(seed)
         torch.cuda.manual_seed(1)
@@ -97,6 +102,7 @@ def train(run_dir,
     data = Cyclo23TS(device=device, radius=radius, process=process)
     labels = data.labels
     std = data.std
+
     print("Data stdev", std)
 
     # for now arbitrary data split
@@ -122,7 +128,7 @@ def train(run_dir,
     input_edge_feats_dim = 1
     print(f"input edge feats dim {input_edge_feats_dim}")
 
-    model = EquiReact(node_fdim=input_node_feats_dim, edge_fdim=1, edge_in_score=edge_in_score)
+    model = EquiReact(node_fdim=input_node_feats_dim, edge_fdim=1, edge_in_score=edge_in_score, verbose=verbose)
 
     print('trainable params in model: ', sum(p.numel() for p in model.parameters() if p.requires_grad))
 
@@ -184,4 +190,4 @@ if __name__ == '__main__':
         wandb.run.name = args.wandb_name
         print(args.wandb_name)
 
-    train(run_dir, device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint, subset=args.subset)
+    train(run_dir, device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint, subset=args.subset, verbose=args.verbose)
