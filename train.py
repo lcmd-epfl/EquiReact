@@ -173,7 +173,7 @@ if __name__ == '__main__':
     if not os.path.exists('logs'):
         os.mkdir('logs')
     if not os.path.exists(args.logdir):
-        print(f"creating run dir {args.logdir}")
+        print(f"creating log dir {args.logdir}")
         os.mkdir(args.logdir)
 
     if args.checkpoint:
@@ -192,6 +192,6 @@ if __name__ == '__main__':
     wandb.init(project='nequireact')
     if args.wandb_name:
         wandb.run.name = args.wandb_name
-        print(args.wandb_name)
+        print('wandb name', args.wandb_name)
 
     train(run_dir, device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint, subset=args.subset, verbose=args.verbose)
