@@ -101,6 +101,7 @@ def train(run_dir,
         np.random.seed(seed)
 
     device = torch.device("cuda:0" if torch.cuda.is_available() and device == 'cuda' else "cpu")
+    print("Running on device", device)
 
     data = Cyclo23TS(device=device, radius=radius, process=process)
     labels = data.labels
