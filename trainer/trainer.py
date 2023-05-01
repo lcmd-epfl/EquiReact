@@ -134,6 +134,7 @@ class Trainer():
             self.model.eval()
             with torch.no_grad():
                 metrics, _, _ = self.predict(val_loader)
+                # MAE of prediction is * std of data since data is normalised
                 val_score = metrics[self.main_metric] * self.std
 
                 if self.lr_scheduler!=None and not self.scheduler_step_per_batch:
@@ -142,7 +143,7 @@ class Trainer():
                 if self.eval_per_epochs > 0 and epoch % self.eval_per_epochs == 0:
                     self.run_per_epoch_evaluations(val_loader)
 
-
+                # val loss is MSE, shouldn't be affected by data normalisation
                 val_loss = metrics[type(self.loss_func).__name__]
                 wandb.log({"val_loss": val_loss, "val_score":val_score})
                 print('[Epoch %d] %s: %.6f val loss: %.6f' % (epoch, self.main_metric, val_score, val_loss))
@@ -261,8 +262,11 @@ class Trainer():
         with open(os.path.join(self.writer.log_dir, 'evaluation_' + data_split + '.txt'), 'w') as file:
             print('Statistics on ', data_split)
             for key, value in metrics.items():
+                if key == 'mae':
+                    value *= self.std
                 file.write(f'{key}: {value}\n')
                 print(f'{key}: {value}')
+        #TODO right now only MAE has the correct units
         return metrics, predictions, targets
 
     def step_schedulers(self, metrics=None):

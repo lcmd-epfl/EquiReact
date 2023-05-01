@@ -64,7 +64,8 @@ class EquiReact(nn.Module):
                  # n_s, n_v were 16 originally
                  # maybe radius 5, maybe n_s, n_v 8
                  max_radius: float = 10.0, max_neighbors: int = 20,
-                 distance_emb_dim: int = 32, dropout_p: float = 0.1, **kwargs
+                 distance_emb_dim: int = 32, dropout_p: float = 0.1,
+                 edge_in_score=False, **kwargs
                  ):
 
         super().__init__(**kwargs)
@@ -74,6 +75,7 @@ class EquiReact(nn.Module):
         self.sh_irreps = o3.Irreps.spherical_harmonics(lmax=sh_lmax)
         self.n_s, self.n_v = n_s, n_v
         self.n_conv_layers = n_conv_layers
+        self.edge_in_score = edge_in_score
 
         self.max_radius = max_radius
         self.max_neighbors = max_neighbors
@@ -155,40 +157,44 @@ class EquiReact(nn.Module):
 
     def forward_molecule(self, data):
         x, edge_index, edge_attr, edge_sh = self.build_graph(data)
-        print('dim of x', x.shape)
-        print('dim of radius_graph (edges)', edge_index.shape)
-        print('dim of edge length emb (gaussians)', edge_attr.shape)
-        print('dim of edge sph harmonics', edge_sh.shape)
+     #   print('dim of x', x.shape)
+     #   print('dim of radius_graph (edges)', edge_index.shape)
+      #  print('dim of edge length emb (gaussians)', edge_attr.shape)
+      #  print('dim of edge sph harmonics', edge_sh.shape)
         src, dst = edge_index
         x = self.node_embedding(x)
-        print('dim of x after node embedding', x.shape)
+      #  print('dim of x after node embedding', x.shape)
         edge_attr_emb = self.edge_embedding(edge_attr)
-        print('dim of radius_graph (edges) after embedding', edge_attr_emb.shape)
+       # print('dim of radius_graph (edges) after embedding', edge_attr_emb.shape)
 
         for i in range(self.n_conv_layers):
-            print('conv layer', i+1, '/', self.n_conv_layers)
+          #  print('conv layer', i+1, '/', self.n_conv_layers)
             edge_attr_ = torch.cat([edge_attr_emb, x[dst, :self.n_s], x[src, :self.n_s]], dim=-1)
             x_update = self.conv_layers[i](x, edge_index, edge_attr_, edge_sh)
-            print('after update, new xdims', x_update.shape)
+          #  print('after update, new xdims', x_update.shape)
             x = F.pad(x, (0, x_update.shape[-1] - x.shape[-1]))
-            print('after pad, new xdims', x.shape)
+           # print('after pad, new xdims', x.shape)
             x = x + x_update
-            print('after conv, new x dims', x.shape)
+          #  print('after conv, new x dims', x.shape)
 
 
         # remove extra stuff from x
         x = torch.cat([x[:, :self.n_s], x[:, -self.n_s:]], dim=1) if self.n_conv_layers >= 3 else x[:, :self.n_s]
+   #     print('concat x dims', x.shape)
 
         score_inputs_edges = torch.cat([edge_attr, x[src], x[dst]], dim=-1)
-        print('concatenated score_inputs_edges dims', score_inputs_edges.shape)
+     #   print('concatenated score_inputs_edges dims', score_inputs_edges.shape)
         score_inputs_nodes = x
-        print('score_inputs_nodes dims', score_inputs_nodes.shape)
+      #  print('score_inputs_nodes dims', score_inputs_nodes.shape)
 
         scores_nodes = self.score_predictor_nodes(score_inputs_nodes)
         scores_edges = self.score_predictor_edges(score_inputs_edges)
 
         edge_batch = data.batch[src]
-        score = scatter_add(scores_edges, index=edge_batch, dim=0) + scatter_add(scores_nodes, index=data.batch, dim=0)
+        if self.edge_in_score:
+            score = scatter_add(scores_edges, index=edge_batch, dim=0) + scatter_add(scores_nodes, index=data.batch, dim=0)
+        else:
+            score = scatter_add(scores_nodes, index=data.batch, dim=0)
         return score
 
     def forward(self, reactants_data, product_data):
@@ -202,16 +208,11 @@ class EquiReact(nn.Module):
 
         reactant_energy = torch.zeros((batch_size, 1))
         for i, reactant_graph in enumerate(reactants_data):
-            print("Reactant",i)
             energy = self.forward_molecule(reactant_graph)
-            print("energy", energy)
             reactant_energy += energy
-            print("summed energy=", reactant_energy)
 
         product_energy = self.forward_molecule(product_data)
-        print(f"product energy={product_energy}")
 
         reaction_energy = product_energy - reactant_energy
-        print("reaction energy", reaction_energy)
 
         return reaction_energy

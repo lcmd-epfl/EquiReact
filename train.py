@@ -76,7 +76,7 @@ def train(run_dir,
           #sampling / dataloader args
           batch_size=8, num_workers=0, pin_memory=True,
           #graph args
-          radius=10,
+          radius=10, edge_in_score=False,
           #NN args
           #trainer args
           val_per_batch=True, checkpoint=False, num_epochs=1000000, eval_per_epochs=0, patience=150,
@@ -122,7 +122,7 @@ def train(run_dir,
     input_edge_feats_dim = 1
     print(f"input edge feats dim {input_edge_feats_dim}")
 
-    model = EquiReact(node_fdim=input_node_feats_dim, edge_fdim=1)
+    model = EquiReact(node_fdim=input_node_feats_dim, edge_fdim=1, edge_in_score=edge_in_score)
 
     print('trainable params in model: ', sum(p.numel() for p in model.parameters() if p.requires_grad))
 
