@@ -225,12 +225,10 @@ class EquiReact(nn.Module):
         scores_nodes = self.score_predictor_nodes(score_inputs_nodes)
         scores_edges = self.score_predictor_edges(score_inputs_edges)
 
-        print('device is', self.device)
-        data.batch.to(self.device)
+        data_batch = data.batch.to(self.device)
         edge_batch = data.batch[src].to(self.device)
 
         print('data batch device', get_device(data.batch))
-        print('edge batch device', get_device(edge_batch))
         # want to make sure that we are adding per-atom contributions (and per-bond)?
         if self.edge_in_score:
             score = scatter_add(scores_edges, index=edge_batch, dim=0) + scatter_add(scores_nodes, index=data.batch, dim=0)
