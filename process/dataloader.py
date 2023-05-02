@@ -37,7 +37,7 @@ class Cyclo23TS(Dataset):
         std = torch.std(labels)
         self.std = std
         #TODO to normalise in train/test/val split
-        self.labels = torch.tensor((labels - mean)/std, device=self.device)
+        self.labels = (labels - mean)/std
 
         indices = df['rxn_id'].to_list()
         self.indices = torch.tensor(indices, device=self.device)
