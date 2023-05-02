@@ -37,10 +37,10 @@ class Cyclo23TS(Dataset):
         std = torch.std(labels)
         self.std = std
         #TODO to normalise in train/test/val split
-        self.labels = ((labels - mean)/std).to(self.device)
+        self.labels = torch.tensor((labels - mean)/std), device=self.device)
 
         indices = df['rxn_id'].to_list()
-        self.indices = indices.to(self.device)
+        self.indices = torch.tensor(indices, device=self.device)
 
         if (not os.path.exists(os.path.join(self.processed_dir, 'reactant_0_graphs.pt')) and
                 not os.path.exists(os.path.join(self.processed_dir, 'reactant_1_graphs.pt')) and
