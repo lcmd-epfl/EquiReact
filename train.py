@@ -52,7 +52,6 @@ class Logger(object):
         pass
 
 def parse_arguments():
-    # sparse for now, will be expanded once things are working
     p = argparse.ArgumentParser()
     p.add_argument('--experiment_name', type=str, default='', help='name that will be added to the runs folder output')
     p.add_argument('--num_epochs', type=str, default='2500', help='number of times to iterate through all samples')
@@ -63,6 +62,13 @@ def parse_arguments():
     p.add_argument('--logdir', type=str, default='logs', help='log dir')
     p.add_argument('--process', type=str, default=False, help='(re-)process data by force (if data is already there, default is to not reprocess)?')
     p.add_argument('--verbose', type=str, default=False, help='Print dims throughout the training process')
+    p.add_argument('--radius', type=float, default=10.0, help='max radius of graph')
+    p.add_argument('--max_neighbors', type=int, default=20, help='max number of neighbors')
+    p.add_argument('--sum_mode', type=str, default='node', help='sum node (node, edge, or both)')
+    p.add_argument('--n_s', type=int, default=16, help='dimension of node features')
+    p.add_argument('--n_v', type=int, default=16, help='dimension of extra (p/d) features')
+    p.add_argument('--n_conv_layers', type=int, default=2, help='number of conv layers')
+    p.add_argument('--distance_emb_dim', type=int, default=32, help='how many gaussian funcs to use')
 
     args = p.parse_args()
 
@@ -72,6 +78,18 @@ def parse_arguments():
         args.process = literal_eval(args.process)
     if type(args.num_epochs) == str:
         args.num_epochs = int(args.num_epochs)
+    if type(args.radius) == str:
+        args.radius = float(args.radius)
+    if type(args.max_neighbors) == str:
+        args.max_neighbors = int(args.max_neighbors)
+    if type(args.n_s) == str:
+        args.n_s = int(args.n_s)
+    if type(args.n_v) == str:
+        args.n_v = int(args.n_v)
+    if type(args.n_conv_layers) == str:
+        args.n_conv_layers = int(args.n_conv_layers)
+    if type(args.distance_emb_dim) == str:
+        args.distance_emb_dim = int(args.distance_emb_dim)
     return args
 
 
@@ -81,10 +99,9 @@ def train(run_dir,
           #dataset args
           subset=None, tr_frac = 0.75, te_frac = 0.125, process=False,
           #sampling / dataloader args
-          batch_size=8, num_workers=0, pin_memory=True,
+          batch_size=8, num_workers=0, pin_memory=False, # pin memory is not working
           #graph args
-          radius=10, edge_in_score=False,
-          #NN args
+          radius=10, max_neighbors=20, sum_mode='node', n_s=16, n_v=16, n_conv_layers=2, distance_emb_dim=32,
           #trainer args
           val_per_batch=True, checkpoint=False, num_epochs=1000000, eval_per_epochs=0, patience=150,
           minimum_epochs=0, models_to_save=[], clip_grad=100, log_iterations=100,
@@ -132,7 +149,9 @@ def train(run_dir,
     input_edge_feats_dim = 1
     print(f"input edge feats dim {input_edge_feats_dim}")
 
-    model = EquiReact(node_fdim=input_node_feats_dim, edge_fdim=1, edge_in_score=edge_in_score, verbose=verbose, device=device)
+    model = EquiReact(node_fdim=input_node_feats_dim, edge_fdim=1, verbose=verbose, device=device,
+                      max_radius=radius, max_neighbors=max_neighbors, sum_mode=sum_mode, n_s=n_s, n_v=n_v, n_conv_layers=n_conv_layers,
+                      distance_emb_dim=distance_emb_dim)
 
     print('trainable params in model: ', sum(p.numel() for p in model.parameters() if p.requires_grad))
 
@@ -168,7 +187,6 @@ def train(run_dir,
 
 if __name__ == '__main__':
     args = parse_arguments()
-    print('args', args)
     start_time = datetime.now().strftime('date%d-%m_time%H-%M-%S.%f')
     if not os.path.exists('logs'):
         os.mkdir('logs')
@@ -193,5 +211,9 @@ if __name__ == '__main__':
     if args.wandb_name:
         wandb.run.name = args.wandb_name
         print('wandb name', args.wandb_name)
-
-    train(run_dir, device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint, subset=args.subset, verbose=args.verbose)
+    else:
+        print('no wandb name specified')
+    print('input args', args)
+    train(run_dir, device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint, subset=args.subset,
+          verbose=args.verbose, radius=args.radius, max_neighbors=args.max_neighbors, sum_mode=args.sum_mode,
+          n_s=args.n_s, n_v=args.n_v, n_conv_layers=args.n_conv_layers, distance_emb_dim=args.distance_emb_dim)

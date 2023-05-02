@@ -9,11 +9,11 @@ from tqdm import tqdm
 import rdkit
 from rdkit import Chem
 
-
 class Cyclo23TS(Dataset):
     def __init__(self, files_dir='data/cyclo/xyz/', csv_path='data/cyclo/full_dataset.csv',
                  radius=20, max_neighbor=24, device='cpu', processed_dir='data/cyclo/processed/', process=True):
         self.device = device
+
         self.max_neighbor = max_neighbor
         self.radius = radius
 
@@ -39,7 +39,7 @@ class Cyclo23TS(Dataset):
         self.labels = (labels - mean)/std
 
         indices = df['rxn_id'].to_list()
-        self.indices = indices
+        self.indices = torch.tensor(indices, device=self.device)
 
         if (not os.path.exists(os.path.join(self.processed_dir, 'reactant_0_graphs.pt')) and
                 not os.path.exists(os.path.join(self.processed_dir, 'reactant_1_graphs.pt')) and
@@ -82,7 +82,7 @@ class Cyclo23TS(Dataset):
         p_graph = self.product_graphs[idx]
 
         label = self.labels[idx]
-        return r_0_graph.to(self.device), r_0_atomtypes, r_0_coords, r_1_graph.to(self.device), r_1_atomtypes, r_1_coords, p_graph.to(self.device), p_atomtypes, p_coords, label.to(self.device), idx
+        return r_0_graph, r_0_atomtypes, r_0_coords, r_1_graph, r_1_atomtypes, r_1_coords, p_graph, p_atomtypes, p_coords, label, idx
 
     def check_alt_files(self, list_files):
         files = []
@@ -202,7 +202,7 @@ class Cyclo23TS(Dataset):
                 rcoords_0 = reactant_1_coords_list[i]
             assert nats == len(rcoords_0), "nats don't match for either 0 or 1"
             r_graph_0 = get_graph(rmol_0, rcoords_0, self.labels[i],
-                                radius=self.radius, max_neighbor=self.max_neighbor)
+                                radius=self.radius, max_neighbor=self.max_neighbor, device=self.device)
             reactant_0_graphs_list.append(r_graph_0)
 
             # REACTANT 1
@@ -217,7 +217,7 @@ class Cyclo23TS(Dataset):
                 rcoords_1 = reactant_0_coords_list[i]
             assert nats == len(rcoords_1), "nats don't match for either 0 or 1"
             r_graph_1 = get_graph(rmol_1, rcoords_1, self.labels[i],
-                                  radius=self.radius, max_neighbor=self.max_neighbor)
+                                  radius=self.radius, max_neighbor=self.max_neighbor, device=self.device)
             reactant_1_graphs_list.append(r_graph_1)
 
             # PRODUCT
@@ -229,15 +229,15 @@ class Cyclo23TS(Dataset):
             pcoords = product_coords_list[i]
             assert nats == len(pcoords), f"nats don't match in idx {idx}"
             p_graph = get_graph(pmol, pcoords, self.labels[i],
-                                  radius=self.radius, max_neighbor=self.max_neighbor)
+                                  radius=self.radius, max_neighbor=self.max_neighbor, device=self.device)
             product_graphs_list.append(p_graph)
 
         assert len(reactant_0_graphs_list) == len(reactant_1_graphs_list), 'number of reactants dont match'
         assert len(reactant_1_graphs_list) == len(product_graphs_list), 'number of reactants and products dont match'
 
-        self.reactant_0_graphs = reactant_0_graphs_list
-        self.reactant_1_graphs = reactant_1_graphs_list
-        self.product_graphs = product_graphs_list
+        self.reactant_0_graphs = torch.tensor(reactant_0_graphs_list, device=self.device)
+        self.reactant_1_graphs = torch.tensor(reactant_1_graphs_list, device=self.device)
+        self.product_graphs = torch.tensor(product_graphs_list, device=self.device)
 
         r0graphsavename = self.processed_dir + 'reactant_0_graphs.pt'
         r1graphsavename = self.processed_dir + 'reactant_1_graphs.pt'
