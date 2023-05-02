@@ -54,7 +54,7 @@ class Logger(object):
 def parse_arguments():
     # sparse for now, will be expanded once things are working
     p = argparse.ArgumentParser()
-    p.add_argument('--experiment_name', type=str, help='name that will be added to the runs folder output')
+    p.add_argument('--experiment_name', type=str, default='', help='name that will be added to the runs folder output')
     p.add_argument('--num_epochs', type=str, default='2500', help='number of times to iterate through all samples')
     p.add_argument('--checkpoint', type=str, help='path the checkpoint file to continue training')
     p.add_argument('--device', type=str, help='cuda or cpu')
@@ -184,7 +184,7 @@ if __name__ == '__main__':
         print(f"creating run dir {run_dir}")
         os.mkdir(run_dir)
     # naming is kind of horrible
-    logpath = os.path.join(run_dir, f'{datetime.now().strftime("%y%m%d-%H%M%S")}-{getpass.getuser()}-{os.uname()[1]}.log')
+    logpath = os.path.join(run_dir, f'{datetime.now().strftime("%y%m%d-%H%M%S")}-{getpass.getuser()}.log')
     print('stdout to', logpath)
     sys.stdout = Logger(logpath=logpath, syspart=sys.stdout)
     sys.stderr = Logger(logpath=logpath, syspart=sys.stderr)
