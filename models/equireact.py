@@ -18,14 +18,16 @@ def get_device(tensor):
 
 class GaussianSmearing(nn.Module):
     # used to embed the edge distances
-    def __init__(self, start=0.0, stop=5.0, num_gaussians=50):
+    def __init__(self, start=0.0, stop=5.0, num_gaussians=50, device='cpu'):
         super().__init__()
-        mu = torch.linspace(start, stop, num_gaussians)
+        self.device = device
+        mu = torch.linspace(start, stop, num_gaussians).to_device(self.device)
         self.coeff = -0.5 / (mu[1] - mu[0]).item() ** 2
         self.register_buffer('mu', mu)
 
     def forward(self, dist):
         # right now mixed devices
+        dist = dist.to(self.device)
         dist = dist.view(-1, 1) - self.mu.view(1, -1)
         return torch.exp(self.coeff * torch.pow(dist, 2))
 
@@ -118,7 +120,7 @@ class EquiReact(nn.Module):
             nn.Linear(n_s, n_s)
         )
 
-        self.dist_expansion = GaussianSmearing(start=0.0, stop=max_radius, num_gaussians=distance_emb_dim)
+        self.dist_expansion = GaussianSmearing(start=0.0, stop=max_radius, num_gaussians=distance_emb_dim, device=self.device)
 
         conv_layers = []
         for i in range(n_conv_layers):
