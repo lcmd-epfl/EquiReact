@@ -9,21 +9,12 @@ from tqdm import tqdm
 import rdkit
 from rdkit import Chem
 
-def get_device(tensor):
-    int = tensor.get_device()
-    if int == 0:
-        return 'cuda'
-    elif int == -1:
-        return 'cpu'
-    else:
-        return None
-
 class Cyclo23TS(Dataset):
     def __init__(self, files_dir='data/cyclo/xyz/', csv_path='data/cyclo/full_dataset.csv',
                  radius=20, max_neighbor=24, device='cpu', processed_dir='data/cyclo/processed/', process=True):
         self.device = device
 
-        print('dataloader device', get_device(self.device))
+        print('dataloader device', print(self.device))
         self.max_neighbor = max_neighbor
         self.radius = radius
 
@@ -92,7 +83,7 @@ class Cyclo23TS(Dataset):
         p_graph = self.product_graphs[idx]
 
         label = self.labels[idx]
-        return r_0_graph.to(self.device), r_0_atomtypes, r_0_coords, r_1_graph.to(self.device), r_1_atomtypes, r_1_coords, p_graph.to(self.device), p_atomtypes, p_coords, label, idx
+        return r_0_graph, r_0_atomtypes, r_0_coords, r_1_graph, r_1_atomtypes, r_1_coords, p_graph, p_atomtypes, p_coords, label, idx
 
     def check_alt_files(self, list_files):
         files = []
