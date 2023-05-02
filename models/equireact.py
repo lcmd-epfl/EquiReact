@@ -9,15 +9,16 @@ from torch_geometric.data import Data
 
 class GaussianSmearing(nn.Module):
     # used to embed the edge distances
-    def __init__(self, start=0.0, stop=5.0, num_gaussians=50):
+    def __init__(self, start=0.0, stop=5.0, num_gaussians=50, device='cpu'):
         super().__init__()
         mu = torch.linspace(start, stop, num_gaussians)
         self.coeff = -0.5 / (mu[1] - mu[0]).item() ** 2
         self.register_buffer('mu', mu)
+        self.device = device
 
     def forward(self, dist):
         # right now mixed devices
-        dist = dist.view(-1, 1) - self.mu.view(1, -1)
+        dist = dist.view(-1, 1).to(self.device) - self.mu.view(1, -1).to(self.device)
         return torch.exp(self.coeff * torch.pow(dist, 2))
 
 
@@ -84,6 +85,9 @@ class EquiReact(nn.Module):
         self.verbose = verbose
 
         self.device = device
+
+        if self.verbose:
+            print("In equireact module, device is", self.device)
 
         irrep_seq = [
             f"{n_s}x0e",
@@ -155,8 +159,6 @@ class EquiReact(nn.Module):
 
         src, dst = radius_edges
         edge_vec = pos[dst.long()] - pos[src.long()]
-        # is this a problem
-        edge_vec.to(self.device)
         edge_length_emb = self.dist_expansion(edge_vec.norm(dim=-1))
 
         edge_sh = o3.spherical_harmonics(self.sh_irreps, edge_vec, normalize=True, normalization='component')
