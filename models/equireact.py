@@ -162,7 +162,7 @@ class EquiReact(nn.Module):
         edge_length_emb = self.dist_expansion(edge_vec.norm(dim=-1))
 
         edge_sh = o3.spherical_harmonics(self.sh_irreps, edge_vec, normalize=True, normalization='component')
-        return data.x, radius_edges, edge_length_emb, edge_sh
+        return data.x.to(self.device), radius_edges.to(self.device), edge_length_emb.to(self.device), edge_sh.to(self.device)
 
     def forward_molecule(self, data):
         x, edge_index, edge_attr, edge_sh = self.build_graph(data)
