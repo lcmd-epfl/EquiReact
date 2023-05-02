@@ -81,7 +81,7 @@ def train(run_dir,
           #dataset args
           subset=None, tr_frac = 0.75, te_frac = 0.125, process=False,
           #sampling / dataloader args
-          batch_size=8, num_workers=0, pin_memory=True,
+          batch_size=8, num_workers=0, pin_memory=False, # pin memory is not working
           #graph args
           radius=10, edge_in_score=False,
           #NN args
