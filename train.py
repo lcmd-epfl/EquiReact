@@ -132,7 +132,7 @@ def train(run_dir,
     input_edge_feats_dim = 1
     print(f"input edge feats dim {input_edge_feats_dim}")
 
-    model = EquiReact(node_fdim=input_node_feats_dim, edge_fdim=1, edge_in_score=edge_in_score, verbose=verbose)
+    model = EquiReact(node_fdim=input_node_feats_dim, edge_fdim=1, edge_in_score=edge_in_score, verbose=verbose, device=device)
 
     print('trainable params in model: ', sum(p.numel() for p in model.parameters() if p.requires_grad))
 
