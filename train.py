@@ -194,8 +194,4 @@ if __name__ == '__main__':
         wandb.run.name = args.wandb_name
         print('wandb name', args.wandb_name)
 
-<<<<<<< HEAD
-    train(run_dir, device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint, subset=args.subset)
-=======
     train(run_dir, device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint, subset=args.subset, verbose=args.verbose)
->>>>>>> 07a24db704620556f2d2c3d81b876a4a1ab8f7a9
