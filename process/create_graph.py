@@ -116,7 +116,7 @@ def atom_featurizer(mol):
     return torch.tensor(atom_features_list)
 
 
-def get_graph(mol, coords, y, radius=20, max_neighbor=24):
+def get_graph(mol, coords, y, radius=20, max_neighbor=24, device='cpu'):
     """
     Builds graph using specified coords. Only using distances.
 
@@ -164,6 +164,6 @@ def get_graph(mol, coords, y, radius=20, max_neighbor=24):
     # assign to graph
     data = Data(x=x, edge_index=edge_index, edge_attr=edge_attr, y=y, pos=coords)
 
-    return data
+    return data.to(device)
 
 
