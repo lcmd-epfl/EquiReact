@@ -176,8 +176,6 @@ class EquiReact(nn.Module):
 
     def forward_molecule(self, data):
         x, edge_index, edge_attr, edge_sh = self.build_graph(data)
-        data.batch.to(self.device)
-
         if self.verbose:
             print('dim of x', x.shape)
             print('dim of radius_graph (edges)', edge_index.shape)
@@ -227,7 +225,9 @@ class EquiReact(nn.Module):
         scores_nodes = self.score_predictor_nodes(score_inputs_nodes)
         scores_edges = self.score_predictor_edges(score_inputs_edges)
 
-        edge_batch = data.batch[src]
+        print('device is', self.device)
+        data.batch.to(self.device)
+        edge_batch = data.batch[src].to(self.device)
 
         print('data batch device', get_device(data.batch))
         print('edge batch device', get_device(edge_batch))
