@@ -18,16 +18,15 @@ def get_device(tensor):
 
 class GaussianSmearing(nn.Module):
     # used to embed the edge distances
-    def __init__(self, start=0.0, stop=5.0, num_gaussians=50, device='cpu'):
+    def __init__(self, start=0.0, stop=5.0, num_gaussians=50):
         super().__init__()
         mu = torch.linspace(start, stop, num_gaussians)
         self.coeff = -0.5 / (mu[1] - mu[0]).item() ** 2
         self.register_buffer('mu', mu)
-        self.device = device
 
     def forward(self, dist):
         # right now mixed devices
-        dist = dist.view(-1, 1).to(self.device) - self.mu.view(1, -1).to(self.device)
+        dist = dist.view(-1, 1) - self.mu.view(1, -1)
         return torch.exp(self.coeff * torch.pow(dist, 2))
 
 
@@ -195,7 +194,7 @@ class EquiReact(nn.Module):
             print('dim of x after node embedding', x.shape)
 
         edge_attr_emb = self.edge_embedding(edge_attr)
-        print('edge embedding on device', edge_attr_emb)
+        print('edge embedding on device', get_device(edge_attr_emb))
 
         if self.verbose:
             print('dim of radius_graph (edges) after embedding', edge_attr_emb.shape)
@@ -228,7 +227,7 @@ class EquiReact(nn.Module):
             print('concat x dims', x.shape)
         print('after convs x device', get_device(x))
 
-        score_inputs_edges = torch.cat([edge_attr, x[src], x[dst]], dim=-1).to(self.device)
+        score_inputs_edges = torch.cat([edge_attr, x[src], x[dst]], dim=-1)
         print('score input edges device', get_device(score_inputs_edges))
         if self.verbose:
             print('concatenated score_inputs_edges dims', score_inputs_edges.shape)
