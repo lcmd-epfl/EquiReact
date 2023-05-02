@@ -244,6 +244,8 @@ class EquiReact(nn.Module):
 
         edge_batch = data.batch[src]
 
+        print('data batch device', get_device(data.batch))
+        print('edge batch device', get_device(edge_batch))
         # want to make sure that we are adding per-atom contributions (and per-bond)?
         if self.edge_in_score:
             score = scatter_add(scores_edges, index=edge_batch, dim=0) + scatter_add(scores_nodes, index=data.batch, dim=0)
