@@ -82,7 +82,7 @@ class Cyclo23TS(Dataset):
         p_graph = self.product_graphs[idx]
 
         label = self.labels[idx]
-        return r_0_graph, r_0_atomtypes, r_0_coords, r_1_graph, r_1_atomtypes, r_1_coords, p_graph, p_atomtypes, p_coords, label, idx
+        return r_0_graph.to(self.device), r_0_atomtypes, r_0_coords, r_1_graph.to(self.device), r_1_atomtypes, r_1_coords, p_graph.to(self.device), p_atomtypes, p_coords, label.to(self.device), idx
 
     def check_alt_files(self, list_files):
         files = []
