@@ -176,10 +176,7 @@ class EquiReact(nn.Module):
 
     def forward_molecule(self, data):
         x, edge_index, edge_attr, edge_sh = self.build_graph(data)
-        print('x on device', get_device(x))
-        print('edge index on device', get_device(edge_index))
-        print('edge attr on device', get_device(edge_attr))
-        print('edge sh on device', get_device(edge_sh))
+        data.batch.to(self.device)
 
         if self.verbose:
             print('dim of x', x.shape)
@@ -188,15 +185,12 @@ class EquiReact(nn.Module):
             print('dim of edge sph harmonics', edge_sh.shape)
 
         src, dst = edge_index
-        print('src on device', get_device(src), 'dst on device', get_device(dst))
         x = self.node_embedding(x)
-        print('node embedding x on device', get_device(x))
 
         if self.verbose:
             print('dim of x after node embedding', x.shape)
 
         edge_attr_emb = self.edge_embedding(edge_attr)
-        print('edge embedding on device', get_device(edge_attr_emb))
 
         if self.verbose:
             print('dim of radius_graph (edges) after embedding', edge_attr_emb.shape)
@@ -205,20 +199,15 @@ class EquiReact(nn.Module):
             if self.verbose:
                 print('conv layer', i+1, '/', self.n_conv_layers)
             edge_attr_ = torch.cat([edge_attr_emb, x[dst, :self.n_s], x[src, :self.n_s]], dim=-1)
-            print('after conv layer device', get_device(edge_attr_))
-
             x_update = self.conv_layers[i](x, edge_index, edge_attr_, edge_sh)
-            print('after x update device', get_device(x_update))
 
             if self.verbose:
                 print('after update, new xdims', x_update.shape)
             x = F.pad(x, (0, x_update.shape[-1] - x.shape[-1]))
-            print('padded x device', get_device(x))
 
             if self.verbose:
                 print('after pad, new xdims', x.shape)
             x = x + x_update
-            print('updated x device', get_device(x))
 
             if self.verbose:
                 print('after conv, new x dims', x.shape)
@@ -227,10 +216,8 @@ class EquiReact(nn.Module):
         x = torch.cat([x[:, :self.n_s], x[:, -self.n_s:]], dim=1) if self.n_conv_layers >= 3 else x[:, :self.n_s]
         if self.verbose:
             print('concat x dims', x.shape)
-        print('after convs x device', get_device(x))
 
         score_inputs_edges = torch.cat([edge_attr, x[src], x[dst]], dim=-1)
-        print('score input edges device', get_device(score_inputs_edges))
         if self.verbose:
             print('concatenated score_inputs_edges dims', score_inputs_edges.shape)
         score_inputs_nodes = x
@@ -238,9 +225,7 @@ class EquiReact(nn.Module):
             print('score_inputs_nodes dims', score_inputs_nodes.shape)
 
         scores_nodes = self.score_predictor_nodes(score_inputs_nodes)
-        print('after mlp device', get_device(scores_nodes))
         scores_edges = self.score_predictor_edges(score_inputs_edges)
-        print('after mlp device', get_device(scores_edges))
 
         edge_batch = data.batch[src]
 
