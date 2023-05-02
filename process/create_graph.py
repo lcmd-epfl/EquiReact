@@ -146,7 +146,7 @@ def get_graph(mol, coords, y, radius=20, max_neighbor=24, device='cpu'):
             dst = list(np.argsort(distance[i, :]))[1: max_neighbor + 1]  # closest would be self loop
         if len(dst) == 0:
             dst = list(np.argsort(distance[i, :]))[1:2]  # closest would be the index i itself > self loop
-            log(
+            print(
                 f'The radius {radius} was too small for one atom such that it had no neighbors. So we connected {i} to the closest other atom {dst}')
         assert i not in dst
         src = [i] * len(dst)

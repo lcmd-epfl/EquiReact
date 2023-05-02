@@ -14,7 +14,6 @@ class Cyclo23TS(Dataset):
                  radius=20, max_neighbor=24, device='cpu', processed_dir='data/cyclo/processed/', process=True):
         self.device = device
 
-        print('dataloader device', print(self.device))
         self.max_neighbor = max_neighbor
         self.radius = radius
 

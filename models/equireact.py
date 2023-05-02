@@ -225,7 +225,9 @@ class EquiReact(nn.Module):
         scores_nodes = self.score_predictor_nodes(score_inputs_nodes)
         scores_edges = self.score_predictor_edges(score_inputs_edges)
 
+        # this is the problem
         data_batch = data.batch.to(self.device)
+        print(data_batch)
         edge_batch = data.batch[src].to(self.device)
 
         print('data batch device', get_device(data.batch))
