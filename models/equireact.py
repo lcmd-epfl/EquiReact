@@ -77,7 +77,7 @@ class EquiReact(nn.Module):
                  # maybe radius 5
                  max_radius: float = 10.0, max_neighbors: int = 20,
                  distance_emb_dim: int = 32, dropout_p: float = 0.1,
-                 edge_in_score=False, verbose=False, device='cpu', **kwargs
+                 sum_mode='node', verbose=False, device='cpu', **kwargs
                  ):
 
         super().__init__(**kwargs)
@@ -87,7 +87,7 @@ class EquiReact(nn.Module):
         self.sh_irreps = o3.Irreps.spherical_harmonics(lmax=sh_lmax)
         self.n_s, self.n_v = n_s, n_v
         self.n_conv_layers = n_conv_layers
-        self.edge_in_score = edge_in_score
+        self.sum_mode = sum_mode
 
         self.max_radius = max_radius
         self.max_neighbors = max_neighbors
@@ -95,9 +95,6 @@ class EquiReact(nn.Module):
         self.verbose = verbose
 
         self.device = device
-
-        if self.verbose:
-            print("In equireact module, device is", self.device)
 
         irrep_seq = [
             f"{n_s}x0e",
@@ -229,9 +226,14 @@ class EquiReact(nn.Module):
         edge_batch = data.batch[src].to(self.device)
 
         # want to make sure that we are adding per-atom contributions (and per-bond)?
-        if self.edge_in_score:
+        if self.sum_mode == 'both':
             score = scatter_add(scores_edges, index=edge_batch, dim=0) + scatter_add(scores_nodes, index=data.batch, dim=0)
+        elif self.sum_mode == 'node':
+            score = scatter_add(scores_nodes, index=data.batch, dim=0)
+        elif self.sum_mode == 'edge':
+            score = scatter_add(scores_edges, index=edge_batch, dim=0)
         else:
+            print('sum mode not defined. default to node')
             score = scatter_add(scores_nodes, index=data.batch, dim=0)
         return score
 
