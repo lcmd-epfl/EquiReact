@@ -21,7 +21,7 @@ class GaussianSmearing(nn.Module):
     def __init__(self, start=0.0, stop=5.0, num_gaussians=50, device='cpu'):
         super().__init__()
         self.device = device
-        mu = torch.linspace(start, stop, num_gaussians).to_device(self.device)
+        mu = torch.linspace(start, stop, num_gaussians).to(self.device)
         self.coeff = -0.5 / (mu[1] - mu[0]).item() ** 2
         self.register_buffer('mu', mu)
 
