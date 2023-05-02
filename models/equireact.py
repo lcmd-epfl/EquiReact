@@ -225,17 +225,14 @@ class EquiReact(nn.Module):
         scores_nodes = self.score_predictor_nodes(score_inputs_nodes)
         scores_edges = self.score_predictor_edges(score_inputs_edges)
 
-        # this is the problem
         data.batch = data.batch.to(self.device)
         edge_batch = data.batch[src].to(self.device)
 
-        print('data batch device', get_device(data.batch))
         # want to make sure that we are adding per-atom contributions (and per-bond)?
         if self.edge_in_score:
             score = scatter_add(scores_edges, index=edge_batch, dim=0) + scatter_add(scores_nodes, index=data.batch, dim=0)
         else:
             score = scatter_add(scores_nodes, index=data.batch, dim=0)
-        print('after score', get_device(score))
         return score
 
     def forward(self, reactants_data, product_data):
@@ -247,12 +244,15 @@ class EquiReact(nn.Module):
 
         batch_size = reactants_data[0].num_graphs
 
-        reactant_energy = torch.zeros((batch_size, 1))
+        reactant_energy = torch.zeros((batch_size, 1), device=self.device)
+        print('reactant energy device', get_device(reactant_energy))
         for i, reactant_graph in enumerate(reactants_data):
             energy = self.forward_molecule(reactant_graph)
+            print('energy device', get_device(energy))
             reactant_energy += energy
 
         product_energy = self.forward_molecule(product_data)
+        print('product energy device', get_device(product_energy))
 
         reaction_energy = product_energy - reactant_energy
 
