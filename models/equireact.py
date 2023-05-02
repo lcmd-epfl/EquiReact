@@ -229,7 +229,7 @@ class EquiReact(nn.Module):
         print('after convs x device', get_device(x))
 
         score_inputs_edges = torch.cat([edge_attr, x[src], x[dst]], dim=-1).to(self.device)
-        print('score input edges device', get_device(score_inputs_edges)
+        print('score input edges device', get_device(score_inputs_edges))
         if self.verbose:
             print('concatenated score_inputs_edges dims', score_inputs_edges.shape)
         score_inputs_nodes = x
