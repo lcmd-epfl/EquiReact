@@ -16,6 +16,7 @@ class GaussianSmearing(nn.Module):
         self.register_buffer('mu', mu)
 
     def forward(self, dist):
+        # right now mixed devices
         dist = dist.view(-1, 1) - self.mu.view(1, -1)
         return torch.exp(self.coeff * torch.pow(dist, 2))
 
@@ -65,7 +66,7 @@ class EquiReact(nn.Module):
                  # maybe radius 5
                  max_radius: float = 10.0, max_neighbors: int = 20,
                  distance_emb_dim: int = 32, dropout_p: float = 0.1,
-                 edge_in_score=False, verbose=False, **kwargs
+                 edge_in_score=False, verbose=False, device='cpu', **kwargs
                  ):
 
         super().__init__(**kwargs)
@@ -81,6 +82,8 @@ class EquiReact(nn.Module):
         self.max_neighbors = max_neighbors
 
         self.verbose = verbose
+
+        self.device = device
 
         irrep_seq = [
             f"{n_s}x0e",
@@ -152,6 +155,8 @@ class EquiReact(nn.Module):
 
         src, dst = radius_edges
         edge_vec = pos[dst.long()] - pos[src.long()]
+        # is this a problem
+        edge_vec.to(self.device)
         edge_length_emb = self.dist_expansion(edge_vec.norm(dim=-1))
 
         edge_sh = o3.spherical_harmonics(self.sh_irreps, edge_vec, normalize=True, normalization='component')
