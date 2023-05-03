@@ -69,6 +69,7 @@ def parse_arguments():
     p.add_argument('--n_v', type=int, default=16, help='dimension of extra (p/d) features')
     p.add_argument('--n_conv_layers', type=int, default=2, help='number of conv layers')
     p.add_argument('--distance_emb_dim', type=int, default=32, help='how many gaussian funcs to use')
+    p.add_argument('--dropout_p', type=float, default=0.1, help='dropout probability')
 
     args = p.parse_args()
 
@@ -90,6 +91,8 @@ def parse_arguments():
         args.n_conv_layers = int(args.n_conv_layers)
     if type(args.distance_emb_dim) == str:
         args.distance_emb_dim = int(args.distance_emb_dim)
+    if type(args.dropout_p) == str:
+        args.dropout_p = float(args.dropout_p)
     return args
 
 
@@ -102,6 +105,7 @@ def train(run_dir,
           batch_size=8, num_workers=0, pin_memory=False, # pin memory is not working
           #graph args
           radius=10, max_neighbors=20, sum_mode='node', n_s=16, n_v=16, n_conv_layers=2, distance_emb_dim=32,
+          dropout_p=0.1,
           #trainer args
           val_per_batch=True, checkpoint=False, num_epochs=1000000, eval_per_epochs=0, patience=150,
           minimum_epochs=0, models_to_save=[], clip_grad=100, log_iterations=100,
@@ -151,7 +155,7 @@ def train(run_dir,
 
     model = EquiReact(node_fdim=input_node_feats_dim, edge_fdim=1, verbose=verbose, device=device,
                       max_radius=radius, max_neighbors=max_neighbors, sum_mode=sum_mode, n_s=n_s, n_v=n_v, n_conv_layers=n_conv_layers,
-                      distance_emb_dim=distance_emb_dim)
+                      distance_emb_dim=distance_emb_dim, dropout_p=dropout_p)
 
     print('trainable params in model: ', sum(p.numel() for p in model.parameters() if p.requires_grad))
 
@@ -216,4 +220,5 @@ if __name__ == '__main__':
     print('input args', args)
     train(run_dir, device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint, subset=args.subset,
           verbose=args.verbose, radius=args.radius, max_neighbors=args.max_neighbors, sum_mode=args.sum_mode,
-          n_s=args.n_s, n_v=args.n_v, n_conv_layers=args.n_conv_layers, distance_emb_dim=args.distance_emb_dim)
+          n_s=args.n_s, n_v=args.n_v, n_conv_layers=args.n_conv_layers, distance_emb_dim=args.distance_emb_dim,
+          dropout_p=dropout_p)
