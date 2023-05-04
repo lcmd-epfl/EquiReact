@@ -73,8 +73,6 @@ class EquiReact(nn.Module):
 
     def __init__(self, node_fdim: int, edge_fdim: int, sh_lmax: int = 2,
                  n_s: int = 16, n_v: int = 16, n_conv_layers: int = 2,
-                 # n_s, n_v were 16 originally
-                 # maybe radius 5
                  max_radius: float = 10.0, max_neighbors: int = 20,
                  distance_emb_dim: int = 32, dropout_p: float = 0.1,
                  sum_mode='node', verbose=False, device='cpu', mode='energy',

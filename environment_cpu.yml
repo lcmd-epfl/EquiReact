@@ -5,6 +5,7 @@ channels:
   - conda-forge
   - defaults
 dependencies:
+  - python=3.10
   - wandb=0.15.0
   - tensorboard=2.11.0
   - pyaml=20.4.0
