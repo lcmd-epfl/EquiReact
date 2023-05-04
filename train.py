@@ -106,7 +106,7 @@ def train(run_dir,
           batch_size=8, num_workers=0, pin_memory=False, # pin memory is not working
           #graph args
           radius=10, max_neighbors=20, sum_mode='node', n_s=16, n_v=16, n_conv_layers=2, distance_emb_dim=32,
-          mode='energy', dropout_p=0.1,
+          graph_mode='energy', dropout_p=0.1,
           #trainer args
           val_per_batch=True, checkpoint=False, num_epochs=1000000, eval_per_epochs=0, patience=150,
           minimum_epochs=0, models_to_save=[], clip_grad=100, log_iterations=100,
@@ -156,7 +156,7 @@ def train(run_dir,
 
     model = EquiReact(node_fdim=input_node_feats_dim, edge_fdim=1, verbose=verbose, device=device,
                       max_radius=radius, max_neighbors=max_neighbors, sum_mode=sum_mode, n_s=n_s, n_v=n_v, n_conv_layers=n_conv_layers,
-                      distance_emb_dim=distance_emb_dim, mode=mode, dropout_p=dropout_p)
+                      distance_emb_dim=distance_emb_dim, graph_mode=graph_mode, dropout_p=dropout_p)
     print('trainable params in model: ', sum(p.numel() for p in model.parameters() if p.requires_grad))
 
     sampler = None
@@ -174,7 +174,7 @@ def train(run_dir,
                             clip_grad=clip_grad, log_iterations=log_iterations,
                             scheduler_step_per_batch = False, # CHANGED THIS
                             lr=lr, weight_decay=weight_decay,
-                            lr_scheduler=lr_scheduler, factor=factor, min_lr=min_lr, mode=mode,
+                            lr_scheduler=lr_scheduler, factor=factor, min_lr=min_lr, graph_mode=graph_mode,
                             lr_scheduler_patience=lr_scheduler_patience, lr_verbose=lr_verbose)
 
     val_metrics, _, _ = trainer.train(train_loader, val_loader)
@@ -221,4 +221,4 @@ if __name__ == '__main__':
     train(run_dir, device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint, subset=args.subset,
           verbose=args.verbose, radius=args.radius, max_neighbors=args.max_neighbors, sum_mode=args.sum_mode,
           n_s=args.n_s, n_v=args.n_v, n_conv_layers=args.n_conv_layers, distance_emb_dim=args.distance_emb_dim,
-          mode=args.mode, dropout_p=args.dropout_p)
+          graph_mode=args.graph_mode, dropout_p=args.dropout_p)

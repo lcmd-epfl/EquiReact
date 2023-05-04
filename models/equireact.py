@@ -75,7 +75,7 @@ class EquiReact(nn.Module):
                  n_s: int = 16, n_v: int = 16, n_conv_layers: int = 2,
                  max_radius: float = 10.0, max_neighbors: int = 20,
                  distance_emb_dim: int = 32, dropout_p: float = 0.1,
-                 sum_mode='node', verbose=False, device='cpu', mode='energy',
+                 sum_mode='node', verbose=False, device='cpu', graph_mode='energy',
                  **kwargs
                  ):
 
@@ -92,7 +92,7 @@ class EquiReact(nn.Module):
         self.max_neighbors = max_neighbors
 
         self.verbose = verbose
-        self.mode = mode
+        self.graph_mode = graph_mode
 
         self.device = device
 
@@ -302,7 +302,7 @@ class EquiReact(nn.Module):
         :return: energy prediction
         """
 
-        if self.mode == 'vector':
+        if self.graph_mode == 'vector':
             print("Running in vector mode, i.e. using diff vector for prediction")
             reaction_energy = self.forward_molecules(reactants_data, product_data)
         else:
