@@ -69,7 +69,7 @@ def parse_arguments():
     p.add_argument('--n_v', type=int, default=16, help='dimension of extra (p/d) features')
     p.add_argument('--n_conv_layers', type=int, default=2, help='number of conv layers')
     p.add_argument('--distance_emb_dim', type=int, default=32, help='how many gaussian funcs to use')
-    p.add_argument('--mode', type=str, default='energy', help='prediction mode, energy or vector')
+    p.add_argument('--graph_mode', type=str, default='energy', help='prediction mode, energy or vector')
     p.add_argument('--dropout_p', type=float, default=0.1, help='dropout probability')
 
     args = p.parse_args()
