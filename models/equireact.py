@@ -77,7 +77,8 @@ class EquiReact(nn.Module):
                  # maybe radius 5
                  max_radius: float = 10.0, max_neighbors: int = 20,
                  distance_emb_dim: int = 32, dropout_p: float = 0.1,
-                 sum_mode='node', verbose=False, device='cpu', **kwargs
+                 sum_mode='node', verbose=False, device='cpu', mode='energy',
+                 **kwargs
                  ):
 
         super().__init__(**kwargs)
@@ -93,6 +94,7 @@ class EquiReact(nn.Module):
         self.max_neighbors = max_neighbors
 
         self.verbose = verbose
+        self.mode = mode
 
         self.device = device
 
@@ -149,6 +151,7 @@ class EquiReact(nn.Module):
             nn.Linear(self.n_s, 1)
         )
 
+        # this can also be messed with
         self.score_predictor_nodes = nn.Sequential(
             nn.Linear(2 * self.n_s if n_conv_layers >= 3 else self.n_s, 2 * self.n_s),
             nn.ReLU(),
@@ -219,40 +222,102 @@ class EquiReact(nn.Module):
         if self.verbose:
             print('score_inputs_nodes dims', score_inputs_nodes.shape)
 
-        scores_nodes = self.score_predictor_nodes(score_inputs_nodes)
-        scores_edges = self.score_predictor_edges(score_inputs_edges)
-
-        data.batch = data.batch.to(self.device)
-        edge_batch = data.batch[src].to(self.device)
-
         # want to make sure that we are adding per-atom contributions (and per-bond)?
         if self.sum_mode == 'both':
+            data.batch = data.batch.to(self.device)
+            edge_batch = data.batch[src].to(self.device)
+            scores_nodes = self.score_predictor_nodes(score_inputs_nodes)
+            scores_edges = self.score_predictor_edges(score_inputs_edges)
             score = scatter_add(scores_edges, index=edge_batch, dim=0) + scatter_add(scores_nodes, index=data.batch, dim=0)
         elif self.sum_mode == 'node':
+            data.batch = data.batch.to(self.device)
+            scores_nodes = self.score_predictor_nodes(score_inputs_nodes)
             score = scatter_add(scores_nodes, index=data.batch, dim=0)
         elif self.sum_mode == 'edge':
+            edge_batch = data.batch[src].to(self.device)
+            scores_edges = self.score_predictor_edges(score_inputs_edges)
             score = scatter_add(scores_edges, index=edge_batch, dim=0)
         else:
             print('sum mode not defined. default to node')
-            score = scatter_add(scores_nodes, index=data.batch, dim=0)
+            data.batch = data.batch.to(self.device)
+            edge_batch = data.batch[src].to(self.device)
+            scores_nodes = self.score_predictor_nodes(score_inputs_nodes)
+            scores_edges = self.score_predictor_edges(score_inputs_edges)
+            score = scatter_add(scores_edges, index=edge_batch, dim=0) + scatter_add(scores_nodes, index=data.batch, dim=0)
+        return score
+
+    def forward_molecules(self, reactants_data, product_data):
+        x_r0, edge_index_r0, edge_attr_r0, edge_sh_r0 = self.build_graph(reactants_data[0])
+        x_r1, edge_index_r1, edge_attr_r1, edge_sh_r1 = self.build_graph(reactants_data[1])
+        x_p, edge_index_p, edge_attr_p, edge_sh_p = self.build_graph(product_data)
+
+        src_r0, dst_r0 = edge_index_r0
+        x_r0 = self.node_embedding(x_r0)
+        edge_attr_emb_r0 = self.edge_embedding(edge_attr_r0)
+
+        src_r1, dst_r1 = edge_index_r1
+        x_r1 = self.node_embedding(x_r1)
+        edge_attr_emb_r1 = self.edge_embedding(edge_attr_r1)
+
+        src_p, dst_p = edge_index_p
+        x_p = self.node_embedding(x_p)
+        edge_attr_emb_p = self.edge_embedding(edge_attr_p)
+
+        for i in range(self.n_conv_layers):
+            edge_attr_r0_ = torch.cat([edge_attr_emb_r0, x_r0[dst_r0, :self.n_s], x_r0[src_r0, :self.n_s]], dim=-1)
+            x_r0_update = self.conv_layers[i](x_r0, edge_index_r0, edge_attr_r0_, edge_sh_r0)
+            x_r0 = F.pad(x_r0, (0, x_r0_update.shape[-1] - x_r0.shape[-1]))
+            x_r0 = x_r0 + x_r0_update
+
+            edge_attr_r1_ = torch.cat([edge_attr_emb_r1, x_r1[dst_r1, :self.n_s], x_r1[src_r1, :self.n_s]], dim=-1)
+            x_r1_update = self.conv_layers[i](x_r1, edge_index_r1, edge_attr_r1_, edge_sh_r1)
+            x_r1 = F.pad(x_r1, (0, x_r1_update.shape[-1] - x_r1.shape[-1]))
+            x_r1 = x_r1 + x_r1_update
+
+            edge_attr_p_ = torch.cat([edge_attr_emb_p, x_p[dst_p, :self.n_s], x_p[src_p, :self.n_s]], dim=-1)
+            x_p_update = self.conv_layers[i](x_p, edge_index_p, edge_attr_p_, edge_sh_p)
+            x_p = F.pad(x_p, (0, x_p_update.shape[-1] - x_p.shape[-1]))
+            x_p = x_p + x_p_update
+
+        x_r0 = torch.cat([x_r0[:, :self.n_s], x_r0[:, -self.n_s:]], dim=1) if self.n_conv_layers >= 3 else x_r0[:, :self.n_s]
+        x_r1 = torch.cat([x_r1[:, :self.n_s], x_r1[:, -self.n_s:]], dim=1) if self.n_conv_layers >= 3 else x_r1[:, :self.n_s]
+        x_p = torch.cat([x_p[:, :self.n_s], x_p[:, -self.n_s:]], dim=1) if self.n_conv_layers >= 3 else x_p[:, :self.n_s]
+        if self.verbose:
+            print('x0 dims', x_r0.shape, 'x1 dims', x_r1.shape, 'p dims', x_p.shape)
+
+        x = x_p - (x_r0 + x_r1)
+        if self.verbose:
+            print('reaction x dims', x.shape)
+
+        # assuming the batching is the same for all of them ?
+        data_batch = product_data.batch.to(self.device)
+        scores_nodes = self.score_predictor_nodes(x)
+        score = scatter_add(scores_nodes, index=data_batch, dim=0)
+
         return score
 
     def forward(self, reactants_data, product_data):
         """
         :param reactants_data: reactant_0, reactant_1
         :param product_data: single product graph
+        :param mode: 'energy' or 'vector' for energy prediction per molecule or diff-vector prediction
         :return: energy prediction
         """
 
-        batch_size = reactants_data[0].num_graphs
+        if self.mode == 'vector':
+            print("Running in vector mode, i.e. using diff vector for prediction")
+            reaction_energy = self.forward_molecules(reactants_data, product_data)
+        else:
+            print("Running in energy mode, i.e. using energy diff for prediction")
+            batch_size = reactants_data[0].num_graphs
 
-        reactant_energy = torch.zeros((batch_size, 1), device=self.device)
-        for i, reactant_graph in enumerate(reactants_data):
-            energy = self.forward_molecule(reactant_graph)
-            reactant_energy += energy
+            reactant_energy = torch.zeros((batch_size, 1), device=self.device)
+            for i, reactant_graph in enumerate(reactants_data):
+                energy = self.forward_molecule(reactant_graph)
+                reactant_energy += energy
 
-        product_energy = self.forward_molecule(product_data)
+            product_energy = self.forward_molecule(product_data)
 
-        reaction_energy = product_energy - reactant_energy
+            reaction_energy = product_energy - reactant_energy
 
         return reaction_energy
