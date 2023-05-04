@@ -174,7 +174,7 @@ def train(run_dir,
                             clip_grad=clip_grad, log_iterations=log_iterations,
                             scheduler_step_per_batch = False, # CHANGED THIS
                             lr=lr, weight_decay=weight_decay,
-                            lr_scheduler=lr_scheduler, factor=factor, min_lr=min_lr, graph_mode=graph_mode,
+                            lr_scheduler=lr_scheduler, factor=factor, min_lr=min_lr, mode=mode,
                             lr_scheduler_patience=lr_scheduler_patience, lr_verbose=lr_verbose)
 
     val_metrics, _, _ = trainer.train(train_loader, val_loader)
