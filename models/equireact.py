@@ -283,15 +283,15 @@ class EquiReact(nn.Module):
         if self.verbose:
             print('x0 dims', x_r0.shape, 'x1 dims', x_r1.shape, 'p dims', x_p.shape)
 
-        x = x_p - (x_r0 + x_r1)
+        print(x_p.shape, x_r0.shape, x_r1.shape)
+        X_p = scatter_add(x_p, index=product_data.batch, dim=0)
+        X_r0 = scatter_add(x_r0, index=reactants_data[0].batch, dim=0)
+        X_r1 = scatter_add(x_r1, index=reactants_data[1].batch, dim=0)
+        X = X_p - (X_r0 + X_r1)
         if self.verbose:
-            print('reaction x dims', x.shape)
+            print('reaction X dims', X.shape)
 
-        # assuming the batching is the same for all of them ?
-        data_batch = product_data.batch.to(self.device)
-        scores_nodes = self.score_predictor_nodes(x)
-        score = scatter_add(scores_nodes, index=data_batch, dim=0)
-
+        score = self.score_predictor_nodes(X)
         return score
 
     def forward(self, reactants_data, product_data):
