@@ -116,7 +116,7 @@ def atom_featurizer(mol):
     return torch.tensor(atom_features_list)
 
 
-def get_graph(mol, coords, y, radius=20, max_neighbor=24, device='cpu'):
+def get_graph(mol, atomtypes, coords, y, radius=20, max_neighbor=24, device='cpu'):
     """
     Builds graph using specified coords. Only using distances.
 
@@ -127,18 +127,24 @@ def get_graph(mol, coords, y, radius=20, max_neighbor=24, device='cpu'):
     data.y -> Energy
     """
 
-    # get number of atoms from mol obj
-    count = count_ats(mol)
-    num_nodes = coords.shape[0]
+    atoms = []
+    for atom in mol.GetAtoms():
+        sym = atom.GetSymbol()
+        atoms.append(sym)
+    count = len(atoms)
 
+    # now compare to atomtypes and coords
+    assert np.all(atoms == atomtypes), 'atoms from xyz and smiles dont match!'
+
+    num_nodes = coords.shape[0]
     assert num_nodes == count, "rdkit atom count different from num nodes"
     assert coords.shape[1] == 3
+
     distance = spa.distance.cdist(coords, coords)
 
     src_list = []
     dst_list = []
     dist_list = []
-    mean_norm_list = []
     for i in range(num_nodes):
         dst = list(np.where(distance[i, :] < radius)[0])
         dst.remove(i)

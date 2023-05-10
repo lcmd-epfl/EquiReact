@@ -39,7 +39,7 @@ class Cyclo23TS(Dataset):
         self.labels = (labels - mean)/std
 
         indices = df['rxn_id'].to_list()
-        self.indices = torch.tensor(indices, device=self.device)
+        self.indices = indices
 
         if (not os.path.exists(os.path.join(self.processed_dir, 'reactant_0_graphs.pt')) and
                 not os.path.exists(os.path.join(self.processed_dir, 'reactant_1_graphs.pt')) and
@@ -183,6 +183,7 @@ class Cyclo23TS(Dataset):
         reactant_1_graphs_list = []
         product_graphs_list = []
         for i, idx in enumerate(tqdm(self.indices, desc="making graphs")):
+            print('idx', idx)
             # IMPORTANT : in db they are inconsistent about what is r0 and what is r1.
             # current soln is to check both. not ideal.
             rxnsmi = self.df[self.df['rxn_id'] == idx]['rxn_smiles'].item()
@@ -197,11 +198,13 @@ class Cyclo23TS(Dataset):
             rmol_0 = Chem.AddHs(rmol_0)
             nats = count_ats(rmol_0)
             rcoords_0 = reactant_0_coords_list[i]
+            ratoms_0 = reactant_0_atomtypes_list[i]
             if nats != len(rcoords_0):
                 # NATS dont match probably because r0 is r1
                 rcoords_0 = reactant_1_coords_list[i]
+                ratoms_0 = reactant_1_atomtypes_list[i]
             assert nats == len(rcoords_0), "nats don't match for either 0 or 1"
-            r_graph_0 = get_graph(rmol_0, rcoords_0, self.labels[i],
+            r_graph_0 = get_graph(rmol_0, ratoms_0, rcoords_0, self.labels[i],
                                 radius=self.radius, max_neighbor=self.max_neighbor, device=self.device)
             reactant_0_graphs_list.append(r_graph_0)
 
@@ -211,12 +214,14 @@ class Cyclo23TS(Dataset):
             # add Hs
             rmol_1 = Chem.AddHs(rmol_1)
             nats = count_ats(rmol_1)
+            ratoms_1 = reactant_1_atomtypes_list[i]
             rcoords_1 = reactant_1_coords_list[i]
             if nats != len(rcoords_1):
                 # NATS dont match probably because r0 is r1
                 rcoords_1 = reactant_0_coords_list[i]
+                ratoms_1 = reactant_0_atomtypes_list[i]
             assert nats == len(rcoords_1), "nats don't match for either 0 or 1"
-            r_graph_1 = get_graph(rmol_1, rcoords_1, self.labels[i],
+            r_graph_1 = get_graph(rmol_1, ratoms_1, rcoords_1, self.labels[i],
                                   radius=self.radius, max_neighbor=self.max_neighbor, device=self.device)
             reactant_1_graphs_list.append(r_graph_1)
 
@@ -227,8 +232,9 @@ class Cyclo23TS(Dataset):
             pmol = Chem.AddHs(pmol)
             nats = count_ats(pmol)
             pcoords = product_coords_list[i]
+            patoms = product_atomtypes_list[i]
             assert nats == len(pcoords), f"nats don't match in idx {idx}"
-            p_graph = get_graph(pmol, pcoords, self.labels[i],
+            p_graph = get_graph(pmol, patoms, pcoords, self.labels[i],
                                   radius=self.radius, max_neighbor=self.max_neighbor, device=self.device)
             product_graphs_list.append(p_graph)
 
