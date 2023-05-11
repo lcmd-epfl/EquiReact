@@ -1,6 +1,7 @@
 import torch
 import numpy as np
 import rdkit
+from rdkit import Chem
 from rdkit.Chem import AllChem, GetPeriodicTable
 from rdkit.Chem.rdPartialCharges import ComputeGasteigerCharges
 from torch_geometric.data import Data
@@ -56,6 +57,15 @@ def count_ats(mol):
     for atom in mol.GetAtoms():
         count += 1
     return count
+
+def canon_mol(mol):
+    for a in mol.GetAtoms():
+        a.SetAtomMapNum(0)
+    smi = Chem.MolToSmiles(mol)
+    smi = Chem.CanonSmiles(smi)
+    mol = Chem.MolFromSmiles(smi)
+    mol = Chem.AddHs(mol)
+    return mol
 
 def safe_index(l, e):
     """
@@ -126,18 +136,23 @@ def get_graph(mol, atomtypes, coords, y, radius=20, max_neighbor=24, device='cpu
     data.edge_attr -> distance
     data.y -> Energy
     """
+   # mol = canon_mol(mol)
 
-    atoms = []
-    for atom in mol.GetAtoms():
-        sym = atom.GetSymbol()
-        atoms.append(sym)
-    count = len(atoms)
+  #  atoms = []
+  #  for atom in mol.GetAtoms():
+   #     sym = atom.GetSymbol()
+   #     atoms.append(sym)
+  #  print('atoms in canon SMILES', atoms_canon)
+  #  print('atoms in xyz', atomtypes)
+   # count = len(atoms)
 
     # now compare to atomtypes and coords
-    assert np.all(atoms == atomtypes), 'atoms from xyz and smiles dont match!'
+   # print('atoms in smiles', atoms)
+   # print('atomtypes', atomtypes)
+   # assert np.all(atoms == atomtypes), 'atoms from xyz and smiles dont match!'
 
     num_nodes = coords.shape[0]
-    assert num_nodes == count, "rdkit atom count different from num nodes"
+   # assert num_nodes == count, "rdkit atom count different from num nodes"
     assert coords.shape[1] == 3
 
     distance = spa.distance.cdist(coords, coords)

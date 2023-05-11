@@ -1,16 +1,17 @@
 from torch.utils.data import Dataset
 import torch
 import pandas as pd
-from process.create_graph import reader, get_graph, count_ats
-import os
+from process.create_graph import reader, get_graph, count_ats, canon_mol
 from glob import glob
 from copy import deepcopy
 from tqdm import tqdm
 import rdkit
 from rdkit import Chem
+import os
+import numpy as np
 
 class Cyclo23TS(Dataset):
-    def __init__(self, files_dir='data/cyclo/xyz/', csv_path='data/cyclo/full_dataset.csv',
+    def __init__(self, files_dir='data/cyclo/xyz/', csv_path='data/cyclo/mod_dataset.csv',
                  radius=20, max_neighbor=24, device='cpu', processed_dir='data/cyclo/processed/', process=True):
         self.device = device
 
@@ -183,7 +184,6 @@ class Cyclo23TS(Dataset):
         reactant_1_graphs_list = []
         product_graphs_list = []
         for i, idx in enumerate(tqdm(self.indices, desc="making graphs")):
-            print('idx', idx)
             # IMPORTANT : in db they are inconsistent about what is r0 and what is r1.
             # current soln is to check both. not ideal.
             rxnsmi = self.df[self.df['rxn_id'] == idx]['rxn_smiles'].item()
@@ -192,48 +192,61 @@ class Cyclo23TS(Dataset):
 
             # REACTANT 0
             rmol_0 = Chem.MolFromSmiles(rsmi_0)
+            rmol_0 = canon_mol(rmol_0)
             assert rmol_0 is not None, f"rmol obj {idx} is None from smi {rsmi_0}"
-            # add Hs
-            nats = count_ats(rmol_0)
-            rmol_0 = Chem.AddHs(rmol_0)
-            nats = count_ats(rmol_0)
+            ats = []
+            for at in rmol_0.GetAtoms():
+                ats.append(at.GetSymbol())
+            nats = len(ats)
             rcoords_0 = reactant_0_coords_list[i]
             ratoms_0 = reactant_0_atomtypes_list[i]
-            if nats != len(rcoords_0):
+
+            if nats != len(rcoords_0) or np.all(ats == ratoms_0) == False:
                 # NATS dont match probably because r0 is r1
                 rcoords_0 = reactant_1_coords_list[i]
                 ratoms_0 = reactant_1_atomtypes_list[i]
+
             assert nats == len(rcoords_0), "nats don't match for either 0 or 1"
+            assert np.all(ats == ratoms_0), "atomtypes don't match for either 0 or 1"
             r_graph_0 = get_graph(rmol_0, ratoms_0, rcoords_0, self.labels[i],
                                 radius=self.radius, max_neighbor=self.max_neighbor, device=self.device)
             reactant_0_graphs_list.append(r_graph_0)
 
             # REACTANT 1
             rmol_1 = Chem.MolFromSmiles(rsmi_1)
+            rmol_1 = canon_mol(rmol_1)
             assert rmol_1 is not None, f"rmol obj {idx} is None from smi {rsmi_1}"
-            # add Hs
-            rmol_1 = Chem.AddHs(rmol_1)
-            nats = count_ats(rmol_1)
-            ratoms_1 = reactant_1_atomtypes_list[i]
+            ats = []
+            for at in rmol_1.GetAtoms():
+                ats.append(at.GetSymbol())
+            nats = len(ats)
             rcoords_1 = reactant_1_coords_list[i]
-            if nats != len(rcoords_1):
+            ratoms_1 = reactant_1_atomtypes_list[i]
+            # Need to check nats AND atomtype match
+            if nats != len(rcoords_1) or np.all(ats == ratoms_1) == False:
                 # NATS dont match probably because r0 is r1
                 rcoords_1 = reactant_0_coords_list[i]
                 ratoms_1 = reactant_0_atomtypes_list[i]
+
             assert nats == len(rcoords_1), "nats don't match for either 0 or 1"
+            assert np.all(ats == ratoms_1), "atomtypes don't match for either 0 or 1"
             r_graph_1 = get_graph(rmol_1, ratoms_1, rcoords_1, self.labels[i],
-                                  radius=self.radius, max_neighbor=self.max_neighbor, device=self.device)
+                                radius=self.radius, max_neighbor=self.max_neighbor, device=self.device)
             reactant_1_graphs_list.append(r_graph_1)
 
             # PRODUCT
             pmol = Chem.MolFromSmiles(psmi)
+            pmol = canon_mol(pmol)
             assert pmol is not None, f"pmol obj {idx} is None from smi {psmi}"
-            # add Hs
-            pmol = Chem.AddHs(pmol)
-            nats = count_ats(pmol)
+            ats = []
+            for at in pmol.GetAtoms():
+                ats.append(at.GetSymbol())
+            nats = len(ats)
             pcoords = product_coords_list[i]
             patoms = product_atomtypes_list[i]
+
             assert nats == len(pcoords), f"nats don't match in idx {idx}"
+            assert np.all(ats == patoms), "atomtypes don't match"
             p_graph = get_graph(pmol, patoms, pcoords, self.labels[i],
                                   radius=self.radius, max_neighbor=self.max_neighbor, device=self.device)
             product_graphs_list.append(p_graph)
@@ -241,9 +254,9 @@ class Cyclo23TS(Dataset):
         assert len(reactant_0_graphs_list) == len(reactant_1_graphs_list), 'number of reactants dont match'
         assert len(reactant_1_graphs_list) == len(product_graphs_list), 'number of reactants and products dont match'
 
-        self.reactant_0_graphs = torch.tensor(reactant_0_graphs_list, device=self.device)
-        self.reactant_1_graphs = torch.tensor(reactant_1_graphs_list, device=self.device)
-        self.product_graphs = torch.tensor(product_graphs_list, device=self.device)
+        self.reactant_0_graphs = reactant_0_graphs_list
+        self.reactant_1_graphs = reactant_1_graphs_list
+        self.product_graphs = product_graphs_list
 
         r0graphsavename = self.processed_dir + 'reactant_0_graphs.pt'
         r1graphsavename = self.processed_dir + 'reactant_1_graphs.pt'
