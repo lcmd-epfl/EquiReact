@@ -1,11 +1,10 @@
-from torch.utils.data import Dataset
 import torch
+from torch.utils.data import Dataset
+from torch_geometric.data import Data
 import pandas as pd
-from process.create_graph import reader, get_graph, count_ats, canon_mol
+from process.create_graph import reader, get_graph, canon_mol, atom_featurizer
 from glob import glob
-from copy import deepcopy
 from tqdm import tqdm
-import rdkit
 from rdkit import Chem
 import os
 import numpy as np
@@ -320,11 +319,10 @@ class GDB722TS(Dataset):
         return len(self.labels)
 
     def __getitem__(self, idx):
-        r_0_graph = self.reactant_0_graphs[idx]
-        r_1_graph = self.reactant_1_graphs[idx]
-        p_graph = self.product_graphs[idx]
+        r = self.reactant_graphs[idx]
+        p = [self.products_graphs[i][idx] for i in range(self.max_number_of_products)]
         label = self.labels[idx]
-        return r_0_graph, r_0_atomtypes, r_0_coords, r_1_graph, r_1_atomtypes, r_1_coords, p_graph, p_atomtypes, p_coords, label, idx
+        return label, idx, r, *p
 
 
     def process(self):
@@ -389,6 +387,10 @@ class GDB722TS(Dataset):
         products_graphs_list = [[] for ip in range(self.max_number_of_products)]
         reactant_graphs_list = []
 
+        num_node_feat = atom_featurizer(Chem.MolFromSmiles('C')).shape[-1]
+        empty = Data(x=torch.zeros((0, num_node_feat)), edge_index=torch.zeros((2,0)),
+                     edge_attr=torch.zeros(0), y=torch.tensor(0.0), pos=torch.zeros((0,3)))
+
         for i, idx in enumerate(tqdm(self.indices, desc="making graphs")):
             rxnsmi = self.df[self.df['idx'] == idx]['rxn_smiles'].item()
             rsmi, psmis = rxnsmi.split('>>')
@@ -399,7 +401,7 @@ class GDB722TS(Dataset):
             nprod = sum(p['coords_list'][i] is not None for p in products)
             assert len(psmis) == nprod, 'number of products doesnt match'
             for ip in range(self.max_number_of_products):
-                graph = make_graph(psmis[ip], products[ip]['coords_list'][i], products[ip]['atomtypes_list'][i]) if ip<nprod else None
+                graph = make_graph(psmis[ip], products[ip]['coords_list'][i], products[ip]['atomtypes_list'][i]) if ip<nprod else empty
                 products_graphs_list[ip].append(graph)
 
         for ip in range(self.max_number_of_products):
@@ -412,3 +414,5 @@ class GDB722TS(Dataset):
         torch.save(reactant_graphs_list, rgraphsavename)
         torch.save(products_graphs_list, pgraphsavename)
         print(f"Saved graphs to {rgraphsavename} and {pgraphsavename}")
+
+

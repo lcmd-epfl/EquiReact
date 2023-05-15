@@ -204,6 +204,9 @@ class EquiReact(nn.Module):
 
     def forward_molecule(self, data):
 
+        if data.x.shape[0]==0:
+            return torch.zeros((data.num_graphs, 1), device=self.device)
+
         x, (src, dst), edge_attr = self.forward_repr_mol(data)
 
         score_inputs_nodes = x
@@ -229,6 +232,10 @@ class EquiReact(nn.Module):
             score = scatter_add(scores_edges, index=edge_batch, dim=0)
         else:
             raise RuntimeError(f'sum mode {self.sum_mode} not defined')
+
+        padsize = data.num_graphs-score.shape[0]
+        if padsize>0:
+            score = F.pad(score, (0, 0, 0, padsize))
         return score
 
 
