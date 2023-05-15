@@ -4,7 +4,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from e3nn import o3
 from torch_scatter import scatter, scatter_mean, scatter_add
-from torch_cluster import radius, radius_graph
+from torch_cluster import radius_graph
 
 
 def get_device(tensor):
@@ -213,18 +213,17 @@ class EquiReact(nn.Module):
             print('score_inputs_nodes dims', score_inputs_nodes.shape)
 
         # want to make sure that we are adding per-atom contributions (and per-bond)?
+        data.batch = data.batch.to(self.device)
         if self.sum_mode == 'both':
-            data.batch = data.batch.to(self.device)
-            edge_batch = data.batch[src].to(self.device)
+            edge_batch = data.batch[src]
             scores_nodes = self.score_predictor_nodes(score_inputs_nodes)
             scores_edges = self.score_predictor_edges(score_inputs_edges)
             score = scatter_add(scores_edges, index=edge_batch, dim=0) + scatter_add(scores_nodes, index=data.batch, dim=0)
         elif self.sum_mode == 'node':
-            data.batch = data.batch.to(self.device)
             scores_nodes = self.score_predictor_nodes(score_inputs_nodes)
             score = scatter_add(scores_nodes, index=data.batch, dim=0)
         elif self.sum_mode == 'edge':
-            edge_batch = data.batch[src].to(self.device)
+            edge_batch = data.batch[src]
             scores_edges = self.score_predictor_edges(score_inputs_edges)
             score = scatter_add(scores_edges, index=edge_batch, dim=0)
         else:
@@ -239,13 +238,14 @@ class EquiReact(nn.Module):
     def forward_molecules(self, reactants_data, products_data, batch_size):
 
         nfeat = 2*self.n_s if self.n_conv_layers >= 3 else self.n_s
-        X = torch.zeros((batch_size, nfeat))
+        X = torch.zeros((batch_size, nfeat), device=self.device)
 
         stoichio = [-1]*len(reactants_data) + [+1]*len(products_data)
         for stoi, graph in zip(stoichio, reactants_data + products_data):
             if graph.x.shape[0]==0:
                 continue
-            x = scatter_add(self.forward_repr_mol(graph)[0], index=graph.batch, dim=0)
+            x = self.forward_repr_mol(graph)[0]
+            x = scatter_add(x, index=graph.batch.to(self.device), dim=0)
             x = F.pad(x, (0, 0, 0, batch_size-x.shape[0]))
             X += stoi * x
 
