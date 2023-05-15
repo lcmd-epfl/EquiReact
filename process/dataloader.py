@@ -266,8 +266,8 @@ class Cyclo23TS(Dataset):
 
 
 class GDB722TS(Dataset):
-    def __init__(self, files_dir='data/gdb7-22-ts-mini/xyz/', csv_path='data/gdb7-22-ts-mini/ccsdtf12_dz.csv',
-                 radius=20, max_neighbor=24, device='cpu', processed_dir='data/gdb7-22-ts-mini/processed/', process=True):
+    def __init__(self, files_dir='data/gdb7-22-ts/xyz/', csv_path='data/gdb7-22-ts/ccsdtf12_dz.csv',
+                 radius=20, max_neighbor=24, device='cpu', processed_dir='data/gdb7-22-ts/processed/', process=True):
         self.device = device
 
         self.max_number_of_reactants = 1
