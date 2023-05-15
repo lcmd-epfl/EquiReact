@@ -24,8 +24,8 @@ from trainer.metrics import MAE
 from trainer.trainer import Trainer
 from trainer.react_trainer import ReactTrainer
 from models.equireact import EquiReact
-from process.dataloader import Cyclo23TS
-from process.collate import custom_collate
+from process.dataloader import Cyclo23TS, GDB722TS
+from process.collate import CustomCollator
 
 import wandb
 
@@ -71,6 +71,7 @@ def parse_arguments():
     p.add_argument('--distance_emb_dim', type=int, default=32, help='how many gaussian funcs to use')
     p.add_argument('--graph_mode', type=str, default='energy', help='prediction mode, energy or vector')
     p.add_argument('--dropout_p', type=float, default=0.1, help='dropout probability')
+    p.add_argument('--dataset', type=str, default='cyclo', help='cyclo or gdb')
 
     args = p.parse_args()
 
@@ -102,6 +103,7 @@ def train(run_dir,
           device='cuda:0', seed=123, eval_on_test=True,
           #dataset args
           subset=None, tr_frac = 0.75, te_frac = 0.125, process=False,
+          dataset='cyclo',
           #sampling / dataloader args
           batch_size=8, num_workers=0, pin_memory=False, # pin memory is not working
           #graph args
@@ -115,7 +117,7 @@ def train(run_dir,
           # lr scheduler params
           lr_scheduler=ReduceLROnPlateau, factor=0.6, min_lr=8.0e-6, mode='max', lr_scheduler_patience=60,
           lr_verbose=True,
-          verbose=False
+          verbose=False,
           ):
     if seed:
         torch.manual_seed(seed)
@@ -125,7 +127,12 @@ def train(run_dir,
     device = torch.device("cuda:0" if torch.cuda.is_available() and device == 'cuda' else "cpu")
     print("Running on device", device)
 
-    data = Cyclo23TS(device=device, radius=radius, process=process)
+    if dataset=='cyclo':
+        data = Cyclo23TS(device=device, radius=radius, process=process)
+    elif dataset=='gdb':
+        data = GDB722TS(device=device, radius=radius, process=process)
+    else:
+        raise NotImplementedError(f'Cannot load the {dataset} dataset.')
     labels = data.labels
     std = data.std
 
@@ -147,12 +154,12 @@ def train(run_dir,
     test_data = Subset(data, te_indices)
 
     # train sample
-    r_0_graph, r_0_atomtypes, r_0_coords, r_1_graph, r_1_atomtypes, r_1_coords, p_graph, p_atomtypes, p_coords, label, idx = train_data[0]
-    print("r_0_graph", r_0_graph)
-    input_node_feats_dim = r_0_graph.x.shape[1]
-    print(f"input node feats dim {input_node_feats_dim}")
+    label, idx, r0graph = train_data[0][:3]
+    input_node_feats_dim = r0graph.x.shape[1]
     input_edge_feats_dim = 1
-    print(f"input edge feats dim {input_edge_feats_dim}")
+    print(f"{r0graph=}")
+    print(f"{input_node_feats_dim=}")
+    print(f"{input_edge_feats_dim=}")
 
     model = EquiReact(node_fdim=input_node_feats_dim, edge_fdim=1, verbose=verbose, device=device,
                       max_radius=radius, max_neighbors=max_neighbors, sum_mode=sum_mode, n_s=n_s, n_v=n_v, n_conv_layers=n_conv_layers,
@@ -160,6 +167,7 @@ def train(run_dir,
     print('trainable params in model: ', sum(p.numel() for p in model.parameters() if p.requires_grad))
 
     sampler = None
+    custom_collate = CustomCollator(device=device, nreact=data.max_number_of_reactants, nprod=data.max_number_of_products)
     train_loader = DataLoader(train_data, batch_size=batch_size, shuffle=True, collate_fn=custom_collate,
                                     pin_memory=pin_memory, num_workers=num_workers)
 
@@ -219,6 +227,7 @@ if __name__ == '__main__':
         print('no wandb name specified')
     print('input args', args)
     train(run_dir, device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint, subset=args.subset,
+          dataset=args.dataset, process=args.process,
           verbose=args.verbose, radius=args.radius, max_neighbors=args.max_neighbors, sum_mode=args.sum_mode,
           n_s=args.n_s, n_v=args.n_v, n_conv_layers=args.n_conv_layers, distance_emb_dim=args.distance_emb_dim,
           graph_mode=args.graph_mode, dropout_p=args.dropout_p)
