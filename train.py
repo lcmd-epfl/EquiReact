@@ -154,7 +154,7 @@ def train(run_dir,
     test_data = Subset(data, te_indices)
 
     # train sample
-    r_0_graph, r_0_atomtypes, r_0_coords, r_1_graph, r_1_atomtypes, r_1_coords, p_graph, p_atomtypes, p_coords, label, idx = train_data[0]
+    r_0_graph, r_1_graph, p_graph, label, idx = train_data[0]
     print("r_0_graph", r_0_graph)
     input_node_feats_dim = r_0_graph.x.shape[1]
     print(f"input node feats dim {input_node_feats_dim}")
