@@ -25,7 +25,7 @@ from trainer.trainer import Trainer
 from trainer.react_trainer import ReactTrainer
 from models.equireact import EquiReact
 from process.dataloader import Cyclo23TS, GDB722TS
-from process.collate import custom_collate
+from process.collate import CustomCollator
 
 import wandb
 
@@ -154,12 +154,12 @@ def train(run_dir,
     test_data = Subset(data, te_indices)
 
     # train sample
-    r_0_graph, r_1_graph, p_graph, label, idx = train_data[0]
-    print("r_0_graph", r_0_graph)
-    input_node_feats_dim = r_0_graph.x.shape[1]
-    print(f"input node feats dim {input_node_feats_dim}")
+    label, idx, r0graph = train_data[0][:3]
+    input_node_feats_dim = r0graph.x.shape[1]
     input_edge_feats_dim = 1
-    print(f"input edge feats dim {input_edge_feats_dim}")
+    print(f"{r0graph=}")
+    print(f"{input_node_feats_dim=}")
+    print(f"{input_edge_feats_dim=}")
 
     model = EquiReact(node_fdim=input_node_feats_dim, edge_fdim=1, verbose=verbose, device=device,
                       max_radius=radius, max_neighbors=max_neighbors, sum_mode=sum_mode, n_s=n_s, n_v=n_v, n_conv_layers=n_conv_layers,
@@ -167,6 +167,7 @@ def train(run_dir,
     print('trainable params in model: ', sum(p.numel() for p in model.parameters() if p.requires_grad))
 
     sampler = None
+    custom_collate = CustomCollator(device=device, nreact=data.max_number_of_reactants, nprod=data.max_number_of_products)
     train_loader = DataLoader(train_data, batch_size=batch_size, shuffle=True, collate_fn=custom_collate,
                                     pin_memory=pin_memory, num_workers=num_workers)
 

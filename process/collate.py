@@ -1,6 +1,18 @@
+import torch
 from torch_geometric.data import Batch
 
-def custom_collate(batch):
-    r_0_graph, r_1_graph, p_graph, label, idx = map(list, zip(*batch))
 
-    return Batch.from_data_list(r_0_graph), Batch.from_data_list(r_1_graph), Batch.from_data_list(p_graph), label, idx
+class CustomCollator(object):
+    def __init__(self, device='cpu', nreact=1, nprod=1):
+        self.device = device
+        self.nreact = nreact
+        self.nprod  = nprod
+
+    def __call__(self, batch):
+        data = list(map(list, zip(*batch)))
+        label, idx = data[:2]
+        graphs = data[2:]
+        rgraphs = [Batch.from_data_list(graphs[i]) for i in range(self.nreact)]
+        pgraphs = [Batch.from_data_list(graphs[i+self.nreact]) for i in range(self.nprod)]
+        targets = torch.tensor(label).float().reshape(-1, 1).to(self.device)
+        return rgraphs, pgraphs, targets, idx

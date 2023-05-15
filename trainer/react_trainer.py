@@ -13,9 +13,7 @@ class ReactTrainer(Trainer):
         print(f"In trainer, metrics is {kwargs['metrics']} and std is {kwargs['std']}")
 
     def forward_pass(self, batch):
-        #import code; code.interact(local=locals())
-        r1_graph, r2_graph, p_graph, targets = tuple(batch)
-        targets = torch.tensor(targets).float().reshape(-1, 1).to(self.device) # TODO nicer
-        y_pred = self.model([r1_graph, r2_graph], [p_graph])
+        rgraphs, pgraphs, targets = tuple(batch)
+        y_pred = self.model(rgraphs, pgraphs)
         loss = self.loss_func(y_pred, targets)
         return loss, y_pred, targets

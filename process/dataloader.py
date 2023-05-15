@@ -15,6 +15,9 @@ class Cyclo23TS(Dataset):
                  radius=20, max_neighbor=24, device='cpu', processed_dir='data/cyclo/processed/', process=True):
         self.device = device
 
+        self.max_number_of_reactants = 2
+        self.max_number_of_products = 1
+
         self.max_neighbor = max_neighbor
         self.radius = radius
         self.files_dir = files_dir + '/'
@@ -49,33 +52,32 @@ class Cyclo23TS(Dataset):
             self.reactant_0_graphs = torch.load(os.path.join(self.processed_dir, 'reactant_0_graphs.pt'))
             self.reactant_1_graphs = torch.load(os.path.join(self.processed_dir, 'reactant_1_graphs.pt'))
             self.product_graphs = torch.load(os.path.join(self.processed_dir, 'product_graphs.pt'))
-            atomtypes_coords = torch.load(os.path.join(self.processed_dir, 'atomtypes_coords.pt'))
-            self.reactant_0_coords = atomtypes_coords['reactant_0_coords']
-            self.reactant_0_atomtypes = atomtypes_coords['reactant_0_atomtypes']
-            self.reactant_1_coords = atomtypes_coords['reactant_1_coords']
-            self.reactant_1_atomtypes = atomtypes_coords['reactant_1_atomtypes']
-            self.product_coords = atomtypes_coords['product_coords']
-            self.product_atomtypes = atomtypes_coords['product_atomtypes']
+            # TODO remove
+            #atomtypes_coords = torch.load(os.path.join(self.processed_dir, 'atomtypes_coords.pt'))
+            #self.reactant_0_coords = atomtypes_coords['reactant_0_coords']
+            #self.reactant_0_atomtypes = atomtypes_coords['reactant_0_atomtypes']
+            #self.reactant_1_coords = atomtypes_coords['reactant_1_coords']
+            #self.reactant_1_atomtypes = atomtypes_coords['reactant_1_atomtypes']
+            #self.product_coords = atomtypes_coords['product_coords']
+            #self.product_atomtypes = atomtypes_coords['product_atomtypes']
             print(f"Coords and graphs successfully read from {self.processed_dir}")
 
     def __len__(self):
         return len(self.labels)
 
     def __getitem__(self, idx):
-        r_0_atomtypes = self.reactant_0_atomtypes[idx]
-        r_0_coords = self.reactant_0_coords[idx]
         r_0_graph = self.reactant_0_graphs[idx]
-
-        r_1_atomtypes = self.reactant_1_atomtypes[idx]
-        r_1_coords = self.reactant_1_coords[idx]
         r_1_graph = self.reactant_1_graphs[idx]
-
-        p_atomtypes = self.product_atomtypes[idx]
-        p_coords = self.product_coords[idx]
         p_graph = self.product_graphs[idx]
-
         label = self.labels[idx]
-        return r_0_graph, r_1_graph, p_graph, label, idx
+        # TODO remove
+        #r_0_atomtypes = self.reactant_0_atomtypes[idx]
+        #r_0_coords = self.reactant_0_coords[idx]
+        #r_1_atomtypes = self.reactant_1_atomtypes[idx]
+        #r_1_coords = self.reactant_1_coords[idx]
+        #p_atomtypes = self.product_atomtypes[idx]
+        #p_coords = self.product_coords[idx]
+        return label, idx, r_0_graph, r_1_graph, p_graph
 
     def check_alt_files(self, list_files):
         files = []
@@ -151,12 +153,13 @@ class Cyclo23TS(Dataset):
         assert len(reactant_0_atomtypes_list) == len(reactant_0_coords_list), 'not as many atomtypes as coords'
         assert len(reactant_1_atomtypes_list) == len(reactant_1_coords_list), 'not as many atomtypes as coords'
 
-        self.reactant_0_coords = reactant_0_coords_list
-        self.reactant_1_coords = reactant_1_coords_list
-        self.reactant_0_atomtypes = reactant_0_atomtypes_list
-        self.reactant_1_atomtypes = reactant_1_atomtypes_list
-        self.product_coords = product_coords_list
-        self.product_atomtypes = product_atomtypes_list
+        # TODO remove
+        #self.reactant_0_coords = reactant_0_coords_list
+        #self.reactant_1_coords = reactant_1_coords_list
+        #self.reactant_0_atomtypes = reactant_0_atomtypes_list
+        #self.reactant_1_atomtypes = reactant_1_atomtypes_list
+        #self.product_coords = product_coords_list
+        #self.product_atomtypes = product_atomtypes_list
 
         savename = self.processed_dir + 'atomtypes_coords.pt'
 
@@ -263,20 +266,18 @@ class Cyclo23TS(Dataset):
 
 
 
-
-
-
 class GDB722TS(Dataset):
     def __init__(self, files_dir='data/gdb7-22-ts-mini/xyz/', csv_path='data/gdb7-22-ts-mini/ccsdtf12_dz.csv',
-                 radius=20, max_neighbor=24, device='cpu', processed_dir='data/gdb7-22-ts-mini/processed/', process=True,
-                 max_number_of_products = 3):
+                 radius=20, max_neighbor=24, device='cpu', processed_dir='data/gdb7-22-ts-mini/processed/', process=True):
         self.device = device
+
+        self.max_number_of_reactants = 1
+        self.max_number_of_products = 3
 
         self.max_neighbor = max_neighbor
         self.radius = radius
         self.files_dir = files_dir + '/'
         self.processed_dir = processed_dir + '/'
-        self.max_number_of_products = max_number_of_products
 
         print("Loading data into memory...")
 
@@ -290,11 +291,9 @@ class GDB722TS(Dataset):
         self.labels = (labels - mean)/std
 
         self.indices = self.df['idx'].to_list()
-        print(process)
 
-        if (not os.path.exists(os.path.join(self.processed_dir, 'reactant_0_graphs.pt')) and
-                not os.path.exists(os.path.join(self.processed_dir, 'reactant_1_graphs.pt')) and
-                not os.path.exists(os.path.join(self.processed_dir, 'product_graphs.pt')) and
+        if (not os.path.exists(os.path.join(self.processed_dir, 'reactant_graphs.pt')) and
+                not os.path.exists(os.path.join(self.processed_dir, 'products_graphs.pt')) and
                 not os.path.exists(os.path.join(self.processed_dir, 'atomtypes_coords.pt'))):
             print("processed data not found, processing data...")
             self.process()
@@ -319,28 +318,14 @@ class GDB722TS(Dataset):
 
     def __len__(self):
         return len(self.labels)
-#
-#    def __getitem__(self, idx):
-#        r_0_atomtypes = self.reactant_0_atomtypes[idx]
-#        r_0_coords = self.reactant_0_coords[idx]
-#        r_0_graph = self.reactant_0_graphs[idx]
-#
-#        r_1_atomtypes = self.reactant_1_atomtypes[idx]
-#        r_1_coords = self.reactant_1_coords[idx]
-#        r_1_graph = self.reactant_1_graphs[idx]
-#
-#        p_atomtypes = self.product_atomtypes[idx]
-#        p_coords = self.product_coords[idx]
-#        p_graph = self.product_graphs[idx]
-#
-#        label = self.labels[idx]
-#        return r_0_graph, r_0_atomtypes, r_0_coords, r_1_graph, r_1_atomtypes, r_1_coords, p_graph, p_atomtypes, p_coords, label, idx
-#
-#
-    def clear_atom_map(self, mol):
-        for atom in mol.GetAtoms():
-            atom.SetAtomMapNum(0)
-        return mol
+
+    def __getitem__(self, idx):
+        r_0_graph = self.reactant_0_graphs[idx]
+        r_1_graph = self.reactant_1_graphs[idx]
+        p_graph = self.product_graphs[idx]
+        label = self.labels[idx]
+        return r_0_graph, r_0_atomtypes, r_0_coords, r_1_graph, r_1_atomtypes, r_1_coords, p_graph, p_atomtypes, p_coords, label, idx
+
 
     def process(self):
 
