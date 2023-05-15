@@ -5,8 +5,6 @@ import torch.nn.functional as F
 from e3nn import o3
 from torch_scatter import scatter, scatter_mean, scatter_add
 from torch_cluster import radius, radius_graph
-from torch_geometric.data import Data
-from functools import reduce
 
 
 def get_device(tensor):
@@ -164,6 +162,7 @@ class EquiReact(nn.Module):
 
 
     def build_graph(self, data):
+
         radius_edges = radius_graph(data.pos, self.max_radius, data.batch)
 
         src, dst = radius_edges
@@ -237,14 +236,19 @@ class EquiReact(nn.Module):
         return score
 
 
-    def forward_molecules(self, reactants_data, products_data):
+    def forward_molecules(self, reactants_data, products_data, batch_size):
 
-        x_p  = [scatter_add(self.forward_repr_mol(graph)[0], index=graph.batch, dim=0) for graph in products_data]
-        x_r  = [scatter_add(self.forward_repr_mol(graph)[0], index=graph.batch, dim=0) for graph in reactants_data]
+        nfeat = 2*self.n_s if self.n_conv_layers >= 3 else self.n_s
+        X = torch.zeros((batch_size, nfeat))
 
-        X_p = reduce(torch.Tensor.add, x_p)
-        X_r = reduce(torch.Tensor.add, x_r)
-        X = X_p - X_r
+        stoichio = [-1]*len(reactants_data) + [+1]*len(products_data)
+        for stoi, graph in zip(stoichio, reactants_data + products_data):
+            if graph.x.shape[0]==0:
+                continue
+            x = scatter_add(self.forward_repr_mol(graph)[0], index=graph.batch, dim=0)
+            x = F.pad(x, (0, 0, 0, batch_size-x.shape[0]))
+            X += stoi * x
+
         if self.verbose:
             print('reaction X dims', X.shape)
 
@@ -260,12 +264,12 @@ class EquiReact(nn.Module):
         :return: energy prediction
         """
 
+        batch_size = reactants_data[0].num_graphs
         if self.graph_mode == 'vector':
             print("Running in vector mode, i.e. using diff vector for prediction")
-            reaction_energy = self.forward_molecules(reactants_data, products_data)
+            reaction_energy = self.forward_molecules(reactants_data, products_data, batch_size)
         else:
             print("Running in energy mode, i.e. using energy diff for prediction")
-            batch_size = reactants_data[0].num_graphs
             product_energy  = torch.zeros((batch_size, 1), device=self.device)
             reactant_energy = torch.zeros((batch_size, 1), device=self.device)
             for graph in reactants_data:
