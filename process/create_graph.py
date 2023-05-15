@@ -182,9 +182,6 @@ def get_graph(mol, atomtypes, coords, y, radius=20, max_neighbor=24, device='cpu
     x = atom_featurizer(mol)
     edge_index = torch.tensor([src_list, dst_list], dtype=torch.long)
     edge_attr = torch.tensor(dist_list)
-    # assign to graph
-    data = Data(x=x, edge_index=edge_index, edge_attr=edge_attr, y=y, pos=torch.tensor(coords))
+    data = Data(x=x, edge_index=edge_index, edge_attr=edge_attr, y=y, pos=torch.tensor(coords, dtype=torch.float32))
 
     return data.to(device)
-
-

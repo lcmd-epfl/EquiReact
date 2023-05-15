@@ -164,12 +164,10 @@ class EquiReact(nn.Module):
 
 
     def build_graph(self, data):
-        pos = torch.from_numpy(np.vstack(data.pos)).to(torch.float32)   # TODO do something so it's not nparray
-
-        radius_edges = radius_graph(pos, self.max_radius, data.batch)
+        radius_edges = radius_graph(data.pos, self.max_radius, data.batch)
 
         src, dst = radius_edges
-        edge_vec = pos[dst.long()] - pos[src.long()]
+        edge_vec = data.pos[dst.long()] - data.pos[src.long()]
         edge_length_emb = self.dist_expansion(edge_vec.norm(dim=-1))
 
         edge_sh = o3.spherical_harmonics(self.sh_irreps, edge_vec, normalize=True, normalization='component')
