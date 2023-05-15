@@ -17,21 +17,13 @@ class Cyclo23TS(Dataset):
 
         self.max_neighbor = max_neighbor
         self.radius = radius
-
-        if files_dir[-1] != '/':
-            files_dir += '/'
-        if processed_dir[-1] != '/':
-            processed_dir += '/'
-
-        self.files_dir = files_dir
-        self.processed_dir = processed_dir
+        self.files_dir = files_dir + '/'
+        self.processed_dir = processed_dir + '/'
 
         print("Loading data into memory...")
 
-        df = pd.read_csv(csv_path)
-        labels = torch.tensor(df['G_act'].values)
-
-        self.df = df
+        self.df = pd.read_csv(csv_path)
+        labels = torch.tensor(self.df['G_act'].values)
 
         mean = torch.mean(labels)
         std = torch.std(labels)
@@ -39,7 +31,7 @@ class Cyclo23TS(Dataset):
         #TODO to normalise in train/test/val split
         self.labels = (labels - mean)/std
 
-        indices = df['rxn_id'].to_list()
+        indices = self.df['rxn_id'].to_list()
         self.indices = indices
 
         if (not os.path.exists(os.path.join(self.processed_dir, 'reactant_0_graphs.pt')) and
@@ -269,3 +261,169 @@ class Cyclo23TS(Dataset):
         torch.save(product_graphs_list, pgraphsavename)
         print(f"Saved graphs to {r0graphsavename}, {r1graphsavename} and {pgraphsavename}")
 
+
+
+
+
+
+class GDB722TS(Dataset):
+    def __init__(self, files_dir='data/gdb7-22-ts-mini/xyz/', csv_path='data/gdb7-22-ts-mini/ccsdtf12_dz.csv',
+                 radius=20, max_neighbor=24, device='cpu', processed_dir='data/gdb7-22-ts-mini/processed/', process=True,
+                 max_number_of_products = 3):
+        self.device = device
+
+        self.max_neighbor = max_neighbor
+        self.radius = radius
+        self.files_dir = files_dir + '/'
+        self.processed_dir = processed_dir + '/'
+        self.max_number_of_products = max_number_of_products
+
+        print("Loading data into memory...")
+
+        self.df = pd.read_csv(csv_path)
+        labels = torch.tensor(self.df['dHrxn298'].values)  ############ TODO
+
+        mean = torch.mean(labels)
+        std = torch.std(labels)
+        self.std = std
+        #TODO to normalise in train/test/val split
+        self.labels = (labels - mean)/std
+
+        self.indices = self.df['idx'].to_list()
+        print(process)
+
+        if (not os.path.exists(os.path.join(self.processed_dir, 'reactant_0_graphs.pt')) and
+                not os.path.exists(os.path.join(self.processed_dir, 'reactant_1_graphs.pt')) and
+                not os.path.exists(os.path.join(self.processed_dir, 'product_graphs.pt')) and
+                not os.path.exists(os.path.join(self.processed_dir, 'atomtypes_coords.pt'))):
+            print("processed data not found, processing data...")
+            self.process()
+
+        elif process == True:
+            print("processing by request...")
+            self.process()
+
+        else:
+            self.reactant_graphs = torch.load(os.path.join(self.processed_dir, 'reactant_graphs.pt'))
+            self.products_graphs = torch.load(os.path.join(self.processed_dir, 'products_graphs.pt'))
+            atomtypes_coords = torch.load(os.path.join(self.processed_dir, 'atomtypes_coords.pt'))
+            self.reactant_coords = atomtypes_coords['reactant_coords']
+            self.reactant_atomtypes = atomtypes_coords['reactant_atomtypes']
+            products = []
+            for ip in range(self.max_number_of_products):
+                products.append({})
+                products[-1]['coords_list']    = atomtypes_coords[f'product_{ip}_coords']
+                products[-1]['atomtypes_list'] = atomtypes_coords[f'product_{ip}_atomtypes']
+            print(f"Coords and graphs successfully read from {self.processed_dir}")
+
+
+    def __len__(self):
+        return len(self.labels)
+#
+#    def __getitem__(self, idx):
+#        r_0_atomtypes = self.reactant_0_atomtypes[idx]
+#        r_0_coords = self.reactant_0_coords[idx]
+#        r_0_graph = self.reactant_0_graphs[idx]
+#
+#        r_1_atomtypes = self.reactant_1_atomtypes[idx]
+#        r_1_coords = self.reactant_1_coords[idx]
+#        r_1_graph = self.reactant_1_graphs[idx]
+#
+#        p_atomtypes = self.product_atomtypes[idx]
+#        p_coords = self.product_coords[idx]
+#        p_graph = self.product_graphs[idx]
+#
+#        label = self.labels[idx]
+#        return r_0_graph, r_0_atomtypes, r_0_coords, r_1_graph, r_1_atomtypes, r_1_coords, p_graph, p_atomtypes, p_coords, label, idx
+#
+#
+    def clear_atom_map(self, mol):
+        for atom in mol.GetAtoms():
+            atom.SetAtomMapNum(0)
+        return mol
+
+    def process(self):
+
+        print(f"Processing xyz files and saving coords to {self.processed_dir}")
+        if not os.path.exists(self.processed_dir):
+            os.mkdir(self.processed_dir)
+            print(f"Creating processed directory {self.processed_dir}")
+
+        reactant_coords_list = []
+        reactant_atomtypes_list = []
+        products = [{'coords_list': [], 'atomtypes_list': []} for _ in range(self.max_number_of_products)]
+
+        for idx in tqdm(self.indices, desc='reading xyz files'):
+            rxn_dir = f'{self.files_dir}{idx:06}/'
+            # 1 reactant
+            r_file = f'{rxn_dir}r{idx:06}.xyz'
+            atomtypes, coords = reader(r_file)
+            reactant_atomtypes_list.append(atomtypes)
+            reactant_coords_list.append(coords)
+            # multiple products
+            p_files = sorted(glob(rxn_dir +"p*.xyz"))
+            for ip in range(self.max_number_of_products):
+                atomtypes, coords = reader(p_files[ip]) if ip < len(p_files) else (None, None)
+                products[ip]['atomtypes_list'].append(atomtypes)
+                products[ip]['coords_list'].append(coords)
+
+        for ip in range(self.max_number_of_products):
+            assert len(reactant_coords_list) == len(products[ip]['coords_list']), f'not as many products {ip} as reactants'
+            assert len(products[ip]['atomtypes_list']) == len(products[ip]['coords_list']), f'not as many atomtypes as coords for products {ip}'
+        assert len(reactant_atomtypes_list) == len(reactant_coords_list), 'not as many atomtypes as coords for reactants'
+
+        self.reactant_coords = reactant_coords_list
+        self.reactant_atomtypes = reactant_atomtypes_list
+        self.products = products
+
+        savename = self.processed_dir + 'atomtypes_coords.pt'
+        dict_to_save = {'reactant_atomtypes': reactant_atomtypes_list,
+                        'reactant_coords': reactant_coords_list,
+                        'indices': self.indices}
+        for ip in range(self.max_number_of_products):
+            dict_to_save[f'product_{ip}_coords'] = products[ip]['coords_list']
+            dict_to_save[f'product_{ip}_atomtypes'] = products[ip]['atomtypes_list']
+        torch.save(dict_to_save, savename)
+        print(f"Atomtypes coords saved to {savename}")
+
+
+        # Graphs
+        def make_graph(smi, coords, atoms):
+            mol = Chem.MolFromSmiles(smi)
+            mol = canon_mol(mol)
+            assert mol is not None, f"mol obj {idx} is None from smi {smi}"
+            ats = [at.GetSymbol() for at in mol.GetAtoms()]
+            assert len(ats) == len(atoms), f"nats don't match in idx {idx}"
+            #TODO!!!!!!!!!!!!!!!!!!!
+            #assert np.all(ats == atoms), "atomtypes don't match"
+            return get_graph(mol, atoms, coords, self.labels[i],
+                             radius=self.radius, max_neighbor=self.max_neighbor, device=self.device)
+
+        print(f"Processing csv file and saving graphs to {self.processed_dir}")
+
+        products_graphs_list = [[] for ip in range(self.max_number_of_products)]
+        reactant_graphs_list = []
+
+        for i, idx in enumerate(tqdm(self.indices, desc="making graphs")):
+            rxnsmi = self.df[self.df['idx'] == idx]['rxn_smiles'].item()
+            rsmi, psmis = rxnsmi.split('>>')
+            # reactant
+            reactant_graphs_list.append(make_graph(rsmi, reactant_coords_list[i], reactant_atomtypes_list[i]))
+            # products
+            psmis = psmis.split('.')
+            nprod = sum(p['coords_list'][i] is not None for p in products)
+            assert len(psmis) == nprod, 'number of products doesnt match'
+            for ip in range(self.max_number_of_products):
+                graph = make_graph(psmis[ip], products[ip]['coords_list'][i], products[ip]['atomtypes_list'][i]) if ip<nprod else None
+                products_graphs_list[ip].append(graph)
+
+        for ip in range(self.max_number_of_products):
+            assert len(reactant_graphs_list) == len(products_graphs_list[ip]), f'not as many products {ip} as reactants'
+
+        self.reactant_graphs = reactant_graphs_list
+        self.products_graphs = products_graphs_list
+        rgraphsavename = self.processed_dir + 'reactant_graphs.pt'
+        pgraphsavename = self.processed_dir + 'products_graphs.pt'
+        torch.save(reactant_graphs_list, rgraphsavename)
+        torch.save(products_graphs_list, pgraphsavename)
+        print(f"Saved graphs to {rgraphsavename} and {pgraphsavename}")
