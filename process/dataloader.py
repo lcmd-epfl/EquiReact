@@ -258,7 +258,7 @@ class GDB722TS(Dataset):
 
         self.df = pd.read_csv(csv_path)
         # TODO #######################################################
-        labels = torch.tensor(self.df['dHrxn298'].values)
+        labels = torch.tensor(self.df['dE0'].values)
 
         mean = torch.mean(labels)
         std = torch.std(labels)
