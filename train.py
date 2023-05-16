@@ -72,6 +72,7 @@ def parse_arguments():
     p.add_argument('--graph_mode', type=str, default='energy', help='prediction mode, energy or vector')
     p.add_argument('--dropout_p', type=float, default=0.1, help='dropout probability')
     p.add_argument('--dataset', type=str, default='cyclo', help='cyclo or gdb')
+    p.add_argument('--random_baseline', type=str, default=False, help='random baseline (no graph conv)')
 
     args = p.parse_args()
 
@@ -95,6 +96,8 @@ def parse_arguments():
         args.distance_emb_dim = int(args.distance_emb_dim)
     if type(args.dropout_p) == str:
         args.dropout_p = float(args.dropout_p)
+    if type(args.random_baseline) == str:
+        args.random_baseline = literal_eval(args.random_baseline)
     return args
 
 
@@ -118,6 +121,7 @@ def train(run_dir,
           lr_scheduler=ReduceLROnPlateau, factor=0.6, min_lr=8.0e-6, mode='max', lr_scheduler_patience=60,
           lr_verbose=True,
           verbose=False,
+          random_baseline=False,
           ):
     if seed:
         torch.manual_seed(seed)
@@ -163,7 +167,7 @@ def train(run_dir,
 
     model = EquiReact(node_fdim=input_node_feats_dim, edge_fdim=1, verbose=verbose, device=device,
                       max_radius=radius, max_neighbors=max_neighbors, sum_mode=sum_mode, n_s=n_s, n_v=n_v, n_conv_layers=n_conv_layers,
-                      distance_emb_dim=distance_emb_dim, graph_mode=graph_mode, dropout_p=dropout_p)
+                      distance_emb_dim=distance_emb_dim, graph_mode=graph_mode, dropout_p=dropout_p, random_baseline=random_baseline)
     print('trainable params in model: ', sum(p.numel() for p in model.parameters() if p.requires_grad))
 
     sampler = None
@@ -230,4 +234,4 @@ if __name__ == '__main__':
           dataset=args.dataset, process=args.process,
           verbose=args.verbose, radius=args.radius, max_neighbors=args.max_neighbors, sum_mode=args.sum_mode,
           n_s=args.n_s, n_v=args.n_v, n_conv_layers=args.n_conv_layers, distance_emb_dim=args.distance_emb_dim,
-          graph_mode=args.graph_mode, dropout_p=args.dropout_p)
+          graph_mode=args.graph_mode, dropout_p=args.dropout_p, random_baseline=args.random_baseline)

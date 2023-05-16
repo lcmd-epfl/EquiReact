@@ -76,6 +76,7 @@ class EquiReact(nn.Module):
                  max_radius: float = 10.0, max_neighbors: int = 20,
                  distance_emb_dim: int = 32, dropout_p: float = 0.1,
                  sum_mode='node', verbose=False, device='cpu', graph_mode='energy',
+                 random_baseline=False,
                  **kwargs
                  ):
 
@@ -95,6 +96,10 @@ class EquiReact(nn.Module):
         self.graph_mode = graph_mode
 
         self.device = device
+
+        self.random_baseline = random_baseline
+        if self.random_baseline:
+            self.graph_mode = 'node'
 
         irrep_seq = [
             f"{n_s}x0e",
@@ -205,24 +210,33 @@ class EquiReact(nn.Module):
             return torch.zeros((data.num_graphs, 1), device=self.device)
 
         x, (src, dst), edge_attr = self.forward_repr_mol(data)
-
-        score_inputs_nodes = x
-        score_inputs_edges = torch.cat([edge_attr, x[src], x[dst]], dim=-1)
-        if self.verbose:
-            print('concatenated score_inputs_edges dims', score_inputs_edges.shape)
-            print('score_inputs_nodes dims', score_inputs_nodes.shape)
-
-        # want to make sure that we are adding per-atom contributions (and per-bond)?
         data.batch = data.batch.to(self.device)
+
+        if self.random_baseline:
+            # reset features to crap of the same dims
+            random_x = torch.rand(x.shape)
+            score_inputs_nodes = random_x
+            scores_nodes = self.score_predictor_nodes(score_inputs_nodes)
+            score = scatter_add(scores_nodes, index=data.batch, dim=0)
+            padsize = data.num_graphs - score.shape[0]
+            if padsize > 0:
+                score = F.pad(score, (0, 0, 0, padsize))
+            return score
+
         if self.sum_mode == 'both':
+            score_inputs_nodes = x
+            score_inputs_edges = torch.cat([edge_attr, x[src], x[dst]], dim=-1)
+
             edge_batch = data.batch[src]
             scores_nodes = self.score_predictor_nodes(score_inputs_nodes)
             scores_edges = self.score_predictor_edges(score_inputs_edges)
             score = scatter_add(scores_edges, index=edge_batch, dim=0) + scatter_add(scores_nodes, index=data.batch, dim=0)
         elif self.sum_mode == 'node':
+            score_inputs_nodes = x
             scores_nodes = self.score_predictor_nodes(score_inputs_nodes)
             score = scatter_add(scores_nodes, index=data.batch, dim=0)
         elif self.sum_mode == 'edge':
+            score_inputs_edges = torch.cat([edge_attr, x[src], x[dst]], dim=-1)
             edge_batch = data.batch[src]
             scores_edges = self.score_predictor_edges(score_inputs_edges)
             score = scatter_add(scores_edges, index=edge_batch, dim=0)
@@ -266,14 +280,15 @@ class EquiReact(nn.Module):
 
         batch_size = reactants_data[0].num_graphs
         if self.graph_mode == 'vector':
-            reaction_energy = self.forward_molecules(reactants_data, product_data, batch_size)
+            reaction_energy = self.forward_molecules(reactants_data, products_data, batch_size)
         else:
-            product_energy  = torch.zeros((batch_size, 1), device=self.device)
+            product_energy = torch.zeros((batch_size, 1), device=self.device)
             reactant_energy = torch.zeros((batch_size, 1), device=self.device)
             for graph in reactants_data:
                 reactant_energy += self.forward_molecule(graph)
             for graph in products_data:
                 product_energy += self.forward_molecule(graph)
+            #TODO another MLP here for energy prediction
             reaction_energy = product_energy - reactant_energy
 
         return reaction_energy
