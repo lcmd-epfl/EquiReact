@@ -35,9 +35,9 @@ class Cyclo23TS(Dataset):
         indices = self.df['rxn_id'].to_list()
         self.indices = indices
 
-        if (not os.path.exists(os.path.join(self.processed_dir, 'reactant_0_graphs.pt')) and
-                not os.path.exists(os.path.join(self.processed_dir, 'reactant_1_graphs.pt')) and
-                not os.path.exists(os.path.join(self.processed_dir, 'product_graphs.pt')) and
+        if (not os.path.exists(os.path.join(self.processed_dir, 'reactant_0_graphs.pt')) or
+                not os.path.exists(os.path.join(self.processed_dir, 'reactant_1_graphs.pt')) or
+                not os.path.exists(os.path.join(self.processed_dir, 'product_graphs.pt')) or
                 not os.path.exists(os.path.join(self.processed_dir, 'atomtypes_coords.pt'))):
             print("processed data not found, processing data...")
             self.process()
@@ -267,14 +267,13 @@ class GDB722TS(Dataset):
 
         self.indices = self.df['idx'].to_list()
 
-        if (not os.path.exists(os.path.join(self.processed_dir, 'reactant_graphs.pt')) and
-                not os.path.exists(os.path.join(self.processed_dir, 'products_graphs.pt')) and
-                not os.path.exists(os.path.join(self.processed_dir, 'atomtypes_coords.pt'))):
-            print("processed data not found, processing data...")
+        if (not os.path.exists(os.path.join(self.processed_dir, 'reactant_graphs.pt')) or
+            not os.path.exists(os.path.join(self.processed_dir, 'products_graphs.pt'))):
+            print("Processed data not found, processing data...")
             self.process()
 
         elif process == True:
-            print("processing by request...")
+            print("Processing by request...")
             self.process()
 
         else:
@@ -288,7 +287,7 @@ class GDB722TS(Dataset):
 
     def __getitem__(self, idx):
         r = self.reactant_graphs[idx]
-        p = [self.products_graphs[i][idx] for i in range(self.max_number_of_products)]
+        p = self.products_graphs[idx]
         label = self.labels[idx]
         return label, idx, r, *p
 
@@ -300,9 +299,10 @@ class GDB722TS(Dataset):
             os.mkdir(self.processed_dir)
             print(f"Creating processed directory {self.processed_dir}")
 
-        reactant_coords_list = []
+        reactant_coords_list    = []
         reactant_atomtypes_list = []
-        products = [{'coords_list': [], 'atomtypes_list': []} for _ in range(self.max_number_of_products)]
+        products_coords_list    = []
+        products_atomtypes_list = []
 
         for idx in tqdm(self.indices, desc='reading xyz files'):
             rxn_dir = f'{self.files_dir}{idx:06}/'
@@ -313,33 +313,21 @@ class GDB722TS(Dataset):
             reactant_coords_list.append(coords)
             # multiple products
             p_files = sorted(glob(rxn_dir +"p*.xyz"))
-            for ip in range(self.max_number_of_products):
-                atomtypes, coords = reader(p_files[ip]) if ip < len(p_files) else (None, None)
-                products[ip]['atomtypes_list'].append(atomtypes)
-                products[ip]['coords_list'].append(coords)
+            products_atomtypes_list.append([])
+            products_coords_list.append([])
+            assert len(p_files) <= self.max_number_of_products, 'more products than the maximum number of products'
+            for p_file in p_files:
+                atomtypes, coords = reader(p_file)
+                products_atomtypes_list[-1].append(atomtypes)
+                products_coords_list[-1].append(coords)
 
-        for ip in range(self.max_number_of_products):
-            assert len(reactant_coords_list) == len(products[ip]['coords_list']), f'not as many products {ip} as reactants'
-            assert len(products[ip]['atomtypes_list']) == len(products[ip]['coords_list']), f'not as many atomtypes as coords for products {ip}'
+        assert len(reactant_coords_list)    == len(products_coords_list), 'not as many products as reactants'
+        assert len(products_atomtypes_list) == len(products_coords_list), 'not as many atomtypes as coords for products'
         assert len(reactant_atomtypes_list) == len(reactant_coords_list), 'not as many atomtypes as coords for reactants'
-
-        self.reactant_coords = reactant_coords_list
-        self.reactant_atomtypes = reactant_atomtypes_list
-        self.products = products
-
-        savename = self.processed_dir + 'atomtypes_coords.pt'
-        dict_to_save = {'reactant_atomtypes': reactant_atomtypes_list,
-                        'reactant_coords': reactant_coords_list,
-                        'indices': self.indices}
-        for ip in range(self.max_number_of_products):
-            dict_to_save[f'product_{ip}_coords'] = products[ip]['coords_list']
-            dict_to_save[f'product_{ip}_atomtypes'] = products[ip]['atomtypes_list']
-        torch.save(dict_to_save, savename)
-        print(f"Atomtypes coords saved to {savename}")
 
 
         # Graphs
-        def make_graph(smi, coords, atoms):
+        def make_graph(smi, atoms, coords):
             mol = Chem.MolFromSmiles(smi)
             mol = canon_mol(mol)
             assert mol is not None, f"mol obj {idx} is None from smi {smi}"
@@ -353,7 +341,7 @@ class GDB722TS(Dataset):
 
         print(f"Processing csv file and saving graphs to {self.processed_dir}")
 
-        products_graphs_list = [[] for ip in range(self.max_number_of_products)]
+        products_graphs_list = []
         reactant_graphs_list = []
 
         num_node_feat = atom_featurizer(Chem.MolFromSmiles('C')).shape[-1]
@@ -363,18 +351,19 @@ class GDB722TS(Dataset):
         for i, idx in enumerate(tqdm(self.indices, desc="making graphs")):
             rxnsmi = self.df[self.df['idx'] == idx]['rxn_smiles'].item()
             rsmi, psmis = rxnsmi.split('>>')
+
             # reactant
-            reactant_graphs_list.append(make_graph(rsmi, reactant_coords_list[i], reactant_atomtypes_list[i]))
+            reactant_graphs_list.append(make_graph(rsmi, reactant_atomtypes_list[i], reactant_coords_list[i]))
+
             # products
             psmis = psmis.split('.')
-            nprod = sum(p['coords_list'][i] is not None for p in products)
+            nprod = len(products_coords_list[i])
             assert len(psmis) == nprod, 'number of products doesnt match'
-            for ip in range(self.max_number_of_products):
-                graph = make_graph(psmis[ip], products[ip]['coords_list'][i], products[ip]['atomtypes_list'][i]) if ip<nprod else empty
-                products_graphs_list[ip].append(graph)
+            pgraphs = [make_graph(*args) for args in zip(psmis, products_atomtypes_list[i], products_coords_list[i])]
+            padding = [empty] * (self.max_number_of_products-nprod)
+            products_graphs_list.append(pgraphs + padding)
 
-        for ip in range(self.max_number_of_products):
-            assert len(reactant_graphs_list) == len(products_graphs_list[ip]), f'not as many products {ip} as reactants'
+        assert len(reactant_graphs_list) == len(products_graphs_list), 'not as many products as reactants'
 
         self.reactant_graphs = reactant_graphs_list
         self.products_graphs = products_graphs_list
@@ -383,5 +372,3 @@ class GDB722TS(Dataset):
         torch.save(reactant_graphs_list, rgraphsavename)
         torch.save(products_graphs_list, pgraphsavename)
         print(f"Saved graphs to {rgraphsavename} and {pgraphsavename}")
-
-
