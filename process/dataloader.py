@@ -184,6 +184,7 @@ class Cyclo23TS(Dataset):
         reactant_1_graphs_list = []
         product_graphs_list = []
         for i, idx in enumerate(tqdm(self.indices, desc="making graphs")):
+            print('idx', idx)
             # IMPORTANT : in db they are inconsistent about what is r0 and what is r1.
             # current soln is to check both. not ideal.
             rxnsmi = self.df[self.df['rxn_id'] == idx]['rxn_smiles'].item()

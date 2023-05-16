@@ -283,7 +283,6 @@ class EquiReact(nn.Module):
         if self.verbose:
             print('x0 dims', x_r0.shape, 'x1 dims', x_r1.shape, 'p dims', x_p.shape)
 
-        print(x_p.shape, x_r0.shape, x_r1.shape)
         X_p = scatter_add(x_p, index=product_data.batch, dim=0)
         X_r0 = scatter_add(x_r0, index=reactants_data[0].batch, dim=0)
         X_r1 = scatter_add(x_r1, index=reactants_data[1].batch, dim=0)
@@ -303,10 +302,8 @@ class EquiReact(nn.Module):
         """
 
         if self.graph_mode == 'vector':
-            print("Running in vector mode, i.e. using diff vector for prediction")
             reaction_energy = self.forward_molecules(reactants_data, product_data)
         else:
-            print("Running in energy mode, i.e. using energy diff for prediction")
             batch_size = reactants_data[0].num_graphs
 
             reactant_energy = torch.zeros((batch_size, 1), device=self.device)
