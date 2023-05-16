@@ -154,7 +154,6 @@ class Cyclo23TS(Dataset):
         reactant_1_graphs_list = []
         product_graphs_list = []
         for i, idx in enumerate(tqdm(self.indices, desc="making graphs")):
-            print('idx', idx)
             # IMPORTANT : in db they are inconsistent about what is r0 and what is r1.
             # current soln is to check both. not ideal.
             rxnsmi = self.df[self.df['rxn_id'] == idx]['rxn_smiles'].item()
@@ -330,15 +329,26 @@ class GDB722TS(Dataset):
         # Graphs
         def make_graph(smi, atoms, coords):
             mol = Chem.MolFromSmiles(smi)
-            mol = canon_mol(mol)
-            assert mol is not None, f"mol obj {idx} is None from smi {smi}"
-            ats = [at.GetSymbol() for at in mol.GetAtoms()]
-            assert len(ats) == len(atoms), f"nats don't match in idx {idx}"
-            #TODO!!!!!!!!!!!!!!!!!!!
-            #assert np.all(ats == atoms), "atomtypes don't match"
+
+            try:
+                mol = Chem.AddHs(mol)
+                assert mol is not None, f"mol obj {idx} is None from smi {smi}"
+                ats = [at.GetSymbol() for at in mol.GetAtoms()]
+                assert len(ats) == len(atoms), f"nats don't match in idx {idx}"
+                print('atoms from smi', ats)
+                print('atoms from xyz', atoms)
+                assert np.all(ats == atoms), "atomtypes don't match"
+            except:
+                print('standard smiles failed, canonicalising...')
+                mol = canon_mol(mol)
+                assert mol is not None, f"mol obj {idx} is None from smi {smi}"
+                ats = [at.GetSymbol() for at in mol.GetAtoms()]
+                assert len(ats) == len(atoms), f"nats don't match in idx {idx}"
+                print('atoms from smi', ats)
+                print('atoms from xyz', atoms)
+                assert np.all(ats == atoms), "atomtypes don't match"
             return get_graph(mol, atoms, coords, self.labels[i],
                              radius=self.radius, max_neighbor=self.max_neighbor)
-
 
         print(f"Processing csv file and saving graphs to {self.processed_dir}")
 
@@ -350,6 +360,7 @@ class GDB722TS(Dataset):
                      edge_attr=torch.zeros(0), y=torch.tensor(0.0), pos=torch.zeros((0,3)))
 
         for i, idx in enumerate(tqdm(self.indices, desc="making graphs")):
+            print('idx', idx)
             rxnsmi = self.df[self.df['idx'] == idx]['rxn_smiles'].item()
             rsmi, psmis = rxnsmi.split('>>')
 
