@@ -11,8 +11,7 @@ import numpy as np
 
 class Cyclo23TS(Dataset):
     def __init__(self, files_dir='data/cyclo/xyz/', csv_path='data/cyclo/mod_dataset.csv',
-                 radius=20, max_neighbor=24, device='cpu', processed_dir='data/cyclo/processed/', process=True):
-        self.device = device
+                 radius=20, max_neighbor=24, processed_dir='data/cyclo/processed/', process=True):
 
         self.max_number_of_reactants = 2
         self.max_number_of_products = 1
@@ -51,14 +50,6 @@ class Cyclo23TS(Dataset):
             self.reactant_0_graphs = torch.load(os.path.join(self.processed_dir, 'reactant_0_graphs.pt'))
             self.reactant_1_graphs = torch.load(os.path.join(self.processed_dir, 'reactant_1_graphs.pt'))
             self.product_graphs = torch.load(os.path.join(self.processed_dir, 'product_graphs.pt'))
-            # TODO remove
-            #atomtypes_coords = torch.load(os.path.join(self.processed_dir, 'atomtypes_coords.pt'))
-            #self.reactant_0_coords = atomtypes_coords['reactant_0_coords']
-            #self.reactant_0_atomtypes = atomtypes_coords['reactant_0_atomtypes']
-            #self.reactant_1_coords = atomtypes_coords['reactant_1_coords']
-            #self.reactant_1_atomtypes = atomtypes_coords['reactant_1_atomtypes']
-            #self.product_coords = atomtypes_coords['product_coords']
-            #self.product_atomtypes = atomtypes_coords['product_atomtypes']
             print(f"Coords and graphs successfully read from {self.processed_dir}")
 
     def __len__(self):
@@ -69,13 +60,6 @@ class Cyclo23TS(Dataset):
         r_1_graph = self.reactant_1_graphs[idx]
         p_graph = self.product_graphs[idx]
         label = self.labels[idx]
-        # TODO remove
-        #r_0_atomtypes = self.reactant_0_atomtypes[idx]
-        #r_0_coords = self.reactant_0_coords[idx]
-        #r_1_atomtypes = self.reactant_1_atomtypes[idx]
-        #r_1_coords = self.reactant_1_coords[idx]
-        #p_atomtypes = self.product_atomtypes[idx]
-        #p_coords = self.product_coords[idx]
         return label, idx, r_0_graph, r_1_graph, p_graph
 
     def check_alt_files(self, list_files):
@@ -152,14 +136,6 @@ class Cyclo23TS(Dataset):
         assert len(reactant_0_atomtypes_list) == len(reactant_0_coords_list), 'not as many atomtypes as coords'
         assert len(reactant_1_atomtypes_list) == len(reactant_1_coords_list), 'not as many atomtypes as coords'
 
-        # TODO remove
-        #self.reactant_0_coords = reactant_0_coords_list
-        #self.reactant_1_coords = reactant_1_coords_list
-        #self.reactant_0_atomtypes = reactant_0_atomtypes_list
-        #self.reactant_1_atomtypes = reactant_1_atomtypes_list
-        #self.product_coords = product_coords_list
-        #self.product_atomtypes = product_atomtypes_list
-
         savename = self.processed_dir + 'atomtypes_coords.pt'
 
         torch.save({'reactant_0_coords': reactant_0_coords_list,
@@ -203,7 +179,7 @@ class Cyclo23TS(Dataset):
             assert nats == len(rcoords_0), "nats don't match for either 0 or 1"
             assert np.all(ats == ratoms_0), "atomtypes don't match for either 0 or 1"
             r_graph_0 = get_graph(rmol_0, ratoms_0, rcoords_0, self.labels[i],
-                                radius=self.radius, max_neighbor=self.max_neighbor, device=self.device)
+                                  radius=self.radius, max_neighbor=self.max_neighbor)
             reactant_0_graphs_list.append(r_graph_0)
 
             # REACTANT 1
@@ -225,7 +201,7 @@ class Cyclo23TS(Dataset):
             assert nats == len(rcoords_1), "nats don't match for either 0 or 1"
             assert np.all(ats == ratoms_1), "atomtypes don't match for either 0 or 1"
             r_graph_1 = get_graph(rmol_1, ratoms_1, rcoords_1, self.labels[i],
-                                radius=self.radius, max_neighbor=self.max_neighbor, device=self.device)
+                                  radius=self.radius, max_neighbor=self.max_neighbor)
             reactant_1_graphs_list.append(r_graph_1)
 
             # PRODUCT
@@ -242,7 +218,7 @@ class Cyclo23TS(Dataset):
             assert nats == len(pcoords), f"nats don't match in idx {idx}"
             assert np.all(ats == patoms), "atomtypes don't match"
             p_graph = get_graph(pmol, patoms, pcoords, self.labels[i],
-                                  radius=self.radius, max_neighbor=self.max_neighbor, device=self.device)
+                                radius=self.radius, max_neighbor=self.max_neighbor)
             product_graphs_list.append(p_graph)
 
         assert len(reactant_0_graphs_list) == len(reactant_1_graphs_list), 'number of reactants dont match'
@@ -267,8 +243,7 @@ class Cyclo23TS(Dataset):
 
 class GDB722TS(Dataset):
     def __init__(self, files_dir='data/gdb7-22-ts/xyz/', csv_path='data/gdb7-22-ts/ccsdtf12_dz.csv',
-                 radius=20, max_neighbor=24, device='cpu', processed_dir='data/gdb7-22-ts/processed/', process=True):
-        self.device = device
+                 radius=20, max_neighbor=24, processed_dir='data/gdb7-22-ts/processed/', process=True):
 
         self.max_number_of_reactants = 1
         self.max_number_of_products = 3
@@ -281,7 +256,8 @@ class GDB722TS(Dataset):
         print("Loading data into memory...")
 
         self.df = pd.read_csv(csv_path)
-        labels = torch.tensor(self.df['dHrxn298'].values)  ############ TODO
+        # TODO #######################################################
+        labels = torch.tensor(self.df['dHrxn298'].values)
 
         mean = torch.mean(labels)
         std = torch.std(labels)
@@ -304,14 +280,6 @@ class GDB722TS(Dataset):
         else:
             self.reactant_graphs = torch.load(os.path.join(self.processed_dir, 'reactant_graphs.pt'))
             self.products_graphs = torch.load(os.path.join(self.processed_dir, 'products_graphs.pt'))
-            atomtypes_coords = torch.load(os.path.join(self.processed_dir, 'atomtypes_coords.pt'))
-            self.reactant_coords = atomtypes_coords['reactant_coords']
-            self.reactant_atomtypes = atomtypes_coords['reactant_atomtypes']
-            products = []
-            for ip in range(self.max_number_of_products):
-                products.append({})
-                products[-1]['coords_list']    = atomtypes_coords[f'product_{ip}_coords']
-                products[-1]['atomtypes_list'] = atomtypes_coords[f'product_{ip}_atomtypes']
             print(f"Coords and graphs successfully read from {self.processed_dir}")
 
 
@@ -380,7 +348,8 @@ class GDB722TS(Dataset):
             #TODO!!!!!!!!!!!!!!!!!!!
             #assert np.all(ats == atoms), "atomtypes don't match"
             return get_graph(mol, atoms, coords, self.labels[i],
-                             radius=self.radius, max_neighbor=self.max_neighbor, device=self.device)
+                             radius=self.radius, max_neighbor=self.max_neighbor)
+
 
         print(f"Processing csv file and saving graphs to {self.processed_dir}")
 

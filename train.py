@@ -128,9 +128,9 @@ def train(run_dir,
     print("Running on device", device)
 
     if dataset=='cyclo':
-        data = Cyclo23TS(device=device, radius=radius, process=process)
+        data = Cyclo23TS(radius=radius, process=process)
     elif dataset=='gdb':
-        data = GDB722TS(device=device, radius=radius, process=process)
+        data = GDB722TS(radius=radius, process=process)
     else:
         raise NotImplementedError(f'Cannot load the {dataset} dataset.')
     labels = data.labels
