@@ -100,6 +100,7 @@ class EquiReact(nn.Module):
         self.random_baseline = random_baseline
         if self.random_baseline:
             self.graph_mode = 'node'
+            print("random baseline is on, i.e. features will be replaced with random numbers")
 
         irrep_seq = [
             f"{n_s}x0e",
@@ -214,14 +215,7 @@ class EquiReact(nn.Module):
 
         if self.random_baseline:
             # reset features to crap of the same dims
-            random_x = torch.rand(x.shape)
-            score_inputs_nodes = random_x
-            scores_nodes = self.score_predictor_nodes(score_inputs_nodes)
-            score = scatter_add(scores_nodes, index=data.batch, dim=0)
-            padsize = data.num_graphs - score.shape[0]
-            if padsize > 0:
-                score = F.pad(score, (0, 0, 0, padsize))
-            return score
+            x = torch.rand(x.shape)
 
         if self.sum_mode == 'both':
             score_inputs_nodes = x
