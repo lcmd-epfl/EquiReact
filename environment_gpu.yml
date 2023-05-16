@@ -1,5 +1,6 @@
 name: nequireact
 channels:
+  - pyg
   - pytorch
   - conda-forge
   - defaults

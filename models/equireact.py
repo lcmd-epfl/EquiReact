@@ -4,8 +4,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 from e3nn import o3
 from torch_scatter import scatter, scatter_mean, scatter_add
-from torch_cluster import radius, radius_graph
-from torch_geometric.data import Data
+from torch_cluster import radius_graph
+
 
 def get_device(tensor):
     int = tensor.get_device()
@@ -160,19 +160,21 @@ class EquiReact(nn.Module):
             nn.Linear(self.n_s, 1)
         )
 
-    def build_graph(self, data):
-        pos = torch.from_numpy(np.vstack(data.pos)).to(torch.float32)   # TODO do something so it's not nparray
 
-        radius_edges = radius_graph(pos, self.max_radius, data.batch)
+    def build_graph(self, data):
+
+        radius_edges = radius_graph(data.pos, self.max_radius, data.batch)
 
         src, dst = radius_edges
-        edge_vec = pos[dst.long()] - pos[src.long()]
+        edge_vec = data.pos[dst.long()] - data.pos[src.long()]
         edge_length_emb = self.dist_expansion(edge_vec.norm(dim=-1))
 
         edge_sh = o3.spherical_harmonics(self.sh_irreps, edge_vec, normalize=True, normalization='component')
         return data.x.to(self.device), radius_edges.to(self.device), edge_length_emb.to(self.device), edge_sh.to(self.device)
 
-    def forward_molecule(self, data):
+
+    def forward_repr_mol(self, data):
+
         x, edge_index, edge_attr, edge_sh = self.build_graph(data)
         if self.verbose:
             print('dim of x', x.shape)
@@ -180,139 +182,98 @@ class EquiReact(nn.Module):
             print('dim of edge length emb (gaussians)', edge_attr.shape)
             print('dim of edge sph harmonics', edge_sh.shape)
 
-        src, dst = edge_index
         x = self.node_embedding(x)
-
+        edge_attr_emb = self.edge_embedding(edge_attr)
         if self.verbose:
             print('dim of x after node embedding', x.shape)
-
-        edge_attr_emb = self.edge_embedding(edge_attr)
-
-        if self.verbose:
             print('dim of radius_graph (edges) after embedding', edge_attr_emb.shape)
 
+        src, dst = edge_index
         for i in range(self.n_conv_layers):
-            if self.verbose:
-                print('conv layer', i+1, '/', self.n_conv_layers)
             edge_attr_ = torch.cat([edge_attr_emb, x[dst, :self.n_s], x[src, :self.n_s]], dim=-1)
             x_update = self.conv_layers[i](x, edge_index, edge_attr_, edge_sh)
-
-            if self.verbose:
-                print('after update, new xdims', x_update.shape)
             x = F.pad(x, (0, x_update.shape[-1] - x.shape[-1]))
-
-            if self.verbose:
-                print('after pad, new xdims', x.shape)
             x = x + x_update
 
-            if self.verbose:
-                print('after conv, new x dims', x.shape)
-
-        # remove extra stuff from x
         x = torch.cat([x[:, :self.n_s], x[:, -self.n_s:]], dim=1) if self.n_conv_layers >= 3 else x[:, :self.n_s]
-        if self.verbose:
-            print('concat x dims', x.shape)
+        return x, edge_index, edge_attr
 
+
+    def forward_molecule(self, data):
+
+        if data.x.shape[0]==0:
+            return torch.zeros((data.num_graphs, 1), device=self.device)
+
+        x, (src, dst), edge_attr = self.forward_repr_mol(data)
+
+        score_inputs_nodes = x
         score_inputs_edges = torch.cat([edge_attr, x[src], x[dst]], dim=-1)
         if self.verbose:
             print('concatenated score_inputs_edges dims', score_inputs_edges.shape)
-        score_inputs_nodes = x
-        if self.verbose:
             print('score_inputs_nodes dims', score_inputs_nodes.shape)
 
         # want to make sure that we are adding per-atom contributions (and per-bond)?
+        data.batch = data.batch.to(self.device)
         if self.sum_mode == 'both':
-            data.batch = data.batch.to(self.device)
-            edge_batch = data.batch[src].to(self.device)
+            edge_batch = data.batch[src]
             scores_nodes = self.score_predictor_nodes(score_inputs_nodes)
             scores_edges = self.score_predictor_edges(score_inputs_edges)
             score = scatter_add(scores_edges, index=edge_batch, dim=0) + scatter_add(scores_nodes, index=data.batch, dim=0)
         elif self.sum_mode == 'node':
-            data.batch = data.batch.to(self.device)
             scores_nodes = self.score_predictor_nodes(score_inputs_nodes)
             score = scatter_add(scores_nodes, index=data.batch, dim=0)
         elif self.sum_mode == 'edge':
-            edge_batch = data.batch[src].to(self.device)
+            edge_batch = data.batch[src]
             scores_edges = self.score_predictor_edges(score_inputs_edges)
             score = scatter_add(scores_edges, index=edge_batch, dim=0)
         else:
-            print('sum mode not defined. default to node')
-            data.batch = data.batch.to(self.device)
-            edge_batch = data.batch[src].to(self.device)
-            scores_nodes = self.score_predictor_nodes(score_inputs_nodes)
-            scores_edges = self.score_predictor_edges(score_inputs_edges)
-            score = scatter_add(scores_edges, index=edge_batch, dim=0) + scatter_add(scores_nodes, index=data.batch, dim=0)
+            raise RuntimeError(f'sum mode {self.sum_mode} not defined')
+
+        padsize = data.num_graphs-score.shape[0]
+        if padsize>0:
+            score = F.pad(score, (0, 0, 0, padsize))
         return score
 
-    def forward_molecules(self, reactants_data, product_data):
-        x_r0, edge_index_r0, edge_attr_r0, edge_sh_r0 = self.build_graph(reactants_data[0])
-        x_r1, edge_index_r1, edge_attr_r1, edge_sh_r1 = self.build_graph(reactants_data[1])
-        x_p, edge_index_p, edge_attr_p, edge_sh_p = self.build_graph(product_data)
 
-        src_r0, dst_r0 = edge_index_r0
-        x_r0 = self.node_embedding(x_r0)
-        edge_attr_emb_r0 = self.edge_embedding(edge_attr_r0)
+    def forward_molecules(self, reactants_data, products_data, batch_size):
 
-        src_r1, dst_r1 = edge_index_r1
-        x_r1 = self.node_embedding(x_r1)
-        edge_attr_emb_r1 = self.edge_embedding(edge_attr_r1)
+        nfeat = 2*self.n_s if self.n_conv_layers >= 3 else self.n_s
+        X = torch.zeros((batch_size, nfeat), device=self.device)
 
-        src_p, dst_p = edge_index_p
-        x_p = self.node_embedding(x_p)
-        edge_attr_emb_p = self.edge_embedding(edge_attr_p)
+        stoichio = [-1]*len(reactants_data) + [+1]*len(products_data)
+        for stoi, graph in zip(stoichio, reactants_data + products_data):
+            if graph.x.shape[0]==0:
+                continue
+            x = self.forward_repr_mol(graph)[0]
+            x = scatter_add(x, index=graph.batch.to(self.device), dim=0)
+            x = F.pad(x, (0, 0, 0, batch_size-x.shape[0]))
+            X += stoi * x
 
-        for i in range(self.n_conv_layers):
-            edge_attr_r0_ = torch.cat([edge_attr_emb_r0, x_r0[dst_r0, :self.n_s], x_r0[src_r0, :self.n_s]], dim=-1)
-            x_r0_update = self.conv_layers[i](x_r0, edge_index_r0, edge_attr_r0_, edge_sh_r0)
-            x_r0 = F.pad(x_r0, (0, x_r0_update.shape[-1] - x_r0.shape[-1]))
-            x_r0 = x_r0 + x_r0_update
-
-            edge_attr_r1_ = torch.cat([edge_attr_emb_r1, x_r1[dst_r1, :self.n_s], x_r1[src_r1, :self.n_s]], dim=-1)
-            x_r1_update = self.conv_layers[i](x_r1, edge_index_r1, edge_attr_r1_, edge_sh_r1)
-            x_r1 = F.pad(x_r1, (0, x_r1_update.shape[-1] - x_r1.shape[-1]))
-            x_r1 = x_r1 + x_r1_update
-
-            edge_attr_p_ = torch.cat([edge_attr_emb_p, x_p[dst_p, :self.n_s], x_p[src_p, :self.n_s]], dim=-1)
-            x_p_update = self.conv_layers[i](x_p, edge_index_p, edge_attr_p_, edge_sh_p)
-            x_p = F.pad(x_p, (0, x_p_update.shape[-1] - x_p.shape[-1]))
-            x_p = x_p + x_p_update
-
-        x_r0 = torch.cat([x_r0[:, :self.n_s], x_r0[:, -self.n_s:]], dim=1) if self.n_conv_layers >= 3 else x_r0[:, :self.n_s]
-        x_r1 = torch.cat([x_r1[:, :self.n_s], x_r1[:, -self.n_s:]], dim=1) if self.n_conv_layers >= 3 else x_r1[:, :self.n_s]
-        x_p = torch.cat([x_p[:, :self.n_s], x_p[:, -self.n_s:]], dim=1) if self.n_conv_layers >= 3 else x_p[:, :self.n_s]
-        if self.verbose:
-            print('x0 dims', x_r0.shape, 'x1 dims', x_r1.shape, 'p dims', x_p.shape)
-
-        X_p = scatter_add(x_p, index=product_data.batch, dim=0)
-        X_r0 = scatter_add(x_r0, index=reactants_data[0].batch, dim=0)
-        X_r1 = scatter_add(x_r1, index=reactants_data[1].batch, dim=0)
-        X = X_p - (X_r0 + X_r1)
         if self.verbose:
             print('reaction X dims', X.shape)
 
         score = self.score_predictor_nodes(X)
         return score
 
-    def forward(self, reactants_data, product_data):
+
+    def forward(self, reactants_data, products_data):
         """
-        :param reactants_data: reactant_0, reactant_1
-        :param product_data: single product graph
+        :param reactants_data: reactant graphs
+        :param products_data: product graphs
         :param mode: 'energy' or 'vector' for energy prediction per molecule or diff-vector prediction
         :return: energy prediction
         """
 
+        batch_size = reactants_data[0].num_graphs
         if self.graph_mode == 'vector':
-            reaction_energy = self.forward_molecules(reactants_data, product_data)
+            reaction_energy = self.forward_molecules(reactants_data, product_data, batch_size)
         else:
-            batch_size = reactants_data[0].num_graphs
-
+            product_energy  = torch.zeros((batch_size, 1), device=self.device)
             reactant_energy = torch.zeros((batch_size, 1), device=self.device)
-            for i, reactant_graph in enumerate(reactants_data):
-                energy = self.forward_molecule(reactant_graph)
-                reactant_energy += energy
-
-            product_energy = self.forward_molecule(product_data)
-
+            for graph in reactants_data:
+                reactant_energy += self.forward_molecule(graph)
+            for graph in products_data:
+                product_energy += self.forward_molecule(graph)
             reaction_energy = product_energy - reactant_energy
 
         return reaction_energy
