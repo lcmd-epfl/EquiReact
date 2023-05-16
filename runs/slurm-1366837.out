@@ -1,0 +1,23 @@
+/usr/share/lmod/lmod/init/sh: line 20: /usr/share/lmod/lmod/libexec//clearMT_cmd: No such file or directory
+True
+W&B disabled.
+Traceback (most recent call last):
+  File "/home/vangerwe/NequiReact/train.py", line 221, in <module>
+    train(run_dir, device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint, subset=args.subset,
+  File "/home/vangerwe/NequiReact/train.py", line 180, in train
+    val_metrics, _, _ = trainer.train(train_loader, val_loader)
+  File "/home/vangerwe/NequiReact/trainer/trainer.py", line 132, in train
+    self.predict(train_loader, optim=self.optim)
+  File "/home/vangerwe/NequiReact/trainer/trainer.py", line 204, in predict
+    loss, predictions, targets = self.process_batch(batch, optim)
+  File "/home/vangerwe/NequiReact/trainer/trainer.py", line 182, in process_batch
+    loss, predictions, targets = self.forward_pass(batch)
+  File "/home/vangerwe/NequiReact/trainer/react_trainer.py", line 22, in forward_pass
+    y_pred = self.model([r1_graph, r2_graph], p_graph)
+  File "/home/vangerwe/miniconda3/envs/nequireact/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1130, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/home/vangerwe/NequiReact/models/equireact.py", line 307, in forward
+    reaction_energy = self.forward_molecules(reactants_data, product_data)
+  File "/home/vangerwe/NequiReact/models/equireact.py", line 286, in forward_molecules
+    x = x_p - (x_r0 + x_r1)
+RuntimeError: The size of tensor a (194) must match the size of tensor b (169) at non-singleton dimension 0

@@ -1,0 +1,29 @@
+/usr/share/lmod/lmod/init/sh: line 20: /usr/share/lmod/lmod/libexec//clearMT_cmd: No such file or directory
+True
+W&B enabled.
+wandb: Currently logged in as: puckvg (equireact). Use `wandb login --relogin` to force relogin
+wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: wandb version 0.15.0 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: Tracking run with wandb version 0.14.2
+wandb: Run data is saved locally in /home/vangerwe/NequiReact/wandb/run-20230502_183052-kj6tpov8
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run leafy-dew-25
+wandb:  View project at https://wandb.ai/equireact/nequireact
+wandb:  View run at https://wandb.ai/equireact/nequireact/runs/kj6tpov8
+wandb: Waiting for W&B process to finish... (success).
+wandb: 
+wandb: Run history:
+wandb:      epoch ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+wandb: train loss ▂▃▁█▅▃▂▄▂▅▂▁▁▃▂▁▂▂▁▁▁▂▁▂▂▁▁▁▂▃▂▂▁▁▁▁▁▂▂▂
+wandb:   val_loss █▇▄▃▃▃▄▃▂▃▂▂▃▂▂▁▂▂▁▂▂▁▂▂▁▁▂▂▁▁▁▂▁▁▁▂▁▁▁▁
+wandb:  val_score █▇▄▃▃▃▄▃▂▃▂▂▃▂▂▁▂▂▁▂▂▂▂▂▁▁▃▂▂▂▁▂▁▁▂▂▂▁▁▂
+wandb: 
+wandb: Run summary:
+wandb:      epoch 440
+wandb: train loss 0.28436
+wandb:   val_loss 0.56757
+wandb:  val_score 5.70587
+wandb: 
+wandb: 🚀 View run leafy-dew-25 at: https://wandb.ai/equireact/nequireact/runs/kj6tpov8
+wandb: Synced 6 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20230502_183052-kj6tpov8/logs

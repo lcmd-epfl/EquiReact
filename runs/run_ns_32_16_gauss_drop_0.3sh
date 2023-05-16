@@ -1,0 +1,10 @@
+wandb enabled
+#wandb disabled
+python train.py --device='cuda' \
+                --experiment_name='ns-32-emb-16-dropout-0.3' \
+                --num_epochs=1000 \
+                --wandb_name='ns-32-emb_dim-16-dropout0.3' \
+		--n_s=32 \
+		--distance_emb_dim=16 \
+		--radius=5. \
+		--dropout=0.3

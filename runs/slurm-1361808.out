@@ -1,0 +1,29 @@
+/usr/share/lmod/lmod/init/sh: line 20: /usr/share/lmod/lmod/libexec//clearMT_cmd: No such file or directory
+True
+W&B enabled.
+wandb: Currently logged in as: puckvg (equireact). Use `wandb login --relogin` to force relogin
+wandb: wandb version 0.15.0 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: Tracking run with wandb version 0.14.2
+wandb: Run data is saved locally in /home/vangerwe/NequiReact/wandb/run-20230502_183358-khwdqjfo
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run misty-bush-29
+wandb:  View project at https://wandb.ai/equireact/nequireact
+wandb:  View run at https://wandb.ai/equireact/nequireact/runs/khwdqjfo
+wandb: Waiting for W&B process to finish... (success).
+wandb: 
+wandb: Run history:
+wandb:      epoch ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+wandb: train loss ▇▃▅▇█▇▅▃▂▁▄▃▂▃▂▂▁▃▂▂▂▃▂▂▂▂▂▃▂▂▂▁▁▁▂▁▂▃▂▂
+wandb:   val_loss █▆▅▄▃▃▂▂▂▂▂▁▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:  val_score █▆▅▅▄▃▂▂▂▂▂▂▂▁▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb: 
+wandb: Run summary:
+wandb:      epoch 500
+wandb: train loss 0.33092
+wandb:   val_loss 0.36541
+wandb:  val_score 4.34299
+wandb: 
+wandb: 🚀 View run misty-bush-29 at: https://wandb.ai/equireact/nequireact/runs/khwdqjfo
+wandb: Synced 6 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20230502_183358-khwdqjfo/logs
