@@ -92,63 +92,51 @@ class Cyclo23TS(Dataset):
             print(f"Creating processed directory {self.processed_dir}")
 
         # two reactants
-        reactant_0_coords_list = []
-        reactant_0_atomtypes_list = []
+        r0coords = []
+        r0atoms = []
 
-        reactant_1_coords_list = []
-        reactant_1_atomtypes_list = []
+        r1coords = []
+        r1atoms = []
 
         # one product
-        product_coords_list = []
-        product_atomtypes_list = []
+        pcoords = []
+        patoms = []
 
-        for idx in tqdm(self.indices, desc='reading xyz files'):
-            rxn_dir = self.files_dir + str(idx) + '/'
-
-            # multiple reactants
+        def get_r_files(rxn_dir):
             reactants = sorted(glob(rxn_dir +"r*.xyz"), reverse=True)
             reactants = self.check_alt_files(reactants)
             assert len(reactants) == 2, f"Inconsistent length of {len(reactants)}"
-
             # inverse labelling in their xyz files
             r0_label = reactants[0].split("/")[-1][:2]
             assert r0_label == 'r1', 'not r0'
             r1_label = reactants[1].split("/")[-1][:2]
             assert r1_label == 'r0', 'not r1'
+            return reactants
 
+
+        for idx in tqdm(self.indices, desc='reading xyz files'):
+            rxn_dir = self.files_dir + str(idx) + '/'
+
+            reactants = get_r_files(rxn_dir)
             r_0_atomtypes, r_0_coords = reader(reactants[0])
+            r0atoms.append(r_0_atomtypes)
+            r0coords.append(r_0_coords)
             r_1_atomtypes, r_1_coords = reader(reactants[1])
-
-            reactant_0_atomtypes_list.append(r_0_atomtypes)
-            reactant_0_coords_list.append(r_0_coords)
-            reactant_1_atomtypes_list.append(r_1_atomtypes)
-            reactant_1_coords_list.append(r_1_coords)
+            r1atoms.append(r_1_atomtypes)
+            r1coords.append(r_1_coords)
 
             p_file = glob(rxn_dir + "p*.xyz")[0]
             p_atomtypes, p_coords = reader(p_file)
-            product_atomtypes_list.append(p_atomtypes)
-            product_coords_list.append(p_coords)
+            patoms.append(p_atomtypes)
+            pcoords.append(p_coords)
 
-        assert len(product_coords_list) == len(reactant_0_coords_list), 'not as many reactants 0 as products'
-        assert len(reactant_1_coords_list) == len(reactant_0_coords_list), 'not as many reactants 0 as reactants 1'
+        assert len(pcoords)  == len(r0coords), 'not as many reactants 0 as products'
+        assert len(r1coords) == len(r0coords), 'not as many reactants 0 as reactants 1'
+        assert len(patoms)   == len(pcoords),  'not as many atomtypes as coords'
+        assert len(r0atoms)  == len(r0coords), 'not as many atomtypes as coords'
+        assert len(r1atoms)  == len(r1coords), 'not as many atomtypes as coords'
 
-        assert len(product_atomtypes_list) == len(product_coords_list), 'not as many atomtypes as coords'
-        assert len(reactant_0_atomtypes_list) == len(reactant_0_coords_list), 'not as many atomtypes as coords'
-        assert len(reactant_1_atomtypes_list) == len(reactant_1_coords_list), 'not as many atomtypes as coords'
 
-        savename = self.processed_dir + 'atomtypes_coords.pt'
-
-        torch.save({'reactant_0_coords': reactant_0_coords_list,
-                    'reactant_1_coords': reactant_1_coords_list,
-                    'product_coords': product_coords_list,
-                    'reactant_0_atomtypes': reactant_0_atomtypes_list,
-                    'reactant_1_atomtypes': reactant_1_atomtypes_list,
-                    'product_atomtypes': product_atomtypes_list,
-                    'indices': self.indices},
-                   savename)
-        print(f"Atomtypes coords saved to {savename}")
-
-        # now graphs
         print(f"Processing csv file and saving graphs to {self.processed_dir}")
         reactant_0_graphs_list = []
         reactant_1_graphs_list = []
@@ -159,66 +147,16 @@ class Cyclo23TS(Dataset):
             rxnsmi = self.df[self.df['rxn_id'] == idx]['rxn_smiles'].item()
             rsmis, psmi = rxnsmi.split('>>')
             rsmi_0, rsmi_1 = rsmis.split('.')
+            try:
+                r_graph_0 = self.make_graph(rsmi_0, r0atoms[i], r0coords[i], self.labels[i], idx)
+                r_graph_1 = self.make_graph(rsmi_1, r1atoms[i], r1coords[i], self.labels[i], idx)
+            except:  # switch r0/r1 in atoms & coordinates
+                r_graph_0 = self.make_graph(rsmi_0, r1atoms[i], r1coords[i], self.labels[i], idx)
+                r_graph_1 = self.make_graph(rsmi_1, r0atoms[i], r0coords[i], self.labels[i], idx)
+            p_graph = self.make_graph(psmi, patoms[i], pcoords[i], self.labels[i], idx) #, check=False)
 
-            # REACTANT 0
-            rmol_0 = Chem.MolFromSmiles(rsmi_0)
-            rmol_0 = canon_mol(rmol_0)
-            assert rmol_0 is not None, f"rmol obj {idx} is None from smi {rsmi_0}"
-            ats = []
-            for at in rmol_0.GetAtoms():
-                ats.append(at.GetSymbol())
-            nats = len(ats)
-            rcoords_0 = reactant_0_coords_list[i]
-            ratoms_0 = reactant_0_atomtypes_list[i]
-
-            if nats != len(rcoords_0) or np.all(ats == ratoms_0) == False:
-                # NATS dont match probably because r0 is r1
-                rcoords_0 = reactant_1_coords_list[i]
-                ratoms_0 = reactant_1_atomtypes_list[i]
-
-            assert nats == len(rcoords_0), "nats don't match for either 0 or 1"
-            assert np.all(ats == ratoms_0), "atomtypes don't match for either 0 or 1"
-            r_graph_0 = get_graph(rmol_0, ratoms_0, rcoords_0, self.labels[i],
-                                  radius=self.radius, max_neighbor=self.max_neighbor)
             reactant_0_graphs_list.append(r_graph_0)
-
-            # REACTANT 1
-            rmol_1 = Chem.MolFromSmiles(rsmi_1)
-            rmol_1 = canon_mol(rmol_1)
-            assert rmol_1 is not None, f"rmol obj {idx} is None from smi {rsmi_1}"
-            ats = []
-            for at in rmol_1.GetAtoms():
-                ats.append(at.GetSymbol())
-            nats = len(ats)
-            rcoords_1 = reactant_1_coords_list[i]
-            ratoms_1 = reactant_1_atomtypes_list[i]
-            # Need to check nats AND atomtype match
-            if nats != len(rcoords_1) or np.all(ats == ratoms_1) == False:
-                # NATS dont match probably because r0 is r1
-                rcoords_1 = reactant_0_coords_list[i]
-                ratoms_1 = reactant_0_atomtypes_list[i]
-
-            assert nats == len(rcoords_1), "nats don't match for either 0 or 1"
-            assert np.all(ats == ratoms_1), "atomtypes don't match for either 0 or 1"
-            r_graph_1 = get_graph(rmol_1, ratoms_1, rcoords_1, self.labels[i],
-                                  radius=self.radius, max_neighbor=self.max_neighbor)
             reactant_1_graphs_list.append(r_graph_1)
-
-            # PRODUCT
-            pmol = Chem.MolFromSmiles(psmi)
-            pmol = canon_mol(pmol)
-            assert pmol is not None, f"pmol obj {idx} is None from smi {psmi}"
-            ats = []
-            for at in pmol.GetAtoms():
-                ats.append(at.GetSymbol())
-            nats = len(ats)
-            pcoords = product_coords_list[i]
-            patoms = product_atomtypes_list[i]
-
-            assert nats == len(pcoords), f"nats don't match in idx {idx}"
-            assert np.all(ats == patoms), "atomtypes don't match"
-            p_graph = get_graph(pmol, patoms, pcoords, self.labels[i],
-                                radius=self.radius, max_neighbor=self.max_neighbor)
             product_graphs_list.append(p_graph)
 
         assert len(reactant_0_graphs_list) == len(reactant_1_graphs_list), 'number of reactants dont match'
@@ -230,14 +168,24 @@ class Cyclo23TS(Dataset):
 
         r0graphsavename = self.processed_dir + 'reactant_0_graphs.pt'
         r1graphsavename = self.processed_dir + 'reactant_1_graphs.pt'
-
-        pgraphsavename = self.processed_dir + 'product_graphs.pt'
+        pgraphsavename  = self.processed_dir + 'product_graphs.pt'
 
         torch.save(reactant_0_graphs_list, r0graphsavename)
         torch.save(reactant_1_graphs_list, r1graphsavename)
-
         torch.save(product_graphs_list, pgraphsavename)
         print(f"Saved graphs to {r0graphsavename}, {r1graphsavename} and {pgraphsavename}")
+
+
+    def make_graph(self, smi, atoms, coords, label, idx, check=True):
+        mol = Chem.MolFromSmiles(smi)
+        mol = canon_mol(mol)
+        assert mol is not None, f"mol obj {idx} is None from smi {smi}"
+        ats = [at.GetSymbol() for at in mol.GetAtoms()]
+        assert len(ats) == len(atoms), f"nats don't match in idx {idx}"
+        if check:
+            assert np.all(ats == atoms), "atomtypes don't match" ##############################################################
+        return get_graph(mol, atoms, coords, label, radius=self.radius, max_neighbor=self.max_neighbor)
+    ###################################################################3
 
 
 
@@ -256,7 +204,6 @@ class GDB722TS(Dataset):
         print("Loading data into memory...")
 
         self.df = pd.read_csv(csv_path)
-        # TODO #######################################################
         labels = torch.tensor(self.df['dE0'].values)
 
         mean = torch.mean(labels)
