@@ -63,7 +63,9 @@ class Cyclo23TS(Dataset):
         r_1_graph = self.reactant_1_graphs[idx]
         p_graph = self.product_graphs[idx]
         label = self.labels[idx]
-        return label, idx, r_0_graph, r_1_graph, p_graph
+        r_0_map = self.reactant_0_maps[idx]
+        r_1_map = self.reactant_1_maps[idx]
+        return label, idx, r_0_graph, r_1_graph, p_graph, np.hstack((r_0_map, r_1_map))
 
     def check_alt_files(self, list_files):
         files = []

@@ -76,7 +76,7 @@ class EquiReact(nn.Module):
                  max_radius: float = 10.0, max_neighbors: int = 20,
                  distance_emb_dim: int = 32, dropout_p: float = 0.1,
                  sum_mode='node', verbose=False, device='cpu', graph_mode='energy',
-                 random_baseline=False, combine_mode='diff',
+                 random_baseline=False, combine_mode='diff', atom_mapping=False,
                  **kwargs
                  ):
 
@@ -270,7 +270,7 @@ class EquiReact(nn.Module):
         return score
 
 
-    def forward(self, reactants_data, products_data):
+    def forward(self, reactants_data, products_data, mapping=None):
         """
         :param reactants_data: reactant graphs
         :param products_data: product graphs
@@ -288,6 +288,7 @@ class EquiReact(nn.Module):
                 reactant_energy += self.forward_molecule(graph)
             for graph in products_data:
                 product_energy += self.forward_molecule(graph)
+
             if self.combine_mode == 'diff' or self.combine_mode == 'difference':
                 reaction_energy = product_energy - reactant_energy
             elif self.combine_mode == 'sum':

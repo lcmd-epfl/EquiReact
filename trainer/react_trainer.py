@@ -13,7 +13,7 @@ class ReactTrainer(Trainer):
         print(f"In trainer, metrics is {kwargs['metrics']} and std is {kwargs['std']}")
 
     def forward_pass(self, batch):
-        rgraphs, pgraphs, targets = tuple(batch)
-        y_pred = self.model(rgraphs, pgraphs)
+        rgraphs, pgraphs, targets, mapping = tuple(batch)
+        y_pred = self.model(rgraphs, pgraphs, mapping=mapping)
         loss = self.loss_func(y_pred, targets)
         return loss, y_pred, targets
