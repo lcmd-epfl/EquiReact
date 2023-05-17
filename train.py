@@ -123,6 +123,7 @@ def train(run_dir,
           lr_verbose=True,
           verbose=False,
           random_baseline=False,
+          combine_mode='diff'
           ):
     if seed:
         torch.manual_seed(seed)
@@ -168,7 +169,8 @@ def train(run_dir,
 
     model = EquiReact(node_fdim=input_node_feats_dim, edge_fdim=1, verbose=verbose, device=device,
                       max_radius=radius, max_neighbors=max_neighbors, sum_mode=sum_mode, n_s=n_s, n_v=n_v, n_conv_layers=n_conv_layers,
-                      distance_emb_dim=distance_emb_dim, graph_mode=graph_mode, dropout_p=dropout_p, random_baseline=random_baseline)
+                      distance_emb_dim=distance_emb_dim, graph_mode=graph_mode, dropout_p=dropout_p, random_baseline=random_baseline,
+                      combine_mode=combine_mode)
     print('trainable params in model: ', sum(p.numel() for p in model.parameters() if p.requires_grad))
 
     sampler = None
