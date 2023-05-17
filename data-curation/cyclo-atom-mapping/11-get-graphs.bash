@@ -3,6 +3,7 @@
 N=5973
 SDIR=../../data/cyclo/xyz
 DDIR=graphs
+mkdir -p ${DDIR}
 
 for i in `seq 0 ${N}`; do
 

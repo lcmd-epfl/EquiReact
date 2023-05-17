@@ -3,6 +3,7 @@
 N=5973
 DDIR=graphs
 PDIR=matches
+mkdir -p ${PDIR}
 
 for i in `seq 0 ${N}`; do
   if [ ! -f ${DDIR}/TS_${i}.dat ]; then
