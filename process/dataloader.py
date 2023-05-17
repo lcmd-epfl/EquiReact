@@ -37,8 +37,7 @@ class Cyclo23TS(Dataset):
 
         if (not os.path.exists(os.path.join(self.processed_dir, 'reactant_0_graphs.pt')) or
                 not os.path.exists(os.path.join(self.processed_dir, 'reactant_1_graphs.pt')) or
-                not os.path.exists(os.path.join(self.processed_dir, 'product_graphs.pt')) or
-                not os.path.exists(os.path.join(self.processed_dir, 'atomtypes_coords.pt'))):
+                not os.path.exists(os.path.join(self.processed_dir, 'product_graphs.pt'))):
             print("processed data not found, processing data...")
             self.process()
 

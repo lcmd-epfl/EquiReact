@@ -167,6 +167,11 @@ class EquiReact(nn.Module):
             nn.Linear(self.n_s, 1)
         )
 
+        self.energy_mlp = nn.Sequential(
+            nn.ReLU(),
+            nn.Linear(2, 1)
+        )
+
 
     def build_graph(self, data):
 
@@ -283,14 +288,15 @@ class EquiReact(nn.Module):
                 reactant_energy += self.forward_molecule(graph)
             for graph in products_data:
                 product_energy += self.forward_molecule(graph)
-            #TODO another MLP here for energy prediction
-
             if self.combine_mode == 'diff' or self.combine_mode == 'difference':
                 reaction_energy = product_energy - reactant_energy
             elif self.combine_mode == 'sum':
                 reaction_energy = product_energy + reactant_energy
             elif self.combine_mode == 'mean' or self.combine_mode == 'average' or self.combine_mode == 'avg':
                 reaction_energy = (product_energy + reactant_energy) / 2
+            elif self.combine_mode == 'mlp':
+                energies = torch.cat((reactant_energy, product_energy), 1)
+                reaction_energy = self.energy_mlp(energies)
             else:
                 raise ValueError('combine mode is not valid')
 
