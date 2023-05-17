@@ -11,6 +11,7 @@ import numpy as np
 
 class Cyclo23TS(Dataset):
     def __init__(self, files_dir='data/cyclo/xyz/', csv_path='data/cyclo/mod_dataset.csv',
+                 map_dir='data/cyclo/matches/',
                  radius=20, max_neighbor=24, processed_dir='data/cyclo/processed/', process=True):
 
         self.max_number_of_reactants = 2
@@ -20,6 +21,7 @@ class Cyclo23TS(Dataset):
         self.radius = radius
         self.files_dir = files_dir + '/'
         self.processed_dir = processed_dir + '/'
+        self.map_dir = map_dir
 
         print("Loading data into memory...")
 
@@ -48,6 +50,8 @@ class Cyclo23TS(Dataset):
         else:
             self.reactant_0_graphs = torch.load(os.path.join(self.processed_dir, 'reactant_0_graphs.pt'))
             self.reactant_1_graphs = torch.load(os.path.join(self.processed_dir, 'reactant_1_graphs.pt'))
+            self.reactant_0_maps = torch.load(self.processed_dir + 'reactant_0_maps.pt')
+            self.reactant_1_maps = torch.load(self.processed_dir + 'reactant_1_maps.pt')
             self.product_graphs = torch.load(os.path.join(self.processed_dir, 'product_graphs.pt'))
             print(f"Coords and graphs successfully read from {self.processed_dir}")
 
@@ -93,53 +97,56 @@ class Cyclo23TS(Dataset):
         # two reactants
         r0coords = []
         r0atoms = []
+        r0maps = []
 
         r1coords = []
         r1atoms = []
+        r1maps = []
 
         # one product
         pcoords = []
         patoms = []
 
-        def get_r_files(rxn_dir):
-            reactants = sorted(glob(rxn_dir +"r*.xyz"), reverse=True)
-            reactants = self.check_alt_files(reactants)
-            assert len(reactants) == 2, f"Inconsistent length of {len(reactants)}"
-            # inverse labelling in their xyz files
-            r0_label = reactants[0].split("/")[-1][:2]
-            assert r0_label == 'r1', 'not r0'
-            r1_label = reactants[1].split("/")[-1][:2]
-            assert r1_label == 'r0', 'not r1'
-            return reactants
-
-
         for idx in tqdm(self.indices, desc='reading xyz files'):
             rxn_dir = self.files_dir + str(idx) + '/'
 
-            reactants = get_r_files(rxn_dir)
+            reactants = self.get_r_files(rxn_dir)
+
             r_0_atomtypes, r_0_coords = reader(reactants[0])
             r0atoms.append(r_0_atomtypes)
             r0coords.append(r_0_coords)
+            r0maps.append(np.loadtxt(f'{self.map_dir}/R1_{idx}.dat', dtype=int))
+            assert len(r0atoms[-1])==len(r0maps[-1]), 'different number of atoms in the xyz and mapping files'
+
             r_1_atomtypes, r_1_coords = reader(reactants[1])
             r1atoms.append(r_1_atomtypes)
             r1coords.append(r_1_coords)
+            r1maps.append(np.loadtxt(f'{self.map_dir}/R0_{idx}.dat', dtype=int))
+            assert len(r1atoms[-1])==len(r1maps[-1]), 'different number of atoms in the xyz and mapping files'
 
             p_file = glob(rxn_dir + "p*.xyz")[0]
             p_atomtypes, p_coords = reader(p_file)
             patoms.append(p_atomtypes)
             pcoords.append(p_coords)
 
+            assert np.all(np.hstack((r0atoms[-1], r1atoms[-1])) == patoms[-1][np.hstack((r0maps[-1], r1maps[-1]))]), 'mapping leads to atom-type mismatch'
+
+
         assert len(pcoords)  == len(r0coords), 'not as many reactants 0 as products'
         assert len(r1coords) == len(r0coords), 'not as many reactants 0 as reactants 1'
         assert len(patoms)   == len(pcoords),  'not as many atomtypes as coords'
         assert len(r0atoms)  == len(r0coords), 'not as many atomtypes as coords'
         assert len(r1atoms)  == len(r1coords), 'not as many atomtypes as coords'
+        assert len(r0atoms)  == len(r0maps),   'not as many atomtypes as mappings'
+        assert len(r1atoms)  == len(r1maps),   'not as many atomtypes as mappings'
 
 
         print(f"Processing csv file and saving graphs to {self.processed_dir}")
-        reactant_0_graphs_list = []
-        reactant_1_graphs_list = []
-        product_graphs_list = []
+        self.reactant_0_graphs = []
+        self.reactant_1_graphs = []
+        self.reactant_0_maps = []
+        self.reactant_1_maps = []
+        self.product_graphs = []
         for i, idx in enumerate(tqdm(self.indices, desc="making graphs")):
             # IMPORTANT : in db they are inconsistent about what is r0 and what is r1.
             # current soln is to check both. not ideal.
@@ -149,29 +156,35 @@ class Cyclo23TS(Dataset):
             try:
                 r_graph_0 = self.make_graph(rsmi_0, r0atoms[i], r0coords[i], self.labels[i], idx)
                 r_graph_1 = self.make_graph(rsmi_1, r1atoms[i], r1coords[i], self.labels[i], idx)
-            except:  # switch r0/r1 in atoms & coordinates
+                r_map_0 = r0maps[i]
+                r_map_1 = r1maps[i]
+            except:  # switch r0/r1 in atoms & coordinates & maps
                 r_graph_0 = self.make_graph(rsmi_0, r1atoms[i], r1coords[i], self.labels[i], idx)
                 r_graph_1 = self.make_graph(rsmi_1, r0atoms[i], r0coords[i], self.labels[i], idx)
-            p_graph = self.make_graph(psmi, patoms[i], pcoords[i], self.labels[i], idx) #, check=False)
+                r_map_0 = r1maps[i]
+                r_map_1 = r0maps[i]
+            p_graph = self.make_graph(psmi, patoms[i], pcoords[i], self.labels[i], idx)
 
-            reactant_0_graphs_list.append(r_graph_0)
-            reactant_1_graphs_list.append(r_graph_1)
-            product_graphs_list.append(p_graph)
+            self.reactant_0_graphs.append(r_graph_0)
+            self.reactant_1_graphs.append(r_graph_1)
+            self.reactant_0_maps.append(r_map_0)
+            self.reactant_1_maps.append(r_map_1)
+            self.product_graphs.append(p_graph)
 
-        assert len(reactant_0_graphs_list) == len(reactant_1_graphs_list), 'number of reactants dont match'
-        assert len(reactant_1_graphs_list) == len(product_graphs_list), 'number of reactants and products dont match'
-
-        self.reactant_0_graphs = reactant_0_graphs_list
-        self.reactant_1_graphs = reactant_1_graphs_list
-        self.product_graphs = product_graphs_list
+        assert len(self.reactant_0_graphs) == len(self.reactant_1_graphs), 'number of reactants dont match'
+        assert len(self.reactant_1_graphs) == len(self.product_graphs), 'number of reactants and products dont match'
 
         r0graphsavename = self.processed_dir + 'reactant_0_graphs.pt'
         r1graphsavename = self.processed_dir + 'reactant_1_graphs.pt'
+        r0mapsavename = self.processed_dir + 'reactant_0_maps.pt'
+        r1mapsavename = self.processed_dir + 'reactant_1_maps.pt'
         pgraphsavename  = self.processed_dir + 'product_graphs.pt'
 
-        torch.save(reactant_0_graphs_list, r0graphsavename)
-        torch.save(reactant_1_graphs_list, r1graphsavename)
-        torch.save(product_graphs_list, pgraphsavename)
+        torch.save(self.reactant_0_graphs, r0graphsavename)
+        torch.save(self.reactant_1_graphs, r1graphsavename)
+        torch.save(self.reactant_0_maps, r0mapsavename)
+        torch.save(self.reactant_1_maps, r1mapsavename)
+        torch.save(self.product_graphs, pgraphsavename)
         print(f"Saved graphs to {r0graphsavename}, {r1graphsavename} and {pgraphsavename}")
 
 
@@ -184,7 +197,18 @@ class Cyclo23TS(Dataset):
         if check:
             assert np.all(ats == atoms), "atomtypes don't match" ##############################################################
         return get_graph(mol, atoms, coords, label, radius=self.radius, max_neighbor=self.max_neighbor)
-    ###################################################################3
+
+
+    def get_r_files(self, rxn_dir):
+        reactants = sorted(glob(rxn_dir +"r*.xyz"), reverse=True)
+        reactants = self.check_alt_files(reactants)
+        assert len(reactants) == 2, f"Inconsistent length of {len(reactants)}"
+        # inverse labelling in their xyz files
+        r0_label = reactants[0].split("/")[-1][:2]
+        assert r0_label == 'r1', 'not r0'
+        r1_label = reactants[1].split("/")[-1][:2]
+        assert r1_label == 'r0', 'not r1'
+        return reactants
 
 
 
