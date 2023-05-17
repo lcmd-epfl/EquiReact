@@ -76,7 +76,7 @@ class EquiReact(nn.Module):
                  max_radius: float = 10.0, max_neighbors: int = 20,
                  distance_emb_dim: int = 32, dropout_p: float = 0.1,
                  sum_mode='node', verbose=False, device='cpu', graph_mode='energy',
-                 random_baseline=False,
+                 random_baseline=False, combine_mode='diff',
                  **kwargs
                  ):
 
@@ -88,6 +88,7 @@ class EquiReact(nn.Module):
         self.n_s, self.n_v = n_s, n_v
         self.n_conv_layers = n_conv_layers
         self.sum_mode = sum_mode
+        self.combine_mode = combine_mode
 
         self.max_radius = max_radius
         self.max_neighbors = max_neighbors
@@ -283,6 +284,14 @@ class EquiReact(nn.Module):
             for graph in products_data:
                 product_energy += self.forward_molecule(graph)
             #TODO another MLP here for energy prediction
-            reaction_energy = product_energy - reactant_energy
+
+            if self.combine_mode == 'diff' or self.combine_mode == 'difference':
+                reaction_energy = product_energy - reactant_energy
+            elif self.combine_mode == 'sum':
+                reaction_energy = product_energy + reactant_energy
+            elif self.combine_mode == 'mean' or self.combine_mode == 'average' or self.combine_mode == 'avg':
+                reaction_energy = (product_energy + reactant_energy) / 2
+            else:
+                raise ValueError('combine mode is not valid')
 
         return reaction_energy

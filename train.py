@@ -73,6 +73,7 @@ def parse_arguments():
     p.add_argument('--dropout_p', type=float, default=0.1, help='dropout probability')
     p.add_argument('--dataset', type=str, default='cyclo', help='cyclo or gdb')
     p.add_argument('--random_baseline', type=str, default=False, help='random baseline (no graph conv)')
+    p.add_argument('--combine_mode', type=str, default='diff', help='combine mode diff, sum, or mean')
 
     args = p.parse_args()
 
@@ -234,4 +235,5 @@ if __name__ == '__main__':
           dataset=args.dataset, process=args.process,
           verbose=args.verbose, radius=args.radius, max_neighbors=args.max_neighbors, sum_mode=args.sum_mode,
           n_s=args.n_s, n_v=args.n_v, n_conv_layers=args.n_conv_layers, distance_emb_dim=args.distance_emb_dim,
-          graph_mode=args.graph_mode, dropout_p=args.dropout_p, random_baseline=args.random_baseline)
+          graph_mode=args.graph_mode, dropout_p=args.dropout_p, random_baseline=args.random_baseline,
+          combine_mode=args.combine_mode)
