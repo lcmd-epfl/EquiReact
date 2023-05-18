@@ -173,6 +173,12 @@ class EquiReact(nn.Module):
             nn.Linear(2, 1)
         )
 
+        n = 2 * self.n_s if self.n_conv_layers >= 3 else self.n_s
+        self.atom_diff_nonlin = nn.Sequential(
+            nn.ReLU(),
+            nn.Linear(n, n),
+        )
+
 
     def build_graph(self, data):
 
@@ -292,12 +298,6 @@ class EquiReact(nn.Module):
 
 ##########################################################################
 
-        n = 2 * self.n_s if self.n_conv_layers >= 3 else self.n_s
-        atom_diff_nonlin = nn.Sequential(
-            #nn.ReLU(),
-            #nn.Linear(n, n),
-            nn.ReLU(),
-        )
 
         if self.atom_mapping is True:
             batch = torch.sort(torch.hstack([g.batch for g in reactants_data])).values.to(self.device)
@@ -312,7 +312,7 @@ class EquiReact(nn.Module):
                 x_react = self.forward_repr_mols(reactants_data)
                 x_prod  = self.forward_repr_mols(products_data)
                 x = x_prod[mapping] - x_react
-                x = atom_diff_nonlin(x)
+                x = self.atom_diff_nonlin(x)
                 x = scatter_add(x, index=batch, dim=0)
                 score = self.score_predictor_nodes(x)
             return score
