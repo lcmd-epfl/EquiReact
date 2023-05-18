@@ -291,15 +291,32 @@ class EquiReact(nn.Module):
         batch_size = reactants_data[0].num_graphs
 
 ##########################################################################
+
+        n = 2 * self.n_s if self.n_conv_layers >= 3 else self.n_s
+        atom_diff_nonlin = nn.Sequential(
+            #nn.ReLU(),
+            #nn.Linear(n, n),
+            nn.ReLU(),
+        )
+
         if self.atom_mapping is True:
             batch = torch.sort(torch.hstack([g.batch for g in reactants_data])).values.to(self.device)
             mapping = np.hstack(mapping)
-            x_react = self.forward_repr_mols(reactants_data)
-            x_prod  = self.forward_repr_mols(products_data)
-            x = x_prod[mapping] - x_react
-            score_atom = self.score_predictor_nodes(x)
-            score = scatter_add(score_atom, index=batch, dim=0)
+            if 0:
+                x_react = self.forward_repr_mols(reactants_data)
+                x_prod  = self.forward_repr_mols(products_data)
+                x = x_prod[mapping] - x_react
+                score_atom = self.score_predictor_nodes(x)
+                score = scatter_add(score_atom, index=batch, dim=0)
+            if 1:
+                x_react = self.forward_repr_mols(reactants_data)
+                x_prod  = self.forward_repr_mols(products_data)
+                x = x_prod[mapping] - x_react
+                x = atom_diff_nonlin(x)
+                x = scatter_add(x, index=batch, dim=0)
+                score = self.score_predictor_nodes(x)
             return score
+
 ##########################################################################
 
         if self.graph_mode == 'vector':
