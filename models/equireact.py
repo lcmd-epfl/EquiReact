@@ -89,6 +89,7 @@ class EquiReact(nn.Module):
         self.n_conv_layers = n_conv_layers
         self.sum_mode = sum_mode
         self.combine_mode = combine_mode
+        self.atom_mapping = atom_mapping
 
         self.max_radius = max_radius
         self.max_neighbors = max_neighbors
@@ -211,6 +212,15 @@ class EquiReact(nn.Module):
         return x, edge_index, edge_attr
 
 
+    def forward_repr_mols(self, data):
+        x = []
+        for graph in data:
+            if graph.x.shape[0]==0:
+                continue
+            x.append(self.forward_repr_mol(graph)[0])
+        return torch.vstack(x)
+
+
     def forward_molecule(self, data):
 
         if data.x.shape[0]==0:
@@ -279,6 +289,19 @@ class EquiReact(nn.Module):
         """
 
         batch_size = reactants_data[0].num_graphs
+
+##########################################################################
+        if self.atom_mapping is True:
+            batch = torch.sort(torch.hstack([g.batch for g in reactants_data])).values.to(self.device)
+            mapping = np.hstack(mapping)
+            x_react = self.forward_repr_mols(reactants_data)
+            x_prod  = self.forward_repr_mols(products_data)
+            x = x_prod[mapping] - x_react
+            score_atom = self.score_predictor_nodes(x)
+            score = scatter_add(score_atom, index=batch, dim=0)
+            return score
+##########################################################################
+
         if self.graph_mode == 'vector':
             reaction_energy = self.forward_molecules(reactants_data, products_data, batch_size)
         else:
