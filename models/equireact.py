@@ -219,12 +219,18 @@ class EquiReact(nn.Module):
 
 
     def forward_repr_mols(self, data):
-        x = []
+        X = []
         for graph in data:
             if graph.x.shape[0]==0:
                 continue
-            x.append(self.forward_repr_mol(graph)[0])
-        return torch.vstack(x)
+            x = self.forward_repr_mol(graph)[0]
+            # split into molecules
+            sections = tuple(np.unique(graph.batch, return_counts=True)[1])
+            x = torch.split(x, sections)
+            X.append(x)
+        # regroup so mols from the same reaction are back-to-back
+        X_out = torch.vstack([torch.vstack(x) for x in zip(*X)])
+        return X_out
 
 
     def forward_molecule(self, data):
@@ -297,18 +303,16 @@ class EquiReact(nn.Module):
         batch_size = reactants_data[0].num_graphs
 
 ##########################################################################
-
-
         if self.atom_mapping is True:
             batch = torch.sort(torch.hstack([g.batch for g in reactants_data])).values.to(self.device)
             mapping = np.hstack(mapping)
-            if 0:
+            if 1:
                 x_react = self.forward_repr_mols(reactants_data)
                 x_prod  = self.forward_repr_mols(products_data)
                 x = x_prod[mapping] - x_react
                 score_atom = self.score_predictor_nodes(x)
                 score = scatter_add(score_atom, index=batch, dim=0)
-            if 1:
+            else:
                 x_react = self.forward_repr_mols(reactants_data)
                 x_prod  = self.forward_repr_mols(products_data)
                 x = x_prod[mapping] - x_react
@@ -316,7 +320,6 @@ class EquiReact(nn.Module):
                 x = scatter_add(x, index=batch, dim=0)
                 score = self.score_predictor_nodes(x)
             return score
-
 ##########################################################################
 
         if self.graph_mode == 'vector':
