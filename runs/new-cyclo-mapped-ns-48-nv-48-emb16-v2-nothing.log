@@ -1,0 +1,551 @@
+wandb: Currently logged in as: briling (equireact). Use `wandb login --relogin` to force relogin
+wandb: wandb version 0.15.3 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: Tracking run with wandb version 0.15.0
+wandb: Run data is saved locally in /home/briling/NequiReact/wandb/run-20230519_100109-aqs973p1
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run ethereal-sun-61
+wandb:  View project at https://wandb.ai/equireact/nequireact
+wandb:  View run at https://wandb.ai/equireact/nequireact/runs/aqs973p1
+wandb name new-cyclo-mapped-ns-48-nv-48-emb16-v2-nothing
+input args Namespace(experiment_name='new-cyclo-mapped', num_epochs=3000, checkpoint=None, device='cuda', subset=None, wandb_name='new-cyclo-mapped-ns-48-nv-48-emb16-v2-nothing', logdir='logs', process=False, verbose=False, radius=5.0, max_neighbors=20, sum_mode='node', n_s=48, n_v=48, n_conv_layers=2, distance_emb_dim=16, graph_mode='energy', dropout_p=0.1, dataset='cyclo', random_baseline=False, combine_mode='diff', atom_mapping=True)
+Running on device cuda:0
+Loading data into memory...
+Coords and graphs successfully read from data/cyclo/processed//
+Data stdev tensor(9.7629, dtype=torch.float64)
+total / train / test / val: 5203 3902 650 651
+r0graph=Data(x=[6, 16], edge_index=[2, 30], edge_attr=[30], y=-1.3594611934014402, pos=[6, 3])
+input_node_feats_dim=16
+input_edge_feats_dim=1
+trainable params in model:  2740325
+Log directory: logs/new-cyclo-mapped
+checkpoint: None
+num epochs: 3000
+eval_per_epochs: 0
+patience: 150
+minimum_epochs: 0
+models_to_save: []
+clip_grad: 100
+log_iterations: 100
+lr: 0.0001
+weight decay: 0.0001
+lr scheduler: <class 'torch.optim.lr_scheduler.ReduceLROnPlateau'>
+factor: 0.6
+min_lr: 8e-06
+mode: max
+lr_scheduler_patience: 60
+lr_verbose: True
+In trainer, metrics is {'mae': MAE()} and std is 9.762939402167014
+[Epoch 1; Iter   100/  488] train: loss: 0.8750579
+[Epoch 1; Iter   200/  488] train: loss: 1.2408888
+[Epoch 1; Iter   300/  488] train: loss: 0.5024612
+[Epoch 1; Iter   400/  488] train: loss: 0.6988523
+[Epoch 1] mae: 7.477730 val loss: 0.928775
+Epochs with no improvement: [ 0 ] and the best   mae  was in  1
+[Epoch 2; Iter    12/  488] train: loss: 1.4424443
+[Epoch 2; Iter   112/  488] train: loss: 0.2305007
+[Epoch 2; Iter   212/  488] train: loss: 0.7026645
+[Epoch 2; Iter   312/  488] train: loss: 0.4860394
+[Epoch 2; Iter   412/  488] train: loss: 0.8051286
+[Epoch 2] mae: 7.439982 val loss: 0.922779
+Epochs with no improvement: [ 0 ] and the best   mae  was in  2
+[Epoch 3; Iter    24/  488] train: loss: 0.8686178
+[Epoch 3; Iter   124/  488] train: loss: 0.4795502
+[Epoch 3; Iter   224/  488] train: loss: 0.7210023
+[Epoch 3; Iter   324/  488] train: loss: 0.4556206
+[Epoch 3; Iter   424/  488] train: loss: 0.5963442
+[Epoch 3] mae: 7.408656 val loss: 0.917392
+Epochs with no improvement: [ 0 ] and the best   mae  was in  3
+[Epoch 4; Iter    36/  488] train: loss: 0.2203751
+[Epoch 4; Iter   136/  488] train: loss: 1.0637702
+[Epoch 4; Iter   236/  488] train: loss: 0.7223632
+[Epoch 4; Iter   336/  488] train: loss: 3.4116046
+[Epoch 4; Iter   436/  488] train: loss: 0.5508969
+[Epoch 4] mae: 7.299419 val loss: 0.893089
+Epochs with no improvement: [ 0 ] and the best   mae  was in  4
+[Epoch 5; Iter    48/  488] train: loss: 0.8122897
+[Epoch 5; Iter   148/  488] train: loss: 3.2852275
+[Epoch 5; Iter   248/  488] train: loss: 0.9759523
+[Epoch 5; Iter   348/  488] train: loss: 0.6215674
+[Epoch 5; Iter   448/  488] train: loss: 1.0579016
+[Epoch 5] mae: 7.045392 val loss: 0.857968
+Epochs with no improvement: [ 0 ] and the best   mae  was in  5
+[Epoch 6; Iter    60/  488] train: loss: 0.3985289
+[Epoch 6; Iter   160/  488] train: loss: 0.6927431
+[Epoch 6; Iter   260/  488] train: loss: 0.4793557
+[Epoch 6; Iter   360/  488] train: loss: 0.4722305
+[Epoch 6; Iter   460/  488] train: loss: 0.7440649
+[Epoch 6] mae: 7.052943 val loss: 0.860128
+Epochs with no improvement: [ 1 ] and the best   mae  was in  5
+[Epoch 7; Iter    72/  488] train: loss: 1.2629017
+[Epoch 7; Iter   172/  488] train: loss: 0.3920175
+[Epoch 7; Iter   272/  488] train: loss: 0.6849065
+[Epoch 7; Iter   372/  488] train: loss: 1.3398012
+[Epoch 7; Iter   472/  488] train: loss: 0.4522777
+[Epoch 7] mae: 7.045909 val loss: 0.848523
+Epochs with no improvement: [ 2 ] and the best   mae  was in  5
+[Epoch 8; Iter    84/  488] train: loss: 0.3572110
+[Epoch 8; Iter   184/  488] train: loss: 0.5916553
+[Epoch 8; Iter   284/  488] train: loss: 0.9026350
+[Epoch 8; Iter   384/  488] train: loss: 0.3873638
+[Epoch 8; Iter   484/  488] train: loss: 1.2028327
+[Epoch 8] mae: 6.908086 val loss: 0.831194
+Epochs with no improvement: [ 0 ] and the best   mae  was in  8
+[Epoch 9; Iter    96/  488] train: loss: 1.8613577
+[Epoch 9; Iter   196/  488] train: loss: 0.4962913
+[Epoch 9; Iter   296/  488] train: loss: 1.0847206
+[Epoch 9; Iter   396/  488] train: loss: 0.6465566
+[Epoch 9] mae: 6.784114 val loss: 0.806667
+Epochs with no improvement: [ 0 ] and the best   mae  was in  9
+[Epoch 10; Iter     8/  488] train: loss: 1.1527481
+[Epoch 10; Iter   108/  488] train: loss: 0.2611359
+[Epoch 10; Iter   208/  488] train: loss: 0.5561625
+[Epoch 10; Iter   308/  488] train: loss: 1.2158642
+[Epoch 10; Iter   408/  488] train: loss: 0.4210136
+[Epoch 10] mae: 6.730639 val loss: 0.779749
+Epochs with no improvement: [ 0 ] and the best   mae  was in  10
+[Epoch 11; Iter    20/  488] train: loss: 0.7086165
+[Epoch 11; Iter   120/  488] train: loss: 0.5091116
+[Epoch 11; Iter   220/  488] train: loss: 0.7060291
+[Epoch 11; Iter   320/  488] train: loss: 0.1960767
+[Epoch 11; Iter   420/  488] train: loss: 0.5658639
+[Epoch 11] mae: 6.510458 val loss: 0.770055
+Epochs with no improvement: [ 0 ] and the best   mae  was in  11
+[Epoch 12; Iter    32/  488] train: loss: 0.8554100
+[Epoch 12; Iter   132/  488] train: loss: 0.5291188
+[Epoch 12; Iter   232/  488] train: loss: 0.2789091
+[Epoch 12; Iter   332/  488] train: loss: 0.9556943
+[Epoch 12; Iter   432/  488] train: loss: 0.8483400
+[Epoch 12] mae: 6.564840 val loss: 0.773369
+Epochs with no improvement: [ 1 ] and the best   mae  was in  11
+[Epoch 13; Iter    44/  488] train: loss: 1.1214223
+[Epoch 13; Iter   144/  488] train: loss: 0.4077673
+[Epoch 13; Iter   244/  488] train: loss: 0.4201433
+[Epoch 13; Iter   344/  488] train: loss: 0.4778509
+[Epoch 13; Iter   444/  488] train: loss: 1.2921228
+[Epoch 13] mae: 6.438087 val loss: 0.739111
+Epochs with no improvement: [ 0 ] and the best   mae  was in  13
+[Epoch 14; Iter    56/  488] train: loss: 0.6245606
+[Epoch 14; Iter   156/  488] train: loss: 0.6569394
+[Epoch 14; Iter   256/  488] train: loss: 0.2804214
+[Epoch 14; Iter   356/  488] train: loss: 1.2718943
+[Epoch 14; Iter   456/  488] train: loss: 2.1717927
+[Epoch 14] mae: 6.862636 val loss: 0.789260
+Epochs with no improvement: [ 1 ] and the best   mae  was in  13
+[Epoch 15; Iter    68/  488] train: loss: 1.1942222
+[Epoch 15; Iter   168/  488] train: loss: 1.9517792
+[Epoch 15; Iter   268/  488] train: loss: 0.6127508
+[Epoch 15; Iter   368/  488] train: loss: 0.8158374
+[Epoch 15; Iter   468/  488] train: loss: 0.6497197
+[Epoch 15] mae: 6.373104 val loss: 0.736430
+Epochs with no improvement: [ 0 ] and the best   mae  was in  15
+[Epoch 16; Iter    80/  488] train: loss: 0.5655510
+[Epoch 16; Iter   180/  488] train: loss: 0.7787884
+[Epoch 16; Iter   280/  488] train: loss: 0.3105690
+[Epoch 16; Iter   380/  488] train: loss: 0.5252893
+[Epoch 16; Iter   480/  488] train: loss: 0.2332557
+[Epoch 16] mae: 6.523221 val loss: 0.782230
+Epochs with no improvement: [ 1 ] and the best   mae  was in  15
+[Epoch 17; Iter    92/  488] train: loss: 0.8055778
+[Epoch 17; Iter   192/  488] train: loss: 0.7558905
+[Epoch 17; Iter   292/  488] train: loss: 0.9320052
+[Epoch 17; Iter   392/  488] train: loss: 0.3545033
+[Epoch 17] mae: 6.387666 val loss: 0.706882
+Epochs with no improvement: [ 2 ] and the best   mae  was in  15
+[Epoch 18; Iter     4/  488] train: loss: 0.5947481
+[Epoch 18; Iter   104/  488] train: loss: 1.0142187
+[Epoch 18; Iter   204/  488] train: loss: 3.2958341
+[Epoch 18; Iter   304/  488] train: loss: 1.7205014
+[Epoch 18; Iter   404/  488] train: loss: 0.6197640
+[Epoch 18] mae: 6.357568 val loss: 0.709448
+Epochs with no improvement: [ 0 ] and the best   mae  was in  18
+[Epoch 19; Iter    16/  488] train: loss: 0.1086361
+[Epoch 19; Iter   116/  488] train: loss: 1.2654858
+[Epoch 19; Iter   216/  488] train: loss: 1.9358748
+[Epoch 19; Iter   316/  488] train: loss: 1.7524563
+[Epoch 19; Iter   416/  488] train: loss: 1.1400158
+[Epoch 19] mae: 6.341834 val loss: 0.708959
+Epochs with no improvement: [ 0 ] and the best   mae  was in  19
+[Epoch 20; Iter    28/  488] train: loss: 0.5117005
+[Epoch 20; Iter   128/  488] train: loss: 0.6653527
+[Epoch 20; Iter   228/  488] train: loss: 0.2771564
+[Epoch 20; Iter   328/  488] train: loss: 0.2830405
+[Epoch 20; Iter   428/  488] train: loss: 0.5118555
+[Epoch 20] mae: 6.228429 val loss: 0.694492
+Epochs with no improvement: [ 0 ] and the best   mae  was in  20
+[Epoch 21; Iter    40/  488] train: loss: 1.4258270
+[Epoch 21; Iter   140/  488] train: loss: 0.5763708
+[Epoch 21; Iter   240/  488] train: loss: 0.4651002
+[Epoch 21; Iter   340/  488] train: loss: 0.5465477
+[Epoch 21; Iter   440/  488] train: loss: 0.2650607
+[Epoch 21] mae: 6.307730 val loss: 0.705287
+Epochs with no improvement: [ 1 ] and the best   mae  was in  20
+[Epoch 22; Iter    52/  488] train: loss: 0.5450057
+[Epoch 22; Iter   152/  488] train: loss: 0.4277206
+[Epoch 22; Iter   252/  488] train: loss: 0.9486697
+[Epoch 22; Iter   352/  488] train: loss: 0.2610657
+[Epoch 22; Iter   452/  488] train: loss: 0.5064224
+[Epoch 22] mae: 6.279652 val loss: 0.691478
+Epochs with no improvement: [ 2 ] and the best   mae  was in  20
+[Epoch 23; Iter    64/  488] train: loss: 0.5091699
+[Epoch 23; Iter   164/  488] train: loss: 0.5232418
+[Epoch 23; Iter   264/  488] train: loss: 1.5323343
+[Epoch 23; Iter   364/  488] train: loss: 0.3379686
+[Epoch 23; Iter   464/  488] train: loss: 0.2609988
+[Epoch 23] mae: 6.060611 val loss: 0.662665
+Epochs with no improvement: [ 0 ] and the best   mae  was in  23
+[Epoch 24; Iter    76/  488] train: loss: 0.2322542
+[Epoch 24; Iter   176/  488] train: loss: 1.1489024
+[Epoch 24; Iter   276/  488] train: loss: 0.6225483
+[Epoch 24; Iter   376/  488] train: loss: 0.5425138
+[Epoch 24; Iter   476/  488] train: loss: 0.8316765
+[Epoch 24] mae: 6.026967 val loss: 0.661316
+Epochs with no improvement: [ 0 ] and the best   mae  was in  24
+[Epoch 25; Iter    88/  488] train: loss: 0.1408198
+[Epoch 25; Iter   188/  488] train: loss: 0.2449912
+[Epoch 25; Iter   288/  488] train: loss: 0.0341501
+[Epoch 25; Iter   388/  488] train: loss: 1.1338314
+[Epoch 25; Iter   488/  488] train: loss: 1.0122271
+[Epoch 25] mae: 5.919253 val loss: 0.638834
+Epochs with no improvement: [ 0 ] and the best   mae  was in  25
+[Epoch 26; Iter   100/  488] train: loss: 0.6697618
+[Epoch 26; Iter   200/  488] train: loss: 0.6459351
+[Epoch 26; Iter   300/  488] train: loss: 0.7527598
+[Epoch 26; Iter   400/  488] train: loss: 1.3513055
+[Epoch 26] mae: 5.953114 val loss: 0.635838
+Epochs with no improvement: [ 1 ] and the best   mae  was in  25
+[Epoch 27; Iter    12/  488] train: loss: 0.6368015
+[Epoch 27; Iter   112/  488] train: loss: 0.7758013
+[Epoch 27; Iter   212/  488] train: loss: 1.0236125
+[Epoch 27; Iter   312/  488] train: loss: 0.7346889
+[Epoch 27; Iter   412/  488] train: loss: 0.2296411
+[Epoch 27] mae: 6.131631 val loss: 0.710696
+Epochs with no improvement: [ 2 ] and the best   mae  was in  25
+[Epoch 28; Iter    24/  488] train: loss: 1.2308484
+[Epoch 28; Iter   124/  488] train: loss: 0.6257939
+[Epoch 28; Iter   224/  488] train: loss: 0.5076556
+[Epoch 28; Iter   324/  488] train: loss: 0.1853127
+[Epoch 28; Iter   424/  488] train: loss: 0.6140951
+[Epoch 28] mae: 6.041780 val loss: 0.672780
+Epochs with no improvement: [ 3 ] and the best   mae  was in  25
+[Epoch 29; Iter    36/  488] train: loss: 0.5754027
+[Epoch 29; Iter   136/  488] train: loss: 0.4263845
+[Epoch 29; Iter   236/  488] train: loss: 0.7442298
+[Epoch 29; Iter   336/  488] train: loss: 0.8486619
+[Epoch 29; Iter   436/  488] train: loss: 0.7827494
+[Epoch 29] mae: 5.861694 val loss: 0.619362
+Epochs with no improvement: [ 0 ] and the best   mae  was in  29
+[Epoch 30; Iter    48/  488] train: loss: 0.9056882
+[Epoch 30; Iter   148/  488] train: loss: 0.6587585
+[Epoch 30; Iter   248/  488] train: loss: 0.3742478
+[Epoch 30; Iter   348/  488] train: loss: 0.3973225
+[Epoch 30; Iter   448/  488] train: loss: 0.3071527
+[Epoch 30] mae: 5.796060 val loss: 0.619248
+Epochs with no improvement: [ 0 ] and the best   mae  was in  30
+[Epoch 31; Iter    60/  488] train: loss: 1.2075207
+[Epoch 31; Iter   160/  488] train: loss: 0.5741530
+[Epoch 31; Iter   260/  488] train: loss: 1.0847383
+[Epoch 31; Iter   360/  488] train: loss: 0.6163299
+[Epoch 31; Iter   460/  488] train: loss: 0.2359309
+[Epoch 31] mae: 5.846852 val loss: 0.616341
+Epochs with no improvement: [ 1 ] and the best   mae  was in  30
+[Epoch 32; Iter    72/  488] train: loss: 0.5851436
+[Epoch 32; Iter   172/  488] train: loss: 0.1358701
+[Epoch 32; Iter   272/  488] train: loss: 0.4444700
+[Epoch 32; Iter   372/  488] train: loss: 0.5652559
+[Epoch 32; Iter   472/  488] train: loss: 0.6070646
+[Epoch 32] mae: 5.818770 val loss: 0.600295
+Epochs with no improvement: [ 2 ] and the best   mae  was in  30
+[Epoch 33; Iter    84/  488] train: loss: 2.2396288
+[Epoch 33; Iter   184/  488] train: loss: 0.1816580
+[Epoch 33; Iter   284/  488] train: loss: 0.1468164
+[Epoch 33; Iter   384/  488] train: loss: 0.3647396
+[Epoch 33; Iter   484/  488] train: loss: 0.0359325
+[Epoch 33] mae: 5.968643 val loss: 0.617925
+Epochs with no improvement: [ 3 ] and the best   mae  was in  30
+[Epoch 34; Iter    96/  488] train: loss: 1.4720492
+[Epoch 34; Iter   196/  488] train: loss: 0.5074832
+[Epoch 34; Iter   296/  488] train: loss: 0.9215027
+[Epoch 34; Iter   396/  488] train: loss: 0.2721142
+[Epoch 34] mae: 6.125449 val loss: 0.629794
+Epochs with no improvement: [ 4 ] and the best   mae  was in  30
+[Epoch 35; Iter     8/  488] train: loss: 0.9717669
+[Epoch 35; Iter   108/  488] train: loss: 0.5966432
+[Epoch 35; Iter   208/  488] train: loss: 0.3441584
+[Epoch 35; Iter   308/  488] train: loss: 1.2923861
+[Epoch 35; Iter   408/  488] train: loss: 0.9773139
+[Epoch 35] mae: 5.827543 val loss: 0.600068
+Epochs with no improvement: [ 5 ] and the best   mae  was in  30
+[Epoch 36; Iter    20/  488] train: loss: 0.6503940
+[Epoch 36; Iter   120/  488] train: loss: 1.0565441
+[Epoch 36; Iter   220/  488] train: loss: 0.2768650
+[Epoch 36; Iter   320/  488] train: loss: 0.5469899
+[Epoch 36; Iter   420/  488] train: loss: 0.2729480
+[Epoch 36] mae: 5.806368 val loss: 0.581497
+Epochs with no improvement: [ 6 ] and the best   mae  was in  30
+[Epoch 37; Iter    32/  488] train: loss: 1.2152159
+[Epoch 37; Iter   132/  488] train: loss: 0.8720448
+[Epoch 37; Iter   232/  488] train: loss: 0.3999130
+[Epoch 37; Iter   332/  488] train: loss: 0.2585859
+[Epoch 37; Iter   432/  488] train: loss: 1.0266718
+[Epoch 37] mae: 5.632314 val loss: 0.560598
+Epochs with no improvement: [ 0 ] and the best   mae  was in  37
+[Epoch 38; Iter    44/  488] train: loss: 0.1849596
+[Epoch 38; Iter   144/  488] train: loss: 0.6901751
+[Epoch 38; Iter   244/  488] train: loss: 0.3971325
+[Epoch 38; Iter   344/  488] train: loss: 2.2446985
+[Epoch 38; Iter   444/  488] train: loss: 0.4079408
+[Epoch 38] mae: 5.514523 val loss: 0.542694
+Epochs with no improvement: [ 0 ] and the best   mae  was in  38
+[Epoch 39; Iter    56/  488] train: loss: 3.8195965
+[Epoch 39; Iter   156/  488] train: loss: 0.9990208
+[Epoch 39; Iter   256/  488] train: loss: 0.4777417
+[Epoch 39; Iter   356/  488] train: loss: 0.5905983
+[Epoch 39; Iter   456/  488] train: loss: 0.6240711
+[Epoch 39] mae: 5.552098 val loss: 0.569421
+Epochs with no improvement: [ 1 ] and the best   mae  was in  38
+[Epoch 40; Iter    68/  488] train: loss: 0.2243923
+[Epoch 40; Iter   168/  488] train: loss: 0.3832272
+[Epoch 40; Iter   268/  488] train: loss: 0.2806913
+[Epoch 40; Iter   368/  488] train: loss: 0.1723314
+[Epoch 40; Iter   468/  488] train: loss: 0.1334316
+[Epoch 40] mae: 5.486630 val loss: 0.532047
+Epochs with no improvement: [ 0 ] and the best   mae  was in  40
+[Epoch 41; Iter    80/  488] train: loss: 0.6078391
+[Epoch 41; Iter   180/  488] train: loss: 4.3131642
+[Epoch 41; Iter   280/  488] train: loss: 0.3768691
+[Epoch 41; Iter   380/  488] train: loss: 1.1724985
+[Epoch 41; Iter   480/  488] train: loss: 0.5621963
+[Epoch 41] mae: 5.504650 val loss: 0.547041
+Epochs with no improvement: [ 1 ] and the best   mae  was in  40
+[Epoch 42; Iter    92/  488] train: loss: 0.7756510
+[Epoch 42; Iter   192/  488] train: loss: 0.6022030
+[Epoch 42; Iter   292/  488] train: loss: 0.7086715
+[Epoch 42; Iter   392/  488] train: loss: 0.1867611
+[Epoch 42] mae: 5.558379 val loss: 0.554893
+Epochs with no improvement: [ 2 ] and the best   mae  was in  40
+[Epoch 43; Iter     4/  488] train: loss: 0.3724735
+[Epoch 43; Iter   104/  488] train: loss: 0.2679846
+[Epoch 43; Iter   204/  488] train: loss: 0.4135524
+[Epoch 43; Iter   304/  488] train: loss: 0.6859659
+[Epoch 43; Iter   404/  488] train: loss: 0.3107082
+[Epoch 43] mae: 5.400154 val loss: 0.532085
+Epochs with no improvement: [ 0 ] and the best   mae  was in  43
+[Epoch 44; Iter    16/  488] train: loss: 0.5007938
+[Epoch 44; Iter   116/  488] train: loss: 0.5740924
+[Epoch 44; Iter   216/  488] train: loss: 0.6123254
+[Epoch 44; Iter   316/  488] train: loss: 0.4064804
+[Epoch 44; Iter   416/  488] train: loss: 0.4726560
+[Epoch 44] mae: 5.283310 val loss: 0.491702
+Epochs with no improvement: [ 0 ] and the best   mae  was in  44
+[Epoch 45; Iter    28/  488] train: loss: 1.4768559
+[Epoch 45; Iter   128/  488] train: loss: 0.1286559
+[Epoch 45; Iter   228/  488] train: loss: 0.3976215
+[Epoch 45; Iter   328/  488] train: loss: 0.3996057
+[Epoch 45; Iter   428/  488] train: loss: 0.7977716
+[Epoch 45] mae: 5.318950 val loss: 0.518946
+Epochs with no improvement: [ 1 ] and the best   mae  was in  44
+[Epoch 46; Iter    40/  488] train: loss: 0.8108563
+[Epoch 46; Iter   140/  488] train: loss: 0.6508460
+[Epoch 46; Iter   240/  488] train: loss: 0.6290742
+[Epoch 46; Iter   340/  488] train: loss: 0.1602675
+[Epoch 46; Iter   440/  488] train: loss: 0.2695395
+[Epoch 46] mae: 5.527491 val loss: 0.517960
+Epochs with no improvement: [ 2 ] and the best   mae  was in  44
+[Epoch 47; Iter    52/  488] train: loss: 0.6408084
+[Epoch 47; Iter   152/  488] train: loss: 1.1337204
+[Epoch 47; Iter   252/  488] train: loss: 0.9455903
+[Epoch 47; Iter   352/  488] train: loss: 0.1639754
+[Epoch 47; Iter   452/  488] train: loss: 0.2600201
+[Epoch 47] mae: 5.235701 val loss: 0.495408
+Epochs with no improvement: [ 0 ] and the best   mae  was in  47
+[Epoch 48; Iter    64/  488] train: loss: 0.3068500
+[Epoch 48; Iter   164/  488] train: loss: 0.2498995
+[Epoch 48; Iter   264/  488] train: loss: 0.8194870
+[Epoch 48; Iter   364/  488] train: loss: 0.6038862
+[Epoch 48; Iter   464/  488] train: loss: 0.4922633
+[Epoch 48] mae: 5.214524 val loss: 0.482609
+Epochs with no improvement: [ 0 ] and the best   mae  was in  48
+[Epoch 49; Iter    76/  488] train: loss: 0.5251807
+[Epoch 49; Iter   176/  488] train: loss: 0.4168284
+[Epoch 49; Iter   276/  488] train: loss: 0.6701565
+[Epoch 49; Iter   376/  488] train: loss: 0.3617837
+[Epoch 49; Iter   476/  488] train: loss: 0.7910445
+[Epoch 49] mae: 5.147639 val loss: 0.482176
+Epochs with no improvement: [ 0 ] and the best   mae  was in  49
+[Epoch 50; Iter    88/  488] train: loss: 0.3770999
+[Epoch 50; Iter   188/  488] train: loss: 0.4784936
+[Epoch 50; Iter   288/  488] train: loss: 0.1832740
+[Epoch 50; Iter   388/  488] train: loss: 0.6681793
+[Epoch 50; Iter   488/  488] train: loss: 0.1721655
+[Epoch 50] mae: 5.020792 val loss: 0.455853
+Epochs with no improvement: [ 0 ] and the best   mae  was in  50
+[Epoch 51; Iter   100/  488] train: loss: 0.9426128
+[Epoch 51; Iter   200/  488] train: loss: 0.8519160
+[Epoch 51; Iter   300/  488] train: loss: 0.4809792
+[Epoch 51; Iter   400/  488] train: loss: 0.3095606
+[Epoch 51] mae: 5.176482 val loss: 0.489080
+Epochs with no improvement: [ 1 ] and the best   mae  was in  50
+[Epoch 52; Iter    12/  488] train: loss: 0.8978992
+[Epoch 52; Iter   112/  488] train: loss: 0.3918666
+[Epoch 52; Iter   212/  488] train: loss: 0.4439532
+[Epoch 52; Iter   312/  488] train: loss: 1.7257203
+[Epoch 52; Iter   412/  488] train: loss: 0.3787997
+[Epoch 52] mae: 5.312362 val loss: 0.523242
+Epochs with no improvement: [ 2 ] and the best   mae  was in  50
+[Epoch 53; Iter    24/  488] train: loss: 0.4240642
+[Epoch 53; Iter   124/  488] train: loss: 0.4257538
+[Epoch 53; Iter   224/  488] train: loss: 0.7956867
+[Epoch 53; Iter   324/  488] train: loss: 0.7340283
+[Epoch 53; Iter   424/  488] train: loss: 0.4660281
+[Epoch 53] mae: 5.120393 val loss: 0.478858
+Epochs with no improvement: [ 3 ] and the best   mae  was in  50
+[Epoch 54; Iter    36/  488] train: loss: 0.3222008
+[Epoch 54; Iter   136/  488] train: loss: 0.2921539
+[Epoch 54; Iter   236/  488] train: loss: 0.4480254
+[Epoch 54; Iter   336/  488] train: loss: 0.5074298
+[Epoch 54; Iter   436/  488] train: loss: 0.7429446
+[Epoch 54] mae: 5.099071 val loss: 0.462093
+Epochs with no improvement: [ 4 ] and the best   mae  was in  50
+[Epoch 55; Iter    48/  488] train: loss: 0.5369986
+[Epoch 55; Iter   148/  488] train: loss: 0.2669421
+[Epoch 55; Iter   248/  488] train: loss: 2.0037577
+[Epoch 55; Iter   348/  488] train: loss: 0.5583846
+[Epoch 55; Iter   448/  488] train: loss: 0.5918928
+[Epoch 55] mae: 5.080842 val loss: 0.462341
+Epochs with no improvement: [ 5 ] and the best   mae  was in  50
+[Epoch 56; Iter    60/  488] train: loss: 0.2635241
+[Epoch 56; Iter   160/  488] train: loss: 0.5598488
+[Epoch 56; Iter   260/  488] train: loss: 0.2262903
+[Epoch 56; Iter   360/  488] train: loss: 0.3950740
+[Epoch 56; Iter   460/  488] train: loss: 0.5029475
+[Epoch 56] mae: 5.212056 val loss: 0.484594
+Epochs with no improvement: [ 6 ] and the best   mae  was in  50
+[Epoch 57; Iter    72/  488] train: loss: 0.2091319
+[Epoch 57; Iter   172/  488] train: loss: 0.4511390
+[Epoch 57; Iter   272/  488] train: loss: 0.5828016
+[Epoch 57; Iter   372/  488] train: loss: 0.4908235
+[Epoch 57; Iter   472/  488] train: loss: 0.4928508
+[Epoch 57] mae: 5.245096 val loss: 0.479277
+Epochs with no improvement: [ 7 ] and the best   mae  was in  50
+[Epoch 58; Iter    84/  488] train: loss: 0.3073221
+[Epoch 58; Iter   184/  488] train: loss: 0.2139308
+[Epoch 58; Iter   284/  488] train: loss: 0.5930364
+[Epoch 58; Iter   384/  488] train: loss: 0.1641813
+[Epoch 58; Iter   484/  488] train: loss: 1.6357570
+[Epoch 58] mae: 5.001342 val loss: 0.461996
+Epochs with no improvement: [ 0 ] and the best   mae  was in  58
+[Epoch 59; Iter    96/  488] train: loss: 0.2933834
+[Epoch 59; Iter   196/  488] train: loss: 0.7674433
+[Epoch 59; Iter   296/  488] train: loss: 0.3375128
+[Epoch 59; Iter   396/  488] train: loss: 0.1032146
+[Epoch 59] mae: 5.038733 val loss: 0.468365
+Epochs with no improvement: [ 1 ] and the best   mae  was in  58
+[Epoch 60; Iter     8/  488] train: loss: 0.7215270
+[Epoch 60; Iter   108/  488] train: loss: 0.8416965
+[Epoch 60; Iter   208/  488] train: loss: 0.3777646
+[Epoch 60; Iter   308/  488] train: loss: 0.7786183
+[Epoch 60; Iter   408/  488] train: loss: 0.5191091
+[Epoch 60] mae: 5.143023 val loss: 0.454936
+Epochs with no improvement: [ 2 ] and the best   mae  was in  58
+[Epoch 61; Iter    20/  488] train: loss: 0.4528904
+[Epoch 61; Iter   120/  488] train: loss: 0.1079910
+[Epoch 61; Iter   220/  488] train: loss: 0.9665481
+[Epoch 61; Iter   320/  488] train: loss: 0.4762679
+[Epoch 61; Iter   420/  488] train: loss: 0.3447538
+[Epoch 61] mae: 5.040807 val loss: 0.439400
+Epochs with no improvement: [ 3 ] and the best   mae  was in  58
+[Epoch 62; Iter    32/  488] train: loss: 0.7046751
+[Epoch 62; Iter   132/  488] train: loss: 0.1421643
+[Epoch 62; Iter   232/  488] train: loss: 0.4279735
+[Epoch 62; Iter   332/  488] train: loss: 0.4295522
+[Epoch 62; Iter   432/  488] train: loss: 1.1450503
+Epoch 00062: reducing learning rate of group 0 to 6.0000e-05.
+[Epoch 62] mae: 5.147465 val loss: 0.449293
+Epochs with no improvement: [ 4 ] and the best   mae  was in  58
+[Epoch 63; Iter    44/  488] train: loss: 0.2192965
+[Epoch 63; Iter   144/  488] train: loss: 0.3846810
+[Epoch 63; Iter   244/  488] train: loss: 0.8726678
+[Epoch 63; Iter   344/  488] train: loss: 0.3423638
+[Epoch 63; Iter   444/  488] train: loss: 0.2803554
+[Epoch 63] mae: 4.927339 val loss: 0.429243
+Epochs with no improvement: [ 0 ] and the best   mae  was in  63
+[Epoch 64; Iter    56/  488] train: loss: 0.6041707
+[Epoch 64; Iter   156/  488] train: loss: 0.3729456
+[Epoch 64; Iter   256/  488] train: loss: 0.4192997
+[Epoch 64; Iter   356/  488] train: loss: 0.3289847
+[Epoch 64; Iter   456/  488] train: loss: 0.2435350
+[Epoch 64] mae: 4.919275 val loss: 0.432284
+Epochs with no improvement: [ 0 ] and the best   mae  was in  64
+[Epoch 65; Iter    68/  488] train: loss: 0.2616436
+[Epoch 65; Iter   168/  488] train: loss: 0.8263351
+[Epoch 65; Iter   268/  488] train: loss: 0.4850037
+[Epoch 65; Iter   368/  488] train: loss: 0.6489974
+[Epoch 65; Iter   468/  488] train: loss: 0.4957612
+[Epoch 65] mae: 4.954542 val loss: 0.449245
+Epochs with no improvement: [ 1 ] and the best   mae  was in  64
+[Epoch 66; Iter    80/  488] train: loss: 0.5472361
+[Epoch 66; Iter   180/  488] train: loss: 0.5920109
+[Epoch 66; Iter   280/  488] train: loss: 0.0510252
+[Epoch 66; Iter   380/  488] train: loss: 0.3836633
+[Epoch 66; Iter   480/  488] train: loss: 0.6205794
+[Epoch 66] mae: 4.908293 val loss: 0.447165
+Epochs with no improvement: [ 0 ] and the best   mae  was in  66
+[Epoch 67; Iter    92/  488] train: loss: 0.3399366
+[Epoch 67; Iter   192/  488] train: loss: 0.3072908
+[Epoch 67; Iter   292/  488] train: loss: 0.3418088
+[Epoch 67; Iter   392/  488] train: loss: 0.8558314
+[Epoch 67] mae: 4.865427 val loss: 0.430375
+Epochs with no improvement: [ 0 ] and the best   mae  was in  67
+[Epoch 68; Iter     4/  488] train: loss: 0.4564232
+[Epoch 68; Iter   104/  488] train: loss: 0.2218760
+[Epoch 68; Iter   204/  488] train: loss: 0.3355127
+[Epoch 68; Iter   304/  488] train: loss: 0.3764697
+[Epoch 68; Iter   404/  488] train: loss: 0.6093507
+[Epoch 68] mae: 4.786174 val loss: 0.405559
+Epochs with no improvement: [ 0 ] and the best   mae  was in  68
+[Epoch 69; Iter    16/  488] train: loss: 0.3142160
+[Epoch 69; Iter   116/  488] train: loss: 0.3103074
+[Epoch 69; Iter   216/  488] train: loss: 2.0890741
+[Epoch 69; Iter   316/  488] train: loss: 0.5618052
+[Epoch 69; Iter   416/  488] train: loss: 0.5534267
+[Epoch 69] mae: 4.910526 val loss: 0.418734
+Epochs with no improvement: [ 1 ] and the best   mae  was in  68
+[Epoch 70; Iter    28/  488] train: loss: 1.3799045
+[Epoch 70; Iter   128/  488] train: loss: 0.5375817
+[Epoch 70; Iter   228/  488] train: loss: 0.6442074
+[Epoch 70; Iter   328/  488] train: loss: 0.3759739
+[Epoch 70; Iter   428/  488] train: loss: 0.5382527
+[Epoch 70] mae: 5.133034 val loss: 0.486339
+Epochs with no improvement: [ 2 ] and the best   mae  was in  68
+[Epoch 71; Iter    40/  488] train: loss: 0.3895260
+[Epoch 71; Iter   140/  488] train: loss: 0.2881615
+[Epoch 71; Iter   240/  488] train: loss: 0.3341593
+[Epoch 71; Iter   340/  488] train: loss: 0.1285969
+[Epoch 71; Iter   440/  488] train: loss: 0.1233724
+[Epoch 71] mae: 4.752587 val loss: 0.409992
+Epochs with no improvement: [ 0 ] and the best   mae  was in  71
+[Epoch 72; Iter    52/  488] train: loss: 0.4484301
+[Epoch 72; Iter   152/  488] train: loss: 0.3996506
+[Epoch 72; Iter   252/  488] train: loss: 0.3269568
+[Epoch 72; Iter   352/  488] train: loss: 0.2155978
+[Epoch 72; Iter   452/  488] train: loss: 0.2520902
+[Epoch 72] mae: 4.779104 val loss: 0.414701
+Epochs with no improvement: [ 1 ] and the best   mae  was in  71
+[Epoch 73; Iter    64/  488] train: loss: 0.4498097
+[Epoch 73; Iter   164/  488] train: loss: 0.8801037
+[Epoch 73; Iter   264/  488] train: loss: 0.4768357
+[Epoch 73; Iter   364/  488] train: loss: 0.2957526
+[Epoch 73; Iter   464/  488] train: loss: 0.3761469
+[Epoch 73] mae: 4.772205 val loss: 0.410408
+Epochs with no improvement: [ 2 ] and the best   mae  was in  71
+[Epoch 74; Iter    76/  488] train: loss: 0.1475416
+[Epoch 74; Iter   176/  488] train: loss: 0.5429088
+[Epoch 74; Iter   276/  488] train: loss: 0.2562764
+[Epoch 74; Iter   376/  488] train: loss: 0.3393258
+[Epoch 74; Iter   476/  488] train: loss: 0.6856419
+[Epoch 74] mae: 4.987895 val loss: 0.428484
+Epochs with no improvement: [ 3 ] and the best   mae  was in  71
+[Epoch 75; Iter    88/  488] train: loss: 0.1893077
+[Epoch 75; Iter   188/  488] train: loss: 0.0928504
+[Epoch 75; Iter   288/  488] train: loss: 0.2824279

@@ -74,6 +74,7 @@ def parse_arguments():
     p.add_argument('--dataset', type=str, default='cyclo', help='cyclo or gdb')
     p.add_argument('--random_baseline', type=str, default=False, help='random baseline (no graph conv)')
     p.add_argument('--combine_mode', type=str, default='diff', help='combine mode diff, sum, or mean')
+    p.add_argument('--atom_mapping', type=str, default=False, help='use atom mapping')
 
     args = p.parse_args()
 
@@ -99,6 +100,8 @@ def parse_arguments():
         args.dropout_p = float(args.dropout_p)
     if type(args.random_baseline) == str:
         args.random_baseline = literal_eval(args.random_baseline)
+    if type(args.atom_mapping) == str:
+        args.atom_mapping = literal_eval(args.atom_mapping)
     return args
 
 
@@ -123,7 +126,8 @@ def train(run_dir,
           lr_verbose=True,
           verbose=False,
           random_baseline=False,
-          combine_mode='diff'
+          combine_mode='diff',
+          atom_mapping=False
           ):
     if seed:
         torch.manual_seed(seed)
@@ -136,6 +140,8 @@ def train(run_dir,
     if dataset=='cyclo':
         data = Cyclo23TS(radius=radius, process=process)
     elif dataset=='gdb':
+        if atom_mapping is True:
+            raise NotImplementedError('atom mapping is not available for the GDB dataset')
         data = GDB722TS(radius=radius, process=process)
     else:
         raise NotImplementedError(f'Cannot load the {dataset} dataset.')
@@ -170,39 +176,41 @@ def train(run_dir,
     model = EquiReact(node_fdim=input_node_feats_dim, edge_fdim=1, verbose=verbose, device=device,
                       max_radius=radius, max_neighbors=max_neighbors, sum_mode=sum_mode, n_s=n_s, n_v=n_v, n_conv_layers=n_conv_layers,
                       distance_emb_dim=distance_emb_dim, graph_mode=graph_mode, dropout_p=dropout_p, random_baseline=random_baseline,
-                      combine_mode=combine_mode)
+                      combine_mode=combine_mode, atom_mapping=atom_mapping)
     print('trainable params in model: ', sum(p.numel() for p in model.parameters() if p.requires_grad))
 
     sampler = None
-    custom_collate = CustomCollator(device=device, nreact=data.max_number_of_reactants, nprod=data.max_number_of_products)
+    custom_collate = CustomCollator(device=device, nreact=data.max_number_of_reactants,
+                                    nprod=data.max_number_of_products, atom_mapping=atom_mapping)
     train_loader = DataLoader(train_data, batch_size=batch_size, shuffle=True, collate_fn=custom_collate,
-                                    pin_memory=pin_memory, num_workers=num_workers)
+                              pin_memory=pin_memory, num_workers=num_workers)
 
     val_loader = DataLoader(val_data, batch_size=batch_size, collate_fn=custom_collate, pin_memory=pin_memory,
                             num_workers=num_workers)
 
     trainer = ReactTrainer(model=model, std=std, device=device, metrics={'mae':MAE()},
-                            run_dir=run_dir, sampler=sampler, val_per_batch=val_per_batch,
-                            checkpoint=checkpoint, num_epochs=num_epochs,
-                            eval_per_epochs=eval_per_epochs, patience=patience,
-                            minimum_epochs=minimum_epochs, models_to_save=models_to_save,
-                            clip_grad=clip_grad, log_iterations=log_iterations,
-                            scheduler_step_per_batch = False, # CHANGED THIS
-                            lr=lr, weight_decay=weight_decay,
-                            lr_scheduler=lr_scheduler, factor=factor, min_lr=min_lr, mode=mode,
-                            lr_scheduler_patience=lr_scheduler_patience, lr_verbose=lr_verbose)
+                           run_dir=run_dir, sampler=sampler, val_per_batch=val_per_batch,
+                           checkpoint=checkpoint, num_epochs=num_epochs,
+                           eval_per_epochs=eval_per_epochs, patience=patience,
+                           minimum_epochs=minimum_epochs, models_to_save=models_to_save,
+                           clip_grad=clip_grad, log_iterations=log_iterations,
+                           scheduler_step_per_batch = False, # CHANGED THIS
+                           lr=lr, weight_decay=weight_decay,
+                           lr_scheduler=lr_scheduler, factor=factor, min_lr=min_lr, mode=mode,
+                           lr_scheduler_patience=lr_scheduler_patience, lr_verbose=lr_verbose)
 
     val_metrics, _, _ = trainer.train(train_loader, val_loader)
 
     if eval_on_test:
         test_loader = DataLoader(test_data, batch_size=batch_size, collate_fn=custom_collate,
-                                    pin_memory=pin_memory, num_workers=num_workers)
+                                 pin_memory=pin_memory, num_workers=num_workers)
         print('Evaluating on test, with test size: ', len(test_data))
 
         test_metrics, _, _ = trainer.evaluation(test_loader, data_split='test')
         return val_metrics, test_metrics, trainer.writer.log_dir
 
     return val_metrics
+
 
 if __name__ == '__main__':
     args = parse_arguments()
@@ -238,4 +246,4 @@ if __name__ == '__main__':
           verbose=args.verbose, radius=args.radius, max_neighbors=args.max_neighbors, sum_mode=args.sum_mode,
           n_s=args.n_s, n_v=args.n_v, n_conv_layers=args.n_conv_layers, distance_emb_dim=args.distance_emb_dim,
           graph_mode=args.graph_mode, dropout_p=args.dropout_p, random_baseline=args.random_baseline,
-          combine_mode=args.combine_mode)
+          combine_mode=args.combine_mode, atom_mapping=args.atom_mapping)
