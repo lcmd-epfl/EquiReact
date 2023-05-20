@@ -306,16 +306,15 @@ class EquiReact(nn.Module):
         if self.atom_mapping is True:
             batch = torch.sort(torch.hstack([g.batch for g in reactants_data])).values.to(self.device)
             mapping = np.hstack(mapping)
-            if 1:
-                x_react = self.forward_repr_mols(reactants_data)
-                x_prod  = self.forward_repr_mols(products_data)
-                x = x_prod[mapping] - x_react
+            x_react = self.forward_repr_mols(reactants_data)
+            x_prod  = self.forward_repr_mols(products_data)
+            x = x_prod[mapping] - x_react
+            # v1
+            if 0:
                 score_atom = self.score_predictor_nodes(x)
                 score = scatter_add(score_atom, index=batch, dim=0)
+            # v2
             else:
-                x_react = self.forward_repr_mols(reactants_data)
-                x_prod  = self.forward_repr_mols(products_data)
-                x = x_prod[mapping] - x_react
                 x = self.atom_diff_nonlin(x)
                 x = scatter_add(x, index=batch, dim=0)
                 score = self.score_predictor_nodes(x)
