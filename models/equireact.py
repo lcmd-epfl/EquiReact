@@ -333,11 +333,11 @@ class EquiReact(nn.Module):
             for graph in products_data:
                 product_energy += self.forward_molecule(graph)
 
-            if self.combine_mode == 'diff' or self.combine_mode == 'difference':
+            if self.combine_mode in ['diff', 'difference']:
                 reaction_energy = product_energy - reactant_energy
             elif self.combine_mode == 'sum':
                 reaction_energy = product_energy + reactant_energy
-            elif self.combine_mode == 'mean' or self.combine_mode == 'average' or self.combine_mode == 'avg':
+            elif self.combine_mode in ['mean', 'average', 'avg']:
                 reaction_energy = (product_energy + reactant_energy) / 2
             elif self.combine_mode == 'mlp':
                 energies = torch.cat((reactant_energy, product_energy), 1)
