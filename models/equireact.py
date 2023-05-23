@@ -168,6 +168,8 @@ class EquiReact(nn.Module):
             nn.Linear(self.n_s, 1)
         )
 
+        # try without relu
+        #TODO doesnt work at all
         self.energy_mlp = nn.Sequential(
             nn.ReLU(),
             nn.Linear(2, 1)
