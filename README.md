@@ -1,4 +1,4 @@
-# #TODO (again)
+# TODO
 
 ## Cyclo
 - Here the baseline is around 3kcal/mol for a non-ensembled model (equivalent)
@@ -10,6 +10,12 @@
    3. Atom mapping as a third option: not working as well as expected
 2. Need to run baseline with atuomatic atom mapping for fairer comparison
 3. When everything is ok we need to cross-validate numbers eg 5-fold 90-5-5 splits (these are the splits used in the baseline)
+
+### Questions:
+- [ ] radius, n neighbours
+- [ ] why MLP not working?
+- [ ] can we use atom mapping in gdb smiles?
+- [ ] how to use atom mapping info better in cyclo?
 
 ## GDB
 - The baseline with atom mapping is around 3kcal/mol
