@@ -1,14 +1,17 @@
 from process.dataloader import GDB722TS as gdb
 
-dlf =gdb(process=True)
+#dlf =gdb(process=True)
+dlf = gdb(process=False)
 
-label, idx, label, idx, r, p_graphs = dlf[0]
-print("r0 graph info", r_0_graph.keys)
-print("coords from graph", r_0_graph.pos)
+out = dlf[0]
+label = out[0]
+print('label', label)
+idx = out[1]
+print('idx', idx)
 
-print("r1 graph info", r_1_graph.keys)
-print("coords from graph", r_1_graph.pos)
-
-for p_graph in p_graphs:
-    print("p graph info", p_graph.keys)
-    print("coords from graph", p_graph.pos)
+reactant_graph = out[2]
+print('reactant graph info', reactant_graph.keys)
+product_graphs = out[3:]
+for product_graph in product_graphs:
+    print('product graph', product_graph.keys)
+    print('pos', product_graph.pos)

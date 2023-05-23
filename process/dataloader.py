@@ -325,7 +325,7 @@ class GDB722TS(Dataset):
 
 
         # Graphs
-        def make_graph(smi, atoms, coords):
+        def make_graph(smi, atoms, coords, idx):
             mol = Chem.MolFromSmiles(smi)
 
             try:
@@ -333,19 +333,44 @@ class GDB722TS(Dataset):
                 assert mol is not None, f"mol obj {idx} is None from smi {smi}"
                 ats = [at.GetSymbol() for at in mol.GetAtoms()]
                 assert len(ats) == len(atoms), f"nats don't match in idx {idx}"
-                print('atoms from smi', ats)
-                print('atoms from xyz', atoms)
                 assert np.all(ats == atoms), "atomtypes don't match"
             except:
-                print('standard smiles failed, canonicalising...')
-                mol = canon_mol(mol)
-                assert mol is not None, f"mol obj {idx} is None from smi {smi}"
-                ats = [at.GetSymbol() for at in mol.GetAtoms()]
-                assert len(ats) == len(atoms), f"nats don't match in idx {idx}"
-                print('atoms from smi', ats)
-                print('atoms from xyz', atoms)
-                assert np.all(ats == atoms), "atomtypes don't match"
-            return get_graph(mol, atoms, coords, self.labels[i],
+                try:
+                    mol = canon_mol(mol)
+                    assert mol is not None, f"mol obj {idx} is None from smi {smi}"
+                    ats = [at.GetSymbol() for at in mol.GetAtoms()]
+                    assert len(ats) == len(atoms), f"nats don't match in idx {idx}"
+
+                    assert np.all(ats == atoms), "atomtypes don't match"
+                except:
+                    unq_atoms = np.unique(atoms)
+                    # coords from xyz
+                    coord_dict = {}
+                    for j, unq_atom in enumerate(unq_atoms):
+                        count = 0
+                        for i, atom in enumerate(atoms):
+                            if atom == unq_atom:
+                                count += 1
+                                label = atom + str(count)
+                                coord_dict[label] = coords[i]
+
+                    ordered_coords = []
+                    mol = Chem.AddHs(mol)
+                    ats = [at.GetSymbol() for at in mol.GetAtoms()]
+                    for j, unq_atom in enumerate(unq_atoms):
+                        count = 0
+                        for atom in ats:
+                            if atom == unq_atom:
+                                count += 1
+                                label = atom + str(count)
+                                coords_from_xyz = coord_dict[label]
+                                ordered_coords.append(coords_from_xyz)
+
+                    assert len(coords) == len(ordered_coords), "coord lengths don't match"
+                    coords = np.array(ordered_coords)
+                    assert len(atoms) == len(ats), "atoms lengths don't match"
+                    atoms = np.array(ats)
+            return get_graph(mol, atoms, coords, self.labels[idx],
                              radius=self.radius, max_neighbor=self.max_neighbor)
 
         print(f"Processing csv file and saving graphs to {self.processed_dir}")
@@ -358,18 +383,19 @@ class GDB722TS(Dataset):
                      edge_attr=torch.zeros(0), y=torch.tensor(0.0), pos=torch.zeros((0,3)))
 
         for i, idx in enumerate(tqdm(self.indices, desc="making graphs")):
-            print('idx', idx)
+         #   print('idx', idx)
             rxnsmi = self.df[self.df['idx'] == idx]['rxn_smiles'].item()
             rsmi, psmis = rxnsmi.split('>>')
 
             # reactant
-            reactant_graphs_list.append(make_graph(rsmi, reactant_atomtypes_list[i], reactant_coords_list[i]))
+            reactant_graphs_list.append(make_graph(rsmi, reactant_atomtypes_list[i], reactant_coords_list[i], i))
 
             # products
             psmis = psmis.split('.')
             nprod = len(products_coords_list[i])
+            indices = [i]*len(psmis)
             assert len(psmis) == nprod, 'number of products doesnt match'
-            pgraphs = [make_graph(*args) for args in zip(psmis, products_atomtypes_list[i], products_coords_list[i])]
+            pgraphs = [make_graph(*args) for args in zip(psmis, products_atomtypes_list[i], products_coords_list[i], indices)]
             padding = [empty] * (self.max_number_of_products-nprod)
             products_graphs_list.append(pgraphs + padding)
 
