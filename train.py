@@ -75,6 +75,7 @@ def parse_arguments():
     p.add_argument('--random_baseline', type=str, default=False, help='random baseline (no graph conv)')
     p.add_argument('--combine_mode', type=str, default='diff', help='combine mode diff, sum, or mean')
     p.add_argument('--atom_mapping', type=str, default=False, help='use atom mapping')
+    p.add_argument('--CV', type=int, default=5, help='cross validate')
 
     args = p.parse_args()
 
@@ -102,6 +103,8 @@ def parse_arguments():
         args.random_baseline = literal_eval(args.random_baseline)
     if type(args.atom_mapping) == str:
         args.atom_mapping = literal_eval(args.atom_mapping)
+    if type(args.CV) == str:
+        args.CV = int(args.CV)
     return args
 
 
@@ -109,7 +112,7 @@ def train(run_dir,
           #setup args
           device='cuda:0', seed=123, eval_on_test=True,
           #dataset args
-          subset=None, tr_frac = 0.75, te_frac = 0.125, process=False,
+          subset=None, tr_frac = 0.9, te_frac = 0.05, process=False, CV=0,
           dataset='cyclo',
           #sampling / dataloader args
           batch_size=8, num_workers=0, pin_memory=False, # pin memory is not working
@@ -129,16 +132,12 @@ def train(run_dir,
           combine_mode='diff',
           atom_mapping=False
           ):
-    if seed:
-        torch.manual_seed(seed)
-        torch.cuda.manual_seed(1)
-        np.random.seed(seed)
 
     device = torch.device("cuda:0" if torch.cuda.is_available() and device == 'cuda' else "cpu")
     print("Running on device", device)
 
     if dataset=='cyclo':
-        data = Cyclo23TS(radius=radius, process=process)
+        data = Cyclo23TS(radius=radius, process=process, atom_mapping=atom_mapping)
     elif dataset=='gdb':
         if atom_mapping is True:
             raise NotImplementedError('atom mapping is not available for the GDB dataset')
@@ -150,66 +149,86 @@ def train(run_dir,
 
     print("Data stdev", std)
 
-    # for now arbitrary data split
-    indices = np.arange(len(data))
-    np.random.shuffle(indices)
+    seed -= 1 # will be +1 in a second
+    maes = []
 
-    if subset:
-        indices = indices[:subset]
-    tr_size = round(tr_frac*len(indices))
-    te_size = round(te_frac*len(indices))
-    va_size = len(indices)-tr_size-te_size
-    tr_indices, te_indices, val_indices = np.split(indices, [tr_size, tr_size+te_size])
-    print('total / train / test / val:', len(indices), len(tr_indices), len(te_indices), len(val_indices))
-    train_data = Subset(data, tr_indices)
-    val_data = Subset(data, val_indices)
-    test_data = Subset(data, te_indices)
+    for i in range(CV):
+        print(f"CV iter {i+1}/{CV}")
+        seed += 1
+        torch.manual_seed(seed)
+        torch.cuda.manual_seed(seed)
+        np.random.seed(seed)
 
-    # train sample
-    label, idx, r0graph = train_data[0][:3]
-    input_node_feats_dim = r0graph.x.shape[1]
-    input_edge_feats_dim = 1
-    print(f"{r0graph=}")
-    print(f"{input_node_feats_dim=}")
-    print(f"{input_edge_feats_dim=}")
+        indices = np.arange(len(data))
+        np.random.shuffle(indices)
 
-    model = EquiReact(node_fdim=input_node_feats_dim, edge_fdim=1, verbose=verbose, device=device,
-                      max_radius=radius, max_neighbors=max_neighbors, sum_mode=sum_mode, n_s=n_s, n_v=n_v, n_conv_layers=n_conv_layers,
-                      distance_emb_dim=distance_emb_dim, graph_mode=graph_mode, dropout_p=dropout_p, random_baseline=random_baseline,
-                      combine_mode=combine_mode, atom_mapping=atom_mapping)
-    print('trainable params in model: ', sum(p.numel() for p in model.parameters() if p.requires_grad))
+        if subset:
+            indices = indices[:subset]
+        tr_size = round(tr_frac*len(indices))
+        te_size = round(te_frac*len(indices))
+        va_size = len(indices)-tr_size-te_size
+        tr_indices, te_indices, val_indices = np.split(indices, [tr_size, tr_size+te_size])
+        print('total / train / test / val:', len(indices), len(tr_indices), len(te_indices), len(val_indices))
+        train_data = Subset(data, tr_indices)
+        val_data = Subset(data, val_indices)
+        test_data = Subset(data, te_indices)
 
-    sampler = None
-    custom_collate = CustomCollator(device=device, nreact=data.max_number_of_reactants,
-                                    nprod=data.max_number_of_products, atom_mapping=atom_mapping)
-    train_loader = DataLoader(train_data, batch_size=batch_size, shuffle=True, collate_fn=custom_collate,
-                              pin_memory=pin_memory, num_workers=num_workers)
+        # train sample
+        label, idx, r0graph = train_data[0][:3]
+        input_node_feats_dim = r0graph.x.shape[1]
+        input_edge_feats_dim = 1
+        if verbose:
+            print(f"{r0graph=}")
+            print(f"{input_node_feats_dim=}")
+            print(f"{input_edge_feats_dim=}")
 
-    val_loader = DataLoader(val_data, batch_size=batch_size, collate_fn=custom_collate, pin_memory=pin_memory,
-                            num_workers=num_workers)
+        model = EquiReact(node_fdim=input_node_feats_dim, edge_fdim=1, verbose=verbose, device=device,
+                          max_radius=radius, max_neighbors=max_neighbors, sum_mode=sum_mode, n_s=n_s, n_v=n_v, n_conv_layers=n_conv_layers,
+                          distance_emb_dim=distance_emb_dim, graph_mode=graph_mode, dropout_p=dropout_p, random_baseline=random_baseline,
+                          combine_mode=combine_mode, atom_mapping=atom_mapping)
+        print('trainable params in model: ', sum(p.numel() for p in model.parameters() if p.requires_grad))
 
-    trainer = ReactTrainer(model=model, std=std, device=device, metrics={'mae':MAE()},
-                           run_dir=run_dir, sampler=sampler, val_per_batch=val_per_batch,
-                           checkpoint=checkpoint, num_epochs=num_epochs,
-                           eval_per_epochs=eval_per_epochs, patience=patience,
-                           minimum_epochs=minimum_epochs, models_to_save=models_to_save,
-                           clip_grad=clip_grad, log_iterations=log_iterations,
-                           scheduler_step_per_batch = False, # CHANGED THIS
-                           lr=lr, weight_decay=weight_decay,
-                           lr_scheduler=lr_scheduler, factor=factor, min_lr=min_lr, mode=mode,
-                           lr_scheduler_patience=lr_scheduler_patience, lr_verbose=lr_verbose)
+        sampler = None
+        custom_collate = CustomCollator(device=device, nreact=data.max_number_of_reactants,
+                                        nprod=data.max_number_of_products, atom_mapping=atom_mapping)
+        train_loader = DataLoader(train_data, batch_size=batch_size, shuffle=True, collate_fn=custom_collate,
+                                  pin_memory=pin_memory, num_workers=num_workers)
 
-    val_metrics, _, _ = trainer.train(train_loader, val_loader)
+        val_loader = DataLoader(val_data, batch_size=batch_size, collate_fn=custom_collate, pin_memory=pin_memory,
+                                num_workers=num_workers)
+
+        trainer = ReactTrainer(model=model, std=std, device=device, metrics={'mae':MAE()},
+                               run_dir=run_dir, sampler=sampler, val_per_batch=val_per_batch,
+                               checkpoint=checkpoint, num_epochs=num_epochs,
+                               eval_per_epochs=eval_per_epochs, patience=patience,
+                               minimum_epochs=minimum_epochs, models_to_save=models_to_save,
+                               clip_grad=clip_grad, log_iterations=log_iterations,
+                               scheduler_step_per_batch = False, # CHANGED THIS
+                               lr=lr, weight_decay=weight_decay,
+                               lr_scheduler=lr_scheduler, factor=factor, min_lr=min_lr, mode=mode,
+                               lr_scheduler_patience=lr_scheduler_patience, lr_verbose=lr_verbose)
+
+        val_metrics, _, _ = trainer.train(train_loader, val_loader)
+
+        if eval_on_test:
+            test_loader = DataLoader(test_data, batch_size=batch_size, collate_fn=custom_collate,
+                                     pin_memory=pin_memory, num_workers=num_workers)
+            print('Evaluating on test, with test size: ', len(test_data))
+
+            # file dump for each split
+            data_split_string = 'test_split_' + str(CV)
+            test_metrics, _, _ = trainer.evaluation(test_loader, data_split=data_split_string)
+            mae_split = test_metrics['mae'] * std
+            maes.append(mae_split)
+     #       return val_metrics, test_metrics, trainer.writer.log_dir
 
     if eval_on_test:
-        test_loader = DataLoader(test_data, batch_size=batch_size, collate_fn=custom_collate,
-                                 pin_memory=pin_memory, num_workers=num_workers)
-        print('Evaluating on test, with test size: ', len(test_data))
+        mean_mae_splits = np.mean(maes)
+        std_mae_splits = np.std(maes)
+        print(f"Mean MAE across splits {mean_mae_splits} +- {std_mae_splits}")
 
-        test_metrics, _, _ = trainer.evaluation(test_loader, data_split='test')
-        return val_metrics, test_metrics, trainer.writer.log_dir
-
-    return val_metrics
+    return
+     #   return val_metrics
 
 
 if __name__ == '__main__':
@@ -246,4 +265,4 @@ if __name__ == '__main__':
           verbose=args.verbose, radius=args.radius, max_neighbors=args.max_neighbors, sum_mode=args.sum_mode,
           n_s=args.n_s, n_v=args.n_v, n_conv_layers=args.n_conv_layers, distance_emb_dim=args.distance_emb_dim,
           graph_mode=args.graph_mode, dropout_p=args.dropout_p, random_baseline=args.random_baseline,
-          combine_mode=args.combine_mode, atom_mapping=args.atom_mapping)
+          combine_mode=args.combine_mode, atom_mapping=args.atom_mapping, CV=args.CV)
