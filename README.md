@@ -17,6 +17,7 @@
 - [ ] can we add something nonlinear to MLP? 
 - [ ] can we use atom mapping in gdb smiles?
 - [ ] how to use atom mapping info better in cyclo?
+- [ ] learning rate? (why some LC oscillate so much)
 
 ## GDB
 - The baseline with atom mapping is around 3kcal/mol
