@@ -14,6 +14,7 @@
 ### Questions:
 - [ ] radius, n neighbours
 - [x] why MLP not working?
+- [ ] can we add something nonlinear to MLP? 
 - [ ] can we use atom mapping in gdb smiles?
 - [ ] how to use atom mapping info better in cyclo?
 
