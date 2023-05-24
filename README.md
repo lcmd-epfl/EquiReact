@@ -13,7 +13,7 @@
 
 ### Questions:
 - [ ] radius, n neighbours
-- [ ] why MLP not working?
+- [x] why MLP not working?
 - [ ] can we use atom mapping in gdb smiles?
 - [ ] how to use atom mapping info better in cyclo?
 
