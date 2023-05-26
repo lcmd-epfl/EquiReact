@@ -77,8 +77,8 @@ class EquiReact(nn.Module):
                  distance_emb_dim: int = 32, dropout_p: float = 0.1,
                  sum_mode='node', verbose=False, device='cpu', graph_mode='energy',
                  random_baseline=False, combine_mode='diff', atom_mapping=False,
-                 **kwargs
-                 ):
+                 attention=False,
+                 **kwargs):
 
         super().__init__(**kwargs)
 
@@ -90,6 +90,7 @@ class EquiReact(nn.Module):
         self.sum_mode = sum_mode
         self.combine_mode = combine_mode
         self.atom_mapping = atom_mapping
+        self.attention = attention
 
         self.max_radius = max_radius
         self.max_neighbors = max_neighbors
@@ -174,11 +175,13 @@ class EquiReact(nn.Module):
             nn.Linear(2, 1)
         )
 
-        n = 2 * self.n_s if self.n_conv_layers >= 3 else self.n_s
+        n_s_full = 2 * self.n_s if self.n_conv_layers >= 3 else self.n_s
         self.atom_diff_nonlin = nn.Sequential(
             nn.ReLU(),
-            nn.Linear(n, n),
+            nn.Linear(n_s_full, n_s_full),
         )
+
+        self.rp_attention = nn.MultiheadAttention(n_s_full, 1)
 
 
     def build_graph(self, data):
@@ -218,8 +221,7 @@ class EquiReact(nn.Module):
         x = torch.cat([x[:, :self.n_s], x[:, -self.n_s:]], dim=1) if self.n_conv_layers >= 3 else x[:, :self.n_s]
         return x, edge_index, edge_attr
 
-
-    def forward_repr_mols(self, data):
+    def forward_repr_mols(self, data, merge=True):
         X = []
         for graph in data:
             if graph.x.shape[0]==0:
@@ -230,7 +232,9 @@ class EquiReact(nn.Module):
             x = torch.split(x, sections)
             X.append(x)
         # regroup so mols from the same reaction are back-to-back
-        X_out = torch.vstack([torch.vstack(x) for x in zip(*X)])
+        X_out = [torch.vstack(x) for x in zip(*X)]
+        if merge:
+            X_out = torch.vstack(X_out)
         return X_out
 
 
@@ -320,6 +324,34 @@ class EquiReact(nn.Module):
                 x = scatter_add(x, index=batch, dim=0)
                 score = self.score_predictor_nodes(x)
             return score
+##########################################################################
+        if self.attention is True:
+            batch = torch.sort(torch.hstack([g.batch for g in reactants_data])).values.to(self.device)
+
+            if 0:
+                # self attention
+                x_react = self.forward_repr_mols(reactants_data, merge=False)
+                x_prod  = self.forward_repr_mols(products_data)
+                x_react_mapped = torch.vstack([self.rp_attention(xr, xr, xr, need_weights=False)[0] for xr in x_react])
+                x = x_prod - x_react_mapped
+                # v1
+                if 0:
+                    score_atom = self.score_predictor_nodes(x)
+                    score = scatter_add(score_atom, index=batch, dim=0)
+                # v2
+                else:
+                    x = self.atom_diff_nonlin(x)
+                    x = scatter_add(x, index=batch, dim=0)
+                    score = self.score_predictor_nodes(x)
+                return score
+            else:
+                # cross attention
+                x_react = self.forward_repr_mols(reactants_data, merge=False)
+                x_prod  = self.forward_repr_mols(products_data, merge=False)
+                x = torch.vstack([self.rp_attention(xp, xr, xr, need_weights=False)[0] for xp, xr in zip(x_prod, x_react)])
+                x = scatter_add(x, index=batch, dim=0)
+                score = self.score_predictor_nodes(x)
+
 ##########################################################################
 
         if self.graph_mode == 'vector':
