@@ -329,7 +329,7 @@ class EquiReact(nn.Module):
         if self.attention is True:
             batch = torch.sort(torch.hstack([g.batch for g in reactants_data])).values.to(self.device)
 
-            if 0:
+            if 1:
                 # self attention
                 x_react = self.forward_repr_mols(reactants_data, merge=False)
                 x_prod  = self.forward_repr_mols(products_data)
@@ -349,7 +349,12 @@ class EquiReact(nn.Module):
                 # cross attention
                 x_react = self.forward_repr_mols(reactants_data, merge=False)
                 x_prod  = self.forward_repr_mols(products_data, merge=False)
-                x = torch.vstack([self.rp_attention(xp, xr, xr, need_weights=False)[0] for xp, xr in zip(x_prod, x_react)])
+                if 0:
+                    # normal
+                    x = torch.vstack([self.rp_attention(xp, xr, xr, need_weights=False)[0] for xp, xr in zip(x_prod, x_react)])
+                else:
+                    # inverse
+                    x = torch.vstack([self.rp_attention(xr, xp, xp, need_weights=False)[0] for xp, xr in zip(x_prod, x_react)])
                 x = scatter_add(x, index=batch, dim=0)
                 score = self.score_predictor_nodes(x)
 
