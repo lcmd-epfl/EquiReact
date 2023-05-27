@@ -221,16 +221,17 @@ class EquiReact(nn.Module):
         x = torch.cat([x[:, :self.n_s], x[:, -self.n_s:]], dim=1) if self.n_conv_layers >= 3 else x[:, :self.n_s]
         return x, edge_index, edge_attr
 
+
     def forward_repr_mols(self, data, merge=True):
+        batch_size = data[0].num_graphs
         X = []
         for graph in data:
             if graph.x.shape[0]==0:
                 continue
             x = self.forward_repr_mol(graph)[0]
             # split into molecules
-            sections = tuple(np.unique(graph.batch, return_counts=True)[1])
-            x = torch.split(x, sections)
-            X.append(x)
+            sections = [np.count_nonzero(graph.batch==i) for i in range(batch_size)]
+            X.append(torch.split(x, sections))
         # regroup so mols from the same reaction are back-to-back
         X_out = [torch.vstack(x) for x in zip(*X)]
         if merge:
