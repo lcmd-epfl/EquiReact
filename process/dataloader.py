@@ -278,6 +278,7 @@ class GDB722TS(Dataset):
             self.reactant_graphs = torch.load(os.path.join(self.processed_dir, 'reactant_graphs.pt'))
             self.products_graphs = torch.load(os.path.join(self.processed_dir, 'products_graphs.pt'))
             print(f"Coords and graphs successfully read from {self.processed_dir}")
+        print()
 
 
     def __len__(self):
@@ -353,15 +354,12 @@ class GDB722TS(Dataset):
                     ordered_coords = []
                     ordered_elements = []
                     ats = [at.GetSymbol() for at in mol.GetAtoms()]
-                    for unq_atom in unq_atoms:
-                        count = 0
-                        for atom in ats:
-                            if atom == unq_atom:
-                                label = unq_atom + str(count+1)
-                                coords_from_xyz = coord_dict[label]
-                                ordered_coords.append(coords_from_xyz)
-                                ordered_elements.append(element_dict[label])
-                                count += 1
+                    count = {unq_atom: 0 for unq_atom in unq_atoms}
+                    for atom in ats:
+                        label = atom + str(count[atom]+1)
+                        ordered_coords.append(coord_dict[label])
+                        ordered_elements.append(element_dict[label])
+                        count[atom] += 1
 
                     assert np.all(ats == ordered_elements), "reordering went wrong"
 
@@ -382,7 +380,7 @@ class GDB722TS(Dataset):
                      edge_attr=torch.zeros(0), y=torch.tensor(0.0), pos=torch.zeros((0,3)))
 
         for i, idx in enumerate(tqdm(self.indices, desc="making graphs")):
-         #   print('idx', idx)
+            #print(f'{idx=}')
             rxnsmi = self.df[self.df['idx'] == idx]['rxn_smiles'].item()
             rsmi, psmis = rxnsmi.split('>>')
 
