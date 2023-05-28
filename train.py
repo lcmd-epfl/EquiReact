@@ -76,6 +76,7 @@ def parse_arguments():
     p.add_argument('--combine_mode', type=str, default='mean', help='combine mode diff, sum, or mean')
     p.add_argument('--atom_mapping', type=str, default=False, help='use atom mapping')
     p.add_argument('--CV', type=int, default=5, help='cross validate')
+    p.add_argument('--attention', type=str, default=False, help='use attention')
 
     args = p.parse_args()
 
@@ -105,6 +106,8 @@ def parse_arguments():
         args.atom_mapping = literal_eval(args.atom_mapping)
     if type(args.CV) == str:
         args.CV = int(args.CV)
+    if type(args.attention) == str:
+        args.attention = literal_eval(args.attention)
     return args
 
 
@@ -130,7 +133,8 @@ def train(run_dir,
           verbose=False,
           random_baseline=False,
           combine_mode='diff',
-          atom_mapping=False
+          atom_mapping=False,
+          attention=False,
           ):
 
     device = torch.device("cuda:0" if torch.cuda.is_available() and device == 'cuda' else "cpu")
@@ -185,7 +189,7 @@ def train(run_dir,
         model = EquiReact(node_fdim=input_node_feats_dim, edge_fdim=1, verbose=verbose, device=device,
                           max_radius=radius, max_neighbors=max_neighbors, sum_mode=sum_mode, n_s=n_s, n_v=n_v, n_conv_layers=n_conv_layers,
                           distance_emb_dim=distance_emb_dim, graph_mode=graph_mode, dropout_p=dropout_p, random_baseline=random_baseline,
-                          combine_mode=combine_mode, atom_mapping=atom_mapping)
+                          combine_mode=combine_mode, atom_mapping=atom_mapping, attention=attention)
         print('trainable params in model: ', sum(p.numel() for p in model.parameters() if p.requires_grad))
 
         sampler = None
@@ -265,4 +269,4 @@ if __name__ == '__main__':
           verbose=args.verbose, radius=args.radius, max_neighbors=args.max_neighbors, sum_mode=args.sum_mode,
           n_s=args.n_s, n_v=args.n_v, n_conv_layers=args.n_conv_layers, distance_emb_dim=args.distance_emb_dim,
           graph_mode=args.graph_mode, dropout_p=args.dropout_p, random_baseline=args.random_baseline,
-          combine_mode=args.combine_mode, atom_mapping=args.atom_mapping, CV=args.CV)
+          combine_mode=args.combine_mode, atom_mapping=args.atom_mapping, CV=args.CV, attention=args.attention)
