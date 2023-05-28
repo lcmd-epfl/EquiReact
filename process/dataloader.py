@@ -327,44 +327,37 @@ class GDB722TS(Dataset):
         # Graphs
         def make_graph(smi, atoms, coords, idx):
             mol = Chem.MolFromSmiles(smi)
+            assert mol is not None, f"mol obj {idx} is None from smi {smi}"
+            mol = Chem.AddHs(mol)
+            assert len(atoms)==mol.GetNumAtoms(), f"nats don't match in idx {idx}"
 
             try:
-                mol = Chem.AddHs(mol)
-                assert mol is not None, f"mol obj {idx} is None from smi {smi}"
                 ats = [at.GetSymbol() for at in mol.GetAtoms()]
-                assert len(ats) == len(atoms), f"nats don't match in idx {idx}"
                 assert np.all(ats == atoms), "atomtypes don't match"
             except:
                 try:
                     mol = canon_mol(mol)
-                    assert mol is not None, f"mol obj {idx} is None from smi {smi}"
                     ats = [at.GetSymbol() for at in mol.GetAtoms()]
-                    assert len(ats) == len(atoms), f"nats don't match in idx {idx}"
-
                     assert np.all(ats == atoms), "atomtypes don't match"
                 except:
                     unq_atoms = np.unique(atoms)
                     # coords from xyz
                     coord_dict = {}
-                    for j, unq_atom in enumerate(unq_atoms):
-                        count = 0
-                        for i, atom in enumerate(atoms):
-                            if atom == unq_atom:
-                                count += 1
-                                label = atom + str(count)
-                                coord_dict[label] = coords[i]
+                    for unq_atom in unq_atoms:
+                        for count, i in enumerate(np.where(atoms==unq_atom)[0]):
+                            label = unq_atom + str(count+1)
+                            coord_dict[label] = coords[i]
 
                     ordered_coords = []
-                    mol = Chem.AddHs(mol)
                     ats = [at.GetSymbol() for at in mol.GetAtoms()]
-                    for j, unq_atom in enumerate(unq_atoms):
+                    for unq_atom in unq_atoms:
                         count = 0
                         for atom in ats:
                             if atom == unq_atom:
-                                count += 1
-                                label = atom + str(count)
+                                label = unq_atom + str(count+1)
                                 coords_from_xyz = coord_dict[label]
                                 ordered_coords.append(coords_from_xyz)
+                                count += 1
 
                     assert len(coords) == len(ordered_coords), "coord lengths don't match"
                     coords = np.array(ordered_coords)
