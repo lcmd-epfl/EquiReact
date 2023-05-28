@@ -343,12 +343,15 @@ class GDB722TS(Dataset):
                     unq_atoms = np.unique(atoms)
                     # coords from xyz
                     coord_dict = {}
+                    element_dict = {}
                     for unq_atom in unq_atoms:
                         for count, i in enumerate(np.where(atoms==unq_atom)[0]):
                             label = unq_atom + str(count+1)
                             coord_dict[label] = coords[i]
+                            element_dict[label] = unq_atom
 
                     ordered_coords = []
+                    ordered_elements = []
                     ats = [at.GetSymbol() for at in mol.GetAtoms()]
                     for unq_atom in unq_atoms:
                         count = 0
@@ -357,7 +360,10 @@ class GDB722TS(Dataset):
                                 label = unq_atom + str(count+1)
                                 coords_from_xyz = coord_dict[label]
                                 ordered_coords.append(coords_from_xyz)
+                                ordered_elements.append(element_dict[label])
                                 count += 1
+
+                    assert np.all(ats == ordered_elements), "reordering went wrong"
 
                     assert len(coords) == len(ordered_coords), "coord lengths don't match"
                     coords = np.array(ordered_coords)
