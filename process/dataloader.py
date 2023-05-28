@@ -390,9 +390,8 @@ class GDB722TS(Dataset):
             # products
             psmis = psmis.split('.')
             nprod = len(products_coords_list[i])
-            indices = [i]*len(psmis)
             assert len(psmis) == nprod, 'number of products doesnt match'
-            pgraphs = [make_graph(*args) for args in zip(psmis, products_atomtypes_list[i], products_coords_list[i], indices)]
+            pgraphs = [make_graph(*args, i) for args in zip(psmis, products_atomtypes_list[i], products_coords_list[i])]
             padding = [empty] * (self.max_number_of_products-nprod)
             products_graphs_list.append(pgraphs + padding)
 
