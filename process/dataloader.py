@@ -307,6 +307,7 @@ class GDB722TS(Dataset):
             # 1 reactant
             r_file = f'{rxn_dir}r{idx:06}.xyz'
             atomtypes, coords = reader(r_file)
+            coords *= 0.529177 # bohr to angstrom
             reactant_atomtypes_list.append(atomtypes)
             reactant_coords_list.append(coords)
             # multiple products
@@ -316,6 +317,7 @@ class GDB722TS(Dataset):
             assert len(p_files) <= self.max_number_of_products, 'more products than the maximum number of products'
             for p_file in p_files:
                 atomtypes, coords = reader(p_file)
+                coords *= 0.529177  # bohr to angstrom
                 products_atomtypes_list[-1].append(atomtypes)
                 products_coords_list[-1].append(coords)
 
