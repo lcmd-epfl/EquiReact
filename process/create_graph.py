@@ -7,6 +7,8 @@ from rdkit.Chem.rdPartialCharges import ComputeGasteigerCharges
 from torch_geometric.data import Data
 import scipy.spatial as spa
 
+
+BOHR_TO_ANG = 0.529177210903
 periodic_table = GetPeriodicTable()
 
 allowable_features = {
@@ -77,7 +79,7 @@ def safe_index(l, e):
     except:
         return len(l) - 1
 
-def reader(xyz):
+def reader(xyz, bohr=False):
     with open(xyz, 'r') as f:
         lines = f.readlines()
     lines = [line.strip() for line in lines]
@@ -94,10 +96,13 @@ def reader(xyz):
         atomtype, x, y, z = line.split()
         atomtypes.append(str(atomtype))
         coords.append([float(x), float(y), float(z)])
+    coords = np.array(coords)
+    if bohr:
+        coords *= BOHR_TO_ANG
 
     assert len(atomtypes) == nat
     assert len(coords) == nat
-    return np.array(atomtypes), np.array(coords)
+    return np.array(atomtypes), coords
 
 def atom_featurizer(mol):
     ComputeGasteigerCharges(mol)  # they are Nan for 93 molecules in all of PDBbind. We put a 0 in that case.

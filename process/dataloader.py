@@ -278,6 +278,7 @@ class GDB722TS(Dataset):
             self.reactant_graphs = torch.load(os.path.join(self.processed_dir, 'reactant_graphs.pt'))
             self.products_graphs = torch.load(os.path.join(self.processed_dir, 'products_graphs.pt'))
             print(f"Coords and graphs successfully read from {self.processed_dir}")
+        print()
 
 
     def __len__(self):
@@ -306,7 +307,7 @@ class GDB722TS(Dataset):
             rxn_dir = f'{self.files_dir}{idx:06}/'
             # 1 reactant
             r_file = f'{rxn_dir}r{idx:06}.xyz'
-            atomtypes, coords = reader(r_file)
+            atomtypes, coords = reader(r_file, bohr=True)
             reactant_atomtypes_list.append(atomtypes)
             reactant_coords_list.append(coords)
             # multiple products
@@ -315,7 +316,7 @@ class GDB722TS(Dataset):
             products_coords_list.append([])
             assert len(p_files) <= self.max_number_of_products, 'more products than the maximum number of products'
             for p_file in p_files:
-                atomtypes, coords = reader(p_file)
+                atomtypes, coords = reader(p_file, bohr=True)
                 products_atomtypes_list[-1].append(atomtypes)
                 products_coords_list[-1].append(coords)
 
@@ -327,44 +328,40 @@ class GDB722TS(Dataset):
         # Graphs
         def make_graph(smi, atoms, coords, idx):
             mol = Chem.MolFromSmiles(smi)
+            assert mol is not None, f"mol obj {idx} is None from smi {smi}"
+            mol = Chem.AddHs(mol)
+            assert len(atoms)==mol.GetNumAtoms(), f"nats don't match in idx {idx}"
 
             try:
-                mol = Chem.AddHs(mol)
-                assert mol is not None, f"mol obj {idx} is None from smi {smi}"
                 ats = [at.GetSymbol() for at in mol.GetAtoms()]
-                assert len(ats) == len(atoms), f"nats don't match in idx {idx}"
                 assert np.all(ats == atoms), "atomtypes don't match"
             except:
                 try:
                     mol = canon_mol(mol)
-                    assert mol is not None, f"mol obj {idx} is None from smi {smi}"
                     ats = [at.GetSymbol() for at in mol.GetAtoms()]
-                    assert len(ats) == len(atoms), f"nats don't match in idx {idx}"
-
                     assert np.all(ats == atoms), "atomtypes don't match"
                 except:
                     unq_atoms = np.unique(atoms)
                     # coords from xyz
                     coord_dict = {}
-                    for j, unq_atom in enumerate(unq_atoms):
-                        count = 0
-                        for i, atom in enumerate(atoms):
-                            if atom == unq_atom:
-                                count += 1
-                                label = atom + str(count)
-                                coord_dict[label] = coords[i]
+                    element_dict = {}
+                    for unq_atom in unq_atoms:
+                        for count, i in enumerate(np.where(atoms==unq_atom)[0]):
+                            label = unq_atom + str(count+1)
+                            coord_dict[label] = coords[i]
+                            element_dict[label] = unq_atom
 
                     ordered_coords = []
-                    mol = Chem.AddHs(mol)
+                    ordered_elements = []
                     ats = [at.GetSymbol() for at in mol.GetAtoms()]
-                    for j, unq_atom in enumerate(unq_atoms):
-                        count = 0
-                        for atom in ats:
-                            if atom == unq_atom:
-                                count += 1
-                                label = atom + str(count)
-                                coords_from_xyz = coord_dict[label]
-                                ordered_coords.append(coords_from_xyz)
+                    count = {unq_atom: 0 for unq_atom in unq_atoms}
+                    for atom in ats:
+                        label = atom + str(count[atom]+1)
+                        ordered_coords.append(coord_dict[label])
+                        ordered_elements.append(element_dict[label])
+                        count[atom] += 1
+
+                    assert np.all(ats == ordered_elements), "reordering went wrong"
 
                     assert len(coords) == len(ordered_coords), "coord lengths don't match"
                     coords = np.array(ordered_coords)
@@ -383,7 +380,7 @@ class GDB722TS(Dataset):
                      edge_attr=torch.zeros(0), y=torch.tensor(0.0), pos=torch.zeros((0,3)))
 
         for i, idx in enumerate(tqdm(self.indices, desc="making graphs")):
-         #   print('idx', idx)
+            #print(f'{idx=}')
             rxnsmi = self.df[self.df['idx'] == idx]['rxn_smiles'].item()
             rsmi, psmis = rxnsmi.split('>>')
 
@@ -393,9 +390,8 @@ class GDB722TS(Dataset):
             # products
             psmis = psmis.split('.')
             nprod = len(products_coords_list[i])
-            indices = [i]*len(psmis)
             assert len(psmis) == nprod, 'number of products doesnt match'
-            pgraphs = [make_graph(*args) for args in zip(psmis, products_atomtypes_list[i], products_coords_list[i], indices)]
+            pgraphs = [make_graph(*args, i) for args in zip(psmis, products_atomtypes_list[i], products_coords_list[i])]
             padding = [empty] * (self.max_number_of_products-nprod)
             products_graphs_list.append(pgraphs + padding)
 
