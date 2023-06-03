@@ -234,7 +234,7 @@ if __name__ == '__main__':
     sys.stdout = Logger(logpath=logpath, syspart=sys.stdout)
     sys.stderr = Logger(logpath=logpath, syspart=sys.stderr)
 
-    wandb.init(project='nequireact')
+    wandb.init(project='nequireact-gdb' if args.dataset=='gdb' else 'nequireact')
     if args.wandb_name:
         wandb.run.name = args.wandb_name
         print('wandb name', args.wandb_name)
