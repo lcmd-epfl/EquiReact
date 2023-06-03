@@ -53,67 +53,43 @@ class Logger(object):
 
 def parse_arguments():
     p = argparse.ArgumentParser()
-    p.add_argument('--experiment_name', type=str, default='', help='name that will be added to the runs folder output')
-    p.add_argument('--num_epochs', type=str, default='2500', help='number of times to iterate through all samples')
-    p.add_argument('--checkpoint', type=str, help='path the checkpoint file to continue training')
-    p.add_argument('--device', type=str, help='cuda or cpu')
-    p.add_argument('--subset', type=int, default=None, help='size of a subset to use instead of the full set (tr+te+va)')
-    p.add_argument('--wandb_name', type=str, default=None, help='name of wandb run')
-    p.add_argument('--logdir', type=str, default='logs', help='log dir')
-    p.add_argument('--process', type=str, default=False, help='(re-)process data by force (if data is already there, default is to not reprocess)?')
-    p.add_argument('--verbose', type=str, default=False, help='Print dims throughout the training process')
-    p.add_argument('--radius', type=float, default=5.0, help='max radius of graph')
-    p.add_argument('--max_neighbors', type=int, default=20, help='max number of neighbors')
-    p.add_argument('--sum_mode', type=str, default='node', help='sum node (node, edge, or both)')
-    p.add_argument('--n_s', type=int, default=48, help='dimension of node features')
-    p.add_argument('--n_v', type=int, default=48, help='dimension of extra (p/d) features')
-    p.add_argument('--n_conv_layers', type=int, default=2, help='number of conv layers')
-    p.add_argument('--distance_emb_dim', type=int, default=16, help='how many gaussian funcs to use')
-    p.add_argument('--graph_mode', type=str, default='energy', help='prediction mode, energy or vector')
-    p.add_argument('--dropout_p', type=float, default=0.05, help='dropout probability')
-    p.add_argument('--dataset', type=str, default='cyclo', help='cyclo or gdb')
-    p.add_argument('--random_baseline', type=str, default=False, help='random baseline (no graph conv)')
-    p.add_argument('--combine_mode', type=str, default='mean', help='combine mode diff, sum, or mean')
-    p.add_argument('--atom_mapping', type=str, default=False, help='use atom mapping')
-    p.add_argument('--CV', type=int, default=5, help='cross validate')
-    p.add_argument('--attention', type=str, default=False, help='use attention')
+    p.add_argument('--experiment_name'  ,  type=str   ,  default=''       ,  help='name that will be added to the runs folder output')
+    p.add_argument('--num_epochs'       ,  type=int   ,  default=2500     ,  help='number of times to iterate through all samples')
+    p.add_argument('--subset'           ,  type=int   ,  default=None     ,  help='size of a subset to use instead of the full set (tr+te+va)')
+    p.add_argument('--max_neighbors'    ,  type=int   ,  default=20       ,  help='max number of neighbors')
+    p.add_argument('--n_s'              ,  type=int   ,  default=48       ,  help='dimension of node features')
+    p.add_argument('--n_v'              ,  type=int   ,  default=48       ,  help='dimension of extra (p/d) features')
+    p.add_argument('--n_conv_layers'    ,  type=int   ,  default=2        ,  help='number of conv layers')
+    p.add_argument('--distance_emb_dim' ,  type=int   ,  default=16       ,  help='how many gaussian funcs to use')
+    p.add_argument('--CV'               ,  type=int   ,  default=5        ,  help='cross validate')
+    p.add_argument('--radius'           ,  type=float ,  default=5.0      ,  help='max radius of graph')
+    p.add_argument('--dropout_p'        ,  type=float ,  default=0.05     ,  help='dropout probability')
+    p.add_argument('--checkpoint'       ,  type=str   ,  default=None     ,  help='path the checkpoint file to continue training')
+    p.add_argument('--wandb_name'       ,  type=str   ,  default=None     ,  help='name of wandb run')
+    p.add_argument('--attention'        ,  type=str   ,  default=None     ,  help='use attention')
+    p.add_argument('--device'           ,  type=str   ,  default='cuda'   ,  help='cuda or cpu')
+    p.add_argument('--logdir'           ,  type=str   ,  default='logs'   ,  help='log dir')
+    p.add_argument('--sum_mode'         ,  type=str   ,  default='node'   ,  help='sum node (node                                                 edge                              or both)')
+    p.add_argument('--graph_mode'       ,  type=str   ,  default='energy' ,  help='prediction mode                                                energy or vector')
+    p.add_argument('--dataset'          ,  type=str   ,  default='cyclo'  ,  help='cyclo or gdb')
+    p.add_argument('--combine_mode'     ,  type=str   ,  default='mean'   ,  help='combine mode diff                                              sum                               or mean')
+    p.add_argument('--process'          ,  type=str   ,  default=False    ,  help='(re-)process data by force (if data is already there           default is to not reprocess)?')
+    p.add_argument('--verbose'          ,  type=str   ,  default=False    ,  help='Print dims throughout the training process')
+    p.add_argument('--atom_mapping'     ,  type=str   ,  default=False    ,  help='use atom mapping')
+    p.add_argument('--random_baseline'  ,  type=str   ,  default=False    ,  help='random baseline (no graph conv)')
 
     args = p.parse_args()
 
-    if type(args.verbose) == str:
-        args.verbose = literal_eval(args.verbose)
-    if type(args.process) == str:
-        args.process = literal_eval(args.process)
-    if type(args.num_epochs) == str:
-        args.num_epochs = int(args.num_epochs)
-    if type(args.radius) == str:
-        args.radius = float(args.radius)
-    if type(args.max_neighbors) == str:
-        args.max_neighbors = int(args.max_neighbors)
-    if type(args.n_s) == str:
-        args.n_s = int(args.n_s)
-    if type(args.n_v) == str:
-        args.n_v = int(args.n_v)
-    if type(args.n_conv_layers) == str:
-        args.n_conv_layers = int(args.n_conv_layers)
-    if type(args.distance_emb_dim) == str:
-        args.distance_emb_dim = int(args.distance_emb_dim)
-    if type(args.dropout_p) == str:
-        args.dropout_p = float(args.dropout_p)
-    if type(args.random_baseline) == str:
-        args.random_baseline = literal_eval(args.random_baseline)
-    if type(args.atom_mapping) == str:
-        args.atom_mapping = literal_eval(args.atom_mapping)
-    if type(args.CV) == str:
-        args.CV = int(args.CV)
-    if type(args.attention) == str:
-        args.attention = literal_eval(args.attention)
+    for i in ['verbose', 'process', 'random_baseline', 'atom_mapping']:
+        if type(eval(f'args.{i}')) == str:
+            exec(f'args.{i} = literal_eval(args.{i})')
+
     return args
 
 
 def train(run_dir,
           #setup args
-          device='cuda:0', seed=123, eval_on_test=True,
+          device='cuda', seed=123, eval_on_test=True,
           #dataset args
           subset=None, tr_frac = 0.9, te_frac = 0.05, process=False, CV=0,
           dataset='cyclo',
@@ -134,7 +110,7 @@ def train(run_dir,
           random_baseline=False,
           combine_mode='diff',
           atom_mapping=False,
-          attention=False,
+          attention=None,
           ):
 
     device = torch.device("cuda:0" if torch.cuda.is_available() and device == 'cuda' else "cpu")
@@ -148,9 +124,10 @@ def train(run_dir,
         data = GDB722TS(radius=radius, process=process)
     else:
         raise NotImplementedError(f'Cannot load the {dataset} dataset.')
+    print()
+
     labels = data.labels
     std = data.std
-
     print("Data stdev", std)
 
     seed -= 1 # will be +1 in a second
@@ -263,7 +240,8 @@ if __name__ == '__main__':
         print('wandb name', args.wandb_name)
     else:
         print('no wandb name specified')
-    print('input args', args)
+    print()
+    print('input args', args, '\n')
     train(run_dir, device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint, subset=args.subset,
           dataset=args.dataset, process=args.process,
           verbose=args.verbose, radius=args.radius, max_neighbors=args.max_neighbors, sum_mode=args.sum_mode,

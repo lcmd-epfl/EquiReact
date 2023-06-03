@@ -77,7 +77,7 @@ class EquiReact(nn.Module):
                  distance_emb_dim: int = 32, dropout_p: float = 0.1,
                  sum_mode='node', verbose=False, device='cpu', graph_mode='energy',
                  random_baseline=False, combine_mode='diff', atom_mapping=False,
-                 attention=False,
+                 attention=None,
                  **kwargs):
 
         super().__init__(**kwargs)
@@ -309,54 +309,48 @@ class EquiReact(nn.Module):
         batch_size = reactants_data[0].num_graphs
 
 ##########################################################################
+
         if self.atom_mapping is True:
             batch = torch.sort(torch.hstack([g.batch for g in reactants_data])).values.to(self.device)
             mapping = np.hstack(mapping)
             x_react = self.forward_repr_mols(reactants_data)
             x_prod  = self.forward_repr_mols(products_data)
             x = x_prod[mapping] - x_react
-            # v1
-            if 0:
+            if self.graph_mode == 'energy':
                 score_atom = self.score_predictor_nodes(x)
                 score = scatter_add(score_atom, index=batch, dim=0)
-            # v2
-            else:
+            elif self.graph_mode == 'vector':
                 x = self.atom_diff_nonlin(x)
                 x = scatter_add(x, index=batch, dim=0)
                 score = self.score_predictor_nodes(x)
             return score
+
 ##########################################################################
-        if self.attention is True:
+
+        if self.attention is not None:
             batch = torch.sort(torch.hstack([g.batch for g in reactants_data])).values.to(self.device)
 
-            if 1:
-                # self attention
+            if self.attention == 'self':
                 x_react = self.forward_repr_mols(reactants_data, merge=False)
                 x_prod  = self.forward_repr_mols(products_data)
                 x_react_mapped = torch.vstack([self.rp_attention(xr, xr, xr, need_weights=False)[0] for xr in x_react])
                 x = x_prod - x_react_mapped
-                # v1
-                if 0:
+                if self.graph_mode == 'energy':
                     score_atom = self.score_predictor_nodes(x)
                     score = scatter_add(score_atom, index=batch, dim=0)
-                # v2
-                else:
+                elif self.graph_mode == 'vector':
                     x = self.atom_diff_nonlin(x)
                     x = scatter_add(x, index=batch, dim=0)
                     score = self.score_predictor_nodes(x)
                 return score
-            else:
-                # cross attention
+            elif self.attention == 'cross':
                 x_react = self.forward_repr_mols(reactants_data, merge=False)
                 x_prod  = self.forward_repr_mols(products_data, merge=False)
-                if 0:
-                    # normal
-                    x = torch.vstack([self.rp_attention(xp, xr, xr, need_weights=False)[0] for xp, xr in zip(x_prod, x_react)])
-                else:
-                    # inverse
-                    x = torch.vstack([self.rp_attention(xr, xp, xp, need_weights=False)[0] for xp, xr in zip(x_prod, x_react)])
+                x = torch.vstack([self.rp_attention(xp, xr, xr, need_weights=False)[0] for xp, xr in zip(x_prod, x_react)])
                 x = scatter_add(x, index=batch, dim=0)
                 score = self.score_predictor_nodes(x)
+            else:
+                raise NotImplementedError(f'attention "{self.attention}" not defined')
 
 ##########################################################################
 
