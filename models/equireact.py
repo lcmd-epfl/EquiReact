@@ -181,7 +181,7 @@ class EquiReact(nn.Module):
             nn.Linear(n_s_full, n_s_full),
         )
 
-        self.rp_attention = nn.MultiheadAttention(n_s_full, 1)
+        self.rp_attention = nn.MultiheadAttention(n_s_full, 1)  # query, key, value
 
 
     def build_graph(self, data):
@@ -342,7 +342,6 @@ class EquiReact(nn.Module):
                     x = self.atom_diff_nonlin(x)
                     x = scatter_add(x, index=batch, dim=0)
                     score = self.score_predictor_nodes(x)
-                return score
             elif self.attention == 'cross':
                 x_react = self.forward_repr_mols(reactants_data, merge=False)
                 x_prod  = self.forward_repr_mols(products_data, merge=False)
@@ -351,6 +350,7 @@ class EquiReact(nn.Module):
                 score = self.score_predictor_nodes(x)
             else:
                 raise NotImplementedError(f'attention "{self.attention}" not defined')
+            return score
 
 ##########################################################################
 
