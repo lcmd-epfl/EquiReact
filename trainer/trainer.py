@@ -48,7 +48,8 @@ def concat_if_list(tensor_or_tensors):
 class Trainer():
     def __init__(self, model, metrics: Dict[str, Callable], main_metric: str, device: torch.device,
                  optim=Adam, main_metric_goal: str = 'min',
-                 loss_func=torch.nn.MSELoss(), scheduler_step_per_batch: bool = True, run_dir='', sampler=None,
+                 loss_func=torch.nn.MSELoss(), scheduler_step_per_batch: bool = True, sampler=None,
+                 run_dir='', run_name='',
                  checkpoint=None, num_epochs=0, eval_per_epochs=0, patience=0,
                  minimum_epochs=0, models_to_save=[], clip_grad=None, log_iterations=0, lr=0.0001,
                  weight_decay=0.0001, lr_scheduler=None, factor=0, min_lr=0, mode='max', lr_scheduler_patience=0,
@@ -103,6 +104,7 @@ class Trainer():
             self.optim_steps = 0
             self.best_val_score = -np.inf if self.main_metric_goal == 'max' else np.inf  # running score to decide whether or not a new model should be saved
             self.log_dir = run_dir
+        self.run_name = run_name
 
         #for i, param_group in enumerate(self.optim.param_groups):
         #    param_group['lr'] = 0.0003
@@ -151,23 +153,23 @@ class Trainer():
                 if val_score >= self.best_val_score and self.main_metric_goal == 'max' or val_score <= self.best_val_score and self.main_metric_goal == 'min':
                     epochs_no_improve = 0
                     self.best_val_score = val_score
-                    self.save_checkpoint(epoch, checkpoint_name='best_checkpoint.pt')
+                    self.save_checkpoint(epoch, checkpoint_name=f'{self.run_name}.best_checkpoint.pt')
                 else:
                     epochs_no_improve += 1
-                self.save_checkpoint(epoch, checkpoint_name='last_checkpoint.pt')
+                self.save_checkpoint(epoch, checkpoint_name=f'{self.run_name}.last_checkpoint.pt')
                 print(f'Epochs with no improvement: [ {epochs_no_improve} ] and the best {self.main_metric} was in {epoch - epochs_no_improve}')
                 if epochs_no_improve >= self.patience and epoch >= self.minimum_epochs:  # stopping criterion
                     print(f'Early stopping criterion based on -{self.main_metric}- that should be {self.main_metric_goal}-imized reached after {epoch} epochs. Best model checkpoint was in epoch {epoch - epochs_no_improve}.')
                     break
                 if epoch in self.models_to_save:
-                    shutil.copyfile(os.path.join(self.log_dir, 'best_checkpoint.pt'),
-                                        os.path.join(self.log_dir, f'best_checkpoint_{epoch}epochs.pt'))
+                    shutil.copyfile(os.path.join(self.log_dir, f'{self.run_name}.best_checkpoint.pt'),
+                                    os.path.join(self.log_dir, f'{self.run_name}.best_checkpoint_{epoch}epochs.pt'))
                 self.after_epoch()
                 #if val_loss > 10000:
                 #    raise Exception
 
         # evaluate on best checkpoint
-        checkpoint = torch.load(os.path.join(self.log_dir, 'best_checkpoint.pt'), map_location=self.device)
+        checkpoint = torch.load(os.path.join(self.log_dir, f'{self.run_name}.best_checkpoint.pt'), map_location=self.device)
         self.model.load_state_dict(checkpoint['model_state_dict'])
         return self.evaluation(val_loader, data_split='val_best_checkpoint')
 
@@ -254,7 +256,7 @@ class Trainer():
         self.model.eval()
         metrics, predictions, targets = self.predict(data_loader, return_pred=return_pred)
 
-        with open(os.path.join(self.log_dir, f'evaluation_{data_split}.txt'), 'w') as f:
+        with open(os.path.join(self.log_dir, f'{self.run_name}.evaluation_{data_split}.txt'), 'w') as f:
             print(f'Statistics on {data_split}')
             for key, value in metrics.items():
                 if key == 'mae':
@@ -281,7 +283,7 @@ class Trainer():
         for key in train_args:
             if inspect.isclass(train_args[key]):
                 train_args[key] = train_args[key].__name__
-        with open(os.path.join(run_dir, 'train_arguments.yaml'), 'w') as yaml_path:
+        with open(os.path.join(run_dir, f'{self.run_name}.train_arguments.yaml'), 'w') as yaml_path:
             pyaml.dump(train_args, yaml_path)
 
 

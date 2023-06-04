@@ -78,7 +78,7 @@ def parse_arguments():
     return args
 
 
-def train(run_dir,
+def train(run_dir, run_name,
           #setup args
           device='cuda', seed=123, eval_on_test=True,
           #dataset args
@@ -140,7 +140,7 @@ def train(run_dir,
         te_size = round(te_frac*len(indices))
         va_size = len(indices)-tr_size-te_size
         tr_indices, te_indices, val_indices = np.split(indices, [tr_size, tr_size+te_size])
-        print('total / train / test / val:', len(indices), len(tr_indices), len(te_indices), len(val_indices))
+        print(f'total / train / test / val: {len(indices)} {len(tr_indices)} {len(te_indices)} {len(val_indices)}')
         train_data = Subset(data, tr_indices)
         val_data = Subset(data, val_indices)
         test_data = Subset(data, te_indices)
@@ -170,7 +170,8 @@ def train(run_dir,
                                 num_workers=num_workers)
 
         trainer = ReactTrainer(model=model, std=std, device=device, metrics={'mae':MAE()},
-                               run_dir=run_dir, sampler=sampler, val_per_batch=val_per_batch,
+                               run_dir=run_dir, run_name=run_name,
+                               sampler=sampler, val_per_batch=val_per_batch,
                                checkpoint=checkpoint, num_epochs=num_epochs,
                                eval_per_epochs=eval_per_epochs, patience=patience,
                                minimum_epochs=minimum_epochs, models_to_save=models_to_save,
@@ -221,7 +222,8 @@ if __name__ == '__main__':
         print(f"creating run dir {run_dir}")
         os.mkdir(run_dir)
 
-    logpath = os.path.join(run_dir, f'{datetime.now().strftime("%y%m%d-%H%M%S.%f")}-{getuser()}.log')
+    logname = f'{datetime.now().strftime("%y%m%d-%H%M%S.%f")}-{getuser()}'
+    logpath = os.path.join(run_dir, f'{logname}.log')
     print(f"stdout to {logpath}")
     sys.stdout = Logger(logpath=logpath, syspart=sys.stdout)
     sys.stderr = Logger(logpath=logpath, syspart=sys.stderr)
@@ -235,8 +237,8 @@ if __name__ == '__main__':
 
     print("\ninput args", args, '\n')
 
-    train(run_dir, device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint, subset=args.subset,
-          dataset=args.dataset, process=args.process,
+    train(run_dir, logname, device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint,
+          subset=args.subset, dataset=args.dataset, process=args.process,
           verbose=args.verbose, radius=args.radius, max_neighbors=args.max_neighbors, sum_mode=args.sum_mode,
           n_s=args.n_s, n_v=args.n_v, n_conv_layers=args.n_conv_layers, distance_emb_dim=args.distance_emb_dim,
           graph_mode=args.graph_mode, dropout_p=args.dropout_p, random_baseline=args.random_baseline,
