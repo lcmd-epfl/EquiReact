@@ -1,38 +1,29 @@
-import argparse
-import numpy as np
 import os
 import sys
+import argparse
+from ast import literal_eval
 import traceback
 from datetime import datetime
-import getpass  # os.getlogin() won't work on a cluster
+from getpass import getuser  # os.getlogin() won't work on a cluster
 
+import numpy as np
+import torch
+from torch.utils.data import DataLoader, Subset
 from models import *  # do not remove
 from torch.nn import *  # do not remove
 from torch.optim import *  # do not remove
 from torch.optim.lr_scheduler import *  # do not remove
-
-from torch.utils.data import DataLoader, Subset
-import torch
+import wandb
 
 # turn on for debugging for C code like Segmentation Faults
 import faulthandler
-
 faulthandler.enable()
 
-# MY IMPORTS
 from trainer.metrics import MAE
-from trainer.trainer import Trainer
 from trainer.react_trainer import ReactTrainer
 from models.equireact import EquiReact
 from process.dataloader import Cyclo23TS, GDB722TS
 from process.collate import CustomCollator
-
-import wandb
-
-import sys
-from datetime import datetime
-
-from ast import literal_eval
 
 
 class Logger(object):
@@ -114,7 +105,7 @@ def train(run_dir,
           ):
 
     device = torch.device("cuda:0" if torch.cuda.is_available() and device == 'cuda' else "cpu")
-    print("Running on device", device)
+    print(f"Running on device {device}")
 
     if dataset=='cyclo':
         data = Cyclo23TS(radius=radius, process=process, atom_mapping=atom_mapping)
@@ -128,7 +119,7 @@ def train(run_dir,
 
     labels = data.labels
     std = data.std
-    print("Data stdev", std)
+    print("Data stdev {std}")
 
     seed -= 1 # will be +1 in a second
     maes = []
@@ -213,8 +204,9 @@ def train(run_dir,
 
 
 if __name__ == '__main__':
+
     args = parse_arguments()
-    start_time = datetime.now().strftime('date%d-%m_time%H-%M-%S.%f')
+
     if not os.path.exists('logs'):
         os.mkdir('logs')
     if not os.path.exists(args.logdir):
@@ -228,11 +220,11 @@ if __name__ == '__main__':
     if not os.path.exists(run_dir):
         print(f"creating run dir {run_dir}")
         os.mkdir(run_dir)
-    # naming is kind of horrible
-    logpath = os.path.join(run_dir, f'{datetime.now().strftime("%y%m%d-%H%M%S")}-{getpass.getuser()}.log')
-    print('stdout to', logpath)
+
+    logpath = os.path.join(run_dir, f'{datetime.now().strftime("%y%m%d-%H%M%S.%f")}-{getuser()}.log')
     sys.stdout = Logger(logpath=logpath, syspart=sys.stdout)
     sys.stderr = Logger(logpath=logpath, syspart=sys.stderr)
+    print(f"stdout to {logpath}")
 
     wandb.init(project='nequireact-gdb' if args.dataset=='gdb' else 'nequireact')
     if args.wandb_name:
@@ -240,8 +232,9 @@ if __name__ == '__main__':
         print('wandb name', args.wandb_name)
     else:
         print('no wandb name specified')
-    print()
-    print('input args', args, '\n')
+
+    print("\ninput args", args, '\n')
+
     train(run_dir, device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint, subset=args.subset,
           dataset=args.dataset, process=args.process,
           verbose=args.verbose, radius=args.radius, max_neighbors=args.max_neighbors, sum_mode=args.sum_mode,
