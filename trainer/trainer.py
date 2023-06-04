@@ -155,7 +155,7 @@ class Trainer():
                 else:
                     epochs_no_improve += 1
                 self.save_checkpoint(epoch, checkpoint_name='last_checkpoint.pt')
-                print('Epochs with no improvement: [ {epochs_no_improve} ] and the best {self.main_metric} was in {epoch - epochs_no_improve})')
+                print(f'Epochs with no improvement: [ {epochs_no_improve} ] and the best {self.main_metric} was in {epoch - epochs_no_improve}')
                 if epochs_no_improve >= self.patience and epoch >= self.minimum_epochs:  # stopping criterion
                     print(f'Early stopping criterion based on -{self.main_metric}- that should be {self.main_metric_goal}-imized reached after {epoch} epochs. Best model checkpoint was in epoch {epoch - epochs_no_improve}.')
                     break
@@ -203,7 +203,7 @@ class Trainer():
                     metrics = self.evaluate_metrics(predictions, targets)
                     metrics[type(self.loss_func).__name__] = loss.item()
                     wandb.log({"train loss": loss.item(), "epoch": self.epoch})
-                    print(f'[Epoch {self.epoch}; Iter {i+1:5d}/{len(data_loader):5d}] train: loss: {loss.item():.7f}'
+                    print(f'[Epoch {self.epoch}; Iter {i+1:5d}/{len(data_loader):5d}] train: loss: {loss.item():.7f}')
                 if optim == None and self.val_per_batch:  # during validation or testing when we want to average metrics over all the data in that dataloader
                     metrics = self.evaluate_metrics(predictions, targets, val=True)
                     metrics[type(self.loss_func).__name__] = loss.item()

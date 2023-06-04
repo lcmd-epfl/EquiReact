@@ -119,7 +119,7 @@ def train(run_dir,
 
     labels = data.labels
     std = data.std
-    print("Data stdev {std}")
+    print(f"Data stdev {std:.4f}")
 
     seed -= 1 # will be +1 in a second
     maes = []
@@ -222,9 +222,9 @@ if __name__ == '__main__':
         os.mkdir(run_dir)
 
     logpath = os.path.join(run_dir, f'{datetime.now().strftime("%y%m%d-%H%M%S.%f")}-{getuser()}.log')
+    print(f"stdout to {logpath}")
     sys.stdout = Logger(logpath=logpath, syspart=sys.stdout)
     sys.stderr = Logger(logpath=logpath, syspart=sys.stderr)
-    print(f"stdout to {logpath}")
 
     wandb.init(project='nequireact-gdb' if args.dataset=='gdb' else 'nequireact')
     if args.wandb_name:
