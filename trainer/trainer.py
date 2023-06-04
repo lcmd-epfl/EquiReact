@@ -124,12 +124,14 @@ class Trainer():
     def train(self, train_loader: DataLoader, val_loader: DataLoader):
         epochs_no_improve = 0  # counts every epoch that the validation accuracy did not improve for early stopping
         for epoch in range(self.start_epoch, self.num_epochs + 1):  # loop over the dataset multiple times
+
             self.epoch = epoch
             self.model.train()
             self.predict(train_loader, optim=self.optim)
-
             self.model.eval()
+
             with torch.no_grad():
+
                 metrics, _, _ = self.predict(val_loader)
                 # MAE of prediction is * std of data since data is normalised
                 val_score = metrics[self.main_metric] * self.std
@@ -142,8 +144,9 @@ class Trainer():
 
                 # val loss is MSE, shouldn't be affected by data normalisation
                 val_loss = metrics[type(self.loss_func).__name__]
-                wandb.log({"val_loss": val_loss, "val_score":val_score})
-                print('[Epoch %d] %s: %.6f val loss: %.6f' % (epoch, self.main_metric, val_score, val_loss))
+                wandb.log({"val_loss": val_loss, "val_score": val_score})
+                print(f'[Epoch {epoch}] {self.main_metric}: {val_score:.6f} val loss: {val_loss:.6f}')
+
                 # save the model with the best main_metric depending on wether we want to maximize or minimize the main metric
                 if val_score >= self.best_val_score and self.main_metric_goal == 'max' or val_score <= self.best_val_score and self.main_metric_goal == 'min':
                     epochs_no_improve = 0
@@ -152,8 +155,7 @@ class Trainer():
                 else:
                     epochs_no_improve += 1
                 self.save_checkpoint(epoch, checkpoint_name='last_checkpoint.pt')
-                print('Epochs with no improvement: [', epochs_no_improve, '] and the best  ', self.main_metric,
-                    ' was in ', epoch - epochs_no_improve)
+                print('Epochs with no improvement: [ {epochs_no_improve} ] and the best {self.main_metric} was in {epoch - epochs_no_improve})')
                 if epochs_no_improve >= self.patience and epoch >= self.minimum_epochs:  # stopping criterion
                     print(f'Early stopping criterion based on -{self.main_metric}- that should be {self.main_metric_goal}-imized reached after {epoch} epochs. Best model checkpoint was in epoch {epoch - epochs_no_improve}.')
                     break
@@ -170,10 +172,7 @@ class Trainer():
         return self.evaluation(val_loader, data_split='val_best_checkpoint')
 
     def forward_pass(self, batch):
-        targets = batch[-1]  # the last entry of the batch tuple is always the targets
-        predictions = self.model(*batch[0])  # foward the rest of the batch to the model
-        loss = self.loss_func(predictions, targets)
-        return loss, predictions, targets
+        pass
 
     def process_batch(self, batch, optim):
         loss, predictions, targets = self.forward_pass(batch)
@@ -203,9 +202,8 @@ class Trainer():
                 if self.optim_steps % self.log_iterations == 0 and optim != None:
                     metrics = self.evaluate_metrics(predictions, targets)
                     metrics[type(self.loss_func).__name__] = loss.item()
-                    print('[Epoch %d; Iter %5d/%5d] %s: loss: %.7f' % (
-                        self.epoch, i + 1, len(data_loader), 'train', loss.item()))
-                    wandb.log({"train loss":loss.item(), "epoch":self.epoch})
+                    wandb.log({"train loss": loss.item(), "epoch": self.epoch})
+                    print(f'[Epoch {self.epoch}; Iter {i+1:5d}/{len(data_loader):5d}] train: loss: {loss.item():.7f}'
                 if optim == None and self.val_per_batch:  # during validation or testing when we want to average metrics over all the data in that dataloader
                     metrics = self.evaluate_metrics(predictions, targets, val=True)
                     metrics[type(self.loss_func).__name__] = loss.item()
@@ -256,12 +254,12 @@ class Trainer():
         self.model.eval()
         metrics, predictions, targets = self.predict(data_loader, return_pred=return_pred)
 
-        with open(os.path.join(self.log_dir, 'evaluation_' + data_split + '.txt'), 'w') as file:
-            print('Statistics on ', data_split)
+        with open(os.path.join(self.log_dir, f'evaluation_{data_split}.txt'), 'w') as f:
+            print(f'Statistics on {data_split}')
             for key, value in metrics.items():
                 if key == 'mae':
                     value *= self.std
-                file.write(f'{key}: {value}\n')
+                f.write(f'{key}: {value}\n')
                 print(f'{key}: {value}')
         #TODO right now only MAE has the correct units
         return metrics, predictions, targets
