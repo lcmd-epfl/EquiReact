@@ -4,18 +4,17 @@ import os
 import shutil
 from typing import Dict, Callable
 
-import pyaml
-import torch
 import numpy as np
-
-import wandb
-
-from models import *  # do not remove
-from trainer.lr_schedulers import WarmUpWrapper  # do not remove
-from torch.optim.lr_scheduler import *
+import torch
 from torch.optim import Adam
 from torch.utils.data import DataLoader
-from torch.utils.tensorboard import SummaryWriter
+
+import wandb
+import pyaml
+
+from models import *  # do not remove
+from torch.optim.lr_scheduler import *  # do not remove
+from trainer.lr_schedulers import WarmUpWrapper
 
 
 def move_to_device(element, device):
@@ -48,7 +47,7 @@ def concat_if_list(tensor_or_tensors):
 
 class Trainer():
     def __init__(self, model, metrics: Dict[str, Callable], main_metric: str, device: torch.device,
-                 tensorboard_functions: Dict[str, Callable] = None, optim=Adam, main_metric_goal: str = 'min',
+                 optim=Adam, main_metric_goal: str = 'min',
                  loss_func=torch.nn.MSELoss(), scheduler_step_per_batch: bool = True, run_dir='', sampler=None,
                  checkpoint=None, num_epochs=0, eval_per_epochs=0, patience=0,
                  minimum_epochs=0, models_to_save=[], clip_grad=None, log_iterations=0, lr=0.0001,
@@ -59,7 +58,6 @@ class Trainer():
         self.std = std # stdev of data. to adjust val scores.
         self.model = model.to(self.device)
         self.loss_func = loss_func
-       # self.tensorboard_functions = tensorboard_functions
         self.metrics = metrics
         self.sampler = sampler
         self.val_per_batch = val_per_batch
@@ -81,7 +79,6 @@ class Trainer():
         self.mode = mode
         self.lr_scheduler_patience = lr_scheduler_patience
         self.lr_verbose = lr_verbose
-
         self.optim = optim(self.model.parameters(), lr=lr, weight_decay=weight_decay)
 
         if lr_scheduler:  # Needs "from torch.optim.lr_scheduler import *" to work
@@ -92,7 +89,6 @@ class Trainer():
 
         if self.checkpoint:
             check = torch.load(checkpoint, map_location=self.device)
-            self.writer = SummaryWriter(os.path.dirname(self.checkpoint))
             self.model.load_state_dict(check['model_state_dict'])
             self.optim.load_state_dict(check['optimizer_state_dict'])
             if self.lr_scheduler != None and check['scheduler_state_dict'] != None:
@@ -100,17 +96,18 @@ class Trainer():
             self.start_epoch = check['epoch']
             self.best_val_score = check['best_val_score']
             self.optim_steps = check['optim_steps']
+            self.log_dir = os.path.dirname(self.checkpoint)
         else:
             # not sure this is needed
             self.start_epoch = 1
             self.optim_steps = 0
             self.best_val_score = -np.inf if self.main_metric_goal == 'max' else np.inf  # running score to decide whether or not a new model should be saved
-            self.writer = SummaryWriter(run_dir)
+            self.log_dir = run_dir
 
         #for i, param_group in enumerate(self.optim.param_groups):
         #    param_group['lr'] = 0.0003
         self.epoch = self.start_epoch
-        print(f'Log directory: {self.writer.log_dir}')
+        print(f'Log directory: {self.log_dir}')
         self.hparams = {'checkpoint':checkpoint, 'num epochs':num_epochs,
                         'eval_per_epochs':eval_per_epochs, 'patience':patience,
                         'minimum_epochs':minimum_epochs, 'models_to_save':models_to_save,
@@ -161,14 +158,14 @@ class Trainer():
                     print(f'Early stopping criterion based on -{self.main_metric}- that should be {self.main_metric_goal}-imized reached after {epoch} epochs. Best model checkpoint was in epoch {epoch - epochs_no_improve}.')
                     break
                 if epoch in self.models_to_save:
-                    shutil.copyfile(os.path.join(self.writer.log_dir, 'best_checkpoint.pt'),
-                                        os.path.join(self.writer.log_dir, f'best_checkpoint_{epoch}epochs.pt'))
+                    shutil.copyfile(os.path.join(self.log_dir, 'best_checkpoint.pt'),
+                                        os.path.join(self.log_dir, f'best_checkpoint_{epoch}epochs.pt'))
                 self.after_epoch()
                 #if val_loss > 10000:
                 #    raise Exception
 
         # evaluate on best checkpoint
-        checkpoint = torch.load(os.path.join(self.writer.log_dir, 'best_checkpoint.pt'), map_location=self.device)
+        checkpoint = torch.load(os.path.join(self.log_dir, 'best_checkpoint.pt'), map_location=self.device)
         self.model.load_state_dict(checkpoint['model_state_dict'])
         return self.evaluation(val_loader, data_split='val_best_checkpoint')
 
@@ -259,7 +256,7 @@ class Trainer():
         self.model.eval()
         metrics, predictions, targets = self.predict(data_loader, return_pred=return_pred)
 
-        with open(os.path.join(self.writer.log_dir, 'evaluation_' + data_split + '.txt'), 'w') as file:
+        with open(os.path.join(self.log_dir, 'evaluation_' + data_split + '.txt'), 'w') as file:
             print('Statistics on ', data_split)
             for key, value in metrics.items():
                 if key == 'mae':
@@ -280,7 +277,7 @@ class Trainer():
         """
         Saves checkpoint of model in the logdir of the summarywriter in the used rundi
         """
-        run_dir = self.writer.log_dir
+        run_dir = self.log_dir
         self.save_model_state(epoch, checkpoint_name)
         train_args = copy.copy(self.hparams)
         for key in train_args:
@@ -298,4 +295,4 @@ class Trainer():
             'model_state_dict': self.model.state_dict(),
             'optimizer_state_dict': self.optim.state_dict(),
             'scheduler_state_dict': None if self.lr_scheduler == None else self.lr_scheduler.state_dict()
-        }, os.path.join(self.writer.log_dir, checkpoint_name))
+        }, os.path.join(self.log_dir, checkpoint_name))
