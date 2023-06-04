@@ -1,38 +1,29 @@
-import argparse
-import numpy as np
 import os
 import sys
+import argparse
+from ast import literal_eval
 import traceback
 from datetime import datetime
-import getpass  # os.getlogin() won't work on a cluster
+from getpass import getuser  # os.getlogin() won't work on a cluster
 
+import numpy as np
+import torch
+from torch.utils.data import DataLoader, Subset
 from models import *  # do not remove
 from torch.nn import *  # do not remove
 from torch.optim import *  # do not remove
 from torch.optim.lr_scheduler import *  # do not remove
-
-from torch.utils.data import DataLoader, Subset
-import torch
+import wandb
 
 # turn on for debugging for C code like Segmentation Faults
 import faulthandler
-
 faulthandler.enable()
 
-# MY IMPORTS
 from trainer.metrics import MAE
-from trainer.trainer import Trainer
 from trainer.react_trainer import ReactTrainer
 from models.equireact import EquiReact
 from process.dataloader import Cyclo23TS, GDB722TS
 from process.collate import CustomCollator
-
-import wandb
-
-import sys
-from datetime import datetime
-
-from ast import literal_eval
 
 
 class Logger(object):
@@ -87,7 +78,7 @@ def parse_arguments():
     return args
 
 
-def train(run_dir,
+def train(run_dir, run_name,
           #setup args
           device='cuda', seed=123, eval_on_test=True,
           #dataset args
@@ -114,7 +105,7 @@ def train(run_dir,
           ):
 
     device = torch.device("cuda:0" if torch.cuda.is_available() and device == 'cuda' else "cpu")
-    print("Running on device", device)
+    print(f"Running on device {device}")
 
     if dataset=='cyclo':
         data = Cyclo23TS(radius=radius, process=process, atom_mapping=atom_mapping)
@@ -128,7 +119,7 @@ def train(run_dir,
 
     labels = data.labels
     std = data.std
-    print("Data stdev", std)
+    print(f"Data stdev {std:.4f}")
 
     seed -= 1 # will be +1 in a second
     maes = []
@@ -149,7 +140,7 @@ def train(run_dir,
         te_size = round(te_frac*len(indices))
         va_size = len(indices)-tr_size-te_size
         tr_indices, te_indices, val_indices = np.split(indices, [tr_size, tr_size+te_size])
-        print('total / train / test / val:', len(indices), len(tr_indices), len(te_indices), len(val_indices))
+        print(f'total / train / test / val: {len(indices)} {len(tr_indices)} {len(te_indices)} {len(val_indices)}')
         train_data = Subset(data, tr_indices)
         val_data = Subset(data, val_indices)
         test_data = Subset(data, te_indices)
@@ -179,7 +170,8 @@ def train(run_dir,
                                 num_workers=num_workers)
 
         trainer = ReactTrainer(model=model, std=std, device=device, metrics={'mae':MAE()},
-                               run_dir=run_dir, sampler=sampler, val_per_batch=val_per_batch,
+                               run_dir=run_dir, run_name=run_name,
+                               sampler=sampler, val_per_batch=val_per_batch,
                                checkpoint=checkpoint, num_epochs=num_epochs,
                                eval_per_epochs=eval_per_epochs, patience=patience,
                                minimum_epochs=minimum_epochs, models_to_save=models_to_save,
@@ -213,8 +205,9 @@ def train(run_dir,
 
 
 if __name__ == '__main__':
+
     args = parse_arguments()
-    start_time = datetime.now().strftime('date%d-%m_time%H-%M-%S.%f')
+
     if not os.path.exists('logs'):
         os.mkdir('logs')
     if not os.path.exists(args.logdir):
@@ -228,9 +221,10 @@ if __name__ == '__main__':
     if not os.path.exists(run_dir):
         print(f"creating run dir {run_dir}")
         os.mkdir(run_dir)
-    # naming is kind of horrible
-    logpath = os.path.join(run_dir, f'{datetime.now().strftime("%y%m%d-%H%M%S")}-{getpass.getuser()}.log')
-    print('stdout to', logpath)
+
+    logname = f'{datetime.now().strftime("%y%m%d-%H%M%S.%f")}-{getuser()}'
+    logpath = os.path.join(run_dir, f'{logname}.log')
+    print(f"stdout to {logpath}")
     sys.stdout = Logger(logpath=logpath, syspart=sys.stdout)
     sys.stderr = Logger(logpath=logpath, syspart=sys.stderr)
 
@@ -240,10 +234,11 @@ if __name__ == '__main__':
         print('wandb name', args.wandb_name)
     else:
         print('no wandb name specified')
-    print()
-    print('input args', args, '\n')
-    train(run_dir, device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint, subset=args.subset,
-          dataset=args.dataset, process=args.process,
+
+    print("\ninput args", args, '\n')
+
+    train(run_dir, logname, device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint,
+          subset=args.subset, dataset=args.dataset, process=args.process,
           verbose=args.verbose, radius=args.radius, max_neighbors=args.max_neighbors, sum_mode=args.sum_mode,
           n_s=args.n_s, n_v=args.n_v, n_conv_layers=args.n_conv_layers, distance_emb_dim=args.distance_emb_dim,
           graph_mode=args.graph_mode, dropout_p=args.dropout_p, random_baseline=args.random_baseline,

@@ -12,7 +12,6 @@ pip install pyg_lib torch_scatter torch_sparse torch_cluster torch_spline_conv -
 pip install e3nn
 conda install -c conda-forge rdkit=2023.03.1
 pip install pyaml wandb
-conda install tensorboard==2.12.2
 conda install pyg
 ```
 
