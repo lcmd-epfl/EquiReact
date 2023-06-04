@@ -181,7 +181,7 @@ class EquiReact(nn.Module):
             nn.Linear(n_s_full, n_s_full),
         )
 
-        self.rp_attention = nn.MultiheadAttention(n_s_full, 1)
+        self.rp_attention = nn.MultiheadAttention(n_s_full, 1)  # query, key, value
 
 
     def build_graph(self, data):
@@ -330,27 +330,27 @@ class EquiReact(nn.Module):
         if self.attention is not None:
             batch = torch.sort(torch.hstack([g.batch for g in reactants_data])).values.to(self.device)
 
+            x_react = self.forward_repr_mols(reactants_data, merge=False)
+            x_prod  = self.forward_repr_mols(products_data, merge=False)
+
             if self.attention == 'self':
-                x_react = self.forward_repr_mols(reactants_data, merge=False)
-                x_prod  = self.forward_repr_mols(products_data)
                 x_react_mapped = torch.vstack([self.rp_attention(xr, xr, xr, need_weights=False)[0] for xr in x_react])
-                x = x_prod - x_react_mapped
-                if self.graph_mode == 'energy':
-                    score_atom = self.score_predictor_nodes(x)
-                    score = scatter_add(score_atom, index=batch, dim=0)
-                elif self.graph_mode == 'vector':
-                    x = self.atom_diff_nonlin(x)
-                    x = scatter_add(x, index=batch, dim=0)
-                    score = self.score_predictor_nodes(x)
-                return score
+                x_prod_mapped  = torch.vstack([self.rp_attention(xp, xp, xp, need_weights=False)[0] for xp in x_prod])
             elif self.attention == 'cross':
-                x_react = self.forward_repr_mols(reactants_data, merge=False)
-                x_prod  = self.forward_repr_mols(products_data, merge=False)
-                x = torch.vstack([self.rp_attention(xp, xr, xr, need_weights=False)[0] for xp, xr in zip(x_prod, x_react)])
-                x = scatter_add(x, index=batch, dim=0)
-                score = self.score_predictor_nodes(x)
+                x_react_mapped = torch.vstack([self.rp_attention(xp, xr, xr, need_weights=False)[0] for xp, xr in zip(x_prod, x_react)])
+                x_prod_mapped  = torch.vstack([self.rp_attention(xr, xp, xp, need_weights=False)[0] for xp, xr in zip(x_prod, x_react)])
             else:
                 raise NotImplementedError(f'attention "{self.attention}" not defined')
+
+            x = x_prod_mapped - x_react_mapped
+            if self.graph_mode == 'energy':
+                score_atom = self.score_predictor_nodes(x)
+                score = scatter_add(score_atom, index=batch, dim=0)
+            elif self.graph_mode == 'vector':
+                x = self.atom_diff_nonlin(x)
+                x = scatter_add(x, index=batch, dim=0)
+                score = self.score_predictor_nodes(x)
+            return score
 
 ##########################################################################
 
