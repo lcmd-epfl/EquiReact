@@ -335,13 +335,14 @@ class EquiReact(nn.Module):
 
             if self.attention == 'self':
                 x_react_mapped = torch.vstack([self.rp_attention(xr, xr, xr, need_weights=False)[0] for xr in x_react])
+                x_prod_mapped  = torch.vstack([self.rp_attention(xp, xp, xp, need_weights=False)[0] for xp in x_prod])
             elif self.attention == 'cross':
                 x_react_mapped = torch.vstack([self.rp_attention(xp, xr, xr, need_weights=False)[0] for xp, xr in zip(x_prod, x_react)])
+                x_prod_mapped  = torch.vstack([self.rp_attention(xr, xp, xp, need_weights=False)[0] for xp, xr in zip(x_prod, x_react)])
             else:
                 raise NotImplementedError(f'attention "{self.attention}" not defined')
 
-            x_prod = torch.vstack(x_prod)
-            x = x_prod - x_react_mapped
+            x = x_prod_mapped - x_react_mapped
             if self.graph_mode == 'energy':
                 score_atom = self.score_predictor_nodes(x)
                 score = scatter_add(score_atom, index=batch, dim=0)
