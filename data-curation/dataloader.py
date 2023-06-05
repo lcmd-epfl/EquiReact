@@ -131,7 +131,7 @@ class GDB722TS(Dataset):
             return None
         assert len(rdkit_bonds)==len(xyz_bonds), "different number of bonds"
 
-        if np.all(rdkit_bonds==xyz_bonds):
+        if np.all(rdkit_atoms==atoms) and np.all(rdkit_bonds==xyz_bonds):
             # Don't search for a match because the first one doesn't have to be the shortest one
             new_atoms = atoms
             new_coords = coords
@@ -151,7 +151,7 @@ class GDB722TS(Dataset):
             new_atoms = atoms[dst]
             new_coords = coords[dst]
             new_xyz_bonds = self.get_xyz_bonds(len(rdkit_bonds), new_atoms, new_coords)
-            assert np.all(rdkit_atoms == new_atoms), "different atoms"
+            assert np.all(rdkit_atoms==new_atoms), "different atoms"
             assert np.all(rdkit_bonds==new_xyz_bonds), "different bonds"
 
         return get_graph(mol, new_atoms, new_coords, idx, radius=self.radius, max_neighbor=self.max_neighbor)
