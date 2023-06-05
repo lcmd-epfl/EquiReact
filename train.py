@@ -22,7 +22,8 @@ faulthandler.enable()
 from trainer.metrics import MAE
 from trainer.react_trainer import ReactTrainer
 from models.equireact import EquiReact
-from process.dataloader import Cyclo23TS, GDB722TS
+from process.dataloader_cyclo import Cyclo23TS
+from process.dataloader_gdb import GDB722TS
 from process.collate import CustomCollator
 
 

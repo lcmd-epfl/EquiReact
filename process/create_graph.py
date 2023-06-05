@@ -1,15 +1,13 @@
-import torch
 import numpy as np
-import rdkit
-from rdkit import Chem
-from rdkit.Chem import AllChem, GetPeriodicTable
-from rdkit.Chem.rdPartialCharges import ComputeGasteigerCharges
+import torch
 from torch_geometric.data import Data
 import scipy.spatial as spa
+import rdkit
+from rdkit import Chem
+from rdkit.Chem.rdPartialCharges import ComputeGasteigerCharges
 
 
 BOHR_TO_ANG = 0.529177210903
-periodic_table = GetPeriodicTable()
 
 allowable_features = {
     'possible_atomic_num_list': list(range(1, 119)) + ['misc'],
@@ -36,29 +34,6 @@ allowable_features = {
     'possible_is_in_ring7_list': [False, True],
 }
 
-feature_dims = (list(map(len, [
-    allowable_features['possible_atomic_num_list'],
-    allowable_features['possible_chirality_list'],
-    allowable_features['possible_degree_list'],
-    allowable_features['possible_formal_charge_list'],
-    allowable_features['possible_implicit_valence_list'],
-    allowable_features['possible_numH_list'],
-    allowable_features['possible_number_radical_e_list'],
-    allowable_features['possible_hybridization_list'],
-    allowable_features['possible_is_aromatic_list'],
-    allowable_features['possible_numring_list'],
-    allowable_features['possible_is_in_ring3_list'],
-    allowable_features['possible_is_in_ring4_list'],
-    allowable_features['possible_is_in_ring5_list'],
-    allowable_features['possible_is_in_ring6_list'],
-    allowable_features['possible_is_in_ring7_list'],
-])), 1)  # number of scalar features
-
-def count_ats(mol):
-    count = 0
-    for atom in mol.GetAtoms():
-        count += 1
-    return count
 
 def canon_mol(mol):
     for a in mol.GetAtoms():
@@ -70,6 +45,7 @@ def canon_mol(mol):
     #Chem.SanitizeMol(mol)
     return mol
 
+
 def safe_index(l, e):
     """
     Return index of element e in list l. If e is not present, return the last index
@@ -78,6 +54,7 @@ def safe_index(l, e):
         return l.index(e)
     except:
         return len(l) - 1
+
 
 def reader(xyz, bohr=False):
     with open(xyz, 'r') as f:
@@ -103,6 +80,7 @@ def reader(xyz, bohr=False):
     assert len(atomtypes) == nat
     assert len(coords) == nat
     return np.array(atomtypes), coords
+
 
 def atom_featurizer(mol):
     ComputeGasteigerCharges(mol)  # they are Nan for 93 molecules in all of PDBbind. We put a 0 in that case.
@@ -142,31 +120,18 @@ def get_graph(mol, atomtypes, coords, y, radius=20, max_neighbor=24, device='cpu
     data.edge_attr -> distance
     data.y -> Energy
     """
-   # mol = canon_mol(mol)
 
-  #  atoms = []
-  #  for atom in mol.GetAtoms():
-   #     sym = atom.GetSymbol()
-   #     atoms.append(sym)
-  #  print('atoms in canon SMILES', atoms_canon)
-  #  print('atoms in xyz', atomtypes)
-   # count = len(atoms)
-
-    # now compare to atomtypes and coords
-   # print('atoms in smiles', atoms)
-   # print('atomtypes', atomtypes)
-   # assert np.all(atoms == atomtypes), 'atoms from xyz and smiles dont match!'
-
-    num_nodes = coords.shape[0]
-   # assert num_nodes == count, "rdkit atom count different from num nodes"
-    assert coords.shape[1] == 3
+    atoms = np.array([at.GetSymbol() for at in mol.GetAtoms()])
+    assert np.all(atoms == atomtypes), "atoms from xyz and smiles don't match"
+    assert coords.shape[0] == len(atoms), "different number of atoms"
+    assert coords.shape[1] == 3, "wrong dimensionality of coordinates"
 
     distance = spa.distance.cdist(coords, coords)
 
     src_list = []
     dst_list = []
     dist_list = []
-    for i in range(num_nodes):
+    for i in range(len(atoms)):
         dst = list(np.where(distance[i, :] < radius)[0])
         dst.remove(i)
         if max_neighbor != None and len(dst) > max_neighbor:
@@ -191,3 +156,9 @@ def get_graph(mol, atomtypes, coords, y, radius=20, max_neighbor=24, device='cpu
     data = Data(x=x, edge_index=edge_index, edge_attr=edge_attr, y=y, pos=torch.tensor(coords, dtype=torch.float32))
 
     return data.to(device)
+
+
+def get_empty_graph():
+    num_node_feat = atom_featurizer(Chem.MolFromSmiles('C')).shape[-1]
+    return Data(x=torch.zeros((0, num_node_feat)), edge_index=torch.zeros((2,0)),
+                edge_attr=torch.zeros(0), y=torch.tensor(0.0), pos=torch.zeros((0,3)))
