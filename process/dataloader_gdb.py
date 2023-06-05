@@ -5,16 +5,17 @@ from types import SimpleNamespace
 import numpy as np
 import torch
 from torch.utils.data import Dataset
-from torch_geometric.data import Data
 import pandas as pd
 from tqdm import tqdm
 from rdkit import Chem
-from process.create_graph import reader, get_graph, canon_mol, atom_featurizer
+import networkx
+import networkx.algorithms.isomorphism as iso
+from process.create_graph import reader, get_graph, canon_mol, get_empty_graph
 
 
 class GDB722TS(Dataset):
 
-    def __init__(self, files_dir='data/gdb7-22-ts/xyz/', csv_path='data/gdb7-22-ts/ccsdtf12_dz.csv',
+    def __init__(self, files_dir='data/gdb7-22-ts/xyz/', csv_path='data/gdb7-22-ts/ccsdtf12_dz_cleaned.csv',
                  radius=20, max_neighbor=24, processed_dir='data/gdb7-22-ts/processed/', process=True):
 
         self.max_number_of_reactants = 1
@@ -59,6 +60,7 @@ class GDB722TS(Dataset):
     def __len__(self):
         return len(self.labels)
 
+
     def __getitem__(self, idx):
         r = self.reactant_graphs[idx]
         p = self.products_graphs[idx]
@@ -99,74 +101,23 @@ class GDB722TS(Dataset):
         assert len(products_atomtypes_list) == len(products_coords_list), 'not as many atomtypes as coords for products'
         assert len(reactant_atomtypes_list) == len(reactant_coords_list), 'not as many atomtypes as coords for reactants'
 
-
         # Graphs
-        def make_graph(smi, atoms, coords, idx):
-            mol = Chem.MolFromSmiles(smi)
-            assert mol is not None, f"mol obj {idx} is None from smi {smi}"
-            mol = Chem.AddHs(mol)
-            assert len(atoms)==mol.GetNumAtoms(), f"nats don't match in idx {idx}"
-
-            try:
-                ats = [at.GetSymbol() for at in mol.GetAtoms()]
-                assert np.all(ats == atoms), "atomtypes don't match"
-            except:
-                try:
-                    mol = canon_mol(mol)
-                    ats = [at.GetSymbol() for at in mol.GetAtoms()]
-                    assert np.all(ats == atoms), "atomtypes don't match"
-                except:
-                    unq_atoms = np.unique(atoms)
-                    # coords from xyz
-                    coord_dict = {}
-                    element_dict = {}
-                    for unq_atom in unq_atoms:
-                        for count, i in enumerate(np.where(atoms==unq_atom)[0]):
-                            label = unq_atom + str(count+1)
-                            coord_dict[label] = coords[i]
-                            element_dict[label] = unq_atom
-
-                    ordered_coords = []
-                    ordered_elements = []
-                    ats = [at.GetSymbol() for at in mol.GetAtoms()]
-                    count = {unq_atom: 0 for unq_atom in unq_atoms}
-                    for atom in ats:
-                        label = atom + str(count[atom]+1)
-                        ordered_coords.append(coord_dict[label])
-                        ordered_elements.append(element_dict[label])
-                        count[atom] += 1
-
-                    assert np.all(ats == ordered_elements), "reordering went wrong"
-
-                    assert len(coords) == len(ordered_coords), "coord lengths don't match"
-                    coords = np.array(ordered_coords)
-                    assert len(atoms) == len(ats), "atoms lengths don't match"
-                    atoms = np.array(ats)
-            return get_graph(mol, atoms, coords, self.labels[idx],
-                             radius=self.radius, max_neighbor=self.max_neighbor)
-
         print(f"Processing csv file and saving graphs to {self.processed_dir}")
+
+        empty = get_empty_graph()
 
         products_graphs_list = []
         reactant_graphs_list = []
-
-        num_node_feat = atom_featurizer(Chem.MolFromSmiles('C')).shape[-1]
-        empty = Data(x=torch.zeros((0, num_node_feat)), edge_index=torch.zeros((2,0)),
-                     edge_attr=torch.zeros(0), y=torch.tensor(0.0), pos=torch.zeros((0,3)))
-
         for i, idx in enumerate(tqdm(self.indices, desc="making graphs")):
-            #print(f'{idx=}')
             rxnsmi = self.df[self.df['idx'] == idx]['rxn_smiles'].item()
             rsmi, psmis = rxnsmi.split('>>')
-
             # reactant
-            reactant_graphs_list.append(make_graph(rsmi, reactant_atomtypes_list[i], reactant_coords_list[i], i))
-
+            reactant_graphs_list.append(self.make_graph(rsmi, reactant_atomtypes_list[i], reactant_coords_list[i], i, f'r{idx:06d}'))
             # products
             psmis = psmis.split('.')
             nprod = len(products_coords_list[i])
             assert len(psmis) == nprod, 'number of products doesnt match'
-            pgraphs = [make_graph(*args, i) for args in zip(psmis, products_atomtypes_list[i], products_coords_list[i])]
+            pgraphs = [self.make_graph(*args, i, f'p{idx:06d}_{ip}') for ip, args in enumerate(zip(psmis, products_atomtypes_list[i], products_coords_list[i]))]
             padding = [empty] * (self.max_number_of_products-nprod)
             products_graphs_list.append(pgraphs + padding)
 
@@ -177,3 +128,61 @@ class GDB722TS(Dataset):
         torch.save(reactant_graphs_list, self.paths.rg)
         torch.save(products_graphs_list, self.paths.pg)
         print(f"Saved graphs to {self.paths.rg} and {self.paths.pg}")
+
+
+    def get_xyz_bonds(self, nbonds, atoms, coords):
+        def get_xyz_bonds_inner(atoms, coords, rscal=1.0):
+            rad = {'H': 0.455, 'C':  0.910, 'N': 0.845, 'O': 0.780}
+            xyz_bonds = []
+            for i1, (a1, r1) in enumerate(zip(atoms, coords)):
+                for i2, (a2, r2) in enumerate(list(zip(atoms, coords))[i1+1:], start=i1+1):
+                    rmax = (rad[a1]+rad[a2]) * rscal
+                    if np.linalg.norm(r1-r2) < rmax:
+                        xyz_bonds.append((i1, i2))
+            return np.array(xyz_bonds)
+        for rscal in [1.0, 1.1, 1.0/1.1, 1.05, 1.0/1.05]:
+            xyz_bonds = get_xyz_bonds_inner(atoms, coords, rscal=rscal)
+            if len(xyz_bonds) == nbonds:
+                return xyz_bonds
+        else:
+            return None
+
+
+    def make_nx_graph(self, atoms, bonds):
+        G = networkx.Graph()
+        G.add_nodes_from([(i, {'q': q}) for i, q in enumerate(atoms)])
+        G.add_edges_from(bonds)
+        return G
+
+
+    def make_graph(self, smi, atoms, coords, ireact, idx):
+        mol = Chem.MolFromSmiles(smi)
+        assert mol is not None, f"mol obj {idx} is None from smi {smi}"
+        mol = Chem.AddHs(mol)
+        assert len(atoms)==mol.GetNumAtoms(), f"nats don't match in idx {idx}"
+
+        rdkit_bonds = np.array(sorted(sorted((i.GetBeginAtomIdx(), i.GetEndAtomIdx())) for i in mol.GetBonds()))
+        rdkit_atoms = np.array([at.GetSymbol() for at in mol.GetAtoms()])
+
+        xyz_bonds = self.get_xyz_bonds(len(rdkit_bonds), atoms, coords)
+        assert xyz_bonds is not None, f"different number of bonds in {idx}"
+
+        if np.all(rdkit_atoms==atoms) and np.all(rdkit_bonds==xyz_bonds):
+            # Don't search for a match because the first one doesn't have to be the shortest one
+            new_atoms = atoms
+            new_coords = coords
+        else:
+            G1 = self.make_nx_graph(rdkit_atoms, rdkit_bonds)
+            G2 = self.make_nx_graph(atoms, xyz_bonds)
+            GM = iso.GraphMatcher(G1, G2, node_match=iso.categorical_node_match('q', None))
+            assert GM.is_isomorphic(), f"smiles and xyz graphs are not isomorphic in {idx}"
+
+            match = next(GM.match())
+            src, dst = np.array(sorted(match.items(), key=lambda match: match[0])).T
+            assert np.all(src==np.arange(G1.number_of_nodes()))
+
+            new_atoms = atoms[dst]
+            new_coords = coords[dst]
+
+        return get_graph(mol, new_atoms, new_coords, self.labels[ireact],
+                         radius=self.radius, max_neighbor=self.max_neighbor)
