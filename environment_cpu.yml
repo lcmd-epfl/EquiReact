@@ -6,6 +6,7 @@ channels:
   - defaults
 dependencies:
   - python=3.10
+  - networkx=2.8.4
   - wandb=0.15.0
   - pyaml=20.4.0
   - numpy-base=1.23.5=py310h8e6c178_0
