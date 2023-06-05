@@ -1,5 +1,7 @@
 import os
+from os.path import exists, join
 from glob import glob
+from types import SimpleNamespace
 import numpy as np
 import torch
 from torch.utils.data import Dataset
@@ -11,6 +13,7 @@ from process.create_graph import reader, get_graph, canon_mol, atom_featurizer
 
 
 class GDB722TS(Dataset):
+
     def __init__(self, files_dir='data/gdb7-22-ts/xyz/', csv_path='data/gdb7-22-ts/ccsdtf12_dz.csv',
                  radius=20, max_neighbor=24, processed_dir='data/gdb7-22-ts/processed/', process=True):
 
@@ -21,6 +24,11 @@ class GDB722TS(Dataset):
         self.radius = radius
         self.files_dir = files_dir + '/'
         self.processed_dir = processed_dir + '/'
+
+        self.paths = SimpleNamespace(
+                rg = join(self.processed_dir, 'reactant_graphs.pt'),
+                pg = join(self.processed_dir, 'products_graphs.pt'),
+                )
 
         print("Loading data into memory...")
 
@@ -35,20 +43,17 @@ class GDB722TS(Dataset):
 
         self.indices = self.df['idx'].to_list()
 
-        if (not os.path.exists(os.path.join(self.processed_dir, 'reactant_graphs.pt')) or
-            not os.path.exists(os.path.join(self.processed_dir, 'products_graphs.pt'))):
-            print("Processed data not found, processing data...")
-            self.process()
-
-        elif process == True:
+        if process == True:
             print("Processing by request...")
             self.process()
-
         else:
-            self.reactant_graphs = torch.load(os.path.join(self.processed_dir, 'reactant_graphs.pt'))
-            self.products_graphs = torch.load(os.path.join(self.processed_dir, 'products_graphs.pt'))
-            print(f"Coords and graphs successfully read from {self.processed_dir}")
-        print()
+            if exists(self.paths.rg) and exists(self.paths.pg):
+                self.reactant_graphs = torch.load(self.paths.rg)
+                self.products_graphs = torch.load(self.paths.pg)
+                print(f"Coords and graphs successfully read from {self.processed_dir}")
+            else:
+                print("Processed data not found, processing data...")
+                self.process()
 
 
     def __len__(self):
@@ -64,7 +69,7 @@ class GDB722TS(Dataset):
     def process(self):
 
         print(f"Processing xyz files and saving coords to {self.processed_dir}")
-        if not os.path.exists(self.processed_dir):
+        if not exists(self.processed_dir):
             os.mkdir(self.processed_dir)
             print(f"Creating processed directory {self.processed_dir}")
 
@@ -169,8 +174,6 @@ class GDB722TS(Dataset):
 
         self.reactant_graphs = reactant_graphs_list
         self.products_graphs = products_graphs_list
-        rgraphsavename = self.processed_dir + 'reactant_graphs.pt'
-        pgraphsavename = self.processed_dir + 'products_graphs.pt'
-        torch.save(reactant_graphs_list, rgraphsavename)
-        torch.save(products_graphs_list, pgraphsavename)
-        print(f"Saved graphs to {rgraphsavename} and {pgraphsavename}")
+        torch.save(reactant_graphs_list, self.paths.rg)
+        torch.save(products_graphs_list, self.paths.pg)
+        print(f"Saved graphs to {self.paths.rg} and {self.paths.pg}")
