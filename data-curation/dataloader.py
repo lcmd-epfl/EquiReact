@@ -7,7 +7,6 @@ import pandas as pd
 from glob import glob
 from tqdm import tqdm
 from rdkit import Chem
-from rdkit.Chem import Draw
 import os
 import sys
 import numpy as np
@@ -22,7 +21,7 @@ import networkx.algorithms.isomorphism as iso
 
 class GDB722TS(Dataset):
 
-    def __init__(self, files_dir='../data/gdb7-22-ts/xyz/', csv_path='../data/gdb7-22-ts/ccsdtf12_dz.csv',
+    def __init__(self, files_dir='../data/gdb7-22-ts/xyz/', csv_path='../data/gdb7-22-ts/ccsdtf12_dz_cleaned.csv',
                  radius=20, max_neighbor=24):
 
         self.max_number_of_reactants = 1
@@ -124,12 +123,7 @@ class GDB722TS(Dataset):
         rdkit_atoms = np.array([at.GetSymbol() for at in mol.GetAtoms()])
 
         xyz_bonds = self.get_xyz_bonds(len(rdkit_bonds), atoms, coords)
-        if xyz_bonds is None:
-            #TODO
-            #Draw.MolToImage(mol).save(f'{idx}.png')
-            print('bond number', idx)
-            return None
-        assert len(rdkit_bonds)==len(xyz_bonds), "different number of bonds"
+        assert xyz_bonds is not None, f"different number of bonds in {idx}"
 
         if np.all(rdkit_atoms==atoms) and np.all(rdkit_bonds==xyz_bonds):
             # Don't search for a match because the first one doesn't have to be the shortest one
@@ -139,11 +133,8 @@ class GDB722TS(Dataset):
             G1 = self.make_nx_graph(rdkit_atoms, rdkit_bonds)
             G2 = self.make_nx_graph(atoms, xyz_bonds)
             GM = iso.GraphMatcher(G1, G2, node_match=iso.categorical_node_match('q', None))
-            if not GM.is_isomorphic():
-                #TODO
-                #Draw.MolToImage(mol).save(f'{idx}.png')
-                print('isomorphism', idx)
-                return None
+            assert GM.is_isomorphic(), f"smiles and xyz graphs are not isomorphic in {idx}"
+
             match = next(GM.match())
             src, dst = np.array(sorted(match.items(), key=lambda match: match[0])).T
             assert np.all(src==np.arange(G1.number_of_nodes()))
