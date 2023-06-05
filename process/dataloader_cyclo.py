@@ -1,5 +1,7 @@
 import os
+from os.path import exists, join
 from glob import glob
+from types import SimpleNamespace
 import numpy as np
 import torch
 from torch.utils.data import Dataset
@@ -25,6 +27,14 @@ class Cyclo23TS(Dataset):
         self.map_dir = map_dir
         self.atom_mapping = atom_mapping
 
+        self.paths = SimpleNamespace(
+                r0g = join(self.processed_dir, 'reactant_0_graphs.pt'),
+                r1g = join(self.processed_dir, 'reactant_1_graphs.pt'),
+                pg  = join(self.processed_dir, 'product_graphs.pt'),
+                r0m = join(self.processed_dir, 'reactant_0_maps.pt'),
+                r1m = join(self.processed_dir, 'reactant_1_maps.pt'),
+                )
+
         print("Loading data into memory...")
 
         self.df = pd.read_csv(csv_path)
@@ -39,42 +49,30 @@ class Cyclo23TS(Dataset):
         indices = self.df['rxn_id'].to_list()
         self.indices = indices
 
-        if not self.atom_mapping:
-            if (not os.path.exists(os.path.join(self.processed_dir, 'reactant_0_graphs.pt')) or
-                    not os.path.exists(os.path.join(self.processed_dir, 'reactant_1_graphs.pt')) or
-                    not os.path.exists(os.path.join(self.processed_dir, 'product_graphs.pt'))):
-                print("processed data not found, processing data...")
-                self.process()
-
-            elif process == True:
-                print("processing by request...")
-                self.process()
-
-            else:
-                self.reactant_0_graphs = torch.load(os.path.join(self.processed_dir, 'reactant_0_graphs.pt'))
-                self.reactant_1_graphs = torch.load(os.path.join(self.processed_dir, 'reactant_1_graphs.pt'))
-                self.product_graphs = torch.load(os.path.join(self.processed_dir, 'product_graphs.pt'))
-                print(f"Coords and graphs successfully read from {self.processed_dir}")
+        if process == True:
+            print("processing by request...")
+            self.process()
         else:
-            if (not os.path.exists(os.path.join(self.processed_dir, 'reactant_0_graphs.pt')) or
-                    not os.path.exists(os.path.join(self.processed_dir, 'reactant_1_graphs.pt')) or
-                    not os.path.exists(os.path.join(self.processed_dir, 'product_graphs.pt')) or
-                    not os.path.exists(os.path.join(self.processed_dir, 'reactant_0_maps.pt')) or
-                    not os.path.exists(os.path.join(self.processed_dir, 'reactant_1_maps.pt'))):
-                print("processed data not found, processing data...")
-                self.process()
-
-            elif process == True:
-                print("processing by request...")
-                self.process()
-
+            if self.atom_mapping:
+                if exists(self.paths.r0g) and exists(self.paths.r1g) and exists(self.paths.pg) and exists(self.paths.r0m) and exists(self.paths.r1m):
+                    self.reactant_0_graphs = torch.load(self.paths.r0g)
+                    self.reactant_1_graphs = torch.load(self.paths.r1g)
+                    self.product_graphs    = torch.load(self.paths.pg)
+                    self.reactant_0_maps   = torch.load(self.paths.r0m)
+                    self.reactant_1_maps   = torch.load(self.paths.r1m)
+                    print(f"Coords and graphs successfully read from {self.processed_dir}")
+                else:
+                    print("processed data not found, processing data...")
+                    self.process()
             else:
-                self.reactant_0_graphs = torch.load(os.path.join(self.processed_dir, 'reactant_0_graphs.pt'))
-                self.reactant_1_graphs = torch.load(os.path.join(self.processed_dir, 'reactant_1_graphs.pt'))
-                self.reactant_0_maps = torch.load(self.processed_dir + 'reactant_0_maps.pt')
-                self.reactant_1_maps = torch.load(self.processed_dir + 'reactant_1_maps.pt')
-                self.product_graphs = torch.load(os.path.join(self.processed_dir, 'product_graphs.pt'))
-                print(f"Coords and graphs successfully read from {self.processed_dir}")
+                if exists(self.paths.r0g) and exists(self.paths.r1g) and exists(self.paths.pg):
+                    self.reactant_0_graphs = torch.load(self.paths.r0g)
+                    self.reactant_1_graphs = torch.load(self.paths.r1g)
+                    self.product_graphs    = torch.load(self.paths.pg)
+                    print(f"Coords and graphs successfully read from {self.processed_dir}")
+                else:
+                    print("processed data not found, processing data...")
+                    self.process()
 
 
     def __len__(self):
@@ -112,7 +110,7 @@ class Cyclo23TS(Dataset):
 
     def process(self):
         print(f"Processing xyz files and saving coords to {self.processed_dir}")
-        if not os.path.exists(self.processed_dir):
+        if not exists(self.processed_dir):
             os.mkdir(self.processed_dir)
             print(f"Creating processed directory {self.processed_dir}")
 
@@ -194,18 +192,12 @@ class Cyclo23TS(Dataset):
         assert len(self.reactant_0_graphs) == len(self.reactant_1_graphs), 'number of reactants dont match'
         assert len(self.reactant_1_graphs) == len(self.product_graphs), 'number of reactants and products dont match'
 
-        r0graphsavename = self.processed_dir + 'reactant_0_graphs.pt'
-        r1graphsavename = self.processed_dir + 'reactant_1_graphs.pt'
-        r0mapsavename = self.processed_dir + 'reactant_0_maps.pt'
-        r1mapsavename = self.processed_dir + 'reactant_1_maps.pt'
-        pgraphsavename  = self.processed_dir + 'product_graphs.pt'
-
-        torch.save(self.reactant_0_graphs, r0graphsavename)
-        torch.save(self.reactant_1_graphs, r1graphsavename)
-        torch.save(self.reactant_0_maps, r0mapsavename)
-        torch.save(self.reactant_1_maps, r1mapsavename)
-        torch.save(self.product_graphs, pgraphsavename)
-        print(f"Saved graphs to {r0graphsavename}, {r1graphsavename} and {pgraphsavename}")
+        torch.save(self.reactant_0_graphs, self.paths.r0g)
+        torch.save(self.reactant_1_graphs, self.paths.r1g)
+        torch.save(self.reactant_0_maps,   self.paths.r0m)
+        torch.save(self.reactant_1_maps,   self.paths.r1m)
+        torch.save(self.product_graphs,    self.paths.pg)
+        print(f"Saved graphs to {self.paths.r0g}, {self.paths.r1g} and {self.paths.pg}")
 
 
     def make_graph(self, smi, atoms, coords, label, idx, check=True):
