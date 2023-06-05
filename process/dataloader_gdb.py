@@ -18,6 +18,7 @@ class GDB722TS(Dataset):
     def __init__(self, files_dir='data/gdb7-22-ts/xyz/', csv_path='data/gdb7-22-ts/ccsdtf12_dz_cleaned.csv',
                  radius=20, max_neighbor=24, processed_dir='data/gdb7-22-ts/processed/', process=True):
 
+        self.version = 3.0  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
         self.max_number_of_reactants = 1
         self.max_number_of_products = 3
 
@@ -29,6 +30,7 @@ class GDB722TS(Dataset):
         self.paths = SimpleNamespace(
                 rg = join(self.processed_dir, 'reactant_graphs.pt'),
                 pg = join(self.processed_dir, 'products_graphs.pt'),
+                v  = join(self.processed_dir, 'version.pt')
                 )
 
         print("Loading data into memory...")
@@ -46,6 +48,9 @@ class GDB722TS(Dataset):
 
         if process == True:
             print("Processing by request...")
+            self.process()
+        elif not exists(self.paths.v) or torch.load(self.paths.v) != self.version:
+            print("Processed data is outdated, processing data...")
             self.process()
         else:
             if exists(self.paths.rg) and exists(self.paths.pg):
@@ -106,27 +111,26 @@ class GDB722TS(Dataset):
 
         empty = get_empty_graph()
 
-        products_graphs_list = []
-        reactant_graphs_list = []
+        self.products_graphs = []
+        self.reactant_graphs = []
         for i, idx in enumerate(tqdm(self.indices, desc="making graphs")):
             rxnsmi = self.df[self.df['idx'] == idx]['rxn_smiles'].item()
             rsmi, psmis = rxnsmi.split('>>')
             # reactant
-            reactant_graphs_list.append(self.make_graph(rsmi, reactant_atomtypes_list[i], reactant_coords_list[i], i, f'r{idx:06d}'))
+            self.reactant_graphs.append(self.make_graph(rsmi, reactant_atomtypes_list[i], reactant_coords_list[i], i, f'r{idx:06d}'))
             # products
             psmis = psmis.split('.')
             nprod = len(products_coords_list[i])
             assert len(psmis) == nprod, 'number of products doesnt match'
             pgraphs = [self.make_graph(*args, i, f'p{idx:06d}_{ip}') for ip, args in enumerate(zip(psmis, products_atomtypes_list[i], products_coords_list[i]))]
             padding = [empty] * (self.max_number_of_products-nprod)
-            products_graphs_list.append(pgraphs + padding)
+            self.products_graphs.append(pgraphs + padding)
 
-        assert len(reactant_graphs_list) == len(products_graphs_list), 'not as many products as reactants'
+        assert len(self.reactant_graphs) == len(self.products_graphs), 'not as many products as reactants'
 
-        self.reactant_graphs = reactant_graphs_list
-        self.products_graphs = products_graphs_list
-        torch.save(reactant_graphs_list, self.paths.rg)
-        torch.save(products_graphs_list, self.paths.pg)
+        torch.save(self.reactant_graphs, self.paths.rg)
+        torch.save(self.products_graphs, self.paths.pg)
+        torch.save(self.version, self.paths.v)
         print(f"Saved graphs to {self.paths.rg} and {self.paths.pg}")
 
 
