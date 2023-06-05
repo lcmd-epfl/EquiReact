@@ -91,6 +91,7 @@ class EquiReact(nn.Module):
         self.combine_mode = combine_mode
         self.atom_mapping = atom_mapping
         self.attention = attention
+        self.n_s_full = 2 * self.n_s if self.n_conv_layers >= 3 else self.n_s
 
         self.max_radius = max_radius
         self.max_neighbors = max_neighbors
@@ -148,8 +149,7 @@ class EquiReact(nn.Module):
         self.conv_layers = nn.ModuleList(conv_layers)
 
         self.score_predictor_edges = nn.Sequential(
-            nn.Linear(4 * self.n_s + distance_emb_dim if n_conv_layers >= 3 else 2 * self.n_s + distance_emb_dim,
-                      self.n_s),
+            nn.Linear(2 * self.n_s_full + distance_emb_dim, self.n_s),
             nn.ReLU(),
             nn.Dropout(dropout_p),
             nn.Linear(self.n_s, self.n_s),
@@ -160,7 +160,7 @@ class EquiReact(nn.Module):
 
         # this can also be messed with
         self.score_predictor_nodes = nn.Sequential(
-            nn.Linear(2 * self.n_s if n_conv_layers >= 3 else self.n_s, 2 * self.n_s),
+            nn.Linear(self.n_s_full, 2 * self.n_s),
             nn.ReLU(),
             nn.Dropout(dropout_p),
             nn.Linear(2 * self.n_s, self.n_s),
@@ -175,13 +175,12 @@ class EquiReact(nn.Module):
             nn.Linear(2, 1)
         )
 
-        n_s_full = 2 * self.n_s if self.n_conv_layers >= 3 else self.n_s
         self.atom_diff_nonlin = nn.Sequential(
             nn.ReLU(),
-            nn.Linear(n_s_full, n_s_full),
+            nn.Linear(self.n_s_full, self.n_s_full),
         )
 
-        self.rp_attention = nn.MultiheadAttention(n_s_full, 1)  # query, key, value
+        self.rp_attention = nn.MultiheadAttention(self.n_s_full, 1)  # query, key, value
 
 
     def build_graph(self, data):
@@ -277,10 +276,9 @@ class EquiReact(nn.Module):
         return score
 
 
-    def forward_molecules(self, reactants_data, products_data, batch_size):
+    def forward_vector_mode(self, reactants_data, products_data, batch_size):
 
-        nfeat = 2*self.n_s if self.n_conv_layers >= 3 else self.n_s
-        X = torch.zeros((batch_size, nfeat), device=self.device)
+        X = torch.zeros((batch_size, self.n_s_full), device=self.device)
 
         stoichio = [-1]*len(reactants_data) + [+1]*len(products_data)
         for stoi, graph in zip(stoichio, reactants_data + products_data):
@@ -298,6 +296,61 @@ class EquiReact(nn.Module):
         return score
 
 
+    def forward_energy_mode(self, reactants_data, products_data, batch_size):
+        product_energy = torch.zeros((batch_size, 1), device=self.device)
+        reactant_energy = torch.zeros((batch_size, 1), device=self.device)
+        for graph in reactants_data:
+            reactant_energy += self.forward_molecule(graph)
+        for graph in products_data:
+            product_energy += self.forward_molecule(graph)
+
+        if self.combine_mode in ['diff', 'difference']:
+            reaction_energy = product_energy - reactant_energy
+        elif self.combine_mode == 'sum':
+            reaction_energy = product_energy + reactant_energy
+        elif self.combine_mode in ['mean', 'average', 'avg']:
+            reaction_energy = (product_energy + reactant_energy) / 2
+        elif self.combine_mode == 'mlp':
+            energies = torch.cat((reactant_energy, product_energy), 1)
+            reaction_energy = self.energy_mlp(energies)
+        else:
+            raise ValueError('combine mode is not valid')
+        return reaction_energy
+
+
+    def forward_mapped_mode(self, reactants_data, products_data, mapping):
+        # mapping overrides attention
+
+            if self.atom_mapping is True:
+                mapping = np.hstack(mapping)
+                x_react = self.forward_repr_mols(reactants_data)
+                x_prod  = self.forward_repr_mols(products_data)
+                x = x_prod[mapping] - x_react
+
+            elif self.attention is not None:
+                x_react = self.forward_repr_mols(reactants_data, merge=False)
+                x_prod  = self.forward_repr_mols(products_data, merge=False)
+                if self.attention == 'self':
+                    x_react_mapped = torch.vstack([self.rp_attention(xr, xr, xr, need_weights=False)[0] for xr in x_react])
+                    x_prod_mapped  = torch.vstack([self.rp_attention(xp, xp, xp, need_weights=False)[0] for xp in x_prod])
+                elif self.attention == 'cross':
+                    x_react_mapped = torch.vstack([self.rp_attention(xp, xr, xr, need_weights=False)[0] for xp, xr in zip(x_prod, x_react)])
+                    x_prod_mapped  = torch.vstack([self.rp_attention(xr, xp, xp, need_weights=False)[0] for xp, xr in zip(x_prod, x_react)])
+                else:
+                    raise NotImplementedError(f'attention "{self.attention}" not defined')
+                x = x_prod_mapped - x_react_mapped
+
+            batch = torch.sort(torch.hstack([g.batch for g in reactants_data])).values.to(self.device)
+            if self.graph_mode == 'energy':
+                score_atom = self.score_predictor_nodes(x)
+                score = scatter_add(score_atom, index=batch, dim=0)
+            elif self.graph_mode == 'vector':
+                x = self.atom_diff_nonlin(x)
+                x = scatter_add(x, index=batch, dim=0)
+                score = self.score_predictor_nodes(x)
+            return score
+
+
     def forward(self, reactants_data, products_data, mapping=None):
         """
         :param reactants_data: reactant graphs
@@ -308,72 +361,11 @@ class EquiReact(nn.Module):
 
         batch_size = reactants_data[0].num_graphs
 
-##########################################################################
-
-        if self.atom_mapping is True:
-            batch = torch.sort(torch.hstack([g.batch for g in reactants_data])).values.to(self.device)
-            mapping = np.hstack(mapping)
-            x_react = self.forward_repr_mols(reactants_data)
-            x_prod  = self.forward_repr_mols(products_data)
-            x = x_prod[mapping] - x_react
-            if self.graph_mode == 'energy':
-                score_atom = self.score_predictor_nodes(x)
-                score = scatter_add(score_atom, index=batch, dim=0)
-            elif self.graph_mode == 'vector':
-                x = self.atom_diff_nonlin(x)
-                x = scatter_add(x, index=batch, dim=0)
-                score = self.score_predictor_nodes(x)
-            return score
-
-##########################################################################
-
-        if self.attention is not None:
-            batch = torch.sort(torch.hstack([g.batch for g in reactants_data])).values.to(self.device)
-
-            x_react = self.forward_repr_mols(reactants_data, merge=False)
-            x_prod  = self.forward_repr_mols(products_data, merge=False)
-
-            if self.attention == 'self':
-                x_react_mapped = torch.vstack([self.rp_attention(xr, xr, xr, need_weights=False)[0] for xr in x_react])
-                x_prod_mapped  = torch.vstack([self.rp_attention(xp, xp, xp, need_weights=False)[0] for xp in x_prod])
-            elif self.attention == 'cross':
-                x_react_mapped = torch.vstack([self.rp_attention(xp, xr, xr, need_weights=False)[0] for xp, xr in zip(x_prod, x_react)])
-                x_prod_mapped  = torch.vstack([self.rp_attention(xr, xp, xp, need_weights=False)[0] for xp, xr in zip(x_prod, x_react)])
-            else:
-                raise NotImplementedError(f'attention "{self.attention}" not defined')
-
-            x = x_prod_mapped - x_react_mapped
-            if self.graph_mode == 'energy':
-                score_atom = self.score_predictor_nodes(x)
-                score = scatter_add(score_atom, index=batch, dim=0)
-            elif self.graph_mode == 'vector':
-                x = self.atom_diff_nonlin(x)
-                x = scatter_add(x, index=batch, dim=0)
-                score = self.score_predictor_nodes(x)
-            return score
-
-##########################################################################
-
-        if self.graph_mode == 'vector':
-            reaction_energy = self.forward_molecules(reactants_data, products_data, batch_size)
+        if self.atom_mapping is True or self.attention is not None:
+            reaction_energy = self.forward_mapped_mode(reactants_data, products_data, mapping)
+        elif self.graph_mode == 'vector':
+            reaction_energy = self.forward_vector_mode(reactants_data, products_data, batch_size)
         else:
-            product_energy = torch.zeros((batch_size, 1), device=self.device)
-            reactant_energy = torch.zeros((batch_size, 1), device=self.device)
-            for graph in reactants_data:
-                reactant_energy += self.forward_molecule(graph)
-            for graph in products_data:
-                product_energy += self.forward_molecule(graph)
-
-            if self.combine_mode in ['diff', 'difference']:
-                reaction_energy = product_energy - reactant_energy
-            elif self.combine_mode == 'sum':
-                reaction_energy = product_energy + reactant_energy
-            elif self.combine_mode in ['mean', 'average', 'avg']:
-                reaction_energy = (product_energy + reactant_energy) / 2
-            elif self.combine_mode == 'mlp':
-                energies = torch.cat((reactant_energy, product_energy), 1)
-                reaction_energy = self.energy_mlp(energies)
-            else:
-                raise ValueError('combine mode is not valid')
+            reaction_energy = self.forward_energy_mode(reactants_data, products_data, batch_size)
 
         return reaction_energy
