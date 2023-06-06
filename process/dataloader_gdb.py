@@ -116,15 +116,34 @@ class GDB722TS(Dataset):
         for i, idx in enumerate(tqdm(self.indices, desc="making graphs")):
             rxnsmi = self.df[self.df['idx'] == idx]['rxn_smiles'].item()
             rsmi, psmis = rxnsmi.split('>>')
+
             # reactant
-            self.reactant_graphs.append(self.make_graph(rsmi, reactant_atomtypes_list[i], reactant_coords_list[i], i, f'r{idx:06d}'))
+            rgraph, rmap, ratom = self.make_graph(rsmi, reactant_atomtypes_list[i], reactant_coords_list[i], i, f'r{idx:06d}')
+            self.reactant_graphs.append(rgraph)
+
             # products
             psmis = psmis.split('.')
             nprod = len(products_coords_list[i])
             assert len(psmis) == nprod, 'number of products doesnt match'
-            pgraphs = [self.make_graph(*args, i, f'p{idx:06d}_{ip}') for ip, args in enumerate(zip(psmis, products_atomtypes_list[i], products_coords_list[i]))]
+
+            pgraphs = []
+            pmaps = []
+            patoms = []
+            for ip, args in enumerate(zip(psmis, products_atomtypes_list[i], products_coords_list[i])):
+                pgraph, pmap, patom = self.make_graph(*args, i, f'p{idx:06d}_{ip}')
+                pgraphs.append(pgraph)
+                pmaps.append(pmap)
+                patoms.append(patom)
             padding = [empty] * (self.max_number_of_products-nprod)
             self.products_graphs.append(pgraphs + padding)
+
+            pmaps = np.hstack(pmaps)
+            assert np.all(sorted(rmap)==np.arange(len(ratom))), 'atoms missing from mapping {idx}'
+            assert np.all(sorted(rmap)==sorted(pmaps)), 'atoms missing from mapping {idx}'
+            p2rmap = np.hstack([np.where(pmaps==j)[0] for j in rmap])
+            assert np.all(rmap == pmaps[p2rmap])
+            assert np.all(ratom == np.hstack(patoms)[p2rmap])
+
 
         assert len(self.reactant_graphs) == len(self.products_graphs), 'not as many products as reactants'
 
@@ -163,6 +182,8 @@ class GDB722TS(Dataset):
         mol = Chem.MolFromSmiles(smi, sanitize=False)
         assert mol is not None, f"mol obj {idx} is None from smi {smi}"
         Chem.SanitizeMol(mol)
+        atom_map = np.array([at.GetAtomMapNum() for at in mol.GetAtoms()])
+        assert np.all(atom_map > 0), f"mol {idx} is not atom-mapped"
 
         assert len(atoms)==mol.GetNumAtoms(), f"nats don't match in idx {idx}"
 
@@ -189,5 +210,6 @@ class GDB722TS(Dataset):
             new_atoms = atoms[dst]
             new_coords = coords[dst]
 
-        return get_graph(mol, new_atoms, new_coords, self.labels[ireact],
-                         radius=self.radius, max_neighbor=self.max_neighbor)
+        graph = get_graph(mol, new_atoms, new_coords, self.labels[ireact],
+                          radius=self.radius, max_neighbor=self.max_neighbor)
+        return graph, atom_map-1, new_atoms
