@@ -2,7 +2,7 @@
 
 - `--graph_mode vector`
 - `--graph_mode energy --combine_mode {diff,sum,mean,mlp} --sum_mode {node,edge,both}`
-- `--attention {cross,self} --graph_mode {energy,vector} --combine_mode {diff,sum,mean}`
+- `--attention {cross,self} --graph_mode {energy,vector} --combine_mode {diff,sum,mean,mlp}`
 
 
 # TODO

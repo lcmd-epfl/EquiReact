@@ -169,10 +169,11 @@ class EquiReact(nn.Module):
             nn.Linear(self.n_s, 1)
         )
 
-        self.energy_mlp = nn.Sequential(
-            # TODO for some reason relu breaks everything
+        self.energy_mlp = nn.Linear(2, 1)
+
+        self.nodes_mlp = nn.Sequential(
             #nn.ReLU(),
-            nn.Linear(2, 1)
+            nn.Linear(2*self.n_s_full, self.n_s_full)
         )
 
         self.atom_diff_nonlin = nn.Sequential(
@@ -185,13 +186,14 @@ class EquiReact(nn.Module):
         combine_diff = lambda r, p: p-r
         combine_sum  = lambda r, p: r+p
         combine_mean = lambda r, p: (r+p)*0.5
-        combine_mlp  = lambda r, p: self.energy_mlp(torch.cat((r, p), 1))
+        if self.atom_mapping is True or self.attention is not None:
+            combine_mlp  = lambda r, p: self.nodes_mlp(torch.cat((r, p), 1))
+        else:
+            combine_mlp  = lambda r, p: self.energy_mlp(torch.cat((r, p), 1))
         combine_dict = {'diff': combine_diff, 'difference': combine_diff,
                         'sum' : combine_sum,
                         'mean': combine_mean, 'average': combine_mean, 'avg' : combine_mean,
                         'mlp' : combine_mlp}
-        if self.combine_mode=='mlp' and (self.atom_mapping is True or self.attention is not None):
-            raise ValueError(f'combine mode "{self.combine_mode}" incompatible with atom mapping/attention')
         if not self.combine_mode in combine_dict:
             raise NotImplementedError(f'combine mode "{self.combine_mode}" not defined')
         self.combine = combine_dict[self.combine_mode]
