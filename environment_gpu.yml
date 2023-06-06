@@ -5,6 +5,7 @@ channels:
   - conda-forge
   - defaults
 dependencies:
+  - networkx=2.8.4
   - _libgcc_mutex=0.1=conda_forge
   - _openmp_mutex=4.5=2_kmp_llvm
   - blas=1.0=mkl
@@ -143,9 +144,6 @@ dependencies:
       - setproctitle==1.3.2
       - smmap==5.0.0
       - sympy==1.11.1
-      - tensorboard==2.12.2
-      - tensorboard-data-server==0.7.0
-      - tensorboard-plugin-wit==1.8.1
       - threadpoolctl==3.1.0
       - torch-cluster==1.6.1
       - torch-geometric==2.3.0

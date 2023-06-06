@@ -1,3 +1,10 @@
+# Model parameters combinations
+
+- `--graph_mode vector`
+- `--graph_mode energy --combine_mode {diff,sum,mean,mlp} --sum_mode {node,edge,both}`
+- `--attention {cross,self} --graph_mode {energy,vector} --combine_mode {diff,sum,mean,mlp}`
+
+
 # TODO
 
 ## Cyclo
@@ -14,13 +21,14 @@
 ### Questions:
 - [ ] radius, n neighbours
 - [x] why MLP not working?
-- [ ] can we add something nonlinear to MLP? 
+- [x] can we add something nonlinear to MLP? 
 - [ ] can we use atom mapping in gdb smiles?
-- [ ] how to use atom mapping info better in cyclo?
-- [ ] learning rate? (why some LC oscillate so much)
+- [x] how to use atom mapping info better in cyclo?
+- [x] learning rate? (why some LC oscillate so much)
 
 ## GDB
 - The baseline with atom mapping is around 3kcal/mol
 
 1. Need to see how the atom mapped smiles can be used 
 2. Need to run baseline with automatic atom mapping, which will be a fairer reference, since these reactions are complicated to atom map by hand
+

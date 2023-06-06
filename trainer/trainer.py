@@ -4,18 +4,17 @@ import os
 import shutil
 from typing import Dict, Callable
 
-import pyaml
-import torch
 import numpy as np
-
-import wandb
-
-from models import *  # do not remove
-from trainer.lr_schedulers import WarmUpWrapper  # do not remove
-from torch.optim.lr_scheduler import *
+import torch
 from torch.optim import Adam
 from torch.utils.data import DataLoader
-from torch.utils.tensorboard import SummaryWriter
+
+import wandb
+import pyaml
+
+from models import *  # do not remove
+from torch.optim.lr_scheduler import *  # do not remove
+from trainer.lr_schedulers import WarmUpWrapper
 
 
 def move_to_device(element, device):
@@ -48,8 +47,9 @@ def concat_if_list(tensor_or_tensors):
 
 class Trainer():
     def __init__(self, model, metrics: Dict[str, Callable], main_metric: str, device: torch.device,
-                 tensorboard_functions: Dict[str, Callable] = None, optim=Adam, main_metric_goal: str = 'min',
-                 loss_func=torch.nn.MSELoss(), scheduler_step_per_batch: bool = True, run_dir='', sampler=None,
+                 optim=Adam, main_metric_goal: str = 'min',
+                 loss_func=torch.nn.MSELoss(), scheduler_step_per_batch: bool = True, sampler=None,
+                 run_dir='', run_name='',
                  checkpoint=None, num_epochs=0, eval_per_epochs=0, patience=0,
                  minimum_epochs=0, models_to_save=[], clip_grad=None, log_iterations=0, lr=0.0001,
                  weight_decay=0.0001, lr_scheduler=None, factor=0, min_lr=0, mode='max', lr_scheduler_patience=0,
@@ -59,7 +59,6 @@ class Trainer():
         self.std = std # stdev of data. to adjust val scores.
         self.model = model.to(self.device)
         self.loss_func = loss_func
-       # self.tensorboard_functions = tensorboard_functions
         self.metrics = metrics
         self.sampler = sampler
         self.val_per_batch = val_per_batch
@@ -81,7 +80,6 @@ class Trainer():
         self.mode = mode
         self.lr_scheduler_patience = lr_scheduler_patience
         self.lr_verbose = lr_verbose
-
         self.optim = optim(self.model.parameters(), lr=lr, weight_decay=weight_decay)
 
         if lr_scheduler:  # Needs "from torch.optim.lr_scheduler import *" to work
@@ -92,7 +90,6 @@ class Trainer():
 
         if self.checkpoint:
             check = torch.load(checkpoint, map_location=self.device)
-            self.writer = SummaryWriter(os.path.dirname(self.checkpoint))
             self.model.load_state_dict(check['model_state_dict'])
             self.optim.load_state_dict(check['optimizer_state_dict'])
             if self.lr_scheduler != None and check['scheduler_state_dict'] != None:
@@ -100,17 +97,19 @@ class Trainer():
             self.start_epoch = check['epoch']
             self.best_val_score = check['best_val_score']
             self.optim_steps = check['optim_steps']
+            self.log_dir = os.path.dirname(self.checkpoint)
         else:
             # not sure this is needed
             self.start_epoch = 1
             self.optim_steps = 0
             self.best_val_score = -np.inf if self.main_metric_goal == 'max' else np.inf  # running score to decide whether or not a new model should be saved
-            self.writer = SummaryWriter(run_dir)
+            self.log_dir = run_dir
+        self.run_name = run_name
 
         #for i, param_group in enumerate(self.optim.param_groups):
         #    param_group['lr'] = 0.0003
         self.epoch = self.start_epoch
-        print(f'Log directory: {self.writer.log_dir}')
+        print(f'Log directory: {self.log_dir}')
         self.hparams = {'checkpoint':checkpoint, 'num epochs':num_epochs,
                         'eval_per_epochs':eval_per_epochs, 'patience':patience,
                         'minimum_epochs':minimum_epochs, 'models_to_save':models_to_save,
@@ -127,12 +126,14 @@ class Trainer():
     def train(self, train_loader: DataLoader, val_loader: DataLoader):
         epochs_no_improve = 0  # counts every epoch that the validation accuracy did not improve for early stopping
         for epoch in range(self.start_epoch, self.num_epochs + 1):  # loop over the dataset multiple times
+
             self.epoch = epoch
             self.model.train()
             self.predict(train_loader, optim=self.optim)
-
             self.model.eval()
+
             with torch.no_grad():
+
                 metrics, _, _ = self.predict(val_loader)
                 # MAE of prediction is * std of data since data is normalised
                 val_score = metrics[self.main_metric] * self.std
@@ -145,38 +146,35 @@ class Trainer():
 
                 # val loss is MSE, shouldn't be affected by data normalisation
                 val_loss = metrics[type(self.loss_func).__name__]
-                wandb.log({"val_loss": val_loss, "val_score":val_score})
-                print('[Epoch %d] %s: %.6f val loss: %.6f' % (epoch, self.main_metric, val_score, val_loss))
+                wandb.log({"val_loss": val_loss, "val_score": val_score})
+                print(f'[Epoch {epoch}] {self.main_metric}: {val_score:.6f} val loss: {val_loss:.6f}')
+
                 # save the model with the best main_metric depending on wether we want to maximize or minimize the main metric
                 if val_score >= self.best_val_score and self.main_metric_goal == 'max' or val_score <= self.best_val_score and self.main_metric_goal == 'min':
                     epochs_no_improve = 0
                     self.best_val_score = val_score
-                    self.save_checkpoint(epoch, checkpoint_name='best_checkpoint.pt')
+                    self.save_checkpoint(epoch, checkpoint_name=f'{self.run_name}.best_checkpoint.pt')
                 else:
                     epochs_no_improve += 1
-                self.save_checkpoint(epoch, checkpoint_name='last_checkpoint.pt')
-                print('Epochs with no improvement: [', epochs_no_improve, '] and the best  ', self.main_metric,
-                    ' was in ', epoch - epochs_no_improve)
+                self.save_checkpoint(epoch, checkpoint_name=f'{self.run_name}.last_checkpoint.pt')
+                print(f'Epochs with no improvement: [ {epochs_no_improve} ] and the best {self.main_metric} was in {epoch - epochs_no_improve}')
                 if epochs_no_improve >= self.patience and epoch >= self.minimum_epochs:  # stopping criterion
                     print(f'Early stopping criterion based on -{self.main_metric}- that should be {self.main_metric_goal}-imized reached after {epoch} epochs. Best model checkpoint was in epoch {epoch - epochs_no_improve}.')
                     break
                 if epoch in self.models_to_save:
-                    shutil.copyfile(os.path.join(self.writer.log_dir, 'best_checkpoint.pt'),
-                                        os.path.join(self.writer.log_dir, f'best_checkpoint_{epoch}epochs.pt'))
+                    shutil.copyfile(os.path.join(self.log_dir, f'{self.run_name}.best_checkpoint.pt'),
+                                    os.path.join(self.log_dir, f'{self.run_name}.best_checkpoint_{epoch}epochs.pt'))
                 self.after_epoch()
                 #if val_loss > 10000:
                 #    raise Exception
 
         # evaluate on best checkpoint
-        checkpoint = torch.load(os.path.join(self.writer.log_dir, 'best_checkpoint.pt'), map_location=self.device)
+        checkpoint = torch.load(os.path.join(self.log_dir, f'{self.run_name}.best_checkpoint.pt'), map_location=self.device)
         self.model.load_state_dict(checkpoint['model_state_dict'])
         return self.evaluation(val_loader, data_split='val_best_checkpoint')
 
     def forward_pass(self, batch):
-        targets = batch[-1]  # the last entry of the batch tuple is always the targets
-        predictions = self.model(*batch[0])  # foward the rest of the batch to the model
-        loss = self.loss_func(predictions, targets)
-        return loss, predictions, targets
+        pass
 
     def process_batch(self, batch, optim):
         loss, predictions, targets = self.forward_pass(batch)
@@ -206,9 +204,8 @@ class Trainer():
                 if self.optim_steps % self.log_iterations == 0 and optim != None:
                     metrics = self.evaluate_metrics(predictions, targets)
                     metrics[type(self.loss_func).__name__] = loss.item()
-                    print('[Epoch %d; Iter %5d/%5d] %s: loss: %.7f' % (
-                        self.epoch, i + 1, len(data_loader), 'train', loss.item()))
-                    wandb.log({"train loss":loss.item(), "epoch":self.epoch})
+                    wandb.log({"train loss": loss.item(), "epoch": self.epoch})
+                    print(f'[Epoch {self.epoch}; Iter {i+1:5d}/{len(data_loader):5d}] train: loss: {loss.item():.7f}')
                 if optim == None and self.val_per_batch:  # during validation or testing when we want to average metrics over all the data in that dataloader
                     metrics = self.evaluate_metrics(predictions, targets, val=True)
                     metrics[type(self.loss_func).__name__] = loss.item()
@@ -259,12 +256,12 @@ class Trainer():
         self.model.eval()
         metrics, predictions, targets = self.predict(data_loader, return_pred=return_pred)
 
-        with open(os.path.join(self.writer.log_dir, 'evaluation_' + data_split + '.txt'), 'w') as file:
-            print('Statistics on ', data_split)
+        with open(os.path.join(self.log_dir, f'{self.run_name}.evaluation_{data_split}.txt'), 'w') as f:
+            print(f'Statistics on {data_split}')
             for key, value in metrics.items():
                 if key == 'mae':
                     value *= self.std
-                file.write(f'{key}: {value}\n')
+                f.write(f'{key}: {value}\n')
                 print(f'{key}: {value}')
         #TODO right now only MAE has the correct units
         return metrics, predictions, targets
@@ -280,13 +277,13 @@ class Trainer():
         """
         Saves checkpoint of model in the logdir of the summarywriter in the used rundi
         """
-        run_dir = self.writer.log_dir
+        run_dir = self.log_dir
         self.save_model_state(epoch, checkpoint_name)
         train_args = copy.copy(self.hparams)
         for key in train_args:
             if inspect.isclass(train_args[key]):
                 train_args[key] = train_args[key].__name__
-        with open(os.path.join(run_dir, 'train_arguments.yaml'), 'w') as yaml_path:
+        with open(os.path.join(run_dir, f'{self.run_name}.train_arguments.yaml'), 'w') as yaml_path:
             pyaml.dump(train_args, yaml_path)
 
 
@@ -298,4 +295,4 @@ class Trainer():
             'model_state_dict': self.model.state_dict(),
             'optimizer_state_dict': self.optim.state_dict(),
             'scheduler_state_dict': None if self.lr_scheduler == None else self.lr_scheduler.state_dict()
-        }, os.path.join(self.writer.log_dir, checkpoint_name))
+        }, os.path.join(self.log_dir, checkpoint_name))

@@ -8,11 +8,11 @@ pip install scipy numpy
 conda config --add channels pyg
 conda config --add channels nvidia
 conda install pytorch==1.12.1 torchvision==0.13.1 torchaudio==0.12.1 cudatoolkit=10.2 -c pytorch -c nvidia
+conda install networkx==2.8.4
 pip install pyg_lib torch_scatter torch_sparse torch_cluster torch_spline_conv -f https://data.pyg.org/whl/torch-1.12.1+cu102.html
 pip install e3nn
 conda install -c conda-forge rdkit=2023.03.1
 pip install pyaml wandb
-conda install tensorboard==2.12.2
 conda install pyg
 ```
 

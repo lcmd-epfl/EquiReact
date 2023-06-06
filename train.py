@@ -1,38 +1,30 @@
-import argparse
-import numpy as np
 import os
 import sys
+import argparse
+from ast import literal_eval
 import traceback
 from datetime import datetime
-import getpass  # os.getlogin() won't work on a cluster
+from getpass import getuser  # os.getlogin() won't work on a cluster
 
+import numpy as np
+import torch
+from torch.utils.data import DataLoader, Subset
 from models import *  # do not remove
 from torch.nn import *  # do not remove
 from torch.optim import *  # do not remove
 from torch.optim.lr_scheduler import *  # do not remove
-
-from torch.utils.data import DataLoader, Subset
-import torch
+import wandb
 
 # turn on for debugging for C code like Segmentation Faults
 import faulthandler
-
 faulthandler.enable()
 
-# MY IMPORTS
 from trainer.metrics import MAE
-from trainer.trainer import Trainer
 from trainer.react_trainer import ReactTrainer
 from models.equireact import EquiReact
-from process.dataloader import Cyclo23TS, GDB722TS
+from process.dataloader_cyclo import Cyclo23TS
+from process.dataloader_gdb import GDB722TS
 from process.collate import CustomCollator
-
-import wandb
-
-import sys
-from datetime import datetime
-
-from ast import literal_eval
 
 
 class Logger(object):
@@ -53,67 +45,43 @@ class Logger(object):
 
 def parse_arguments():
     p = argparse.ArgumentParser()
-    p.add_argument('--experiment_name', type=str, default='', help='name that will be added to the runs folder output')
-    p.add_argument('--num_epochs', type=str, default='2500', help='number of times to iterate through all samples')
-    p.add_argument('--checkpoint', type=str, help='path the checkpoint file to continue training')
-    p.add_argument('--device', type=str, help='cuda or cpu')
-    p.add_argument('--subset', type=int, default=None, help='size of a subset to use instead of the full set (tr+te+va)')
-    p.add_argument('--wandb_name', type=str, default=None, help='name of wandb run')
-    p.add_argument('--logdir', type=str, default='logs', help='log dir')
-    p.add_argument('--process', type=str, default=False, help='(re-)process data by force (if data is already there, default is to not reprocess)?')
-    p.add_argument('--verbose', type=str, default=False, help='Print dims throughout the training process')
-    p.add_argument('--radius', type=float, default=5.0, help='max radius of graph')
-    p.add_argument('--max_neighbors', type=int, default=20, help='max number of neighbors')
-    p.add_argument('--sum_mode', type=str, default='node', help='sum node (node, edge, or both)')
-    p.add_argument('--n_s', type=int, default=48, help='dimension of node features')
-    p.add_argument('--n_v', type=int, default=48, help='dimension of extra (p/d) features')
-    p.add_argument('--n_conv_layers', type=int, default=2, help='number of conv layers')
-    p.add_argument('--distance_emb_dim', type=int, default=16, help='how many gaussian funcs to use')
-    p.add_argument('--graph_mode', type=str, default='energy', help='prediction mode, energy or vector')
-    p.add_argument('--dropout_p', type=float, default=0.05, help='dropout probability')
-    p.add_argument('--dataset', type=str, default='cyclo', help='cyclo or gdb')
-    p.add_argument('--random_baseline', type=str, default=False, help='random baseline (no graph conv)')
-    p.add_argument('--combine_mode', type=str, default='mean', help='combine mode diff, sum, or mean')
-    p.add_argument('--atom_mapping', type=str, default=False, help='use atom mapping')
-    p.add_argument('--CV', type=int, default=5, help='cross validate')
-    p.add_argument('--attention', type=str, default=False, help='use attention')
+    p.add_argument('--experiment_name'  ,  type=str   ,  default=''       ,  help='name that will be added to the runs folder output')
+    p.add_argument('--num_epochs'       ,  type=int   ,  default=2500     ,  help='number of times to iterate through all samples')
+    p.add_argument('--subset'           ,  type=int   ,  default=None     ,  help='size of a subset to use instead of the full set (tr+te+va)')
+    p.add_argument('--max_neighbors'    ,  type=int   ,  default=20       ,  help='max number of neighbors')
+    p.add_argument('--n_s'              ,  type=int   ,  default=48       ,  help='dimension of node features')
+    p.add_argument('--n_v'              ,  type=int   ,  default=48       ,  help='dimension of extra (p/d) features')
+    p.add_argument('--n_conv_layers'    ,  type=int   ,  default=2        ,  help='number of conv layers')
+    p.add_argument('--distance_emb_dim' ,  type=int   ,  default=16       ,  help='how many gaussian funcs to use')
+    p.add_argument('--CV'               ,  type=int   ,  default=5        ,  help='cross validate')
+    p.add_argument('--radius'           ,  type=float ,  default=5.0      ,  help='max radius of graph')
+    p.add_argument('--dropout_p'        ,  type=float ,  default=0.05     ,  help='dropout probability')
+    p.add_argument('--checkpoint'       ,  type=str   ,  default=None     ,  help='path the checkpoint file to continue training')
+    p.add_argument('--wandb_name'       ,  type=str   ,  default=None     ,  help='name of wandb run')
+    p.add_argument('--attention'        ,  type=str   ,  default=None     ,  help='use attention')
+    p.add_argument('--device'           ,  type=str   ,  default='cuda'   ,  help='cuda or cpu')
+    p.add_argument('--logdir'           ,  type=str   ,  default='logs'   ,  help='log dir')
+    p.add_argument('--sum_mode'         ,  type=str   ,  default='node'   ,  help='sum node (node, edge, or both)')
+    p.add_argument('--graph_mode'       ,  type=str   ,  default='energy' ,  help='prediction mode, energy, or vector')
+    p.add_argument('--dataset'          ,  type=str   ,  default='cyclo'  ,  help='cyclo or gdb')
+    p.add_argument('--combine_mode'     ,  type=str   ,  default='mean'   ,  help='combine mode diff, sum, or mean')
+    p.add_argument('--process'          ,  type=str   ,  default=False    ,  help='(re-)process data by force (if data is already there, default is to not reprocess)?')
+    p.add_argument('--verbose'          ,  type=str   ,  default=False    ,  help='Print dims throughout the training process')
+    p.add_argument('--atom_mapping'     ,  type=str   ,  default=False    ,  help='use atom mapping')
+    p.add_argument('--random_baseline'  ,  type=str   ,  default=False    ,  help='random baseline (no graph conv)')
 
     args = p.parse_args()
 
-    if type(args.verbose) == str:
-        args.verbose = literal_eval(args.verbose)
-    if type(args.process) == str:
-        args.process = literal_eval(args.process)
-    if type(args.num_epochs) == str:
-        args.num_epochs = int(args.num_epochs)
-    if type(args.radius) == str:
-        args.radius = float(args.radius)
-    if type(args.max_neighbors) == str:
-        args.max_neighbors = int(args.max_neighbors)
-    if type(args.n_s) == str:
-        args.n_s = int(args.n_s)
-    if type(args.n_v) == str:
-        args.n_v = int(args.n_v)
-    if type(args.n_conv_layers) == str:
-        args.n_conv_layers = int(args.n_conv_layers)
-    if type(args.distance_emb_dim) == str:
-        args.distance_emb_dim = int(args.distance_emb_dim)
-    if type(args.dropout_p) == str:
-        args.dropout_p = float(args.dropout_p)
-    if type(args.random_baseline) == str:
-        args.random_baseline = literal_eval(args.random_baseline)
-    if type(args.atom_mapping) == str:
-        args.atom_mapping = literal_eval(args.atom_mapping)
-    if type(args.CV) == str:
-        args.CV = int(args.CV)
-    if type(args.attention) == str:
-        args.attention = literal_eval(args.attention)
+    for i in ['verbose', 'process', 'random_baseline', 'atom_mapping']:
+        if type(eval(f'args.{i}')) == str:
+            exec(f'args.{i} = literal_eval(args.{i})')
+
     return args
 
 
-def train(run_dir,
+def train(run_dir, run_name,
           #setup args
-          device='cuda:0', seed=123, eval_on_test=True,
+          device='cuda', seed=123, eval_on_test=True,
           #dataset args
           subset=None, tr_frac = 0.9, te_frac = 0.05, process=False, CV=0,
           dataset='cyclo',
@@ -134,11 +102,11 @@ def train(run_dir,
           random_baseline=False,
           combine_mode='diff',
           atom_mapping=False,
-          attention=False,
+          attention=None,
           ):
 
     device = torch.device("cuda:0" if torch.cuda.is_available() and device == 'cuda' else "cpu")
-    print("Running on device", device)
+    print(f"Running on device {device}")
 
     if dataset=='cyclo':
         data = Cyclo23TS(radius=radius, process=process, atom_mapping=atom_mapping)
@@ -148,10 +116,11 @@ def train(run_dir,
         data = GDB722TS(radius=radius, process=process)
     else:
         raise NotImplementedError(f'Cannot load the {dataset} dataset.')
+    print()
+
     labels = data.labels
     std = data.std
-
-    print("Data stdev", std)
+    print(f"Data stdev {std:.4f}")
 
     seed -= 1 # will be +1 in a second
     maes = []
@@ -172,7 +141,7 @@ def train(run_dir,
         te_size = round(te_frac*len(indices))
         va_size = len(indices)-tr_size-te_size
         tr_indices, te_indices, val_indices = np.split(indices, [tr_size, tr_size+te_size])
-        print('total / train / test / val:', len(indices), len(tr_indices), len(te_indices), len(val_indices))
+        print(f'total / train / test / val: {len(indices)} {len(tr_indices)} {len(te_indices)} {len(val_indices)}')
         train_data = Subset(data, tr_indices)
         val_data = Subset(data, val_indices)
         test_data = Subset(data, te_indices)
@@ -202,7 +171,8 @@ def train(run_dir,
                                 num_workers=num_workers)
 
         trainer = ReactTrainer(model=model, std=std, device=device, metrics={'mae':MAE()},
-                               run_dir=run_dir, sampler=sampler, val_per_batch=val_per_batch,
+                               run_dir=run_dir, run_name=run_name,
+                               sampler=sampler, val_per_batch=val_per_batch,
                                checkpoint=checkpoint, num_epochs=num_epochs,
                                eval_per_epochs=eval_per_epochs, patience=patience,
                                minimum_epochs=minimum_epochs, models_to_save=models_to_save,
@@ -236,8 +206,9 @@ def train(run_dir,
 
 
 if __name__ == '__main__':
+
     args = parse_arguments()
-    start_time = datetime.now().strftime('date%d-%m_time%H-%M-%S.%f')
+
     if not os.path.exists('logs'):
         os.mkdir('logs')
     if not os.path.exists(args.logdir):
@@ -251,21 +222,24 @@ if __name__ == '__main__':
     if not os.path.exists(run_dir):
         print(f"creating run dir {run_dir}")
         os.mkdir(run_dir)
-    # naming is kind of horrible
-    logpath = os.path.join(run_dir, f'{datetime.now().strftime("%y%m%d-%H%M%S")}-{getpass.getuser()}.log')
-    print('stdout to', logpath)
+
+    logname = f'{datetime.now().strftime("%y%m%d-%H%M%S.%f")}-{getuser()}'
+    logpath = os.path.join(run_dir, f'{logname}.log')
+    print(f"stdout to {logpath}")
     sys.stdout = Logger(logpath=logpath, syspart=sys.stdout)
     sys.stderr = Logger(logpath=logpath, syspart=sys.stderr)
 
-    wandb.init(project='nequireact')
+    wandb.init(project='nequireact-gdb' if args.dataset=='gdb' else 'nequireact')
     if args.wandb_name:
         wandb.run.name = args.wandb_name
         print('wandb name', args.wandb_name)
     else:
         print('no wandb name specified')
-    print('input args', args)
-    train(run_dir, device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint, subset=args.subset,
-          dataset=args.dataset, process=args.process,
+
+    print("\ninput args", args, '\n')
+
+    train(run_dir, logname, device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint,
+          subset=args.subset, dataset=args.dataset, process=args.process,
           verbose=args.verbose, radius=args.radius, max_neighbors=args.max_neighbors, sum_mode=args.sum_mode,
           n_s=args.n_s, n_v=args.n_v, n_conv_layers=args.n_conv_layers, distance_emb_dim=args.distance_emb_dim,
           graph_mode=args.graph_mode, dropout_p=args.dropout_p, random_baseline=args.random_baseline,

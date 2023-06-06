@@ -1,7 +1,5 @@
-import torch
 from torch.optim import Adam
 from trainer.trainer import Trainer
-from trainer.metrics import MAE
 
 
 class ReactTrainer(Trainer):
