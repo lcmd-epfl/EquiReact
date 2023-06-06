@@ -16,7 +16,8 @@ from process.create_graph import reader, get_graph, canon_mol, get_empty_graph
 class GDB722TS(Dataset):
 
     def __init__(self, files_dir='data/gdb7-22-ts/xyz/', csv_path='data/gdb7-22-ts/ccsdtf12_dz_cleaned.csv',
-                 radius=20, max_neighbor=24, processed_dir='data/gdb7-22-ts/processed/', process=True):
+                 radius=20, max_neighbor=24, processed_dir='data/gdb7-22-ts/processed/', process=True,
+                 atom_mapping=False):
 
         self.version = 4.0  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
         self.max_number_of_reactants = 1
@@ -26,10 +27,12 @@ class GDB722TS(Dataset):
         self.radius = radius
         self.files_dir = files_dir + '/'
         self.processed_dir = processed_dir + '/'
+        self.atom_mapping = atom_mapping
 
         self.paths = SimpleNamespace(
                 rg = join(self.processed_dir, 'reactant_graphs.pt'),
                 pg = join(self.processed_dir, 'products_graphs.pt'),
+                mp = join(self.processed_dir, 'p2r_mapping.pt'),
                 v  = join(self.processed_dir, 'version.pt')
                 )
 
@@ -53,9 +56,10 @@ class GDB722TS(Dataset):
             print("Processed data is outdated, processing data...")
             self.process()
         else:
-            if exists(self.paths.rg) and exists(self.paths.pg):
+            if exists(self.paths.rg) and exists(self.paths.pg) and exists(self.paths.mp):
                 self.reactant_graphs = torch.load(self.paths.rg)
                 self.products_graphs = torch.load(self.paths.pg)
+                self.p2r_maps        = torch.load(self.paths.mp)
                 print(f"Coords and graphs successfully read from {self.processed_dir}")
             else:
                 print("Processed data not found, processing data...")
@@ -70,7 +74,10 @@ class GDB722TS(Dataset):
         r = self.reactant_graphs[idx]
         p = self.products_graphs[idx]
         label = self.labels[idx]
-        return label, idx, r, *p
+        if self.atom_mapping:
+            return label, idx, r, *p, self.p2r_maps[idx]
+        else:
+            return label, idx, r, *p
 
 
     def process(self):
@@ -113,6 +120,7 @@ class GDB722TS(Dataset):
 
         self.products_graphs = []
         self.reactant_graphs = []
+        self.p2r_maps = []
         for i, idx in enumerate(tqdm(self.indices, desc="making graphs")):
             rxnsmi = self.df[self.df['idx'] == idx]['rxn_smiles'].item()
             rsmi, psmis = rxnsmi.split('>>')
@@ -143,13 +151,15 @@ class GDB722TS(Dataset):
             p2rmap = np.hstack([np.where(pmaps==j)[0] for j in rmap])
             assert np.all(rmap == pmaps[p2rmap])
             assert np.all(ratom == np.hstack(patoms)[p2rmap])
+            self.p2r_maps.append(p2rmap)
 
 
         assert len(self.reactant_graphs) == len(self.products_graphs), 'not as many products as reactants'
 
         torch.save(self.reactant_graphs, self.paths.rg)
         torch.save(self.products_graphs, self.paths.pg)
-        torch.save(self.version, self.paths.v)
+        torch.save(self.p2r_maps, self.paths.mp)
+        torch.save(self.version,  self.paths.v)
         print(f"Saved graphs to {self.paths.rg} and {self.paths.pg}")
 
 
