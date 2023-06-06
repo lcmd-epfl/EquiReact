@@ -18,7 +18,7 @@ class GDB722TS(Dataset):
     def __init__(self, files_dir='data/gdb7-22-ts/xyz/', csv_path='data/gdb7-22-ts/ccsdtf12_dz_cleaned.csv',
                  radius=20, max_neighbor=24, processed_dir='data/gdb7-22-ts/processed/', process=True):
 
-        self.version = 3.0  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
+        self.version = 4.0  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
         self.max_number_of_reactants = 1
         self.max_number_of_products = 3
 
@@ -160,9 +160,10 @@ class GDB722TS(Dataset):
 
 
     def make_graph(self, smi, atoms, coords, ireact, idx):
-        mol = Chem.MolFromSmiles(smi)
+        mol = Chem.MolFromSmiles(smi, sanitize=False)
         assert mol is not None, f"mol obj {idx} is None from smi {smi}"
-        mol = Chem.AddHs(mol)
+        Chem.SanitizeMol(mol)
+
         assert len(atoms)==mol.GetNumAtoms(), f"nats don't match in idx {idx}"
 
         rdkit_bonds = np.array(sorted(sorted((i.GetBeginAtomIdx(), i.GetEndAtomIdx())) for i in mol.GetBonds()))
