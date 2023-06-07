@@ -1,7 +1,6 @@
-# Try to improve atom mapping performance
-- [ ] run vector mode to compare
-- [ ] run energy mode for atom mapping
-- [ ] try random atom mapping
+# Try to improve atom mapping / attention performance
+- [x] run vector mode to compare
+- [x] try random atom mapping
 - [ ] play with atom_diff_nonlin
 - [ ] try to add edge features to attention/mapping/vector mode
 
