@@ -1,9 +1,16 @@
+# Try to improve atom mapping performance
+- [ ] run vector mode to compare
+- [ ] run energy mode for atom mapping
+- [ ] try random atom mapping
+- [ ] play with atom_diff_nonlin
+- [ ] try to add edge features to attention/mapping/vector mode
+
 # Model parameters combinations
 
 - `--graph_mode vector`
 - `--graph_mode energy --combine_mode {diff,sum,mean,mlp} --sum_mode {node,edge,both}`
 - `--attention {cross,self} --graph_mode {energy,vector} --combine_mode {diff,sum,mean,mlp}`
-
+- `--atom_mapping {cross,self} --graph_mode {energy,vector} --combine_mode {diff,sum,mean,mlp}`
 
 # TODO
 
@@ -20,7 +27,7 @@
 - [ ] radius, n neighbours
 - [x] why MLP not working?
 - [x] can we add something nonlinear to MLP? 
-- [ ] can we use atom mapping in gdb smiles?
+- [x] can we use atom mapping in gdb smiles?
 - [x] how to use atom mapping info better in cyclo?
 - [x] learning rate? (why some LC oscillate so much)
 
