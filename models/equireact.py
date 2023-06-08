@@ -237,13 +237,12 @@ class EquiReact(nn.Module):
         return x, edge_index, edge_attr
 
 
-    def forward_repr_mols(self, data, merge=True):
+    def split_batch(self, X_in, data, merge=False):
         batch_size = data[0].num_graphs
         X = []
-        for graph in data:
+        for graph, x in zip(data, X_in):
             if graph.x.shape[0]==0:
                 continue
-            x = self.forward_repr_mol(graph)[0]
             # split into molecules
             sections = [np.count_nonzero(graph.batch==i) for i in range(batch_size)]
             X.append(torch.split(x, sections))
@@ -252,6 +251,12 @@ class EquiReact(nn.Module):
         if merge:
             X_out = torch.vstack(X_out)
         return X_out
+
+
+    def forward_repr_mols(self, data, merge=False):
+        X = [self.forward_repr_mol(graph)[0] for graph in data if graph.x.shape[0]>0]
+        X = self.split_batch(X, data, merge=merge)
+        return X
 
 
     def forward_molecule(self, data):
