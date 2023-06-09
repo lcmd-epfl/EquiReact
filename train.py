@@ -84,7 +84,7 @@ def parse_arguments():
     return args, arg_groups
 
 
-def train(run_dir, run_name,
+def train(run_dir, run_name, project, wandb_name, hyper_dict,
           #setup args
           device='cuda', seed=123, eval_on_test=True,
           #dataset args
@@ -119,18 +119,23 @@ def train(run_dir, run_name,
         data = GDB722TS(radius=radius, process=process, atom_mapping=atom_mapping)
     else:
         raise NotImplementedError(f'Cannot load the {dataset} dataset.')
-    print()
-
     labels = data.labels
     std = data.std
     print(f"Data stdev {std:.4f}")
+    print()
 
-    seed -= 1 # will be +1 in a second
     maes = []
 
     for i in range(CV):
         print(f"CV iter {i+1}/{CV}")
-        seed += 1
+
+        hyper_dict['CV iter'] = i
+        hyper_dict['seed'] = seed
+        wandb.init(project=project,
+                   name = wandb_name if CV==1 else f'{wandb_name}.cv{i}',
+                   config = hyper_dict,
+                   group = None if CV==1 else wandb_name)
+
         torch.manual_seed(seed)
         torch.cuda.manual_seed(seed)
         np.random.seed(seed)
@@ -197,15 +202,16 @@ def train(run_dir, run_name,
             test_metrics, _, _ = trainer.evaluation(test_loader, data_split=data_split_string)
             mae_split = test_metrics['mae'] * std
             maes.append(mae_split)
-     #       return val_metrics, test_metrics, trainer.writer.log_dir
+
+        seed += 1
+        wandb.finish()
+        print()
 
     if eval_on_test:
         mean_mae_splits = np.mean(maes)
         std_mae_splits = np.std(maes)
         print(f"Mean MAE across splits {mean_mae_splits} +- {std_mae_splits}")
-
     return
-     #   return val_metrics
 
 
 if __name__ == '__main__':
@@ -233,16 +239,12 @@ if __name__ == '__main__':
     sys.stderr = Logger(logpath=logpath, syspart=sys.stderr)
 
     project = 'nequireact-gdb' if args.dataset=='gdb' else 'nequireact'
-    wandb.init(project=project, config=vars(arg_groups['hyperparameters']))
-    if args.wandb_name:
-        wandb.run.name = args.wandb_name
-        print('wandb name', args.wandb_name)
-    else:
-        print('no wandb name specified')
+    print(f'wandb name {args.wandb_name}' if args.wandb_name else 'no wandb name specified')
 
     print("\ninput args", args, '\n')
 
-    train(run_dir, logname, device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint,
+    train(run_dir, logname, project, args.wandb_name, vars(arg_groups['hyperparameters']),
+          device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint,
           subset=args.subset, dataset=args.dataset, process=args.process,
           verbose=args.verbose, radius=args.radius, max_neighbors=args.max_neighbors, sum_mode=args.sum_mode,
           n_s=args.n_s, n_v=args.n_v, n_conv_layers=args.n_conv_layers, distance_emb_dim=args.distance_emb_dim,
