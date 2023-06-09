@@ -327,13 +327,12 @@ class EquiReact(nn.Module):
     def forward_mapped_mode(self, reactants_data, products_data, mapping):
 
         x_react = self.forward_repr_mols(reactants_data, merge=self.atom_mapping)
-        x_prod  = self.forward_repr_mols(products_data, merge=self.atom_mapping)
+        x_prod  = self.forward_repr_mols(products_data, merge=False)
 
         # mapping overrides attention
         if self.atom_mapping is True:
-            mapping = np.hstack(mapping)
-            x_prod_mapped = x_prod[mapping]
             x_react_mapped = x_react
+            x_prod_mapped = torch.vstack([xp[mp] for xp, mp in zip(x_prod, mapping)])
         elif self.attention is not None:
             if self.attention == 'self':
                 x_react_mapped = torch.vstack([self.rp_attention(xr, xr, xr, need_weights=False)[0] for xr in x_react])

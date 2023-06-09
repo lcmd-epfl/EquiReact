@@ -111,9 +111,7 @@ def train(run_dir, run_name,
     if dataset=='cyclo':
         data = Cyclo23TS(radius=radius, process=process, atom_mapping=atom_mapping)
     elif dataset=='gdb':
-        if atom_mapping is True:
-            raise NotImplementedError('atom mapping is not available for the GDB dataset')
-        data = GDB722TS(radius=radius, process=process)
+        data = GDB722TS(radius=radius, process=process, atom_mapping=atom_mapping)
     else:
         raise NotImplementedError(f'Cannot load the {dataset} dataset.')
     print()

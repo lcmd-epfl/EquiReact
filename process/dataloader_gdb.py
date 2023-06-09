@@ -16,9 +16,10 @@ from process.create_graph import reader, get_graph, canon_mol, get_empty_graph
 class GDB722TS(Dataset):
 
     def __init__(self, files_dir='data/gdb7-22-ts/xyz/', csv_path='data/gdb7-22-ts/ccsdtf12_dz_cleaned.csv',
-                 radius=20, max_neighbor=24, processed_dir='data/gdb7-22-ts/processed/', process=True):
+                 radius=20, max_neighbor=24, processed_dir='data/gdb7-22-ts/processed/', process=True,
+                 atom_mapping=False):
 
-        self.version = 3.0  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
+        self.version = 4.0  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
         self.max_number_of_reactants = 1
         self.max_number_of_products = 3
 
@@ -26,10 +27,12 @@ class GDB722TS(Dataset):
         self.radius = radius
         self.files_dir = files_dir + '/'
         self.processed_dir = processed_dir + '/'
+        self.atom_mapping = atom_mapping
 
         self.paths = SimpleNamespace(
                 rg = join(self.processed_dir, 'reactant_graphs.pt'),
                 pg = join(self.processed_dir, 'products_graphs.pt'),
+                mp = join(self.processed_dir, 'p2r_mapping.pt'),
                 v  = join(self.processed_dir, 'version.pt')
                 )
 
@@ -53,9 +56,10 @@ class GDB722TS(Dataset):
             print("Processed data is outdated, processing data...")
             self.process()
         else:
-            if exists(self.paths.rg) and exists(self.paths.pg):
+            if exists(self.paths.rg) and exists(self.paths.pg) and exists(self.paths.mp):
                 self.reactant_graphs = torch.load(self.paths.rg)
                 self.products_graphs = torch.load(self.paths.pg)
+                self.p2r_maps        = torch.load(self.paths.mp)
                 print(f"Coords and graphs successfully read from {self.processed_dir}")
             else:
                 print("Processed data not found, processing data...")
@@ -70,7 +74,10 @@ class GDB722TS(Dataset):
         r = self.reactant_graphs[idx]
         p = self.products_graphs[idx]
         label = self.labels[idx]
-        return label, idx, r, *p
+        if self.atom_mapping:
+            return label, idx, r, *p, self.p2r_maps[idx]
+        else:
+            return label, idx, r, *p
 
 
     def process(self):
@@ -113,24 +120,46 @@ class GDB722TS(Dataset):
 
         self.products_graphs = []
         self.reactant_graphs = []
+        self.p2r_maps = []
         for i, idx in enumerate(tqdm(self.indices, desc="making graphs")):
             rxnsmi = self.df[self.df['idx'] == idx]['rxn_smiles'].item()
             rsmi, psmis = rxnsmi.split('>>')
+
             # reactant
-            self.reactant_graphs.append(self.make_graph(rsmi, reactant_atomtypes_list[i], reactant_coords_list[i], i, f'r{idx:06d}'))
+            rgraph, rmap, ratom = self.make_graph(rsmi, reactant_atomtypes_list[i], reactant_coords_list[i], i, f'r{idx:06d}')
+            self.reactant_graphs.append(rgraph)
+
             # products
             psmis = psmis.split('.')
             nprod = len(products_coords_list[i])
             assert len(psmis) == nprod, 'number of products doesnt match'
-            pgraphs = [self.make_graph(*args, i, f'p{idx:06d}_{ip}') for ip, args in enumerate(zip(psmis, products_atomtypes_list[i], products_coords_list[i]))]
+
+            pgraphs = []
+            pmaps = []
+            patoms = []
+            for ip, args in enumerate(zip(psmis, products_atomtypes_list[i], products_coords_list[i])):
+                pgraph, pmap, patom = self.make_graph(*args, i, f'p{idx:06d}_{ip}')
+                pgraphs.append(pgraph)
+                pmaps.append(pmap)
+                patoms.append(patom)
             padding = [empty] * (self.max_number_of_products-nprod)
             self.products_graphs.append(pgraphs + padding)
+
+            pmaps = np.hstack(pmaps)
+            assert np.all(sorted(rmap)==np.arange(len(ratom))), 'atoms missing from mapping {idx}'
+            assert np.all(sorted(rmap)==sorted(pmaps)), 'atoms missing from mapping {idx}'
+            p2rmap = np.hstack([np.where(pmaps==j)[0] for j in rmap])
+            assert np.all(rmap == pmaps[p2rmap])
+            assert np.all(ratom == np.hstack(patoms)[p2rmap])
+            self.p2r_maps.append(p2rmap)
+
 
         assert len(self.reactant_graphs) == len(self.products_graphs), 'not as many products as reactants'
 
         torch.save(self.reactant_graphs, self.paths.rg)
         torch.save(self.products_graphs, self.paths.pg)
-        torch.save(self.version, self.paths.v)
+        torch.save(self.p2r_maps, self.paths.mp)
+        torch.save(self.version,  self.paths.v)
         print(f"Saved graphs to {self.paths.rg} and {self.paths.pg}")
 
 
@@ -160,9 +189,12 @@ class GDB722TS(Dataset):
 
 
     def make_graph(self, smi, atoms, coords, ireact, idx):
-        mol = Chem.MolFromSmiles(smi)
+        mol = Chem.MolFromSmiles(smi, sanitize=False)
         assert mol is not None, f"mol obj {idx} is None from smi {smi}"
-        mol = Chem.AddHs(mol)
+        Chem.SanitizeMol(mol)
+        atom_map = np.array([at.GetAtomMapNum() for at in mol.GetAtoms()])
+        assert np.all(atom_map > 0), f"mol {idx} is not atom-mapped"
+
         assert len(atoms)==mol.GetNumAtoms(), f"nats don't match in idx {idx}"
 
         rdkit_bonds = np.array(sorted(sorted((i.GetBeginAtomIdx(), i.GetEndAtomIdx())) for i in mol.GetBonds()))
@@ -188,5 +220,6 @@ class GDB722TS(Dataset):
             new_atoms = atoms[dst]
             new_coords = coords[dst]
 
-        return get_graph(mol, new_atoms, new_coords, self.labels[ireact],
-                         radius=self.radius, max_neighbor=self.max_neighbor)
+        graph = get_graph(mol, new_atoms, new_coords, self.labels[ireact],
+                          radius=self.radius, max_neighbor=self.max_neighbor)
+        return graph, atom_map-1, new_atoms
