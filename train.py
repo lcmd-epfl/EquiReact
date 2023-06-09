@@ -45,38 +45,43 @@ class Logger(object):
 
 def parse_arguments():
     p = argparse.ArgumentParser()
-    p.add_argument('--experiment_name'  ,  type=str   ,  default=''       ,  help='name that will be added to the runs folder output')
-    p.add_argument('--num_epochs'       ,  type=int   ,  default=2500     ,  help='number of times to iterate through all samples')
-    p.add_argument('--subset'           ,  type=int   ,  default=None     ,  help='size of a subset to use instead of the full set (tr+te+va)')
-    p.add_argument('--max_neighbors'    ,  type=int   ,  default=20       ,  help='max number of neighbors')
-    p.add_argument('--n_s'              ,  type=int   ,  default=48       ,  help='dimension of node features')
-    p.add_argument('--n_v'              ,  type=int   ,  default=48       ,  help='dimension of extra (p/d) features')
-    p.add_argument('--n_conv_layers'    ,  type=int   ,  default=2        ,  help='number of conv layers')
-    p.add_argument('--distance_emb_dim' ,  type=int   ,  default=16       ,  help='how many gaussian funcs to use')
-    p.add_argument('--CV'               ,  type=int   ,  default=5        ,  help='cross validate')
-    p.add_argument('--radius'           ,  type=float ,  default=5.0      ,  help='max radius of graph')
-    p.add_argument('--dropout_p'        ,  type=float ,  default=0.05     ,  help='dropout probability')
-    p.add_argument('--checkpoint'       ,  type=str   ,  default=None     ,  help='path the checkpoint file to continue training')
-    p.add_argument('--wandb_name'       ,  type=str   ,  default=None     ,  help='name of wandb run')
-    p.add_argument('--attention'        ,  type=str   ,  default=None     ,  help='use attention')
-    p.add_argument('--device'           ,  type=str   ,  default='cuda'   ,  help='cuda or cpu')
-    p.add_argument('--logdir'           ,  type=str   ,  default='logs'   ,  help='log dir')
-    p.add_argument('--sum_mode'         ,  type=str   ,  default='node'   ,  help='sum node (node, edge, or both)')
-    p.add_argument('--graph_mode'       ,  type=str   ,  default='energy' ,  help='prediction mode, energy, or vector')
-    p.add_argument('--dataset'          ,  type=str   ,  default='cyclo'  ,  help='cyclo or gdb')
-    p.add_argument('--combine_mode'     ,  type=str   ,  default='mean'   ,  help='combine mode diff, sum, or mean')
-    p.add_argument('--process'          ,  type=str   ,  default=False    ,  help='(re-)process data by force (if data is already there, default is to not reprocess)?')
-    p.add_argument('--verbose'          ,  type=str   ,  default=False    ,  help='Print dims throughout the training process')
-    p.add_argument('--atom_mapping'     ,  type=str   ,  default=False    ,  help='use atom mapping')
-    p.add_argument('--random_baseline'  ,  type=str   ,  default=False    ,  help='random baseline (no graph conv)')
+
+    g_run = p.add_argument_group('external run parameters')
+    g_run.add_argument('--experiment_name'    , type=str           , default=''       ,  help='name that will be added to the runs folder output')
+    g_run.add_argument('--wandb_name'         , type=str           , default=None     ,  help='name of wandb run')
+    g_run.add_argument('--device'             , type=str           , default='cuda'   ,  help='cuda or cpu')
+    g_run.add_argument('--logdir'             , type=str           , default='logs'   ,  help='log dir')
+    g_run.add_argument('--CV'                 , type=int           , default=5        ,  help='cross validate')
+    g_run.add_argument('--checkpoint'         , type=str           , default=None     ,  help='path the checkpoint file to continue training')
+    g_run.add_argument('--num_epochs'         , type=int           , default=2500     ,  help='number of times to iterate through all samples')
+    g_run.add_argument('--verbose'            , action='store_true', default=False    ,  help='Print dims throughout the training process')
+    g_run.add_argument('--process'            , action='store_true', default=False    ,  help='(re-)process data by force (if data is already there, default is to not reprocess)?')
+
+    g_hyper = p.add_argument_group('hyperparameters')
+    g_hyper.add_argument('--subset'           , type=int           , default=None     ,  help='size of a subset to use instead of the full set (tr+te+va)')
+    g_hyper.add_argument('--max_neighbors'    , type=int           , default=20       ,  help='max number of neighbors')
+    g_hyper.add_argument('--n_s'              , type=int           , default=48       ,  help='dimension of node features')
+    g_hyper.add_argument('--n_v'              , type=int           , default=48       ,  help='dimension of extra (p/d) features')
+    g_hyper.add_argument('--n_conv_layers'    , type=int           , default=2        ,  help='number of conv layers')
+    g_hyper.add_argument('--distance_emb_dim' , type=int           , default=16       ,  help='how many gaussian funcs to use')
+    g_hyper.add_argument('--radius'           , type=float         , default=5.0      ,  help='max radius of graph')
+    g_hyper.add_argument('--dropout_p'        , type=float         , default=0.05     ,  help='dropout probability')
+    g_hyper.add_argument('--attention'        , type=str           , default=None     ,  help='use attention')
+    g_hyper.add_argument('--sum_mode'         , type=str           , default='node'   ,  help='sum node (node, edge, or both)')
+    g_hyper.add_argument('--graph_mode'       , type=str           , default='energy' ,  help='prediction mode, energy, or vector')
+    g_hyper.add_argument('--dataset'          , type=str           , default='cyclo'  ,  help='cyclo or gdb')
+    g_hyper.add_argument('--combine_mode'     , type=str           , default='mean'   ,  help='combine mode diff, sum, or mean')
+    g_hyper.add_argument('--atom_mapping'     , action='store_true', default=False    ,  help='use atom mapping')
+    g_hyper.add_argument('--random_baseline'  , action='store_true', default=False    ,  help='random baseline (no graph conv)')
 
     args = p.parse_args()
 
-    for i in ['verbose', 'process', 'random_baseline', 'atom_mapping']:
-        if type(eval(f'args.{i}')) == str:
-            exec(f'args.{i} = literal_eval(args.{i})')
+    arg_groups={}
+    for group in p._action_groups:
+        group_dict={a.dest: getattr(args, a.dest, None) for a in group._group_actions}
+        arg_groups[group.title] = argparse.Namespace(**group_dict)
 
-    return args
+    return args, arg_groups
 
 
 def train(run_dir, run_name,
@@ -205,7 +210,7 @@ def train(run_dir, run_name,
 
 if __name__ == '__main__':
 
-    args = parse_arguments()
+    args, arg_groups = parse_arguments()
 
     if not os.path.exists('logs'):
         os.mkdir('logs')
@@ -227,7 +232,8 @@ if __name__ == '__main__':
     sys.stdout = Logger(logpath=logpath, syspart=sys.stdout)
     sys.stderr = Logger(logpath=logpath, syspart=sys.stderr)
 
-    wandb.init(project='nequireact-gdb' if args.dataset=='gdb' else 'nequireact')
+    project = 'nequireact-gdb' if args.dataset=='gdb' else 'nequireact'
+    wandb.init(project=project, config=vars(arg_groups['hyperparameters']))
     if args.wandb_name:
         wandb.run.name = args.wandb_name
         print('wandb name', args.wandb_name)
