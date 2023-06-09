@@ -146,7 +146,7 @@ class Trainer():
 
                 # val loss is MSE, shouldn't be affected by data normalisation
                 val_loss = metrics[type(self.loss_func).__name__]
-                wandb.log({"val_loss": val_loss, "val_score": val_score})
+                wandb.log({"val_loss": val_loss, "val_score": val_score, "epoch": self.epoch})
                 print(f'[Epoch {epoch}] {self.main_metric}: {val_score:.6f} val loss: {val_loss:.6f}')
 
                 # save the model with the best main_metric depending on wether we want to maximize or minimize the main metric
@@ -201,7 +201,7 @@ class Trainer():
             *batch, batch_indices = move_to_device(list(batch), self.device)
             loss, predictions, targets = self.process_batch(batch, optim)
             with torch.no_grad():
-                if self.optim_steps % self.log_iterations == 0 and optim != None:
+                if (self.optim_steps % self.log_iterations == 0 or i+1==len(data_loader)) and optim != None:
                     metrics = self.evaluate_metrics(predictions, targets)
                     metrics[type(self.loss_func).__name__] = loss.item()
                     wandb.log({"train loss": loss.item(), "epoch": self.epoch})
