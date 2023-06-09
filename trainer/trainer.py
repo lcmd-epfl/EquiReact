@@ -82,6 +82,9 @@ class Trainer():
         self.lr_verbose = lr_verbose
         self.optim = optim(self.model.parameters(), lr=lr, weight_decay=weight_decay)
 
+        self.val_loss_for_wandb = None
+        self.val_score_for_wandb = None
+
         if lr_scheduler:  # Needs "from torch.optim.lr_scheduler import *" to work
             self.lr_scheduler = lr_scheduler(self.optim, mode=mode, factor=factor, patience=lr_scheduler_patience,
                                             min_lr=min_lr, verbose=lr_verbose)
@@ -148,6 +151,8 @@ class Trainer():
                 val_loss = metrics[type(self.loss_func).__name__]
                 wandb.log({"val_loss": val_loss, "val_score": val_score, "epoch": self.epoch})
                 print(f'[Epoch {epoch}] {self.main_metric}: {val_score:.6f} val loss: {val_loss:.6f}')
+                self.val_loss_for_wandb = val_loss
+                self.val_score_for_wandb = val_score
 
                 # save the model with the best main_metric depending on wether we want to maximize or minimize the main metric
                 if val_score >= self.best_val_score and self.main_metric_goal == 'max' or val_score <= self.best_val_score and self.main_metric_goal == 'min':
@@ -204,7 +209,10 @@ class Trainer():
                 if (self.optim_steps % self.log_iterations == 0 or i+1==len(data_loader)) and optim != None:
                     metrics = self.evaluate_metrics(predictions, targets)
                     metrics[type(self.loss_func).__name__] = loss.item()
-                    wandb.log({"train loss": loss.item(), "epoch": self.epoch})
+                    if self.val_score_for_wandb is None:
+                        wandb.log({"train loss": loss.item(), "epoch": self.epoch})
+                    else:
+                        wandb.log({"train loss": loss.item(), "epoch": self.epoch, "val_loss": self.val_loss_for_wandb, "val_score": self.val_score_for_wandb})
                     print(f'[Epoch {self.epoch}; Iter {i+1:5d}/{len(data_loader):5d}] train: loss: {loss.item():.7f}')
                 if optim == None and self.val_per_batch:  # during validation or testing when we want to average metrics over all the data in that dataloader
                     metrics = self.evaluate_metrics(predictions, targets, val=True)
