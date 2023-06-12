@@ -237,13 +237,12 @@ class EquiReact(nn.Module):
         return x, edge_index, edge_attr
 
 
-    def forward_repr_mols(self, data, merge=True):
+    def split_batch(self, X_in, data, merge=False):
         batch_size = data[0].num_graphs
         X = []
-        for graph in data:
+        for graph, x in zip(data, X_in):
             if graph.x.shape[0]==0:
                 continue
-            x = self.forward_repr_mol(graph)[0]
             # split into molecules
             sections = [np.count_nonzero(graph.batch==i) for i in range(batch_size)]
             X.append(torch.split(x, sections))
@@ -252,6 +251,12 @@ class EquiReact(nn.Module):
         if merge:
             X_out = torch.vstack(X_out)
         return X_out
+
+
+    def forward_repr_mols(self, data, merge=False):
+        X = [self.forward_repr_mol(graph)[0] for graph in data if graph.x.shape[0]>0]
+        X = self.split_batch(X, data, merge=merge)
+        return X
 
 
     def forward_molecule(self, data):
@@ -326,24 +331,38 @@ class EquiReact(nn.Module):
 
     def forward_mapped_mode(self, reactants_data, products_data, mapping):
 
-        x_react = self.forward_repr_mols(reactants_data, merge=self.atom_mapping)
-        x_prod  = self.forward_repr_mols(products_data, merge=False)
+        x_react = self.forward_repr_mols(reactants_data)
+        x_prod  = self.forward_repr_mols(products_data)
 
         # mapping overrides attention
         if self.atom_mapping is True:
             x_react_mapped = x_react
-            x_prod_mapped = torch.vstack([xp[mp] for xp, mp in zip(x_prod, mapping)])
+            x_prod_mapped = [xp[mp] for xp, mp in zip(x_prod, mapping)]
+
         elif self.attention is not None:
             if self.attention == 'self':
-                x_react_mapped = torch.vstack([self.rp_attention(xr, xr, xr, need_weights=False)[0] for xr in x_react])
-                x_prod_mapped  = torch.vstack([self.rp_attention(xp, xp, xp, need_weights=False)[0] for xp in x_prod])
+                x_react_mapped = [self.rp_attention(xr, xr, xr, need_weights=False)[0] for xr in x_react]
+                x_prod_mapped  = [self.rp_attention(xp, xp, xp, need_weights=False)[0] for xp in x_prod]
             elif self.attention == 'cross':
-                x_react_mapped = torch.vstack([self.rp_attention(xp, xr, xr, need_weights=False)[0] for xp, xr in zip(x_prod, x_react)])
-                x_prod_mapped  = torch.vstack([self.rp_attention(xr, xp, xp, need_weights=False)[0] for xp, xr in zip(x_prod, x_react)])
+                x_react_mapped = [self.rp_attention(xp, xr, xr, need_weights=False)[0] for xp, xr in zip(x_prod, x_react)]
+                x_prod_mapped  = [self.rp_attention(xr, xp, xp, need_weights=False)[0] for xp, xr in zip(x_prod, x_react)]
+            elif self.attention == 'masked':
+                def get_atoms(data):
+                    at = [g.x[:,[0]].to(torch.int)+1 for g in data if g.x.shape[0]>0]
+                    at = self.split_batch(at, data, merge=False)
+                    return at
+                ratoms = get_atoms(reactants_data)
+                patoms = get_atoms(products_data)
+                x_react_mapped = []
+                x_prod_mapped = []
+                for xr, xp, ar, ap in zip(x_react, x_prod, ratoms, patoms):
+                    mask = (ap != ar.T).to(self.device)  # len(xp) × len(xr) ; True == no attention
+                    x_react_mapped.append(self.rp_attention(xp, xr, xr, attn_mask=mask, need_weights=False)[0])
+                    x_prod_mapped.append(self.rp_attention(xr, xp, xp, attn_mask=mask.T, need_weights=False)[0])
             else:
                 raise NotImplementedError(f'attention "{self.attention}" not defined')
 
-        x = self.combine(x_react_mapped, x_prod_mapped)
+        x = self.combine(torch.vstack(x_react_mapped), torch.vstack(x_prod_mapped))
 
         batch = torch.sort(torch.hstack([g.batch for g in reactants_data])).values.to(self.device)
         if self.graph_mode == 'energy':
