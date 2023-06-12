@@ -1,0 +1,840 @@
+NodeName=node05 Arch=x86_64 CoresPerSocket=12
+   CPUAlloc=4 CPUErr=0 CPUTot=24 CPULoad=0.99
+   AvailableFeatures=mem128
+   ActiveFeatures=mem128
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.105 NodeHostName=node05 Version=16.05
+   OS=Linux RealMemory=126000 AllocMem=90000 FreeMem=29942 Sockets=2 Boards=1
+   State=MIXED ThreadsPerCore=1 TmpDisk=0 Weight=400 Owner=N/A MCS_label=N/A
+   BootTime=2022-01-10T12:50:09 SlurmdStartTime=2023-03-10T15:33:05
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node06 Arch=x86_64 CoresPerSocket=12
+   CPUAlloc=4 CPUErr=0 CPUTot=24 CPULoad=3.29
+   AvailableFeatures=mem128
+   ActiveFeatures=mem128
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.106 NodeHostName=node06 Version=16.05
+   OS=Linux RealMemory=126000 AllocMem=90000 FreeMem=20436 Sockets=2 Boards=1
+   State=MIXED ThreadsPerCore=1 TmpDisk=0 Weight=400 Owner=N/A MCS_label=N/A
+   BootTime=2022-01-10T12:50:09 SlurmdStartTime=2023-03-10T15:33:03
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node07 Arch=x86_64 CoresPerSocket=12
+   CPUAlloc=0 CPUErr=0 CPUTot=24 CPULoad=0.01
+   AvailableFeatures=mem128
+   ActiveFeatures=mem128
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.107 NodeHostName=node07 Version=16.05
+   OS=Linux RealMemory=126000 AllocMem=0 FreeMem=114984 Sockets=2 Boards=1
+   State=IDLE ThreadsPerCore=1 TmpDisk=0 Weight=400 Owner=N/A MCS_label=N/A
+   BootTime=2022-01-10T12:50:08 SlurmdStartTime=2023-03-10T15:33:03
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node08 Arch=x86_64 CoresPerSocket=12
+   CPUAlloc=4 CPUErr=0 CPUTot=24 CPULoad=3.54
+   AvailableFeatures=mem128
+   ActiveFeatures=mem128
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.108 NodeHostName=node08 Version=16.05
+   OS=Linux RealMemory=126000 AllocMem=90000 FreeMem=11083 Sockets=2 Boards=1
+   State=MIXED ThreadsPerCore=1 TmpDisk=0 Weight=400 Owner=N/A MCS_label=N/A
+   BootTime=2023-05-17T11:40:18 SlurmdStartTime=2023-05-17T11:40:58
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node09 Arch=x86_64 CoresPerSocket=12
+   CPUAlloc=0 CPUErr=0 CPUTot=24 CPULoad=0.01
+   AvailableFeatures=mem128
+   ActiveFeatures=mem128
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.109 NodeHostName=node09 Version=16.05
+   OS=Linux RealMemory=126000 AllocMem=0 FreeMem=114880 Sockets=2 Boards=1
+   State=IDLE ThreadsPerCore=1 TmpDisk=0 Weight=400 Owner=N/A MCS_label=N/A
+   BootTime=2022-01-10T12:50:08 SlurmdStartTime=2023-03-10T15:33:03
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node10 Arch=x86_64 CoresPerSocket=12
+   CPUAlloc=4 CPUErr=0 CPUTot=24 CPULoad=3.91
+   AvailableFeatures=mem128
+   ActiveFeatures=mem128
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.110 NodeHostName=node10 Version=16.05
+   OS=Linux RealMemory=126000 AllocMem=90000 FreeMem=22311 Sockets=2 Boards=1
+   State=MIXED ThreadsPerCore=1 TmpDisk=0 Weight=400 Owner=N/A MCS_label=N/A
+   BootTime=2022-01-10T12:50:09 SlurmdStartTime=2023-03-10T15:32:33
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node11 Arch=x86_64 CoresPerSocket=12
+   CPUAlloc=0 CPUErr=0 CPUTot=24 CPULoad=0.01
+   AvailableFeatures=mem128
+   ActiveFeatures=mem128
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.111 NodeHostName=node11 Version=16.05
+   OS=Linux RealMemory=126000 AllocMem=0 FreeMem=126222 Sockets=2 Boards=1
+   State=IDLE+DRAIN ThreadsPerCore=1 TmpDisk=0 Weight=400 Owner=N/A MCS_label=N/A
+   BootTime=2023-02-03T07:49:57 SlurmdStartTime=2023-03-10T15:32:33
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   Reason=Epilog error [slurm@2023-03-04T01:30:07]
+
+NodeName=node12 Arch=x86_64 CoresPerSocket=12
+   CPUAlloc=4 CPUErr=0 CPUTot=24 CPULoad=1.06
+   AvailableFeatures=mem128
+   ActiveFeatures=mem128
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.112 NodeHostName=node12 Version=16.05
+   OS=Linux RealMemory=126000 AllocMem=90000 FreeMem=12348 Sockets=2 Boards=1
+   State=MIXED ThreadsPerCore=1 TmpDisk=0 Weight=400 Owner=N/A MCS_label=N/A
+   BootTime=2022-05-18T15:25:05 SlurmdStartTime=2023-03-10T15:33:05
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node17 Arch=x86_64 CoresPerSocket=12
+   CPUAlloc=8 CPUErr=0 CPUTot=24 CPULoad=2.94
+   AvailableFeatures=mem256
+   ActiveFeatures=mem256
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.117 NodeHostName=node17 Version=16.05
+   OS=Linux RealMemory=254000 AllocMem=180000 FreeMem=18760 Sockets=2 Boards=1
+   State=MIXED ThreadsPerCore=1 TmpDisk=0 Weight=400 Owner=N/A MCS_label=N/A
+   BootTime=2021-05-20T12:40:57 SlurmdStartTime=2023-03-10T15:32:33
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node18 Arch=x86_64 CoresPerSocket=12
+   CPUAlloc=8 CPUErr=0 CPUTot=24 CPULoad=3.84
+   AvailableFeatures=mem256
+   ActiveFeatures=mem256
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.118 NodeHostName=node18 Version=16.05
+   OS=Linux RealMemory=254000 AllocMem=180000 FreeMem=54405 Sockets=2 Boards=1
+   State=MIXED ThreadsPerCore=1 TmpDisk=0 Weight=400 Owner=N/A MCS_label=N/A
+   BootTime=2023-02-02T19:34:28 SlurmdStartTime=2023-03-10T15:32:37
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node19 Arch=x86_64 CoresPerSocket=12
+   CPUAlloc=8 CPUErr=0 CPUTot=24 CPULoad=5.43
+   AvailableFeatures=mem256
+   ActiveFeatures=mem256
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.119 NodeHostName=node19 Version=16.05
+   OS=Linux RealMemory=254000 AllocMem=180000 FreeMem=18974 Sockets=2 Boards=1
+   State=MIXED ThreadsPerCore=1 TmpDisk=0 Weight=400 Owner=N/A MCS_label=N/A
+   BootTime=2023-02-02T19:34:23 SlurmdStartTime=2023-03-10T15:32:34
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node20 Arch=x86_64 CoresPerSocket=12
+   CPUAlloc=4 CPUErr=0 CPUTot=24 CPULoad=3.89
+   AvailableFeatures=mem256
+   ActiveFeatures=mem256
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.120 NodeHostName=node20 Version=16.05
+   OS=Linux RealMemory=254000 AllocMem=90000 FreeMem=74817 Sockets=2 Boards=1
+   State=MIXED ThreadsPerCore=1 TmpDisk=0 Weight=400 Owner=N/A MCS_label=N/A
+   BootTime=2023-03-02T08:45:12 SlurmdStartTime=2023-03-10T15:32:35
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node21 Arch=x86_64 CoresPerSocket=12
+   CPUAlloc=8 CPUErr=0 CPUTot=24 CPULoad=4.96
+   AvailableFeatures=mem256
+   ActiveFeatures=mem256
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.121 NodeHostName=node21 Version=16.05
+   OS=Linux RealMemory=254000 AllocMem=180000 FreeMem=47395 Sockets=2 Boards=1
+   State=MIXED ThreadsPerCore=1 TmpDisk=0 Weight=400 Owner=N/A MCS_label=N/A
+   BootTime=2022-01-10T12:48:59 SlurmdStartTime=2023-03-10T15:32:33
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node22 Arch=x86_64 CoresPerSocket=12
+   CPUAlloc=4 CPUErr=0 CPUTot=24 CPULoad=3.86
+   AvailableFeatures=mem256
+   ActiveFeatures=mem256
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.122 NodeHostName=node22 Version=16.05
+   OS=Linux RealMemory=254000 AllocMem=90000 FreeMem=51779 Sockets=2 Boards=1
+   State=MIXED ThreadsPerCore=1 TmpDisk=0 Weight=400 Owner=N/A MCS_label=N/A
+   BootTime=2023-02-03T07:47:24 SlurmdStartTime=2023-03-10T15:32:36
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node23 Arch=x86_64 CoresPerSocket=12
+   CPUAlloc=4 CPUErr=0 CPUTot=24 CPULoad=1.08
+   AvailableFeatures=mem256
+   ActiveFeatures=mem256
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.123 NodeHostName=node23 Version=16.05
+   OS=Linux RealMemory=254000 AllocMem=90000 FreeMem=82671 Sockets=2 Boards=1
+   State=MIXED ThreadsPerCore=1 TmpDisk=0 Weight=400 Owner=N/A MCS_label=N/A
+   BootTime=2022-01-10T12:48:58 SlurmdStartTime=2023-03-10T15:32:33
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node24 Arch=x86_64 CoresPerSocket=12
+   CPUAlloc=0 CPUErr=0 CPUTot=24 CPULoad=0.01
+   AvailableFeatures=mem256
+   ActiveFeatures=mem256
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.124 NodeHostName=node24 Version=16.05
+   OS=Linux RealMemory=254000 AllocMem=0 FreeMem=49866 Sockets=2 Boards=1
+   State=IDLE ThreadsPerCore=1 TmpDisk=0 Weight=400 Owner=N/A MCS_label=N/A
+   BootTime=2022-01-10T12:48:59 SlurmdStartTime=2023-03-10T15:32:33
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node25 Arch=x86_64 CoresPerSocket=12
+   CPUAlloc=0 CPUErr=0 CPUTot=24 CPULoad=0.01
+   AvailableFeatures=mem256
+   ActiveFeatures=mem256
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.125 NodeHostName=node25 Version=16.05
+   OS=Linux RealMemory=254000 AllocMem=0 FreeMem=136734 Sockets=2 Boards=1
+   State=IDLE ThreadsPerCore=1 TmpDisk=0 Weight=400 Owner=N/A MCS_label=N/A
+   BootTime=2022-01-10T12:48:58 SlurmdStartTime=2023-03-10T15:32:33
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node26 Arch=x86_64 CoresPerSocket=12
+   CPUAlloc=0 CPUErr=0 CPUTot=24 CPULoad=0.01
+   AvailableFeatures=mem256
+   ActiveFeatures=mem256
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.126 NodeHostName=node26 Version=16.05
+   OS=Linux RealMemory=254000 AllocMem=0 FreeMem=160578 Sockets=2 Boards=1
+   State=IDLE ThreadsPerCore=1 TmpDisk=0 Weight=400 Owner=N/A MCS_label=N/A
+   BootTime=2022-01-10T12:48:59 SlurmdStartTime=2023-03-10T15:32:33
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node27 Arch=x86_64 CoresPerSocket=12
+   CPUAlloc=0 CPUErr=0 CPUTot=24 CPULoad=0.01
+   AvailableFeatures=mem192
+   ActiveFeatures=mem192
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.127 NodeHostName=node27 Version=16.05
+   OS=Linux RealMemory=192000 AllocMem=0 FreeMem=143735 Sockets=2 Boards=1
+   State=IDLE ThreadsPerCore=1 TmpDisk=0 Weight=400 Owner=N/A MCS_label=N/A
+   BootTime=2023-03-07T10:48:11 SlurmdStartTime=2023-03-10T15:32:33
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node28 Arch=x86_64 CoresPerSocket=12
+   CPUAlloc=0 CPUErr=0 CPUTot=24 CPULoad=0.01
+   AvailableFeatures=mem192
+   ActiveFeatures=mem192
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.128 NodeHostName=node28 Version=16.05
+   OS=Linux RealMemory=192000 AllocMem=0 FreeMem=95962 Sockets=2 Boards=1
+   State=IDLE ThreadsPerCore=1 TmpDisk=0 Weight=400 Owner=N/A MCS_label=N/A
+   BootTime=2023-04-05T23:11:39 SlurmdStartTime=2023-04-05T23:11:57
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node29 Arch=x86_64 CoresPerSocket=12
+   CPUAlloc=0 CPUErr=0 CPUTot=24 CPULoad=0.01
+   AvailableFeatures=mem192
+   ActiveFeatures=mem192
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.129 NodeHostName=node29 Version=16.05
+   OS=Linux RealMemory=192000 AllocMem=0 FreeMem=116011 Sockets=2 Boards=1
+   State=IDLE ThreadsPerCore=1 TmpDisk=0 Weight=400 Owner=N/A MCS_label=N/A
+   BootTime=2023-04-06T04:38:05 SlurmdStartTime=2023-04-06T04:39:18
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node30 Arch=x86_64 CoresPerSocket=12
+   CPUAlloc=0 CPUErr=0 CPUTot=24 CPULoad=0.01
+   AvailableFeatures=mem192
+   ActiveFeatures=mem192
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.130 NodeHostName=node30 Version=16.05
+   OS=Linux RealMemory=192000 AllocMem=0 FreeMem=94001 Sockets=2 Boards=1
+   State=IDLE ThreadsPerCore=1 TmpDisk=0 Weight=400 Owner=N/A MCS_label=N/A
+   BootTime=2022-01-10T12:53:24 SlurmdStartTime=2023-03-10T15:32:33
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node31 Arch=x86_64 CoresPerSocket=12
+   CPUAlloc=0 CPUErr=0 CPUTot=24 CPULoad=0.01
+   AvailableFeatures=mem192
+   ActiveFeatures=mem192
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.131 NodeHostName=node31 Version=16.05
+   OS=Linux RealMemory=192000 AllocMem=0 FreeMem=107656 Sockets=2 Boards=1
+   State=IDLE ThreadsPerCore=1 TmpDisk=0 Weight=400 Owner=N/A MCS_label=N/A
+   BootTime=2022-01-10T12:53:13 SlurmdStartTime=2023-03-10T15:32:33
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node32 Arch=x86_64 CoresPerSocket=12
+   CPUAlloc=0 CPUErr=0 CPUTot=24 CPULoad=0.01
+   AvailableFeatures=mem192
+   ActiveFeatures=mem192
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.132 NodeHostName=node32 Version=16.05
+   OS=Linux RealMemory=192000 AllocMem=0 FreeMem=110362 Sockets=2 Boards=1
+   State=IDLE ThreadsPerCore=1 TmpDisk=0 Weight=400 Owner=N/A MCS_label=N/A
+   BootTime=2022-01-10T12:53:25 SlurmdStartTime=2023-03-10T15:32:33
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node33 Arch=x86_64 CoresPerSocket=12
+   CPUAlloc=0 CPUErr=0 CPUTot=24 CPULoad=0.01
+   AvailableFeatures=mem192
+   ActiveFeatures=mem192
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.133 NodeHostName=node33 Version=16.05
+   OS=Linux RealMemory=192000 AllocMem=0 FreeMem=134459 Sockets=2 Boards=1
+   State=IDLE ThreadsPerCore=1 TmpDisk=0 Weight=400 Owner=N/A MCS_label=N/A
+   BootTime=2022-01-10T12:53:20 SlurmdStartTime=2023-03-10T15:32:33
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node34 CoresPerSocket=16
+   CPUAlloc=0 CPUErr=0 CPUTot=32 CPULoad=N/A
+   AvailableFeatures=mem192
+   ActiveFeatures=mem192
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.134 NodeHostName=node34 Version=(null)
+   RealMemory=192000 AllocMem=0 FreeMem=N/A Sockets=2 Boards=1
+   State=DOWN* ThreadsPerCore=1 TmpDisk=0 Weight=340 Owner=N/A MCS_label=N/A
+   BootTime=None SlurmdStartTime=None
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   Reason=Hardware failure [root@2023-02-03T07:44:00]
+
+NodeName=node35 Arch=x86_64 CoresPerSocket=16
+   CPUAlloc=0 CPUErr=0 CPUTot=32 CPULoad=0.01
+   AvailableFeatures=mem192
+   ActiveFeatures=mem192
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.135 NodeHostName=node35 Version=16.05
+   OS=Linux RealMemory=192000 AllocMem=0 FreeMem=188969 Sockets=2 Boards=1
+   State=IDLE ThreadsPerCore=1 TmpDisk=0 Weight=340 Owner=N/A MCS_label=N/A
+   BootTime=2023-05-03T10:59:09 SlurmdStartTime=2023-05-03T10:59:23
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node36 CoresPerSocket=16
+   CPUAlloc=0 CPUErr=0 CPUTot=32 CPULoad=N/A
+   AvailableFeatures=mem192
+   ActiveFeatures=mem192
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.136 NodeHostName=node36 Version=(null)
+   RealMemory=192000 AllocMem=0 FreeMem=N/A Sockets=2 Boards=1
+   State=DOWN*+DRAIN ThreadsPerCore=1 TmpDisk=0 Weight=340 Owner=N/A MCS_label=N/A
+   BootTime=None SlurmdStartTime=None
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   Reason=Low RealMemory [root@2021-11-30T08:51:09]
+
+NodeName=node37 Arch=x86_64 CoresPerSocket=16
+   CPUAlloc=0 CPUErr=0 CPUTot=32 CPULoad=0.01
+   AvailableFeatures=mem192
+   ActiveFeatures=mem192
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.137 NodeHostName=node37 Version=16.05
+   OS=Linux RealMemory=192000 AllocMem=0 FreeMem=190160 Sockets=2 Boards=1
+   State=IDLE ThreadsPerCore=1 TmpDisk=0 Weight=340 Owner=N/A MCS_label=N/A
+   BootTime=2023-05-03T10:59:09 SlurmdStartTime=2023-05-03T10:59:23
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node38 Arch=x86_64 CoresPerSocket=24
+   CPUAlloc=0 CPUErr=0 CPUTot=48 CPULoad=0.01
+   AvailableFeatures=mem192
+   ActiveFeatures=mem192
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.138 NodeHostName=node38 Version=16.05
+   OS=Linux RealMemory=192000 AllocMem=0 FreeMem=174549 Sockets=2 Boards=1
+   State=IDLE+DRAIN ThreadsPerCore=1 TmpDisk=0 Weight=250 Owner=N/A MCS_label=N/A
+   BootTime=2023-05-03T11:00:48 SlurmdStartTime=2023-05-03T11:01:04
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   Reason=Low RealMemory [slurm@2023-05-03T11:01:04]
+
+NodeName=node39 Arch=x86_64 CoresPerSocket=24
+   CPUAlloc=48 CPUErr=0 CPUTot=48 CPULoad=0.01
+   AvailableFeatures=mem192
+   ActiveFeatures=mem192
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.139 NodeHostName=node39 Version=16.05
+   OS=Linux RealMemory=192000 AllocMem=51200 FreeMem=66907 Sockets=2 Boards=1
+   State=ALLOCATED ThreadsPerCore=1 TmpDisk=0 Weight=250 Owner=N/A MCS_label=N/A
+   BootTime=2023-05-03T10:59:15 SlurmdStartTime=2023-05-03T10:59:31
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node40 Arch=x86_64 CoresPerSocket=24
+   CPUAlloc=32 CPUErr=0 CPUTot=48 CPULoad=29.72
+   AvailableFeatures=mem192
+   ActiveFeatures=mem192
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.140 NodeHostName=node40 Version=16.05
+   OS=Linux RealMemory=192000 AllocMem=111000 FreeMem=175627 Sockets=2 Boards=1
+   State=MIXED ThreadsPerCore=1 TmpDisk=0 Weight=250 Owner=N/A MCS_label=N/A
+   BootTime=2023-05-03T10:59:14 SlurmdStartTime=2023-05-03T10:59:30
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node41 Arch=x86_64 CoresPerSocket=24
+   CPUAlloc=32 CPUErr=0 CPUTot=48 CPULoad=30.77
+   AvailableFeatures=mem192
+   ActiveFeatures=mem192
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.141 NodeHostName=node41 Version=16.05
+   OS=Linux RealMemory=192000 AllocMem=111000 FreeMem=178816 Sockets=2 Boards=1
+   State=MIXED ThreadsPerCore=1 TmpDisk=0 Weight=250 Owner=N/A MCS_label=N/A
+   BootTime=2023-05-03T10:59:17 SlurmdStartTime=2023-05-03T10:59:33
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node42 Arch=x86_64 CoresPerSocket=24
+   CPUAlloc=48 CPUErr=0 CPUTot=48 CPULoad=1.14
+   AvailableFeatures=mem384
+   ActiveFeatures=mem384
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.142 NodeHostName=node42 Version=16.05
+   OS=Linux RealMemory=384000 AllocMem=378880 FreeMem=376410 Sockets=2 Boards=1
+   State=ALLOCATED ThreadsPerCore=1 TmpDisk=0 Weight=251 Owner=N/A MCS_label=N/A
+   BootTime=2022-11-07T13:17:34 SlurmdStartTime=2023-03-10T15:32:33
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node43 Arch=x86_64 CoresPerSocket=24
+   CPUAlloc=4 CPUErr=0 CPUTot=48 CPULoad=3.24
+   AvailableFeatures=mem384
+   ActiveFeatures=mem384
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.143 NodeHostName=node43 Version=16.05
+   OS=Linux RealMemory=384000 AllocMem=90000 FreeMem=168593 Sockets=2 Boards=1
+   State=MIXED ThreadsPerCore=1 TmpDisk=0 Weight=251 Owner=N/A MCS_label=N/A
+   BootTime=2023-03-31T14:21:15 SlurmdStartTime=2023-03-31T14:21:32
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node44 Arch=x86_64 CoresPerSocket=24
+   CPUAlloc=4 CPUErr=0 CPUTot=48 CPULoad=3.48
+   AvailableFeatures=mem384
+   ActiveFeatures=mem384
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.144 NodeHostName=node44 Version=16.05
+   OS=Linux RealMemory=384000 AllocMem=90000 FreeMem=146733 Sockets=2 Boards=1
+   State=MIXED ThreadsPerCore=1 TmpDisk=0 Weight=251 Owner=N/A MCS_label=N/A
+   BootTime=2022-11-07T13:17:17 SlurmdStartTime=2023-03-10T15:32:33
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node45 CoresPerSocket=24
+   CPUAlloc=0 CPUErr=0 CPUTot=48 CPULoad=N/A
+   AvailableFeatures=mem384
+   ActiveFeatures=mem384
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.145 NodeHostName=node45 Version=(null)
+   RealMemory=384000 AllocMem=0 FreeMem=N/A Sockets=2 Boards=1
+   State=DOWN*+DRAIN ThreadsPerCore=1 TmpDisk=0 Weight=251 Owner=N/A MCS_label=N/A
+   BootTime=None SlurmdStartTime=None
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   Reason=Need maintenance [root@2022-05-18T16:02:52]
+
+NodeName=node46 CoresPerSocket=24
+   CPUAlloc=0 CPUErr=0 CPUTot=48 CPULoad=N/A
+   AvailableFeatures=mem384
+   ActiveFeatures=mem384
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.146 NodeHostName=node46 Version=(null)
+   RealMemory=384000 AllocMem=0 FreeMem=N/A Sockets=2 Boards=1
+   State=DOWN*+DRAIN ThreadsPerCore=1 TmpDisk=0 Weight=251 Owner=N/A MCS_label=N/A
+   BootTime=None SlurmdStartTime=None
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   Reason=Need maintenance [root@2022-05-18T16:02:52]
+
+NodeName=node47 Arch=x86_64 CoresPerSocket=24
+   CPUAlloc=0 CPUErr=0 CPUTot=48 CPULoad=0.01
+   AvailableFeatures=mem384
+   ActiveFeatures=mem384
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.147 NodeHostName=node47 Version=16.05
+   OS=Linux RealMemory=384000 AllocMem=0 FreeMem=382272 Sockets=2 Boards=1
+   State=IDLE ThreadsPerCore=1 TmpDisk=0 Weight=251 Owner=N/A MCS_label=N/A
+   BootTime=2022-11-07T13:17:25 SlurmdStartTime=2023-03-10T15:32:35
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node48 Arch=x86_64 CoresPerSocket=24
+   CPUAlloc=40 CPUErr=0 CPUTot=48 CPULoad=37.59
+   AvailableFeatures=mem384
+   ActiveFeatures=mem384
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.148 NodeHostName=node48 Version=16.05
+   OS=Linux RealMemory=384000 AllocMem=291000 FreeMem=108044 Sockets=2 Boards=1
+   State=MIXED ThreadsPerCore=1 TmpDisk=0 Weight=251 Owner=N/A MCS_label=N/A
+   BootTime=2023-03-14T10:47:06 SlurmdStartTime=2023-03-14T10:47:24
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node49 Arch=x86_64 CoresPerSocket=24
+   CPUAlloc=12 CPUErr=0 CPUTot=48 CPULoad=11.80
+   AvailableFeatures=mem384
+   ActiveFeatures=mem384
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.149 NodeHostName=node49 Version=16.05
+   OS=Linux RealMemory=384000 AllocMem=270000 FreeMem=1761 Sockets=2 Boards=1
+   State=MIXED ThreadsPerCore=1 TmpDisk=0 Weight=251 Owner=N/A MCS_label=N/A
+   BootTime=2022-11-07T13:23:51 SlurmdStartTime=2023-03-10T15:32:33
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node50 Arch=x86_64 CoresPerSocket=24
+   CPUAlloc=48 CPUErr=0 CPUTot=48 CPULoad=47.10
+   AvailableFeatures=mem384
+   ActiveFeatures=mem384
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.150 NodeHostName=node50 Version=16.05
+   OS=Linux RealMemory=384000 AllocMem=20480 FreeMem=371305 Sockets=2 Boards=1
+   State=ALLOCATED ThreadsPerCore=1 TmpDisk=0 Weight=251 Owner=N/A MCS_label=N/A
+   BootTime=2022-11-07T13:17:28 SlurmdStartTime=2023-03-10T15:32:33
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node51 Arch=x86_64 CoresPerSocket=24
+   CPUAlloc=0 CPUErr=0 CPUTot=48 CPULoad=0.01
+   AvailableFeatures=mem384
+   ActiveFeatures=mem384
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.151 NodeHostName=node51 Version=16.05
+   OS=Linux RealMemory=384000 AllocMem=0 FreeMem=381824 Sockets=2 Boards=1
+   State=IDLE ThreadsPerCore=1 TmpDisk=0 Weight=251 Owner=N/A MCS_label=N/A
+   BootTime=2023-03-14T10:57:04 SlurmdStartTime=2023-03-14T10:57:22
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node52 Arch=x86_64 CoresPerSocket=24
+   CPUAlloc=48 CPUErr=0 CPUTot=48 CPULoad=42.63
+   AvailableFeatures=mem384
+   ActiveFeatures=mem384
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.152 NodeHostName=node52 Version=16.05
+   OS=Linux RealMemory=384000 AllocMem=20480 FreeMem=353867 Sockets=2 Boards=1
+   State=ALLOCATED ThreadsPerCore=1 TmpDisk=0 Weight=251 Owner=N/A MCS_label=N/A
+   BootTime=2022-05-18T15:22:52 SlurmdStartTime=2023-03-10T15:32:33
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node53 Arch=x86_64 CoresPerSocket=24
+   CPUAlloc=42 CPUErr=0 CPUTot=48 CPULoad=33.87
+   AvailableFeatures=mem384,gold
+   ActiveFeatures=mem384,gold
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.153 NodeHostName=node53 Version=16.05
+   OS=Linux RealMemory=384000 AllocMem=305120 FreeMem=95137 Sockets=2 Boards=1
+   State=MIXED ThreadsPerCore=1 TmpDisk=0 Weight=160 Owner=N/A MCS_label=N/A
+   BootTime=2021-10-29T14:05:22 SlurmdStartTime=2023-03-10T15:32:33
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node54 Arch=x86_64 CoresPerSocket=24
+   CPUAlloc=48 CPUErr=0 CPUTot=48 CPULoad=48.40
+   AvailableFeatures=mem384,gold
+   ActiveFeatures=mem384,gold
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.154 NodeHostName=node54 Version=16.05
+   OS=Linux RealMemory=384000 AllocMem=25600 FreeMem=371787 Sockets=2 Boards=1
+   State=ALLOCATED ThreadsPerCore=1 TmpDisk=0 Weight=160 Owner=N/A MCS_label=N/A
+   BootTime=2021-10-29T12:34:23 SlurmdStartTime=2023-03-10T15:32:33
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node55 Arch=x86_64 CoresPerSocket=24
+   CPUAlloc=48 CPUErr=0 CPUTot=48 CPULoad=19.67
+   AvailableFeatures=mem384,gold
+   ActiveFeatures=mem384,gold
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.155 NodeHostName=node55 Version=16.05
+   OS=Linux RealMemory=384000 AllocMem=190672 FreeMem=266197 Sockets=2 Boards=1
+   State=ALLOCATED ThreadsPerCore=1 TmpDisk=0 Weight=160 Owner=N/A MCS_label=N/A
+   BootTime=2022-05-18T14:57:27 SlurmdStartTime=2023-03-10T15:32:33
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node56 Arch=x86_64 CoresPerSocket=24
+   CPUAlloc=32 CPUErr=0 CPUTot=48 CPULoad=6.04
+   AvailableFeatures=mem384,gold
+   ActiveFeatures=mem384,gold
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.156 NodeHostName=node56 Version=16.05
+   OS=Linux RealMemory=384000 AllocMem=256000 FreeMem=365567 Sockets=2 Boards=1
+   State=MIXED+COMPLETING ThreadsPerCore=1 TmpDisk=0 Weight=160 Owner=N/A MCS_label=N/A
+   BootTime=2022-05-18T15:47:20 SlurmdStartTime=2023-03-10T15:32:33
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node57 Arch=x86_64 CoresPerSocket=24
+   CPUAlloc=48 CPUErr=0 CPUTot=48 CPULoad=37.88
+   AvailableFeatures=mem384,gold
+   ActiveFeatures=mem384,gold
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.157 NodeHostName=node57 Version=16.05
+   OS=Linux RealMemory=384000 AllocMem=282240 FreeMem=40245 Sockets=2 Boards=1
+   State=ALLOCATED ThreadsPerCore=1 TmpDisk=0 Weight=160 Owner=N/A MCS_label=N/A
+   BootTime=2021-10-29T17:13:48 SlurmdStartTime=2023-03-10T15:32:33
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node58 Arch=x86_64 CoresPerSocket=24
+   CPUAlloc=48 CPUErr=0 CPUTot=48 CPULoad=0.01
+   AvailableFeatures=mem384,gold
+   ActiveFeatures=mem384,gold
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.158 NodeHostName=node58 Version=16.05
+   OS=Linux RealMemory=384000 AllocMem=20480 FreeMem=146665 Sockets=2 Boards=1
+   State=ALLOCATED ThreadsPerCore=1 TmpDisk=0 Weight=160 Owner=N/A MCS_label=N/A
+   BootTime=2022-05-18T15:31:27 SlurmdStartTime=2023-03-10T15:32:33
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node59 Arch=x86_64 CoresPerSocket=24
+   CPUAlloc=0 CPUErr=0 CPUTot=48 CPULoad=14.31
+   AvailableFeatures=mem384,gold
+   ActiveFeatures=mem384,gold
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.159 NodeHostName=node59 Version=16.05
+   OS=Linux RealMemory=375000 AllocMem=0 FreeMem=848 Sockets=2 Boards=1
+   State=DOWN* ThreadsPerCore=1 TmpDisk=0 Weight=160 Owner=N/A MCS_label=N/A
+   BootTime=2023-03-10T15:46:52 SlurmdStartTime=2023-03-10T15:47:15
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   Reason=Not responding [slurm@2023-04-27T23:05:38]
+
+NodeName=node60 Arch=x86_64 CoresPerSocket=24
+   CPUAlloc=44 CPUErr=0 CPUTot=48 CPULoad=23.33
+   AvailableFeatures=mem384,gold
+   ActiveFeatures=mem384,gold
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.160 NodeHostName=node60 Version=16.05
+   OS=Linux RealMemory=375000 AllocMem=206144 FreeMem=303967 Sockets=2 Boards=1
+   State=MIXED ThreadsPerCore=1 TmpDisk=0 Weight=160 Owner=N/A MCS_label=N/A
+   BootTime=2023-03-10T15:47:30 SlurmdStartTime=2023-03-10T15:47:53
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node61 Arch=x86_64 CoresPerSocket=24
+   CPUAlloc=20 CPUErr=0 CPUTot=48 CPULoad=20.16
+   AvailableFeatures=mem384,gold
+   ActiveFeatures=mem384,gold
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.161 NodeHostName=node61 Version=16.05
+   OS=Linux RealMemory=375000 AllocMem=200000 FreeMem=305458 Sockets=2 Boards=1
+   State=MIXED ThreadsPerCore=1 TmpDisk=0 Weight=160 Owner=N/A MCS_label=N/A
+   BootTime=2023-03-10T15:25:05 SlurmdStartTime=2023-03-10T15:32:33
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node62 Arch=x86_64 CoresPerSocket=24
+   CPUAlloc=48 CPUErr=0 CPUTot=48 CPULoad=31.45
+   AvailableFeatures=mem384,gold
+   ActiveFeatures=mem384,gold
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.162 NodeHostName=node62 Version=16.05
+   OS=Linux RealMemory=375000 AllocMem=115096 FreeMem=308903 Sockets=2 Boards=1
+   State=ALLOCATED ThreadsPerCore=1 TmpDisk=0 Weight=160 Owner=N/A MCS_label=N/A
+   BootTime=2023-03-10T15:27:02 SlurmdStartTime=2023-03-10T15:32:33
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node63 Arch=x86_64 CoresPerSocket=24
+   CPUAlloc=48 CPUErr=0 CPUTot=48 CPULoad=36.35
+   AvailableFeatures=mem384,gold
+   ActiveFeatures=mem384,gold
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.163 NodeHostName=node63 Version=16.05
+   OS=Linux RealMemory=375000 AllocMem=233248 FreeMem=194858 Sockets=2 Boards=1
+   State=ALLOCATED ThreadsPerCore=1 TmpDisk=0 Weight=160 Owner=N/A MCS_label=N/A
+   BootTime=2023-03-10T15:23:23 SlurmdStartTime=2023-03-10T15:32:33
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+
+NodeName=node64 Arch=x86_64 CoresPerSocket=24
+   CPUAlloc=48 CPUErr=0 CPUTot=48 CPULoad=26.50
+   AvailableFeatures=mem384,gold
+   ActiveFeatures=mem384,gold
+   Gres=(null)
+   GresDrain=N/A
+   NodeAddr=192.168.100.164 NodeHostName=node64 Version=16.05
+   OS=Linux RealMemory=375000 AllocMem=40960 FreeMem=355049 Sockets=2 Boards=1
+   State=ALLOCATED ThreadsPerCore=1 TmpDisk=0 Weight=160 Owner=N/A MCS_label=N/A
+   BootTime=2023-03-10T16:11:59 SlurmdStartTime=2023-03-10T16:12:21
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   
+

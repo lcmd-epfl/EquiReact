@@ -1,0 +1,24 @@
+#!/bin/sh
+#SBATCH --job-name=constrained_optimization
+#SBATCH --mem=96gb
+#SBATCH --cpus-per-task=24
+#SBATCH --tasks=1
+#SBATCH -N 1
+#SBATCH --nodelist=node33
+#SBATCH -o /home/laplaza/Projects/puck_xtb_gdb/xtb_optimized/constrained_optimization.out
+hostname
+cd $SLURM_TMPDIR
+echo $SLURM_TMPDIR
+cp $SLURM_SUBMIT_DIR/constrained_optimization.py $SLURM_TMPDIR
+cp $SLURM_SUBMIT_DIR/.pysisyphusrc $SLURM_TMPDIR
+mkdir opt_min
+find $SLURM_SUBMIT_DIR/../xyz_structures/ -name '*.xyz' -exec cp {} $SLURM_TMPDIR/ \;
+if [ $? -eq 0 ]; then
+   python constrained_optimization.py 
+fi
+find opt_min/ -name '*.xyz' -exec mv {} $SLURM_SUBMIT_DIR/opt_min/ \;
+if [ $? -eq 0 ]; then
+   rm -rf $SLURM_TMPDIR/opt_min/
+fi
+find . ! -name '*' -type f -exec rm -f {} +
+exit 
