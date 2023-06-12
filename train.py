@@ -43,7 +43,7 @@ class Logger(object):
         # you might want to specify some extra behavior here.
         pass
 
-def parse_arguments():
+def parse_arguments(arglist=sys.argv[1:]):
     p = argparse.ArgumentParser()
 
     g_run = p.add_argument_group('external run parameters')
@@ -74,7 +74,7 @@ def parse_arguments():
     g_hyper.add_argument('--atom_mapping'     , action='store_true', default=False    ,  help='use atom mapping')
     g_hyper.add_argument('--random_baseline'  , action='store_true', default=False    ,  help='random baseline (no graph conv)')
 
-    args = p.parse_args()
+    args = p.parse_args(arglist)
 
     arg_groups={}
     for group in p._action_groups:
