@@ -58,21 +58,22 @@ def parse_arguments(arglist=sys.argv[1:]):
     g_run.add_argument('--process'            , action='store_true', default=False    ,  help='(re-)process data by force (if data is already there, default is to not reprocess)?')
 
     g_hyper = p.add_argument_group('hyperparameters')
-    g_hyper.add_argument('--subset'           , type=int           , default=None     ,  help='size of a subset to use instead of the full set (tr+te+va)')
-    g_hyper.add_argument('--max_neighbors'    , type=int           , default=20       ,  help='max number of neighbors')
-    g_hyper.add_argument('--n_s'              , type=int           , default=48       ,  help='dimension of node features')
-    g_hyper.add_argument('--n_v'              , type=int           , default=48       ,  help='dimension of extra (p/d) features')
-    g_hyper.add_argument('--n_conv_layers'    , type=int           , default=2        ,  help='number of conv layers')
-    g_hyper.add_argument('--distance_emb_dim' , type=int           , default=16       ,  help='how many gaussian funcs to use')
-    g_hyper.add_argument('--radius'           , type=float         , default=5.0      ,  help='max radius of graph')
-    g_hyper.add_argument('--dropout_p'        , type=float         , default=0.05     ,  help='dropout probability')
-    g_hyper.add_argument('--attention'        , type=str           , default=None     ,  help='use attention')
-    g_hyper.add_argument('--sum_mode'         , type=str           , default='node'   ,  help='sum node (node, edge, or both)')
-    g_hyper.add_argument('--graph_mode'       , type=str           , default='energy' ,  help='prediction mode, energy, or vector')
-    g_hyper.add_argument('--dataset'          , type=str           , default='cyclo'  ,  help='cyclo or gdb')
-    g_hyper.add_argument('--combine_mode'     , type=str           , default='mean'   ,  help='combine mode diff, sum, or mean')
-    g_hyper.add_argument('--atom_mapping'     , action='store_true', default=False    ,  help='use atom mapping')
-    g_hyper.add_argument('--random_baseline'  , action='store_true', default=False    ,  help='random baseline (no graph conv)')
+    g_hyper.add_argument('--subset'               , type=int           , default=None     ,  help='size of a subset to use instead of the full set (tr+te+va)')
+    g_hyper.add_argument('--max_neighbors'        , type=int           , default=20       ,  help='max number of neighbors')
+    g_hyper.add_argument('--n_s'                  , type=int           , default=48       ,  help='dimension of node features')
+    g_hyper.add_argument('--n_v'                  , type=int           , default=48       ,  help='dimension of extra (p/d) features')
+    g_hyper.add_argument('--n_conv_layers'        , type=int           , default=2        ,  help='number of conv layers')
+    g_hyper.add_argument('--distance_emb_dim'     , type=int           , default=16       ,  help='how many gaussian funcs to use')
+    g_hyper.add_argument('--radius'               , type=float         , default=5.0      ,  help='max radius of graph')
+    g_hyper.add_argument('--dropout_p'            , type=float         , default=0.05     ,  help='dropout probability')
+    g_hyper.add_argument('--attention'            , type=str           , default=None     ,  help='use attention')
+    g_hyper.add_argument('--sum_mode'             , type=str           , default='node'   ,  help='sum node (node, edge, or both)')
+    g_hyper.add_argument('--graph_mode'           , type=str           , default='energy' ,  help='prediction mode, energy, or vector')
+    g_hyper.add_argument('--dataset'              , type=str           , default='cyclo'  ,  help='cyclo or gdb')
+    g_hyper.add_argument('--combine_mode'         , type=str           , default='mean'   ,  help='combine mode diff, sum, or mean')
+    g_hyper.add_argument('--atom_mapping'         , action='store_true', default=False    ,  help='use atom mapping')
+    g_hyper.add_argument('--random_baseline'      , action='store_true', default=False    ,  help='random baseline (no graph conv)')
+    g_hyper.add_argument('--two_layers_atom_diff' , action='store_true', default=False    ,  help='if use two linear layers in non-linear atom diff')
 
     args = p.parse_args(arglist)
 
@@ -108,6 +109,7 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
           combine_mode='diff',
           atom_mapping=False,
           attention=None,
+          two_layers_atom_diff=False,
           ):
 
     device = torch.device("cuda:0" if torch.cuda.is_available() and device == 'cuda' else "cpu")
@@ -166,7 +168,7 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
         model = EquiReact(node_fdim=input_node_feats_dim, edge_fdim=1, verbose=verbose, device=device,
                           max_radius=radius, max_neighbors=max_neighbors, sum_mode=sum_mode, n_s=n_s, n_v=n_v, n_conv_layers=n_conv_layers,
                           distance_emb_dim=distance_emb_dim, graph_mode=graph_mode, dropout_p=dropout_p, random_baseline=random_baseline,
-                          combine_mode=combine_mode, atom_mapping=atom_mapping, attention=attention)
+                          combine_mode=combine_mode, atom_mapping=atom_mapping, attention=attention, two_layers_atom_diff=two_layers_atom_diff)
         print('trainable params in model: ', sum(p.numel() for p in model.parameters() if p.requires_grad))
 
         sampler = None
@@ -249,4 +251,5 @@ if __name__ == '__main__':
           verbose=args.verbose, radius=args.radius, max_neighbors=args.max_neighbors, sum_mode=args.sum_mode,
           n_s=args.n_s, n_v=args.n_v, n_conv_layers=args.n_conv_layers, distance_emb_dim=args.distance_emb_dim,
           graph_mode=args.graph_mode, dropout_p=args.dropout_p, random_baseline=args.random_baseline,
-          combine_mode=args.combine_mode, atom_mapping=args.atom_mapping, CV=args.CV, attention=args.attention)
+          combine_mode=args.combine_mode, atom_mapping=args.atom_mapping, CV=args.CV, attention=args.attention,
+          two_layers_atom_diff=args.two_layers_atom_diff)

@@ -77,7 +77,7 @@ class EquiReact(nn.Module):
                  distance_emb_dim: int = 32, dropout_p: float = 0.1,
                  sum_mode='node', verbose=False, device='cpu', graph_mode='energy',
                  random_baseline=False, combine_mode='diff', atom_mapping=False,
-                 attention=None,
+                 attention=None, two_layers_atom_diff=False,
                  **kwargs):
 
         super().__init__(**kwargs)
@@ -176,10 +176,17 @@ class EquiReact(nn.Module):
             nn.Linear(2*self.n_s_full, self.n_s_full)
         )
 
-        self.atom_diff_nonlin = nn.Sequential(
-            nn.ReLU(),
-            nn.Linear(self.n_s_full, self.n_s_full),
-        )
+        if two_layers_atom_diff:
+            self.atom_diff_nonlin = nn.Sequential(
+                nn.Linear(self.n_s_full, self.n_s_full),
+                nn.ReLU(),
+                nn.Linear(self.n_s_full, self.n_s_full),
+            )
+        else:
+            self.atom_diff_nonlin = nn.Sequential(
+                nn.ReLU(),
+                nn.Linear(self.n_s_full, self.n_s_full),
+            )
 
         self.rp_attention = nn.MultiheadAttention(self.n_s_full, 1)  # query, key, value
 
