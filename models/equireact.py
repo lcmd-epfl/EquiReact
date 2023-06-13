@@ -92,6 +92,7 @@ class EquiReact(nn.Module):
         self.atom_mapping = atom_mapping
         self.attention = attention
         self.n_s_full = 2 * self.n_s if self.n_conv_layers >= 3 else self.n_s
+        self.distance_emb_dim = distance_emb_dim
 
         self.max_radius = max_radius
         self.max_neighbors = max_neighbors
@@ -161,6 +162,16 @@ class EquiReact(nn.Module):
         # this can also be messed with
         self.score_predictor_nodes = nn.Sequential(
             nn.Linear(self.n_s_full, 2 * self.n_s),
+            nn.ReLU(),
+            nn.Dropout(dropout_p),
+            nn.Linear(2 * self.n_s, self.n_s),
+            nn.ReLU(),
+            nn.Dropout(dropout_p),
+            nn.Linear(self.n_s, 1)
+        )
+
+        self.score_predictor_nodes_with_edges = nn.Sequential(
+            nn.Linear(self.n_s_full + distance_emb_dim, 2 * self.n_s),
             nn.ReLU(),
             nn.Dropout(dropout_p),
             nn.Linear(2 * self.n_s, self.n_s),
@@ -306,13 +317,21 @@ class EquiReact(nn.Module):
 
     def forward_vector_mode(self, reactants_data, products_data, batch_size):
 
-        X = torch.zeros((batch_size, self.n_s_full), device=self.device)
+        if self.sum_mode=='node':
+            x_size = self.n_s_full
+        elif self.sum_mode == 'both':
+            x_size = self.n_s_full + self.distance_emb_dim
+        else:
+            raise NotImplementedError(f'sum mode "{self.sum_mode}" is not compatible with vector mode')
+        X = torch.zeros((batch_size, x_size), device=self.device)
 
         stoichio = [-1]*len(reactants_data) + [+1]*len(products_data)
         for stoi, graph in zip(stoichio, reactants_data + products_data):
             if graph.x.shape[0]==0:
                 continue
-            x = self.forward_repr_mol(graph)[0]
+            x, (src, dst), edge_attr = self.forward_repr_mol(graph)
+            if self.sum_mode == 'both':
+                x = torch.hstack((x, scatter_add(edge_attr, index=src, dim=0)))
             x = scatter_add(x, index=graph.batch.to(self.device), dim=0)
             x = F.pad(x, (0, 0, 0, batch_size-x.shape[0]))
             X += stoi * x
@@ -320,7 +339,10 @@ class EquiReact(nn.Module):
         if self.verbose:
             print('reaction X dims', X.shape)
 
-        score = self.score_predictor_nodes(X)
+        if self.sum_mode == 'node':
+            score = self.score_predictor_nodes(X)
+        elif self.sum_mode == 'both':
+            score = self.score_predictor_nodes_with_edges(X)
         return score
 
 
