@@ -92,6 +92,7 @@ class EquiReact(nn.Module):
         self.atom_mapping = atom_mapping
         self.attention = attention
         self.n_s_full = 2 * self.n_s if self.n_conv_layers >= 3 else self.n_s
+        self.distance_emb_dim = distance_emb_dim
 
         self.max_radius = max_radius
         self.max_neighbors = max_neighbors
@@ -169,6 +170,16 @@ class EquiReact(nn.Module):
             nn.Linear(self.n_s, 1)
         )
 
+        self.score_predictor_nodes_with_edges = nn.Sequential(
+            nn.Linear(self.n_s_full + distance_emb_dim, 2 * self.n_s),
+            nn.ReLU(),
+            nn.Dropout(dropout_p),
+            nn.Linear(2 * self.n_s, self.n_s),
+            nn.ReLU(),
+            nn.Dropout(dropout_p),
+            nn.Linear(self.n_s, 1)
+        )
+
         self.energy_mlp = nn.Linear(2, 1)
 
         self.nodes_mlp = nn.Sequential(
@@ -176,19 +187,20 @@ class EquiReact(nn.Module):
             nn.Linear(2*self.n_s_full, self.n_s_full)
         )
 
+        n_s_full_with_edges = self.n_s_full + distance_emb_dim  if self.sum_mode=='both' else self.n_s_full
         if two_layers_atom_diff:
             self.atom_diff_nonlin = nn.Sequential(
-                nn.Linear(self.n_s_full, self.n_s_full),
+                nn.Linear(n_s_full_with_edges, n_s_full_with_edges),
                 nn.ReLU(),
-                nn.Linear(self.n_s_full, self.n_s_full),
+                nn.Linear(n_s_full_with_edges, n_s_full_with_edges),
             )
         else:
             self.atom_diff_nonlin = nn.Sequential(
                 nn.ReLU(),
-                nn.Linear(self.n_s_full, self.n_s_full),
+                nn.Linear(n_s_full_with_edges, n_s_full_with_edges),
             )
 
-        self.rp_attention = nn.MultiheadAttention(self.n_s_full, 1)  # query, key, value
+        self.rp_attention = nn.MultiheadAttention(n_s_full_with_edges, 1)  # query, key, value
 
         combine_diff = lambda r, p: p-r
         combine_sum  = lambda r, p: r+p
@@ -261,7 +273,14 @@ class EquiReact(nn.Module):
 
 
     def forward_repr_mols(self, data, merge=False):
-        X = [self.forward_repr_mol(graph)[0] for graph in data if graph.x.shape[0]>0]
+        X = []
+        for graph in data:
+            if graph.x.shape[0]==0:
+                continue
+            x, (src, dst), edge_attr = self.forward_repr_mol(graph)
+            if self.sum_mode == 'both':
+                x = torch.hstack((x, scatter_add(edge_attr, index=src, dim=0)))
+            X.append(x)
         X = self.split_batch(X, data, merge=merge)
         return X
 
@@ -306,13 +325,21 @@ class EquiReact(nn.Module):
 
     def forward_vector_mode(self, reactants_data, products_data, batch_size):
 
-        X = torch.zeros((batch_size, self.n_s_full), device=self.device)
+        if self.sum_mode=='node':
+            x_size = self.n_s_full
+        elif self.sum_mode == 'both':
+            x_size = self.n_s_full + self.distance_emb_dim
+        else:
+            raise NotImplementedError(f'sum mode "{self.sum_mode}" is not compatible with vector mode')
+        X = torch.zeros((batch_size, x_size), device=self.device)
 
         stoichio = [-1]*len(reactants_data) + [+1]*len(products_data)
         for stoi, graph in zip(stoichio, reactants_data + products_data):
             if graph.x.shape[0]==0:
                 continue
-            x = self.forward_repr_mol(graph)[0]
+            x, (src, dst), edge_attr = self.forward_repr_mol(graph)
+            if self.sum_mode == 'both':
+                x = torch.hstack((x, scatter_add(edge_attr, index=src, dim=0)))
             x = scatter_add(x, index=graph.batch.to(self.device), dim=0)
             x = F.pad(x, (0, 0, 0, batch_size-x.shape[0]))
             X += stoi * x
@@ -320,7 +347,10 @@ class EquiReact(nn.Module):
         if self.verbose:
             print('reaction X dims', X.shape)
 
-        score = self.score_predictor_nodes(X)
+        if self.sum_mode == 'node':
+            score = self.score_predictor_nodes(X)
+        elif self.sum_mode == 'both':
+            score = self.score_predictor_nodes_with_edges(X)
         return score
 
 
@@ -337,6 +367,13 @@ class EquiReact(nn.Module):
 
 
     def forward_mapped_mode(self, reactants_data, products_data, mapping):
+
+        if self.sum_mode == 'node':
+            predictor = self.score_predictor_nodes
+        elif self.sum_mode == 'both':
+            predictor  = self.score_predictor_nodes_with_edges
+        else:
+            raise NotImplementedError(f'sum mode "{self.sum_mode}" is not compatible with vector mode')
 
         x_react = self.forward_repr_mols(reactants_data)
         x_prod  = self.forward_repr_mols(products_data)
@@ -373,12 +410,12 @@ class EquiReact(nn.Module):
 
         batch = torch.sort(torch.hstack([g.batch for g in reactants_data])).values.to(self.device)
         if self.graph_mode == 'energy':
-            score_atom = self.score_predictor_nodes(x)
+            score_atom = predictor(x)
             score = scatter_add(score_atom, index=batch, dim=0)
         elif self.graph_mode == 'vector':
             x = self.atom_diff_nonlin(x)
             x = scatter_add(x, index=batch, dim=0)
-            score = self.score_predictor_nodes(x)
+            score = predictor(x)
         return score
 
 
