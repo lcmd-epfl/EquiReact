@@ -200,7 +200,7 @@ class EquiReact(nn.Module):
                 nn.Linear(n_s_full_with_edges, n_s_full_with_edges),
             )
 
-        self.rp_attention = nn.MultiheadAttention(self.n_s_full, 1)  # query, key, value
+        self.rp_attention = nn.MultiheadAttention(n_s_full_with_edges, 1)  # query, key, value
 
         combine_diff = lambda r, p: p-r
         combine_sum  = lambda r, p: r+p
