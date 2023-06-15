@@ -51,9 +51,10 @@ def parse_arguments(arglist=sys.argv[1:]):
     g_run.add_argument('--wandb_name'         , type=str           , default=None     ,  help='name of wandb run')
     g_run.add_argument('--device'             , type=str           , default='cuda'   ,  help='cuda or cpu')
     g_run.add_argument('--logdir'             , type=str           , default='logs'   ,  help='log dir')
-    g_run.add_argument('--CV'                 , type=int           , default=5        ,  help='cross validate')
     g_run.add_argument('--checkpoint'         , type=str           , default=None     ,  help='path the checkpoint file to continue training')
+    g_run.add_argument('--CV'                 , type=int           , default=5        ,  help='cross validate')
     g_run.add_argument('--num_epochs'         , type=int           , default=2500     ,  help='number of times to iterate through all samples')
+    g_run.add_argument('--seed'               , type=int           , default=123      ,  help='initial seed values')
     g_run.add_argument('--verbose'            , action='store_true', default=False    ,  help='Print dims throughout the training process')
     g_run.add_argument('--process'            , action='store_true', default=False    ,  help='(re-)process data by force (if data is already there, default is to not reprocess)?')
 
@@ -245,7 +246,7 @@ if __name__ == '__main__':
 
     print("\ninput args", args, '\n')
 
-    train(run_dir, logname, project, args.wandb_name, vars(arg_groups['hyperparameters']),
+    train(run_dir, logname, project, args.wandb_name, vars(arg_groups['hyperparameters']), seed=args.seed,
           device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint,
           subset=args.subset, dataset=args.dataset, process=args.process,
           verbose=args.verbose, radius=args.radius, max_neighbors=args.max_neighbors, sum_mode=args.sum_mode,
