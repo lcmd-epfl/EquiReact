@@ -7,6 +7,10 @@
 # Compete for GDB 
 - [ ] Train on backwards and forward reactions
 - [ ] Pass messages between reactants and well as between reactants & products
+- [ ] Add reaction enthalpy to features for prediction
+- [ ]  Adding ring size to both the atom and bond features further improvesthe model.
+- [ ]  See here : https://github.com/kspieks/chemprop/tree/barrier_prediction for changes
+- [ ]  Longer term : rather than reactants and products, use some kind of TS guess and use TS too eg https://pubs.rsc.org/en/content/articlehtml/2020/cp/d0cp04670a
 
 # Cyclo idea
 - [ ] pre-train on GDB then fine-tune on cyclo / proparg ? other datasets
@@ -32,5 +36,6 @@
 - [x] learning rate? (why some LC oscillate so much)
 
 ## GDB
-- The baseline with atom mapping is around 4.1kcal/mol
+- The baseline with atom mapping is 4.9 without rxn enthalpy and without reverse/fwd reactions (my run)
+- Reported baseline is 4.1 with rxn enthalpy and reverse/fwd reactions, 85/5/10 scaffold splits. 
 
