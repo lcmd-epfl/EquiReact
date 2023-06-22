@@ -11,6 +11,7 @@
 - [ ]  Adding ring size to both the atom and bond features further improvesthe model.
 - [ ]  See here : https://github.com/kspieks/chemprop/tree/barrier_prediction for changes
 - [ ]  Longer term : rather than reactants and products, use some kind of TS guess and use TS too eg https://pubs.rsc.org/en/content/articlehtml/2020/cp/d0cp04670a
+- [ ]  Add one hot encoding of the number of implicit hydrogens, as well as a one-hot encoded information of the degree, i.e. neighbors.
 
 # Cyclo idea
 - [ ] pre-train on GDB then fine-tune on cyclo / proparg ? other datasets
