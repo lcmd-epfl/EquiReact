@@ -4,6 +4,13 @@
 - [ ] play with atom_diff_nonlin
 - [ ] try to add edge features to attention/mapping/vector mode
 
+# Compete for GDB 
+- [ ] Train on backwards and forward reactions
+- [ ] Pass messages between reactants and well as between reactants & products
+
+# Cyclo idea
+- [ ] pre-train on GDB then fine-tune on cyclo / proparg ? other datasets
+
 # Model parameters combinations
 
 - `--graph_mode vector`
@@ -15,12 +22,6 @@
 
 ## Cyclo
 - Here the baseline is around 3kcal/mol
-- We can publish when we beat the baseline using atom mapping info (on par with their info), also ideally would like to beat baseline without atom mapping 
-
-- Opt params for each mode
-    1. Energy: have tried/submitted variations of dropout, nconv, ns, nv, ngauss, radius / max neighbors, sum mode(node/edge/both), combine mode (diff/sum/mean/MLP). MLP is not working!
-   2. Graph: have submitted with basic params, need to opt params and implement different modes (mean/sum but also maybe an MLP/nonlinear version)
-   3. Atom mapping as a third option: not working as well as expected
 
 ### Questions:
 - [ ] radius, n neighbours
@@ -31,5 +32,5 @@
 - [x] learning rate? (why some LC oscillate so much)
 
 ## GDB
-- The baseline with atom mapping is around 4.5kcal/mol
+- The baseline with atom mapping is around 4.1kcal/mol
 
