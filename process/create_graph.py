@@ -94,7 +94,7 @@ def atom_featurizer(mol):
             safe_index(allowable_features['possible_degree_list'], atom.GetTotalDegree()),
             safe_index(allowable_features['possible_formal_charge_list'], atom.GetFormalCharge()),
             safe_index(allowable_features['possible_implicit_valence_list'], atom.GetImplicitValence()),
-            safe_index(allowable_features['possible_numH_list'], atom.GetTotalNumHs()),
+            safe_index(allowable_features['possible_numH_list'], atom.GetTotalNumHs(includeNeighbors=True)),
             safe_index(allowable_features['possible_number_radical_e_list'], atom.GetNumRadicalElectrons()),
             safe_index(allowable_features['possible_hybridization_list'], str(atom.GetHybridization())),
             allowable_features['possible_is_aromatic_list'].index(atom.GetIsAromatic()),

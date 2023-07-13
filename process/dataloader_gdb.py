@@ -19,7 +19,7 @@ class GDB722TS(Dataset):
                  radius=20, max_neighbor=24, processed_dir='data/gdb7-22-ts/processed/', process=True,
                  atom_mapping=False):
 
-        self.version = 4.0  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
+        self.version = 5.0  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
         self.max_number_of_reactants = 1
         self.max_number_of_products = 3
 
