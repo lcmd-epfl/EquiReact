@@ -4,6 +4,18 @@
 - [ ] play with atom_diff_nonlin
 - [ ] try to add edge features to attention/mapping/vector mode
 
+# Compete for GDB 
+- [ ] Train on backwards and forward reactions
+- [ ] Pass messages between reactants and well as between reactants & products
+- [ ] Add reaction enthalpy to features for prediction
+- [ ]  Adding ring size to both the atom and bond features further improvesthe model.
+- [ ]  See here : https://github.com/kspieks/chemprop/tree/barrier_prediction for changes
+- [ ]  Longer term : rather than reactants and products, use some kind of TS guess and use TS too eg https://pubs.rsc.org/en/content/articlehtml/2020/cp/d0cp04670a
+- [ ]  Add one hot encoding of the number of implicit hydrogens, as well as a one-hot encoded information of the degree, i.e. neighbors.
+
+# Cyclo idea
+- [ ] pre-train on GDB then fine-tune on cyclo / proparg ? other datasets
+
 # Model parameters combinations
 
 - `--graph_mode vector`
@@ -15,12 +27,6 @@
 
 ## Cyclo
 - Here the baseline is around 3kcal/mol
-- We can publish when we beat the baseline using atom mapping info (on par with their info), also ideally would like to beat baseline without atom mapping 
-
-- Opt params for each mode
-    1. Energy: have tried/submitted variations of dropout, nconv, ns, nv, ngauss, radius / max neighbors, sum mode(node/edge/both), combine mode (diff/sum/mean/MLP). MLP is not working!
-   2. Graph: have submitted with basic params, need to opt params and implement different modes (mean/sum but also maybe an MLP/nonlinear version)
-   3. Atom mapping as a third option: not working as well as expected
 
 ### Questions:
 - [ ] radius, n neighbours
@@ -31,5 +37,6 @@
 - [x] learning rate? (why some LC oscillate so much)
 
 ## GDB
-- The baseline with atom mapping is around 4.5kcal/mol
+- The baseline with atom mapping is 4.9 without rxn enthalpy and without reverse/fwd reactions (my run)
+- Reported baseline is 4.1 with rxn enthalpy and reverse/fwd reactions, 85/5/10 scaffold splits. 
 
