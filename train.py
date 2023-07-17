@@ -123,13 +123,7 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
     if dataset=='cyclo':
         data = Cyclo23TS(radius=radius, process=process, atom_mapping=atom_mapping)
     elif dataset=='gdb':
-<<<<<<< HEAD
-        data = GDB722TS(radius=radius, process=process, atom_mapping=atom_mapping, noH=noH)
-||||||| dc1250fea
-        data = GDB722TS(radius=radius, process=process, atom_mapping=atom_mapping)
-=======
-        data = GDB722TS(radius=radius, process=process, atom_mapping=atom_mapping, rxnmapper=rxnmapper)
->>>>>>> 85b92c9bf3129f13b08666e5eebe5ddcc88b7e9d
+        data = GDB722TS(radius=radius, process=process, atom_mapping=atom_mapping, rxnmapper=rxnmapper, noH=noH)
     else:
         raise NotImplementedError(f'Cannot load the {dataset} dataset.')
     labels = data.labels
