@@ -161,7 +161,8 @@ class GDB722TS(Dataset):
 
             pmaps = np.hstack(pmaps)
             assert np.all(sorted(rmap)==sorted(pmaps)), f'atoms missing from mapping {idx}'
-            assert np.all(sorted(rmap)==np.arange(len(ratom))), f'atoms missing from mapping {idx}'
+            if not self.noH:
+                assert np.all(sorted(rmap)==np.arange(len(ratom))), f'atoms missing from mapping {idx}'
             p2rmap = np.hstack([np.where(pmaps==j)[0] for j in rmap])
             assert np.all(rmap == pmaps[p2rmap])
             assert np.all(ratom == np.hstack(patoms)[p2rmap])
