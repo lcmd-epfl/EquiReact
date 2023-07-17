@@ -15,11 +15,16 @@ from process.create_graph import reader, get_graph, canon_mol, get_empty_graph
 
 class GDB722TS(Dataset):
 
-    def __init__(self, files_dir='data/gdb7-22-ts/xyz/', csv_path='data/gdb7-22-ts/ccsdtf12_dz_cleaned.csv',
+    def __init__(self, files_dir='data/gdb7-22-ts/xyz/',
                  radius=20, max_neighbor=24, processed_dir='data/gdb7-22-ts/processed/', process=True,
-                 atom_mapping=False):
+                 noH = False, atom_mapping=False, rxnmapper=False):
 
-        self.version = 5.0  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
+        if rxnmapper is True:
+            csv_path = 'data/gdb7-22-ts/rxnmapper.csv'
+        else:
+            csv_path = 'data/gdb7-22-ts/ccsdtf12_dz_cleaned.csv'
+
+        self.version = 6.0  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
         self.max_number_of_reactants = 1
         self.max_number_of_products = 3
 
@@ -28,12 +33,18 @@ class GDB722TS(Dataset):
         self.files_dir = files_dir + '/'
         self.processed_dir = processed_dir + '/'
         self.atom_mapping = atom_mapping
+        self.noH = noH
 
+        dataset_prefix = os.path.splitext(os.path.basename(csv_path))[0]
+        if noH:
+            dataset_prefix += '.noH'
+
+        dataset_prefix = os.path.splitext(os.path.basename(csv_path))[0]
         self.paths = SimpleNamespace(
-                rg = join(self.processed_dir, 'reactant_graphs.pt'),
-                pg = join(self.processed_dir, 'products_graphs.pt'),
-                mp = join(self.processed_dir, 'p2r_mapping.pt'),
-                v  = join(self.processed_dir, 'version.pt')
+                rg = join(self.processed_dir, dataset_prefix+'.reactant_graphs.pt'),
+                pg = join(self.processed_dir, dataset_prefix+'.products_graphs.pt'),
+                mp = join(self.processed_dir, dataset_prefix+'.p2r_mapping.pt'),
+                v  = join(self.processed_dir, dataset_prefix+'.version.pt')
                 )
 
         print("Loading data into memory...")
@@ -139,6 +150,9 @@ class GDB722TS(Dataset):
             patoms = []
             for ip, args in enumerate(zip(psmis, products_atomtypes_list[i], products_coords_list[i])):
                 pgraph, pmap, patom = self.make_graph(*args, i, f'p{idx:06d}_{ip}')
+                if pgraph is None:
+                    nprod -= 1
+                    continue
                 pgraphs.append(pgraph)
                 pmaps.append(pmap)
                 patoms.append(patom)
@@ -146,8 +160,8 @@ class GDB722TS(Dataset):
             self.products_graphs.append(pgraphs + padding)
 
             pmaps = np.hstack(pmaps)
-            assert np.all(sorted(rmap)==np.arange(len(ratom))), 'atoms missing from mapping {idx}'
-            assert np.all(sorted(rmap)==sorted(pmaps)), 'atoms missing from mapping {idx}'
+            assert np.all(sorted(rmap)==sorted(pmaps)), f'atoms missing from mapping {idx}'
+            assert np.all(sorted(rmap)==np.arange(len(ratom))), f'atoms missing from mapping {idx}'
             p2rmap = np.hstack([np.where(pmaps==j)[0] for j in rmap])
             assert np.all(rmap == pmaps[p2rmap])
             assert np.all(ratom == np.hstack(patoms)[p2rmap])
@@ -192,10 +206,21 @@ class GDB722TS(Dataset):
         mol = Chem.MolFromSmiles(smi, sanitize=False)
         assert mol is not None, f"mol obj {idx} is None from smi {smi}"
         Chem.SanitizeMol(mol)
-        atom_map = np.array([at.GetAtomMapNum() for at in mol.GetAtoms()])
-        assert np.all(atom_map > 0), f"mol {idx} is not atom-mapped"
+
+        if self.noH:
+            natoms_relevant = np.count_nonzero(np.array([at.GetSymbol() for at in mol.GetAtoms()])!='H')
+            mol = Chem.RemoveAllHs(mol)
+            mol = Chem.AddHs(mol)
+            Chem.SanitizeMol(mol)
+        else:
+            natoms_relevant = mol.GetNumAtoms()
+        if natoms_relevant==0:
+            return None, None, None
 
         assert len(atoms)==mol.GetNumAtoms(), f"nats don't match in idx {idx}"
+
+        atom_map = np.array([at.GetAtomMapNum() for at in mol.GetAtoms()])
+        assert np.all(atom_map[:natoms_relevant] > 0), f"mol {idx} is not atom-mapped"
 
         rdkit_bonds = np.array(sorted(sorted((i.GetBeginAtomIdx(), i.GetEndAtomIdx())) for i in mol.GetBonds()))
         rdkit_atoms = np.array([at.GetSymbol() for at in mol.GetAtoms()])
@@ -219,6 +244,14 @@ class GDB722TS(Dataset):
 
             new_atoms = atoms[dst]
             new_coords = coords[dst]
+
+        if self.noH:
+            mol = Chem.RemoveAllHs(mol)
+            assert natoms_relevant == mol.GetNumAtoms(), f'different number of atoms before adding/removing Hs and after in {idx}'
+            noH_idx = np.where(new_atoms!='H')
+            new_atoms = new_atoms[noH_idx]
+            new_coords = new_coords[noH_idx]
+            atom_map = atom_map[noH_idx]
 
         graph = get_graph(mol, new_atoms, new_coords, self.labels[ireact],
                           radius=self.radius, max_neighbor=self.max_neighbor)

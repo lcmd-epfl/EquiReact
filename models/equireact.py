@@ -279,7 +279,9 @@ class EquiReact(nn.Module):
                 continue
             x, (src, dst), edge_attr = self.forward_repr_mol(graph)
             if self.sum_mode == 'both':
-                x = torch.hstack((x, scatter_add(edge_attr, index=src, dim=0)))
+                xedge = scatter_add(edge_attr, index=src, dim=0)
+                xedge = F.pad(xedge, (0, 0, 0, x.shape[0]-xedge.shape[0]))
+                x = torch.hstack((x, xedge))
             X.append(x)
         X = self.split_batch(X, data, merge=merge)
         return X
@@ -304,7 +306,11 @@ class EquiReact(nn.Module):
             edge_batch = data.batch[src]
             scores_nodes = self.score_predictor_nodes(score_inputs_nodes)
             scores_edges = self.score_predictor_edges(score_inputs_edges)
-            score = scatter_add(scores_edges, index=edge_batch, dim=0) + scatter_add(scores_nodes, index=data.batch, dim=0)
+
+            score_node = scatter_add(scores_nodes, index=data.batch, dim=0)
+            score_edge = scatter_add(scores_edges, index=edge_batch, dim=0)
+            score_edge = F.pad(score_edge, (0, 0, 0, score_node.shape[0]-score_edge.shape[0]))
+            score = score_node + score_edge
         elif self.sum_mode == 'node':
             score_inputs_nodes = x
             scores_nodes = self.score_predictor_nodes(score_inputs_nodes)
@@ -339,7 +345,9 @@ class EquiReact(nn.Module):
                 continue
             x, (src, dst), edge_attr = self.forward_repr_mol(graph)
             if self.sum_mode == 'both':
-                x = torch.hstack((x, scatter_add(edge_attr, index=src, dim=0)))
+                xedge = scatter_add(edge_attr, index=src, dim=0)
+                xedge = F.pad(xedge, (0, 0, 0, x.shape[0]-xedge.shape[0]))
+                x = torch.hstack((x, xedge))
             x = scatter_add(x, index=graph.batch.to(self.device), dim=0)
             x = F.pad(x, (0, 0, 0, batch_size-x.shape[0]))
             X += stoi * x
