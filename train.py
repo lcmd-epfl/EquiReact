@@ -75,6 +75,7 @@ def parse_arguments(arglist=sys.argv[1:]):
     g_hyper.add_argument('--atom_mapping'         , action='store_true', default=False    ,  help='use atom mapping')
     g_hyper.add_argument('--random_baseline'      , action='store_true', default=False    ,  help='random baseline (no graph conv)')
     g_hyper.add_argument('--two_layers_atom_diff' , action='store_true', default=False    ,  help='if use two linear layers in non-linear atom diff')
+    g_hyper.add_argument('--noH'                  , action='store_true', default=False    ,  help='if remove H')
 
     args = p.parse_args(arglist)
 
@@ -111,6 +112,7 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
           atom_mapping=False,
           attention=None,
           two_layers_atom_diff=False,
+          noH=False,
           ):
 
     device = torch.device("cuda:0" if torch.cuda.is_available() and device == 'cuda' else "cpu")
@@ -119,7 +121,7 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
     if dataset=='cyclo':
         data = Cyclo23TS(radius=radius, process=process, atom_mapping=atom_mapping)
     elif dataset=='gdb':
-        data = GDB722TS(radius=radius, process=process, atom_mapping=atom_mapping)
+        data = GDB722TS(radius=radius, process=process, atom_mapping=atom_mapping, noH=noH)
     else:
         raise NotImplementedError(f'Cannot load the {dataset} dataset.')
     labels = data.labels
@@ -253,4 +255,5 @@ if __name__ == '__main__':
           n_s=args.n_s, n_v=args.n_v, n_conv_layers=args.n_conv_layers, distance_emb_dim=args.distance_emb_dim,
           graph_mode=args.graph_mode, dropout_p=args.dropout_p, random_baseline=args.random_baseline,
           combine_mode=args.combine_mode, atom_mapping=args.atom_mapping, CV=args.CV, attention=args.attention,
+          noH=args.noH,
           two_layers_atom_diff=args.two_layers_atom_diff)
