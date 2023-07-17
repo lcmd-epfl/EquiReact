@@ -15,9 +15,14 @@ from process.create_graph import reader, get_graph, canon_mol, get_empty_graph
 
 class GDB722TS(Dataset):
 
-    def __init__(self, files_dir='data/gdb7-22-ts/xyz/', csv_path='data/gdb7-22-ts/ccsdtf12_dz_cleaned.csv',
+    def __init__(self, files_dir='data/gdb7-22-ts/xyz/',
                  radius=20, max_neighbor=24, processed_dir='data/gdb7-22-ts/processed/', process=True,
-                 noH = False, atom_mapping=False):
+                 noH = False, atom_mapping=False, rxnmapper=False):
+
+        if rxnmapper is True:
+            csv_path = 'data/gdb7-22-ts/rxnmapper.csv'
+        else:
+            csv_path = 'data/gdb7-22-ts/ccsdtf12_dz_cleaned.csv'
 
         self.version = 6.0  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
         self.max_number_of_reactants = 1
@@ -34,6 +39,7 @@ class GDB722TS(Dataset):
         if noH:
             dataset_prefix += '.noH'
 
+        dataset_prefix = os.path.splitext(os.path.basename(csv_path))[0]
         self.paths = SimpleNamespace(
                 rg = join(self.processed_dir, dataset_prefix+'.reactant_graphs.pt'),
                 pg = join(self.processed_dir, dataset_prefix+'.products_graphs.pt'),
