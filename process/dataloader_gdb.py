@@ -50,16 +50,9 @@ class GDB722TS(Dataset):
         print("Loading data into memory...")
 
         self.df = pd.read_csv(csv_path)
-        labels = torch.tensor(self.df['dE0'].values)
-
-        mean = torch.mean(labels)
-        std = torch.std(labels)
-        self.std = std
-        #TODO to normalise in train/test/val split
-        self.labels = (labels - mean)/std
-
+        self.nreactions = len(self.df)
+        self.labels = torch.tensor(self.df['dE0'].values)
         self.indices = self.df['idx'].to_list()
-        self.nreactions = len(labels)
 
         if process == True:
             print("Processing by request...")
@@ -79,6 +72,8 @@ class GDB722TS(Dataset):
 
         if reverse:
             self.add_reverse()
+
+        self.standardize_labels()
 
 
 
@@ -263,6 +258,7 @@ class GDB722TS(Dataset):
                           radius=self.radius, max_neighbor=self.max_neighbor)
         return graph, atom_map-1, new_atoms
 
+
     def add_reverse(self):
         max_number_of_mol = max(self.max_number_of_reactants, self.max_number_of_products)
         empty = get_empty_graph()
@@ -270,14 +266,20 @@ class GDB722TS(Dataset):
             self.reactants_graphs[i].extend([empty] * (max_number_of_mol - len(self.reactants_graphs[i])))
             self.products_graphs[i].extend([empty] * (max_number_of_mol - len(self.products_graphs[i])))
 
-        self.reactants_graphs += self.products_graphs
-        self.products_graphs  += self.reactants_graphs[:self.nreactions]
-
         self.max_number_of_reactants = max_number_of_mol
         self.max_number_of_products = max_number_of_mol
 
-        self.labels = torch.hstack((self.labels, self.labels))
-        # TODO they are different !!!!!!!!!!!!!!!!!!!!!!
-        # TODO check if labels in graphs are used
+        self.reactants_graphs += self.products_graphs
+        self.products_graphs  += self.reactants_graphs[:self.nreactions]
+        self.labels = torch.hstack((self.labels, self.labels-torch.tensor(self.df['dHrxn298'].values)))
+
         self.p2r_maps += self.p2r_maps
         # TODO change the maps
+
+
+    def standardize_labels(self):
+        #TODO to normalise in train/test/val split
+        mean = torch.mean(self.labels)
+        std = torch.std(self.labels)
+        self.std = std
+        self.labels = (self.labels - mean)/std
