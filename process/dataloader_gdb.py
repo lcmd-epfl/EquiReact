@@ -168,6 +168,12 @@ class GDB722TS(Dataset):
             assert np.all(ratom == np.hstack(patoms)[p2rmap])
             self.p2r_maps.append(p2rmap)
 
+            # how to get r2pmap from p2rmap
+            r2pmap = np.hstack([np.where(rmap==j)[0] for j in pmaps])
+            assert np.all(pmaps == rmap[r2pmap]), f'{idx}'
+            assert np.all(ratom[r2pmap] == np.hstack(patoms)), f'{idx}'
+            assert np.all(r2pmap == np.argsort(p2rmap))
+
 
         assert len(self.reactants_graphs) == len(self.products_graphs), 'not as many products as reactants'
 
@@ -271,10 +277,8 @@ class GDB722TS(Dataset):
 
         self.reactants_graphs += self.products_graphs
         self.products_graphs  += self.reactants_graphs[:self.nreactions]
+        self.p2r_maps         += [np.argsort(p2rmap) for p2rmap in self.p2r_maps]
         self.labels = torch.hstack((self.labels, self.labels-torch.tensor(self.df['dHrxn298'].values)))
-
-        self.p2r_maps += self.p2r_maps
-        # TODO change the maps
 
 
     def standardize_labels(self):
