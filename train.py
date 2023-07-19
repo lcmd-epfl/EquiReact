@@ -77,6 +77,7 @@ def parse_arguments(arglist=sys.argv[1:]):
     g_hyper.add_argument('--random_baseline'      , action='store_true', default=False    ,  help='random baseline (no graph conv)')
     g_hyper.add_argument('--two_layers_atom_diff' , action='store_true', default=False    ,  help='if use two linear layers in non-linear atom diff')
     g_hyper.add_argument('--noH'                  , action='store_true', default=False    ,  help='if remove H')
+    g_hyper.add_argument('--reverse'              , action='store_true', default=False    ,  help='if add reverse reactions')
 
     args = p.parse_args(arglist)
 
@@ -115,6 +116,7 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
           attention=None,
           two_layers_atom_diff=False,
           noH=False,
+          reverse = False,
           ):
 
     device = torch.device("cuda:0" if torch.cuda.is_available() and device == 'cuda' else "cpu")
@@ -123,7 +125,7 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
     if dataset=='cyclo':
         data = Cyclo23TS(radius=radius, process=process, atom_mapping=atom_mapping)
     elif dataset=='gdb':
-        data = GDB722TS(radius=radius, process=process, atom_mapping=atom_mapping, rxnmapper=rxnmapper, noH=noH)
+        data = GDB722TS(radius=radius, process=process, atom_mapping=atom_mapping, rxnmapper=rxnmapper, noH=noH, reverse=reverse)
     else:
         raise NotImplementedError(f'Cannot load the {dataset} dataset.')
     labels = data.labels
@@ -147,7 +149,7 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
         torch.cuda.manual_seed(seed)
         np.random.seed(seed)
 
-        indices = np.arange(len(data))
+        indices = np.arange(data.nreactions)
         np.random.shuffle(indices)
 
         if subset:
@@ -156,6 +158,11 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
         te_size = round(te_frac*len(indices))
         va_size = len(indices)-tr_size-te_size
         tr_indices, te_indices, val_indices = np.split(indices, [tr_size, tr_size+te_size])
+        if reverse:
+            tr_indices = np.hstack((tr_indices, tr_indices+data.nreactions))
+            te_indices = np.hstack((te_indices, te_indices+data.nreactions))
+            val_indices = np.hstack((val_indices, val_indices+data.nreactions))
+
         print(f'total / train / test / val: {len(indices)} {len(tr_indices)} {len(te_indices)} {len(val_indices)}')
         train_data = Subset(data, tr_indices)
         val_data = Subset(data, val_indices)
@@ -257,4 +264,4 @@ if __name__ == '__main__':
           n_s=args.n_s, n_v=args.n_v, n_conv_layers=args.n_conv_layers, distance_emb_dim=args.distance_emb_dim,
           graph_mode=args.graph_mode, dropout_p=args.dropout_p, random_baseline=args.random_baseline,
           combine_mode=args.combine_mode, atom_mapping=args.atom_mapping, CV=args.CV, attention=args.attention,
-          noH=args.noH, two_layers_atom_diff=args.two_layers_atom_diff, rxnmapper=args.rxnmapper)
+          noH=args.noH, two_layers_atom_diff=args.two_layers_atom_diff, rxnmapper=args.rxnmapper, reverse=args.reverse)
