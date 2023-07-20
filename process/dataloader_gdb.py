@@ -20,9 +20,13 @@ class GDB722TS(Dataset):
                  noH = False, atom_mapping=False, rxnmapper=False):
 
         if rxnmapper is True:
-            csv_path = 'data/gdb7-22-ts/rxnmapper.csv'
+            if noH:
+                csv_path = 'data/gdb7-22-ts/rxnmapper-noH.csv'
+            else:
+                csv_path = 'data/gdb7-22-ts/rxnmapper.csv'
         else:
             csv_path = 'data/gdb7-22-ts/ccsdtf12_dz_cleaned.csv'
+        print(f'{csv_path=}')
 
         self.version = 6.0  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
         self.max_number_of_reactants = 1
