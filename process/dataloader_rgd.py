@@ -14,14 +14,14 @@ from process.create_graph import get_graph, get_empty_graph
 class RGD1(Dataset):
 
     def __init__(self, files_dir='data/rgd1/',
-                 radius=20, max_neighbor=24, processed_dir='data/rgd1/processed/', process=True,
+                 processed_dir='data/rgd1/processed/', process=True,
                  split_complexes=False,
                  noH=False, atom_mapping=False, rxnmapper=False, reverse=False):
 
         h5_path = files_dir + '/RGD1_CHNO.h5'
         csv_path = files_dir + '/RGD1CHNO_smiles.csv'
 
-        self.version = 1  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
+        self.version = 2  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
         if noH or rxnmapper or reverse:
             raise NotImplementedError
         if split_complexes:
@@ -31,8 +31,6 @@ class RGD1(Dataset):
             self.max_number_of_reactants = 1
             self.max_number_of_products = 1
 
-        self.max_neighbor = max_neighbor
-        self.radius = radius
         self.processed_dir = processed_dir + '/'
         self.h5_path = h5_path
         self.atom_mapping = atom_mapping
@@ -168,8 +166,7 @@ class RGD1(Dataset):
         new_atoms = atoms[atom_map]
         new_coords = coords[atom_map]
 
-        graph = get_graph(mol, new_atoms, new_coords, ireact,
-                          radius=self.radius, max_neighbor=self.max_neighbor)
+        graph = get_graph(mol, new_atoms, new_coords, ireact)
         return graph, atom_map, new_atoms
 
 
