@@ -79,6 +79,7 @@ def parse_arguments(arglist=sys.argv[1:]):
     g_hyper.add_argument('--two_layers_atom_diff' , action='store_true', default=False    ,  help='if use two linear layers in non-linear atom diff')
     g_hyper.add_argument('--noH'                  , action='store_true', default=False    ,  help='if remove H')
     g_hyper.add_argument('--reverse'              , action='store_true', default=False    ,  help='if add reverse reactions')
+    g_hyper.add_argument('--split_complexes'      , action='store_true', default=False    ,  help='if split reaction complexes into individual molecules (for rgd)')
 
     args = p.parse_args(arglist)
 
@@ -118,6 +119,7 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
           two_layers_atom_diff=False,
           noH=False,
           reverse = False,
+          split_complexes=False,
           ):
 
     device = torch.device("cuda:0" if torch.cuda.is_available() and device == 'cuda' else "cpu")
@@ -128,7 +130,7 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
     elif dataset=='gdb':
         data = GDB722TS(radius=radius, process=process, atom_mapping=atom_mapping, rxnmapper=rxnmapper, noH=noH, reverse=reverse)
     elif dataset=='rgd':
-        data = RGD1(radius=radius, process=process, atom_mapping=atom_mapping, rxnmapper=rxnmapper, noH=noH, reverse=reverse)
+        data = RGD1(radius=radius, process=process, atom_mapping=atom_mapping, split_complexes=split_complexes)
     else:
         raise NotImplementedError(f'Cannot load the {dataset} dataset.')
     labels = data.labels
@@ -272,4 +274,5 @@ if __name__ == '__main__':
           n_s=args.n_s, n_v=args.n_v, n_conv_layers=args.n_conv_layers, distance_emb_dim=args.distance_emb_dim,
           graph_mode=args.graph_mode, dropout_p=args.dropout_p, random_baseline=args.random_baseline,
           combine_mode=args.combine_mode, atom_mapping=args.atom_mapping, CV=args.CV, attention=args.attention,
-          noH=args.noH, two_layers_atom_diff=args.two_layers_atom_diff, rxnmapper=args.rxnmapper, reverse=args.reverse)
+          noH=args.noH, two_layers_atom_diff=args.two_layers_atom_diff, rxnmapper=args.rxnmapper, reverse=args.reverse,
+          split_complexes=args.split_complexes)

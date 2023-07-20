@@ -15,13 +15,15 @@ class RGD1(Dataset):
 
     def __init__(self, files_dir='data/rgd1/',
                  radius=20, max_neighbor=24, processed_dir='data/rgd1/processed/', process=True,
-                 split_complexes=True,
+                 split_complexes=False,
                  noH=False, atom_mapping=False, rxnmapper=False, reverse=False):
 
         h5_path = files_dir + '/RGD1_CHNO.h5'
         csv_path = files_dir + '/RGD1CHNO_smiles.csv'
 
         self.version = 1  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
+        if noH or rxnmapper or reverse:
+            raise NotImplementedError
         if split_complexes:
             self.max_number_of_reactants = 4
             self.max_number_of_products = 4
