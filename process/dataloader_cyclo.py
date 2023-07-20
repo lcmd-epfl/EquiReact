@@ -48,6 +48,7 @@ class Cyclo23TS(Dataset):
 
         indices = self.df['rxn_id'].to_list()
         self.indices = indices
+        self.nreactions = len(labels)
 
         if process == True:
             print("processing by request...")
@@ -172,16 +173,16 @@ class Cyclo23TS(Dataset):
             rsmis, psmi = rxnsmi.split('>>')
             rsmi_0, rsmi_1 = rsmis.split('.')
             try:
-                r_graph_0 = self.make_graph(rsmi_0, r0atoms[i], r0coords[i], self.labels[i], idx)
-                r_graph_1 = self.make_graph(rsmi_1, r1atoms[i], r1coords[i], self.labels[i], idx)
+                r_graph_0 = self.make_graph(rsmi_0, r0atoms[i], r0coords[i], idx)
+                r_graph_1 = self.make_graph(rsmi_1, r1atoms[i], r1coords[i], idx)
                 r_map_0 = r0maps[i]
                 r_map_1 = r1maps[i]
             except:  # switch r0/r1 in atoms & coordinates & maps
-                r_graph_0 = self.make_graph(rsmi_0, r1atoms[i], r1coords[i], self.labels[i], idx)
-                r_graph_1 = self.make_graph(rsmi_1, r0atoms[i], r0coords[i], self.labels[i], idx)
+                r_graph_0 = self.make_graph(rsmi_0, r1atoms[i], r1coords[i], idx)
+                r_graph_1 = self.make_graph(rsmi_1, r0atoms[i], r0coords[i], idx)
                 r_map_0 = r1maps[i]
                 r_map_1 = r0maps[i]
-            p_graph = self.make_graph(psmi, patoms[i], pcoords[i], self.labels[i], idx)
+            p_graph = self.make_graph(psmi, patoms[i], pcoords[i], idx)
 
             self.reactant_0_graphs.append(r_graph_0)
             self.reactant_1_graphs.append(r_graph_1)
@@ -200,7 +201,7 @@ class Cyclo23TS(Dataset):
         print(f"Saved graphs to {self.paths.r0g}, {self.paths.r1g} and {self.paths.pg}")
 
 
-    def make_graph(self, smi, atoms, coords, label, idx, check=True):
+    def make_graph(self, smi, atoms, coords, idx, check=True):
         mol = Chem.MolFromSmiles(smi)
         mol = canon_mol(mol)
         assert mol is not None, f"mol obj {idx} is None from smi {smi}"
@@ -208,7 +209,7 @@ class Cyclo23TS(Dataset):
         assert len(ats) == len(atoms), f"nats don't match in idx {idx}"
         if check:
             assert np.all(ats == atoms), "atomtypes don't match"
-        return get_graph(mol, atoms, coords, label, radius=self.radius, max_neighbor=self.max_neighbor)
+        return get_graph(mol, atoms, coords, idx, radius=self.radius, max_neighbor=self.max_neighbor)
 
 
     def get_r_files(self, rxn_dir):

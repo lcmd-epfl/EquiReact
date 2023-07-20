@@ -17,7 +17,7 @@ class GDB722TS(Dataset):
 
     def __init__(self, files_dir='data/gdb7-22-ts/xyz/',
                  radius=20, max_neighbor=24, processed_dir='data/gdb7-22-ts/processed/', process=True,
-                 noH = False, atom_mapping=False, rxnmapper=False):
+                 noH = False, atom_mapping=False, rxnmapper=False, reverse=False):
 
         if rxnmapper is True:
             if noH:
@@ -28,7 +28,7 @@ class GDB722TS(Dataset):
             csv_path = 'data/gdb7-22-ts/ccsdtf12_dz_cleaned.csv'
         print(f'{csv_path=}')
 
-        self.version = 6.0  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
+        self.version = 7.0  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
         self.max_number_of_reactants = 1
         self.max_number_of_products = 3
 
@@ -45,7 +45,7 @@ class GDB722TS(Dataset):
 
         dataset_prefix = os.path.splitext(os.path.basename(csv_path))[0]
         self.paths = SimpleNamespace(
-                rg = join(self.processed_dir, dataset_prefix+'.reactant_graphs.pt'),
+                rg = join(self.processed_dir, dataset_prefix+'.reactants_graphs.pt'),
                 pg = join(self.processed_dir, dataset_prefix+'.products_graphs.pt'),
                 mp = join(self.processed_dir, dataset_prefix+'.p2r_mapping.pt'),
                 v  = join(self.processed_dir, dataset_prefix+'.version.pt')
@@ -54,14 +54,8 @@ class GDB722TS(Dataset):
         print("Loading data into memory...")
 
         self.df = pd.read_csv(csv_path)
-        labels = torch.tensor(self.df['dE0'].values)
-
-        mean = torch.mean(labels)
-        std = torch.std(labels)
-        self.std = std
-        #TODO to normalise in train/test/val split
-        self.labels = (labels - mean)/std
-
+        self.nreactions = len(self.df)
+        self.labels = torch.tensor(self.df['dE0'].values)
         self.indices = self.df['idx'].to_list()
 
         if process == True:
@@ -72,7 +66,7 @@ class GDB722TS(Dataset):
             self.process()
         else:
             if exists(self.paths.rg) and exists(self.paths.pg) and exists(self.paths.mp):
-                self.reactant_graphs = torch.load(self.paths.rg)
+                self.reactants_graphs = torch.load(self.paths.rg)
                 self.products_graphs = torch.load(self.paths.pg)
                 self.p2r_maps        = torch.load(self.paths.mp)
                 print(f"Coords and graphs successfully read from {self.processed_dir}")
@@ -80,19 +74,25 @@ class GDB722TS(Dataset):
                 print("Processed data not found, processing data...")
                 self.process()
 
+        if reverse:
+            self.add_reverse()
+
+        self.standardize_labels()
+
+
 
     def __len__(self):
         return len(self.labels)
 
 
     def __getitem__(self, idx):
-        r = self.reactant_graphs[idx]
+        r = self.reactants_graphs[idx]
         p = self.products_graphs[idx]
         label = self.labels[idx]
         if self.atom_mapping:
-            return label, idx, r, *p, self.p2r_maps[idx]
+            return label, idx, *r, *p, self.p2r_maps[idx]
         else:
-            return label, idx, r, *p
+            return label, idx, *r, *p
 
 
     def process(self):
@@ -134,7 +134,7 @@ class GDB722TS(Dataset):
         empty = get_empty_graph()
 
         self.products_graphs = []
-        self.reactant_graphs = []
+        self.reactants_graphs = []
         self.p2r_maps = []
         for i, idx in enumerate(tqdm(self.indices, desc="making graphs")):
             rxnsmi = self.df[self.df['idx'] == idx]['rxn_smiles'].item()
@@ -142,7 +142,7 @@ class GDB722TS(Dataset):
 
             # reactant
             rgraph, rmap, ratom = self.make_graph(rsmi, reactant_atomtypes_list[i], reactant_coords_list[i], i, f'r{idx:06d}')
-            self.reactant_graphs.append(rgraph)
+            self.reactants_graphs.append([rgraph])
 
             # products
             psmis = psmis.split('.')
@@ -172,10 +172,16 @@ class GDB722TS(Dataset):
             assert np.all(ratom == np.hstack(patoms)[p2rmap])
             self.p2r_maps.append(p2rmap)
 
+            # how to get r2pmap from p2rmap
+            r2pmap = np.hstack([np.where(rmap==j)[0] for j in pmaps])
+            assert np.all(pmaps == rmap[r2pmap]), f'{idx}'
+            assert np.all(ratom[r2pmap] == np.hstack(patoms)), f'{idx}'
+            assert np.all(r2pmap == np.argsort(p2rmap))
 
-        assert len(self.reactant_graphs) == len(self.products_graphs), 'not as many products as reactants'
 
-        torch.save(self.reactant_graphs, self.paths.rg)
+        assert len(self.reactants_graphs) == len(self.products_graphs), 'not as many products as reactants'
+
+        torch.save(self.reactants_graphs, self.paths.rg)
         torch.save(self.products_graphs, self.paths.pg)
         torch.save(self.p2r_maps, self.paths.mp)
         torch.save(self.version,  self.paths.v)
@@ -258,6 +264,30 @@ class GDB722TS(Dataset):
             new_coords = new_coords[noH_idx]
             atom_map = atom_map[noH_idx]
 
-        graph = get_graph(mol, new_atoms, new_coords, self.labels[ireact],
+        graph = get_graph(mol, new_atoms, new_coords, ireact,
                           radius=self.radius, max_neighbor=self.max_neighbor)
         return graph, atom_map-1, new_atoms
+
+
+    def add_reverse(self):
+        max_number_of_mol = max(self.max_number_of_reactants, self.max_number_of_products)
+        empty = get_empty_graph()
+        for i in range(self.nreactions):
+            self.reactants_graphs[i].extend([empty] * (max_number_of_mol - len(self.reactants_graphs[i])))
+            self.products_graphs[i].extend([empty] * (max_number_of_mol - len(self.products_graphs[i])))
+
+        self.max_number_of_reactants = max_number_of_mol
+        self.max_number_of_products = max_number_of_mol
+
+        self.reactants_graphs += self.products_graphs
+        self.products_graphs  += self.reactants_graphs[:self.nreactions]
+        self.p2r_maps         += [np.argsort(p2rmap) for p2rmap in self.p2r_maps]
+        self.labels = torch.hstack((self.labels, self.labels-torch.tensor(self.df['dHrxn298'].values)))
+
+
+    def standardize_labels(self):
+        #TODO to normalise in train/test/val split
+        mean = torch.mean(self.labels)
+        std = torch.std(self.labels)
+        self.std = std
+        self.labels = (self.labels - mean)/std

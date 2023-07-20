@@ -118,7 +118,7 @@ def get_graph(mol, atomtypes, coords, y, radius=20, max_neighbor=24, device='cpu
     data.pos -> xyz coordinates
     data.edge_index -> edge_src, edge_dst
     data.edge_attr -> distance
-    data.y -> Energy
+    data.y -> reaction id
     """
 
     atoms = np.array([at.GetSymbol() for at in mol.GetAtoms()])
@@ -153,7 +153,7 @@ def get_graph(mol, atomtypes, coords, y, radius=20, max_neighbor=24, device='cpu
     x = atom_featurizer(mol)
     edge_index = torch.tensor([src_list, dst_list], dtype=torch.long)
     edge_attr = torch.tensor(dist_list)
-    data = Data(x=x, edge_index=edge_index, edge_attr=edge_attr, y=y, pos=torch.tensor(coords, dtype=torch.float32))
+    data = Data(x=x, edge_index=edge_index, edge_attr=edge_attr, y=torch.tensor(y), pos=torch.tensor(coords, dtype=torch.float32))
 
     return data.to(device)
 
