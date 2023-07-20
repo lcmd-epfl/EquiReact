@@ -43,7 +43,6 @@ class GDB722TS(Dataset):
         if noH:
             dataset_prefix += '.noH'
 
-        dataset_prefix = os.path.splitext(os.path.basename(csv_path))[0]
         self.paths = SimpleNamespace(
                 rg = join(self.processed_dir, dataset_prefix+'.reactants_graphs.pt'),
                 pg = join(self.processed_dir, dataset_prefix+'.products_graphs.pt'),
