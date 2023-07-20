@@ -255,7 +255,12 @@ if __name__ == '__main__':
     sys.stdout = Logger(logpath=logpath, syspart=sys.stdout)
     sys.stderr = Logger(logpath=logpath, syspart=sys.stderr)
 
-    project = 'nequireact-gdb' if args.dataset=='gdb' else 'nequireact'
+    if args.dataset=='gdb':
+        project = 'nequireact-gdb'
+    elif args.dataset=='rgd':
+        project = 'nequireact-rgd'
+    else:
+        project = 'nequireact'
     print(f'wandb name {args.wandb_name}' if args.wandb_name else 'no wandb name specified')
 
     print("\ninput args", args, '\n')
