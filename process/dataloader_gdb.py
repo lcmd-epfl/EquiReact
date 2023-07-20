@@ -28,7 +28,7 @@ class GDB722TS(Dataset):
             csv_path = 'data/gdb7-22-ts/ccsdtf12_dz_cleaned.csv'
         print(f'{csv_path=}')
 
-        self.version = 7.0  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
+        self.version = 8  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
         self.max_number_of_reactants = 1
         self.max_number_of_products = 3
 
@@ -44,10 +44,9 @@ class GDB722TS(Dataset):
             dataset_prefix += '.noH'
 
         self.paths = SimpleNamespace(
-                rg = join(self.processed_dir, dataset_prefix+'.reactants_graphs.pt'),
-                pg = join(self.processed_dir, dataset_prefix+'.products_graphs.pt'),
-                mp = join(self.processed_dir, dataset_prefix+'.p2r_mapping.pt'),
-                v  = join(self.processed_dir, dataset_prefix+'.version.pt')
+                rg = join(self.processed_dir, f'{dataset_prefix}.v{self.version}.reactants_graphs.pt'),
+                pg = join(self.processed_dir, f'{dataset_prefix}.v{self.version}.products_graphs.pt'),
+                mp = join(self.processed_dir, f'{dataset_prefix}.v{self.version}.p2r_mapping.pt'),
                 )
 
         print("Loading data into memory...")
@@ -59,9 +58,6 @@ class GDB722TS(Dataset):
 
         if process == True:
             print("Processing by request...")
-            self.process()
-        elif not exists(self.paths.v) or torch.load(self.paths.v) != self.version:
-            print("Processed data is outdated, processing data...")
             self.process()
         else:
             if exists(self.paths.rg) and exists(self.paths.pg) and exists(self.paths.mp):
@@ -183,7 +179,6 @@ class GDB722TS(Dataset):
         torch.save(self.reactants_graphs, self.paths.rg)
         torch.save(self.products_graphs, self.paths.pg)
         torch.save(self.p2r_maps, self.paths.mp)
-        torch.save(self.version,  self.paths.v)
         print(f"Saved graphs to {self.paths.rg} and {self.paths.pg}")
 
 
