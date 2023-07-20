@@ -24,6 +24,7 @@ from trainer.react_trainer import ReactTrainer
 from models.equireact import EquiReact
 from process.dataloader_cyclo import Cyclo23TS
 from process.dataloader_gdb import GDB722TS
+from process.dataloader_rgd import RGD1
 from process.collate import CustomCollator
 
 
@@ -126,6 +127,8 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
         data = Cyclo23TS(radius=radius, process=process, atom_mapping=atom_mapping)
     elif dataset=='gdb':
         data = GDB722TS(radius=radius, process=process, atom_mapping=atom_mapping, rxnmapper=rxnmapper, noH=noH, reverse=reverse)
+    elif dataset=='rgd':
+        data = RGD1(radius=radius, process=process, atom_mapping=atom_mapping, rxnmapper=rxnmapper, noH=noH, reverse=reverse)
     else:
         raise NotImplementedError(f'Cannot load the {dataset} dataset.')
     labels = data.labels
