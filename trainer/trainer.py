@@ -84,6 +84,7 @@ class Trainer():
 
         self.val_loss_for_wandb = None
         self.val_score_for_wandb = None
+        self.val_score_best_for_wandb = 1e16
 
         if lr_scheduler:  # Needs "from torch.optim.lr_scheduler import *" to work
             self.lr_scheduler = lr_scheduler(self.optim, mode=mode, factor=factor, patience=lr_scheduler_patience,
@@ -153,6 +154,7 @@ class Trainer():
                 print(f'[Epoch {epoch}] {self.main_metric}: {val_score:.6f} val loss: {val_loss:.6f}')
                 self.val_loss_for_wandb = val_loss
                 self.val_score_for_wandb = val_score
+                self.val_score_best_for_wandb = min(val_score, self.val_score_best_for_wandb)
 
                 # save the model with the best main_metric depending on wether we want to maximize or minimize the main metric
                 if val_score >= self.best_val_score and self.main_metric_goal == 'max' or val_score <= self.best_val_score and self.main_metric_goal == 'min':
@@ -212,7 +214,7 @@ class Trainer():
                     if self.val_score_for_wandb is None:
                         wandb.log({"train loss": loss.item(), "epoch": self.epoch})
                     else:
-                        wandb.log({"train loss": loss.item(), "epoch": self.epoch, "val_loss": self.val_loss_for_wandb, "val_score": self.val_score_for_wandb})
+                        wandb.log({"train loss": loss.item(), "epoch": self.epoch, "val_loss": self.val_loss_for_wandb, "val_score": self.val_score_for_wandb, "val_score_best": self.val_score_best_for_wandb})
                     print(f'[Epoch {self.epoch}; Iter {i+1:5d}/{len(data_loader):5d}] train: loss: {loss.item():.7f}')
                 if optim == None and self.val_per_batch:  # during validation or testing when we want to average metrics over all the data in that dataloader
                     metrics = self.evaluate_metrics(predictions, targets, val=True)
