@@ -1,7 +1,6 @@
 import numpy as np
 import torch
 from torch_geometric.data import Data
-import scipy.spatial as spa
 import rdkit
 from rdkit import Chem
 from rdkit.Chem.rdPartialCharges import ComputeGasteigerCharges
@@ -106,59 +105,28 @@ def atom_featurizer(mol):
             allowable_features['possible_is_in_ring7_list'].index(ringinfo.IsAtomInRingOfSize(idx, 7)),
             g_charge if not np.isnan(g_charge) and not np.isinf(g_charge) else 0.
         ])
-
     return torch.tensor(atom_features_list)
 
 
-def get_graph(mol, atomtypes, coords, y, radius=20, max_neighbor=24, device='cpu'):
+def get_graph(mol, atomtypes, coords, y, device='cpu'):
     """
-    Builds graph using specified coords. Only using distances.
+    Builds graph object
 
-    data.x -> Node features
+    data.x -> node features
     data.pos -> xyz coordinates
-    data.edge_index -> edge_src, edge_dst
-    data.edge_attr -> distance
+    data.edge_index -> --
+    data.edge_attr -> --
     data.y -> reaction id
     """
-
     atoms = np.array([at.GetSymbol() for at in mol.GetAtoms()])
     assert np.all(atoms == atomtypes), "atoms from xyz and smiles don't match"
     assert coords.shape[0] == len(atoms), "different number of atoms"
     assert coords.shape[1] == 3, "wrong dimensionality of coordinates"
-
-    distance = spa.distance.cdist(coords, coords)
-
-    src_list = []
-    dst_list = []
-    dist_list = []
-    for i in range(len(atoms)):
-        dst = list(np.where(distance[i, :] < radius)[0])
-        dst.remove(i)
-        if max_neighbor != None and len(dst) > max_neighbor:
-            dst = list(np.argsort(distance[i, :]))[1: max_neighbor + 1]  # closest would be self loop
-        if len(dst) == 0:
-            dst = list(np.argsort(distance[i, :]))[1:2]  # closest would be the index i itself > self loop
-            print(
-                f'The radius {radius} was too small for one atom such that it had no neighbors. So we connected {i} to the closest other atom {dst}')
-        assert i not in dst
-        src = [i] * len(dst)
-        src_list.extend(src)
-        dst_list.extend(dst)
-        valid_dist = list(distance[i, dst])
-        dist_list.extend(valid_dist)
-
-    assert len(src_list) == len(dst_list)
-    assert len(dist_list) == len(dst_list)
-
     x = atom_featurizer(mol)
-    edge_index = torch.tensor([src_list, dst_list], dtype=torch.long)
-    edge_attr = torch.tensor(dist_list)
-    data = Data(x=x, edge_index=edge_index, edge_attr=edge_attr, y=torch.tensor(y), pos=torch.tensor(coords, dtype=torch.float32))
-
+    data = Data(x=x, y=torch.tensor(y), pos=torch.tensor(coords, dtype=torch.float32))
     return data.to(device)
 
 
 def get_empty_graph():
     num_node_feat = atom_featurizer(Chem.MolFromSmiles('C')).shape[-1]
-    return Data(x=torch.zeros((0, num_node_feat)), edge_index=torch.zeros((2,0)),
-                edge_attr=torch.zeros(0), y=torch.tensor(0.0), pos=torch.zeros((0,3)))
+    return Data(x=torch.zeros((0, num_node_feat)), y=torch.tensor(-1), pos=torch.zeros((0,3)))

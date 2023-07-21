@@ -16,8 +16,8 @@ from process.create_graph import reader, get_graph, canon_mol, get_empty_graph
 class GDB722TS(Dataset):
 
     def __init__(self, files_dir='data/gdb7-22-ts/xyz/',
-                 radius=20, max_neighbor=24, processed_dir='data/gdb7-22-ts/processed/', process=True,
-                 noH = False, atom_mapping=False, rxnmapper=False, reverse=False):
+                 processed_dir='data/gdb7-22-ts/processed/', process=True,
+                 noH=False, atom_mapping=False, rxnmapper=False, reverse=False):
 
         if rxnmapper is True:
             if noH:
@@ -28,12 +28,10 @@ class GDB722TS(Dataset):
             csv_path = 'data/gdb7-22-ts/ccsdtf12_dz_cleaned.csv'
         print(f'{csv_path=}')
 
-        self.version = 8  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
+        self.version = 9  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
         self.max_number_of_reactants = 1
         self.max_number_of_products = 3
 
-        self.max_neighbor = max_neighbor
-        self.radius = radius
         self.files_dir = files_dir + '/'
         self.processed_dir = processed_dir + '/'
         self.atom_mapping = atom_mapping
@@ -258,8 +256,7 @@ class GDB722TS(Dataset):
             new_coords = new_coords[noH_idx]
             atom_map = atom_map[noH_idx]
 
-        graph = get_graph(mol, new_atoms, new_coords, ireact,
-                          radius=self.radius, max_neighbor=self.max_neighbor)
+        graph = get_graph(mol, new_atoms, new_coords, ireact)
         return graph, atom_map-1, new_atoms
 
 

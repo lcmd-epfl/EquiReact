@@ -14,14 +14,12 @@ from process.create_graph import reader, get_graph, canon_mol
 class Cyclo23TS(Dataset):
     def __init__(self, files_dir='data/cyclo/xyz/', csv_path='data/cyclo/mod_dataset.csv',
                  map_dir='data/cyclo/matches/',
-                 radius=20, max_neighbor=24, processed_dir='data/cyclo/processed/', process=True,
+                 processed_dir='data/cyclo/processed/', process=True,
                  atom_mapping=False):
 
         self.max_number_of_reactants = 2
         self.max_number_of_products = 1
 
-        self.max_neighbor = max_neighbor
-        self.radius = radius
         self.files_dir = files_dir + '/'
         self.processed_dir = processed_dir + '/'
         self.map_dir = map_dir
@@ -209,7 +207,7 @@ class Cyclo23TS(Dataset):
         assert len(ats) == len(atoms), f"nats don't match in idx {idx}"
         if check:
             assert np.all(ats == atoms), "atomtypes don't match"
-        return get_graph(mol, atoms, coords, idx, radius=self.radius, max_neighbor=self.max_neighbor)
+        return get_graph(mol, atoms, coords, idx)
 
 
     def get_r_files(self, rxn_dir):
