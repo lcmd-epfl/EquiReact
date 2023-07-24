@@ -264,6 +264,8 @@ if __name__ == '__main__':
         project = 'nequireact-gdb'
     elif args.dataset=='rgd':
         project = 'nequireact-rgd'
+    elif args.dataset=='proparg':
+        project = 'nequireact-proparg'
     else:
         project = 'nequireact'
     print(f'wandb name {args.wandb_name}' if args.wandb_name else 'no wandb name specified')
