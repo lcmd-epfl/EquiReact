@@ -1,0 +1,84 @@
+no wandb name specified
+input args Namespace(experiment_name='', num_epochs=1, checkpoint=None, device='cpu', subset=None, wandb_name=None, logdir='logs', process=False, verbose=False, radius=10.0, max_neighbors=20, sum_mode='node', n_s=16, n_v=16, n_conv_layers=2, distance_emb_dim=32, graph_mode='energy', dropout_p=0.1, dataset='cyclo', random_baseline=False, combine_mode='mlp')
+Running on device cpu
+Loading data into memory...
+Coords and graphs successfully read from data/cyclo/processed//
+Data stdev tensor(9.7629, dtype=torch.float64)
+total / train / test / val: 5203 3902 650 651
+r0graph=Data(x=[6, 16], edge_index=[2, 30], edge_attr=[30], y=-1.3594611934014402, pos=[6, 3])
+input_node_feats_dim=16
+input_edge_feats_dim=1
+/Users/puckvg/miniconda3/envs/nequireact/lib/python3.11/site-packages/torch/jit/_check.py:172: UserWarning: The TorchScript type system doesn't support instance-level annotations on empty non-base types in `__init__`. Instead, either 1) use a type annotation in the class body, or 2) wrap the type in `torch.jit.Attribute`.
+  warnings.warn("The TorchScript type system doesn't support "
+trainable params in model:  108821
+Log directory: logs/
+checkpoint: None
+num epochs: 1
+eval_per_epochs: 0
+patience: 150
+minimum_epochs: 0
+models_to_save: []
+clip_grad: 100
+log_iterations: 100
+lr: 0.0001
+weight decay: 0.0001
+lr scheduler: <class 'torch.optim.lr_scheduler.ReduceLROnPlateau'>
+factor: 0.6
+min_lr: 8e-06
+mode: max
+lr_scheduler_patience: 60
+lr_verbose: True
+In trainer, metrics is {'mae': MAE()} and std is 9.762939402167014
+reactant energy dim tensor([[7.3298],
+        [2.6200],
+        [4.4185],
+        [4.9180],
+        [3.8941],
+        [7.2963],
+        [6.1417],
+        [5.1538]], grad_fn=<AddBackward0>)
+product energy dim tensor([[7.4583],
+        [2.6702],
+        [4.3555],
+        [4.8204],
+        [3.9751],
+        [7.3980],
+        [6.0317],
+        [5.1015]], grad_fn=<AddBackward0>)
+energies dim torch.Size([16, 1])
+Traceback (most recent call last):
+  File "/Users/puckvg/Work/NequiReact/train.py", line 236, in <module>
+    train(run_dir, device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint, subset=args.subset,
+  File "/Users/puckvg/Work/NequiReact/train.py", line 195, in train
+    val_metrics, _, _ = trainer.train(train_loader, val_loader)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/puckvg/Work/NequiReact/trainer/trainer.py", line 132, in train
+    self.predict(train_loader, optim=self.optim)
+  File "/Users/puckvg/Work/NequiReact/trainer/trainer.py", line 204, in predict
+    loss, predictions, targets = self.process_batch(batch, optim)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/puckvg/Work/NequiReact/trainer/trainer.py", line 182, in process_batch
+    loss, predictions, targets = self.forward_pass(batch)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/puckvg/Work/NequiReact/trainer/react_trainer.py", line 17, in forward_pass
+    y_pred = self.model(rgraphs, pgraphs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/puckvg/miniconda3/envs/nequireact/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/puckvg/Work/NequiReact/models/equireact.py", line 302, in forward
+    reaction_energy = self.energy_mlp(energies)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/puckvg/miniconda3/envs/nequireact/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/puckvg/miniconda3/envs/nequireact/lib/python3.11/site-packages/torch/nn/modules/container.py", line 217, in forward
+    input = module(input)
+            ^^^^^^^^^^^^^
+  File "/Users/puckvg/miniconda3/envs/nequireact/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/puckvg/miniconda3/envs/nequireact/lib/python3.11/site-packages/torch/nn/modules/linear.py", line 114, in forward
+    return F.linear(input, self.weight, self.bias)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: mat1 and mat2 shapes cannot be multiplied (16x1 and 2x1)

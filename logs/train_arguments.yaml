@@ -1,0 +1,16 @@
+checkpoint:
+clip_grad: 100
+eval_per_epochs: 0
+factor: 0.6
+log_iterations: 100
+lr: 0.0001
+lr scheduler: ReduceLROnPlateau
+lr_scheduler_patience: 60
+lr_verbose: yes
+min_lr: 8.0e-06
+minimum_epochs: 0
+mode: max
+models_to_save: []
+num epochs: 1
+patience: 150
+weight decay: 0.0001

@@ -1,7 +1,7 @@
 import torch
 
 class MapTrainer:
-    def __init__(self, nb_epochs, run="run", verbose=True):
+    def __init__(self, nb_epochs, verbose=True):
         """Create a trainer by specifying the number of epochs to train
         Args:
             nb_epochs: int. Number of epochs to train
@@ -13,7 +13,7 @@ class MapTrainer:
 
     #       self.tb = SummaryWriter(f'runs/{run}')
 
-    def fit(self, model, dl_train, dl_val, verbose=True):
+    def train(self, model, dl_train, dl_val, verbose=True):
         """Train the model on the specified data and print the training and validation loss and accuracy.
         Args:
             model: Module. Model to train
@@ -24,7 +24,7 @@ class MapTrainer:
 
         self.verbose = verbose
 
-        optimizer = model.configure_optimizers()
+        optimizer = torch.optim.Adam(model.parameters()) # default for now
         train_loss_epochs = []
         train_acc_epochs = []
         val_acc_epochs = []

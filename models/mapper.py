@@ -1,4 +1,6 @@
 import torch
+from torch import nn
+from torch.nn import CrossEntropyLoss
 import torch.nn.functional as F
 from models.equireact import EquiReact
 
@@ -22,22 +24,12 @@ def cross_attention(queries, keys, values, mask):
 
 class AtomMapper(EquiReact):
 
-    def __init__(self):
+    def __init__(self, node_fdim: int, edge_fdim: int):
+        super().__init__(node_fdim=node_fdim, edge_fdim=edge_fdim)
+        self.loss = CrossEntropyLoss()
 
-        self.att_mlp_Q = nn.Sequential(
-            nn.Linear(h_feats_dim, h_feats_dim, bias=False),
-            get_non_lin(nonlin, leakyrelu_neg_slope)
-            nn.LeakyReLu(negative_slope=0.01)
-        )
-
-        self.att_mlp_K = nn.Sequential(
-            nn.Linear(h_feats_dim, h_feats_dim, bias=False),
-            nn.LeakyReLu(negative_slope=0.01)
-        )
-
-        self.att_mlp_V = nn.Sequential(
-            nn.Linear(h_feats_dim, h_feats_dim, bias=False)
-        )
+    def accuracy(self, y_, y):
+        return (y_.flatten() == y.flatten()).sum().item() / y_.flatten().size(0) * 100
 
     def forward(self, reactants_data, products_data):
 
@@ -63,11 +55,29 @@ class AtomMapper(EquiReact):
 
         r2p_attention = []
         for xr, xp, ar, ap in zip(x_react, x_prod, ratoms, patoms):
+            print(f'xr shape {xr.shape}')
+            print(f'xp shape {xp.shape}')
             mask = (ap != ar.T).to(self.device)  # len(xp) × len(xr) ; True == no attention
+            print(f'mask shape {mask.shape}')
             # rp or pr ?
-            att = cross_attention(self.att_mlp_Q(xr),
-                                  self.att_mlp_K(xp),
-                                  self.att_mlp_V(xp), mask.T)
+
+            # get Q, K, V
+            att_mlp_Q = nn.Sequential(
+                nn.Linear(xr.shape, xr.shape, bias=False),
+                nn.LeakyReLu(negative_slope=0.01)
+            )
+
+            att_mlp_K = nn.Sequential(
+                nn.Linear(xp.shape, xp.shape, bias=False),
+                nn.LeakyReLu(negative_slope=0.01)
+            )
+
+            att_mlp_V = nn.Sequential(
+                nn.Linear(xp.shape, xp.shape, bias=False)
+            )
+            att = cross_attention(att_mlp_Q(xr),
+                                  att_mlp_K(xp),
+                                  att_mlp_V(xp), mask.T)
             r2p_attention.append(att)
         r2p_attention = torch.tensor(r2p_attention, device=self.device)
         print('before padding', r2p_attention.shape)
@@ -81,38 +91,40 @@ class AtomMapper(EquiReact):
         return r2p_attention
 
     def training_step(self, batch, batch_idx):
-        x, y_class, y_target = batch
+        # assuming attention DL
+        rgraphs, pgraphs, targets, mapping, idx = tuple(batch)
+       # print('mapping shape', len(mapping))
+      #  print('mapping', mapping)
 
-        # Compute loss_digit for both input images
-        d1, d2, out = self(x)
-        loss_d1 = self.loss(d1, y_class[:, 0])
-        loss_d2 = self.loss(d2, y_class[:, 1])
+        # need reactants_data and products_data
+        pred_att = self(rgraphs, pgraphs)
+        print(f'pred att dims {pred_att.shape}')
 
-        if self.target:
-            # Compute loss_target with the target network
-            preds = torch.argmax(out, dim=1)
-            loss_target = self.loss(out, y_target)
-
-            # Equally weight loss_digit from both input images
-            loss_digit = (loss_d1 + loss_d2) / 2
-
-            if self.strategy == "random":
-                # Alternate the loss (loss_digit / loss_target) to optimize by choosing the loss at random
-                decision = random.randint(0, 1)
-                if decision:
-                    loss = loss_target
-                else:
-                    loss = loss_digit
-            elif self.strategy == "sum":
-                # Sum up the two losses (loss_digit / loss_target)
-                loss = self.weight_aux * loss_digit + loss_target
-            else:
-                raise ValueError(f"Unknown strategy: {self.strategy}")
-        else:
-            # Simulate the target network with the arithmetic operation '<='
-            preds = out
-            loss = (loss_d1 + loss_d2) / 2
+        # do we need an argmax here ?
+        preds = torch.argmax(pred_att, dim=1)
+        print(f'preds dims w argmax {preds.shape}')
+        loss = self.loss(preds, true_maps)
 
         acc = self.accuracy(preds, y_target)
+        print(f'accuracy {acc}')
         return loss, acc
 
+    def validation_step(self, batch, batch_idx):
+        # assuming attention DL
+        true_maps = batch[:][-1] # last item in DL
+
+        # Compute loss_digit for both input images
+        pred_att = self(x)
+        print(f'pred att dims {pred_att.shape}')
+
+        # do we need an argmax here ?
+        preds = torch.argmax(pred_att, dim=1)
+        print(f'preds dims w argmax {preds.shape}')
+        loss = self.loss(preds, true_maps)
+
+        acc = self.accuracy(preds, y_target)
+        print(f'accuracy {acc}')
+        return loss, acc
+
+    def test_step(self, batch, batch_idx):
+        return self.validation_step(batch, batch_idx)

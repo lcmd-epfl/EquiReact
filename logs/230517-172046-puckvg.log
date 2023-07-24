@@ -1,0 +1,48 @@
+no wandb name specified
+input args Namespace(experiment_name='', num_epochs=1, checkpoint=None, device='cpu', subset=1000, wandb_name=None, logdir='logs', process=False, verbose=False, radius=10.0, max_neighbors=20, sum_mode='node', n_s=16, n_v=16, n_conv_layers=2, distance_emb_dim=32, graph_mode='energy', dropout_p=0.1, dataset='cyclo', random_baseline=False, combine_mode='mlp')
+Running on device cpu
+Loading data into memory...
+Coords and graphs successfully read from data/cyclo/processed//
+Data stdev tensor(9.7629, dtype=torch.float64)
+total / train / test / val: 1000 750 125 125
+r0graph=Data(x=[6, 16], edge_index=[2, 30], edge_attr=[30], y=-1.3594611934014402, pos=[6, 3])
+input_node_feats_dim=16
+input_edge_feats_dim=1
+/Users/puckvg/miniconda3/envs/nequireact/lib/python3.11/site-packages/torch/jit/_check.py:172: UserWarning: The TorchScript type system doesn't support instance-level annotations on empty non-base types in `__init__`. Instead, either 1) use a type annotation in the class body, or 2) wrap the type in `torch.jit.Attribute`.
+  warnings.warn("The TorchScript type system doesn't support "
+trainable params in model:  108821
+Log directory: logs/
+checkpoint: None
+num epochs: 1
+eval_per_epochs: 0
+patience: 150
+minimum_epochs: 0
+models_to_save: []
+clip_grad: 100
+log_iterations: 100
+lr: 0.0001
+weight decay: 0.0001
+lr scheduler: <class 'torch.optim.lr_scheduler.ReduceLROnPlateau'>
+factor: 0.6
+min_lr: 8e-06
+mode: max
+lr_scheduler_patience: 60
+lr_verbose: True
+In trainer, metrics is {'mae': MAE()} and std is 9.762939402167014
+[Epoch 1] mae: 9.200282 val loss: 1.246805
+Epochs with no improvement: [ 0 ] and the best   mae  was in  1
+Statistics on  val_best_checkpoint
+mae: 9.200281940410749
+MSELoss: 1.2468048706650734
+mean_pred: 0.2915887348353863
+std_pred: 0.020061486691702157
+mean_targets: 0.024394518695771694
+std_targets: 1.0661509782075882
+Evaluating on test, with test size:  125
+Statistics on  test
+mae: 7.432300595983172
+MSELoss: 0.886828325688839
+mean_pred: 0.2924947366118431
+std_pred: 0.021057509060483426
+mean_targets: 0.020800774917006493
+std_targets: 0.8225512523204088

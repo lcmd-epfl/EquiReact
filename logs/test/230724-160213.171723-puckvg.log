@@ -1,0 +1,5 @@
+wandb name init-test
+Traceback (most recent call last):
+  File "/Users/puckvg/Work/NequiReact/train_mapper.py", line 123, in <module>
+    train(run_dir, run_name, project, wandb_name)
+TypeError: train() missing 1 required positional argument: 'hyper_dict'

@@ -1,8 +1,6 @@
 import os
 import sys
 import argparse
-from ast import literal_eval
-import traceback
 from datetime import datetime
 from getpass import getuser  # os.getlogin() won't work on a cluster
 
