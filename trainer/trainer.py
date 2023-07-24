@@ -150,7 +150,7 @@ class Trainer():
 
                 # val loss is MSE, shouldn't be affected by data normalisation
                 val_loss = metrics[type(self.loss_func).__name__]
-                wandb.log({"val_loss": val_loss, "val_score": val_score, "epoch": self.epoch})
+                wandb.log({"val_loss": val_loss, "val_score": val_score, "epoch": self.epoch, "val_score_best": self.val_score_best_for_wandb})
                 print(f'[Epoch {epoch}] {self.main_metric}: {val_score:.6f} val loss: {val_loss:.6f}')
                 self.val_loss_for_wandb = val_loss
                 self.val_score_for_wandb = val_score
