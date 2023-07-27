@@ -17,7 +17,8 @@ def cross_attention(queries, keys, values, mask):
     Returns:
       attention_x: Nxd float tensor.
     """
-    a = mask * torch.mm(queries, torch.transpose(keys, 1, 0)) - 1000. * (1. - mask)
+    #TODO double check
+    a = mask * torch.mm(queries, torch.transpose(keys, 1, 0))
     a_x = torch.softmax(a, dim=1)  # i->j, NxM, a_x.sum(dim=1) = torch.ones(N)
     attention_x = torch.mm(a_x, values)  # (N,d)
     return attention_x
@@ -28,21 +29,15 @@ class AtomMapper(EquiReact):
         super().__init__(node_fdim=node_fdim, edge_fdim=edge_fdim)
         self.loss = CrossEntropyLoss()
 
+        self.rp_attention = nn.MultiheadAttention(self.n_s_full_with_edges, 1)  # query, key, value
+
     def accuracy(self, y_, y):
         return (y_.flatten() == y.flatten()).sum().item() / y_.flatten().size(0) * 100
 
     def forward(self, reactants_data, products_data):
 
-        if self.sum_mode == 'node':
-            predictor = self.score_predictor_nodes
-        elif self.sum_mode == 'both':
-            predictor  = self.score_predictor_nodes_with_edges
-        else:
-            raise NotImplementedError(f'sum mode "{self.sum_mode}" is not compatible with vector mode')
-
         x_react = self.forward_repr_mols(reactants_data)
-        x_prod  = self.forward_repr_mols(products_data)
-
+        x_prod = self.forward_repr_mols(products_data)
 
         # Hybrid cross/ masked
         def get_atoms(data):
@@ -53,41 +48,54 @@ class AtomMapper(EquiReact):
         ratoms = get_atoms(reactants_data)
         patoms = get_atoms(products_data)
 
-        r2p_attention = []
+        # att from torch
+        torch_att = []
+        cross_att = []
+
         for xr, xp, ar, ap in zip(x_react, x_prod, ratoms, patoms):
             print(f'xr shape {xr.shape}')
             print(f'xp shape {xp.shape}')
             mask = (ap != ar.T).to(self.device)  # len(xp) × len(xr) ; True == no attention
             print(f'mask shape {mask.shape}')
             # rp or pr ?
+         #   xr_m = self.rp_attention(xp, xr, xr, attn_mask=mask, need_weights=False)[0]
+         #   print('xr_m shape', xr_m.shape)
+         #   x_react_mapped.append(xr_m)
+            xr_p = self.rp_attention(xr, xp, xp, attn_mask=mask.T, need_weights=False)[0]
+            print('xr_p shape', xr_p.shape)
+            torch_att.append(xr_p)
 
             # get Q, K, V
             att_mlp_Q = nn.Sequential(
-                nn.Linear(xr.shape, xr.shape, bias=False),
-                nn.LeakyReLu(negative_slope=0.01)
+                nn.Linear(xr.shape[1], xr.shape[1], bias=False),
+                nn.LeakyReLU(negative_slope=0.01)
             )
 
             att_mlp_K = nn.Sequential(
-                nn.Linear(xp.shape, xp.shape, bias=False),
-                nn.LeakyReLu(negative_slope=0.01)
+                nn.Linear(xp.shape[1], xp.shape[1], bias=False),
+                nn.LeakyReLU(negative_slope=0.01)
             )
 
             att_mlp_V = nn.Sequential(
-                nn.Linear(xp.shape, xp.shape, bias=False)
+                nn.Linear(xp.shape[1], xp.shape[1], bias=False)
             )
-            att = cross_attention(att_mlp_Q(xr),
-                                  att_mlp_K(xp),
-                                  att_mlp_V(xp), mask.T)
-            r2p_attention.append(att)
-        r2p_attention = torch.tensor(r2p_attention, device=self.device)
-        print('before padding', r2p_attention.shape)
+            aq = att_mlp_Q(xr)
+            print('aq shape', aq.shape)
+            ak = att_mlp_K(xp)
+            print('ak shape', ak.shape)
+            av = att_mlp_V(xp)
+            print('av shape', av.shape)
+            att = cross_attention(aq,
+                                  ak,
+                                  av, mask.T)
+            print('cross attention computed')
+            print('att dims', att.shape)
+            cross_att.append(att)
 
-        nat_list = [i.shape[0] for i in r2p_attention]
-        nat_max = max(nat_list)
-        for i, nat in enumerate(nat_list):
-            r2p_attention[i] = F.pad(r2p_attention[i], (0, nat_max-nat, 0, nat_max-nat))[None,:,:]
-        r2p_attention = torch.cat(r2p_attention)
-        print('after padding', r2p_attention.shape)
+        r2p_torch = torch.vstack(torch_att)
+        print('final xr mapped shape', r2p_torch.shape)
+        r2p_attention = torch.vstack(cross_att)
+        print('final cross att shape', r2p_attention.shape)
         return r2p_attention
 
     def training_step(self, batch, batch_idx):
@@ -100,9 +108,11 @@ class AtomMapper(EquiReact):
         pred_att = self(rgraphs, pgraphs)
         print(f'pred att dims {pred_att.shape}')
 
+        # right now things are not right
+
         # do we need an argmax here ?
-        preds = torch.argmax(pred_att, dim=1)
-        print(f'preds dims w argmax {preds.shape}')
+     #   preds = torch.argmax(pred_att, dim=1)
+     #   print(f'preds dims w argmax {preds.shape}')
         loss = self.loss(preds, true_maps)
 
         acc = self.accuracy(preds, y_target)

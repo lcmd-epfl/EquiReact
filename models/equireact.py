@@ -187,20 +187,20 @@ class EquiReact(nn.Module):
             nn.Linear(2*self.n_s_full, self.n_s_full)
         )
 
-        n_s_full_with_edges = self.n_s_full + distance_emb_dim  if self.sum_mode=='both' else self.n_s_full
+        self.n_s_full_with_edges = self.n_s_full + distance_emb_dim  if self.sum_mode=='both' else self.n_s_full
         if two_layers_atom_diff:
             self.atom_diff_nonlin = nn.Sequential(
-                nn.Linear(n_s_full_with_edges, n_s_full_with_edges),
+                nn.Linear(self.n_s_full_with_edges, self.n_s_full_with_edges),
                 nn.ReLU(),
-                nn.Linear(n_s_full_with_edges, n_s_full_with_edges),
+                nn.Linear(self.n_s_full_with_edges, self.n_s_full_with_edges),
             )
         else:
             self.atom_diff_nonlin = nn.Sequential(
                 nn.ReLU(),
-                nn.Linear(n_s_full_with_edges, n_s_full_with_edges),
+                nn.Linear(self.n_s_full_with_edges, self.n_s_full_with_edges),
             )
 
-        self.rp_attention = nn.MultiheadAttention(n_s_full_with_edges, 1)  # query, key, value
+        self.rp_attention = nn.MultiheadAttention(self.n_s_full_with_edges, 1)  # query, key, value
 
         combine_diff = lambda r, p: p-r
         combine_sum  = lambda r, p: r+p
