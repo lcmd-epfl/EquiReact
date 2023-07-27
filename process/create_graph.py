@@ -130,3 +130,13 @@ def get_graph(mol, atomtypes, coords, y, device='cpu'):
 def get_empty_graph():
     num_node_feat = atom_featurizer(Chem.MolFromSmiles('C')).shape[-1]
     return Data(x=torch.zeros((0, num_node_feat)), y=torch.tensor(-1), pos=torch.zeros((0,3)))
+
+
+def sanitize_mol_no_valence_check(mol):
+    # rdkit doesn't like "hypervalent" atoms.
+    # The standard sanitization would fail even on [SiF6]^{-2}
+    # with SMILES 'F[Si-2](F)(F)(F)(F)F' (https://pubchem.ncbi.nlm.nih.gov/compound/Hexafluorosilicate)
+    # Solution:
+    # https://sourceforge.net/p/rdkit/mailman/message/32599798/
+    mol.UpdatePropertyCache(strict=False)
+    Chem.SanitizeMol(mol, Chem.SanitizeFlags.SANITIZE_ALL ^ Chem.SanitizeFlags.SANITIZE_PROPERTIES)

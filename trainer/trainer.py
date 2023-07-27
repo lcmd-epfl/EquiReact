@@ -150,11 +150,13 @@ class Trainer():
 
                 # val loss is MSE, shouldn't be affected by data normalisation
                 val_loss = metrics[type(self.loss_func).__name__]
-                wandb.log({"val_loss": val_loss, "val_score": val_score, "epoch": self.epoch})
+                if np.isfinite(self.best_val_score):
+                    wandb.log({"val_loss": val_loss, "val_score": val_score, "epoch": self.epoch, "val_score_best": self.best_val_score})
+                else:
+                    wandb.log({"val_loss": val_loss, "val_score": val_score, "epoch": self.epoch})
                 print(f'[Epoch {epoch}] {self.main_metric}: {val_score:.6f} val loss: {val_loss:.6f}')
                 self.val_loss_for_wandb = val_loss
                 self.val_score_for_wandb = val_score
-                self.val_score_best_for_wandb = min(val_score, self.val_score_best_for_wandb)
 
                 # save the model with the best main_metric depending on wether we want to maximize or minimize the main metric
                 if val_score >= self.best_val_score and self.main_metric_goal == 'max' or val_score <= self.best_val_score and self.main_metric_goal == 'min':
@@ -214,7 +216,7 @@ class Trainer():
                     if self.val_score_for_wandb is None:
                         wandb.log({"train loss": loss.item(), "epoch": self.epoch})
                     else:
-                        wandb.log({"train loss": loss.item(), "epoch": self.epoch, "val_loss": self.val_loss_for_wandb, "val_score": self.val_score_for_wandb, "val_score_best": self.val_score_best_for_wandb})
+                        wandb.log({"train loss": loss.item(), "epoch": self.epoch, "val_loss": self.val_loss_for_wandb, "val_score": self.val_score_for_wandb, "val_score_best": self.best_val_score})
                     print(f'[Epoch {self.epoch}; Iter {i+1:5d}/{len(data_loader):5d}] train: loss: {loss.item():.7f}')
                 if optim == None and self.val_per_batch:  # during validation or testing when we want to average metrics over all the data in that dataloader
                     metrics = self.evaluate_metrics(predictions, targets, val=True)

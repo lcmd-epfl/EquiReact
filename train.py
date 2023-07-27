@@ -25,6 +25,7 @@ from models.equireact import EquiReact
 from process.dataloader_cyclo import Cyclo23TS
 from process.dataloader_gdb import GDB722TS
 from process.dataloader_rgd import RGD1
+from process.dataloader_proparg import Proparg21TS
 from process.collate import CustomCollator
 
 
@@ -131,6 +132,8 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
         data = GDB722TS(process=process, atom_mapping=atom_mapping, rxnmapper=rxnmapper, noH=noH, reverse=reverse)
     elif dataset=='rgd':
         data = RGD1(process=process, atom_mapping=atom_mapping, split_complexes=split_complexes)
+    elif dataset=='proparg':
+        data = Proparg21TS(process=process, atom_mapping=atom_mapping)
     else:
         raise NotImplementedError(f'Cannot load the {dataset} dataset.')
     labels = data.labels
@@ -261,6 +264,8 @@ if __name__ == '__main__':
         project = 'nequireact-gdb'
     elif args.dataset=='rgd':
         project = 'nequireact-rgd'
+    elif args.dataset=='proparg':
+        project = 'nequireact-proparg'
     else:
         project = 'nequireact'
     print(f'wandb name {args.wandb_name}' if args.wandb_name else 'no wandb name specified')
