@@ -3,6 +3,7 @@ from torch import nn
 from torch.nn import CrossEntropyLoss
 import torch.nn.functional as F
 from models.equireact import EquiReact
+import numpy as np
 
 def cross_attention(queries, keys, values, mask):
     """Compute cross attention.
@@ -39,7 +40,6 @@ class AtomMapper(EquiReact):
         x_react = self.forward_repr_mols(reactants_data)
         x_prod = self.forward_repr_mols(products_data)
 
-        # Hybrid cross/ masked
         def get_atoms(data):
             at = [g.x[:, [0]].to(torch.int) + 1 for g in data if g.x.shape[0] > 0]
             at = self.split_batch(at, data, merge=False)
@@ -48,21 +48,14 @@ class AtomMapper(EquiReact):
         ratoms = get_atoms(reactants_data)
         patoms = get_atoms(products_data)
 
-        # att from torch
         torch_att = []
         cross_att = []
 
         for xr, xp, ar, ap in zip(x_react, x_prod, ratoms, patoms):
-            print(f'xr shape {xr.shape}')
-            print(f'xp shape {xp.shape}')
             mask = (ap != ar.T).to(self.device)  # len(xp) × len(xr) ; True == no attention
-            print(f'mask shape {mask.shape}')
-            # rp or pr ?
-         #   xr_m = self.rp_attention(xp, xr, xr, attn_mask=mask, need_weights=False)[0]
-         #   print('xr_m shape', xr_m.shape)
-         #   x_react_mapped.append(xr_m)
+      #      print(f'mask shape {mask.shape}')
             xr_p = self.rp_attention(xr, xp, xp, attn_mask=mask.T, need_weights=False)[0]
-            print('xr_p shape', xr_p.shape)
+       #     print('xr_p shape', xr_p.shape)
             torch_att.append(xr_p)
 
             # get Q, K, V
@@ -80,16 +73,16 @@ class AtomMapper(EquiReact):
                 nn.Linear(xp.shape[1], xp.shape[1], bias=False)
             )
             aq = att_mlp_Q(xr)
-            print('aq shape', aq.shape)
+        #    print('aq shape', aq.shape)
             ak = att_mlp_K(xp)
-            print('ak shape', ak.shape)
+        #    print('ak shape', ak.shape)
             av = att_mlp_V(xp)
-            print('av shape', av.shape)
+       #     print('av shape', av.shape)
             att = cross_attention(aq,
                                   ak,
                                   av, mask.T)
-            print('cross attention computed')
-            print('att dims', att.shape)
+         #   print('cross attention computed')
+         #   print('att dims', att.shape)
             cross_att.append(att)
 
         r2p_torch = torch.vstack(torch_att)
@@ -99,27 +92,33 @@ class AtomMapper(EquiReact):
         return r2p_attention
 
     def training_step(self, batch, batch_idx):
+        print("Train step...")
         # assuming attention DL
         rgraphs, pgraphs, targets, mapping, idx = tuple(batch)
-       # print('mapping shape', len(mapping))
-      #  print('mapping', mapping)
+        mappings = np.concatenate(mapping)
+        print('mappings shape', mappings.shape)
+        ohe = np.zeros((mappings.size, mappings.max()+1))
+        ohe[np.arange(mappings.size), mappings] = 1
+        ohe = torch.tensor(ohe, device=self.device)
+        print('ohe mappings shape', ohe.shape)
 
         # need reactants_data and products_data
         pred_att = self(rgraphs, pgraphs)
         print(f'pred att dims {pred_att.shape}')
 
-        # right now things are not right
+        # not preds that goes into loss func
+        # need something like class probabilities
+        loss = self.loss(pred_att, ohe)
 
-        # do we need an argmax here ?
-     #   preds = torch.argmax(pred_att, dim=1)
-     #   print(f'preds dims w argmax {preds.shape}')
-        loss = self.loss(preds, true_maps)
-
-        acc = self.accuracy(preds, y_target)
+        preds = torch.argmax(pred_att, dim=1)
+        print(f'preds dims w argmax {preds.shape}')
+        true_mappings = torch.tensor(mappings, device=self.device)
+        acc = self.accuracy(preds, true_mappings)
         print(f'accuracy {acc}')
         return loss, acc
 
     def validation_step(self, batch, batch_idx):
+        print("Val step...")
         # assuming attention DL
         true_maps = batch[:][-1] # last item in DL
 
