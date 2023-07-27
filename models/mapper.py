@@ -21,8 +21,8 @@ def cross_attention(queries, keys, values, mask):
     #TODO double check
     a = mask * torch.mm(queries, torch.transpose(keys, 1, 0))
     a_x = torch.softmax(a, dim=1)  # i->j, NxM, a_x.sum(dim=1) = torch.ones(N)
-    attention_x = torch.mm(a_x, values)  # (N,d)
-    return attention_x
+    #attention_x = torch.mm(a_x, values)  # (N,d)
+    return a_x
 
 class AtomMapper(EquiReact):
 
@@ -47,6 +47,7 @@ class AtomMapper(EquiReact):
 
         ratoms = get_atoms(reactants_data)
         patoms = get_atoms(products_data)
+        nat_max = max(map(len, ratoms))
 
         torch_att = []
         cross_att = []
@@ -54,9 +55,9 @@ class AtomMapper(EquiReact):
         for xr, xp, ar, ap in zip(x_react, x_prod, ratoms, patoms):
             mask = (ap != ar.T).to(self.device)  # len(xp) × len(xr) ; True == no attention
       #      print(f'mask shape {mask.shape}')
-            xr_p = self.rp_attention(xr, xp, xp, attn_mask=mask.T, need_weights=False)[0]
+            xr_p, att_t = self.rp_attention(xr, xp, xp, attn_mask=mask.T, need_weights=True)
        #     print('xr_p shape', xr_p.shape)
-            torch_att.append(xr_p)
+            torch_att.append(F.pad(att_t, (0, nat_max-att_t.shape[1])))
 
             # get Q, K, V
             att_mlp_Q = nn.Sequential(
@@ -81,14 +82,16 @@ class AtomMapper(EquiReact):
             att = cross_attention(aq,
                                   ak,
                                   av, mask.T)
+            att = F.pad(att, (0, nat_max-att.shape[1]))
+            #print(att.shape)
          #   print('cross attention computed')
          #   print('att dims', att.shape)
             cross_att.append(att)
 
         r2p_torch = torch.vstack(torch_att)
-        print('final xr mapped shape', r2p_torch.shape)
+        #print('final xr mapped shape', r2p_torch.shape)
         r2p_attention = torch.vstack(cross_att)
-        print('final cross att shape', r2p_attention.shape)
+        #print('final cross att shape', r2p_attention.shape)
         return r2p_attention
 
     def training_step(self, batch, batch_idx):
@@ -96,22 +99,22 @@ class AtomMapper(EquiReact):
         # assuming attention DL
         rgraphs, pgraphs, targets, mapping, idx = tuple(batch)
         mappings = np.concatenate(mapping)
-        print('mappings shape', mappings.shape)
+        #print('mappings shape', mappings.shape)
         ohe = np.zeros((mappings.size, mappings.max()+1))
         ohe[np.arange(mappings.size), mappings] = 1
         ohe = torch.tensor(ohe, device=self.device)
-        print('ohe mappings shape', ohe.shape)
+        #print('ohe mappings shape', ohe.shape)
 
         # need reactants_data and products_data
         pred_att = self(rgraphs, pgraphs)
-        print(f'pred att dims {pred_att.shape}')
+        #print(f'pred att dims {pred_att.shape}')
 
         # not preds that goes into loss func
         # need something like class probabilities
         loss = self.loss(pred_att, ohe)
 
         preds = torch.argmax(pred_att, dim=1)
-        print(f'preds dims w argmax {preds.shape}')
+        #print(f'preds dims w argmax {preds.shape}')
         true_mappings = torch.tensor(mappings, device=self.device)
         acc = self.accuracy(preds, true_mappings)
         print(f'accuracy {acc}')
@@ -124,11 +127,11 @@ class AtomMapper(EquiReact):
 
         # Compute loss_digit for both input images
         pred_att = self(x)
-        print(f'pred att dims {pred_att.shape}')
+        #print(f'pred att dims {pred_att.shape}')
 
         # do we need an argmax here ?
         preds = torch.argmax(pred_att, dim=1)
-        print(f'preds dims w argmax {preds.shape}')
+        #print(f'preds dims w argmax {preds.shape}')
         loss = self.loss(preds, true_maps)
 
         acc = self.accuracy(preds, y_target)
