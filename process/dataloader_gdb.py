@@ -52,12 +52,13 @@ class GDB722TS(Dataset):
             dataset_prefix += '.noH'
         if xtb:
             dataset_prefix += '.xtb'
+        dataset_prefix += f'.v{self.version}'
         print(f'{dataset_prefix=}')
 
         self.paths = SimpleNamespace(
-                rg = join(self.processed_dir, f'{dataset_prefix}.v{self.version}.reactants_graphs.pt'),
-                pg = join(self.processed_dir, f'{dataset_prefix}.v{self.version}.products_graphs.pt'),
-                mp = join(self.processed_dir, f'{dataset_prefix}.v{self.version}.p2r_mapping.pt'),
+                rg = join(self.processed_dir, f'{dataset_prefix}.reactants_graphs.pt'),
+                pg = join(self.processed_dir, f'{dataset_prefix}.products_graphs.pt'),
+                mp = join(self.processed_dir, f'{dataset_prefix}.p2r_mapping.pt'),
                 )
 
         print("Loading data into memory...")
