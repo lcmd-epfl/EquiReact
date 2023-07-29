@@ -226,6 +226,7 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
             test_metrics, _, _ = trainer.evaluation(test_loader, data_split=data_split_string)
             mae_split = test_metrics['mae'] * std
             maes.append(mae_split)
+            wandb.run.summary["test_score"] = mae_split
 
         seed += 1
         wandb.finish()
