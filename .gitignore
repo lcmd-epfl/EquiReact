@@ -2,5 +2,7 @@
 *.pyc
 *.swp
 
+data/rgd1/RGD1_CHNO.h5
+
 wandb/
 events.out.tfevents.*

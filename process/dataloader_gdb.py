@@ -15,9 +15,20 @@ from process.create_graph import reader, get_graph, canon_mol, get_empty_graph
 
 class GDB722TS(Dataset):
 
-    def __init__(self, files_dir='data/gdb7-22-ts/xyz/',
+    def __init__(self,
                  processed_dir='data/gdb7-22-ts/processed/', process=True,
-                 noH=False, atom_mapping=False, rxnmapper=False, reverse=False):
+                 xtb=False, noH=False, atom_mapping=False, rxnmapper=False, reverse=False):
+
+        if xtb:
+            self.bohr = False
+            files_dir = 'data/gdb7-22-ts/xyz-xtb'
+            self.xyz_files = lambda x: (f'{files_dir}/{x}/Reactant_{x}_0_opt.xyz',
+                                        sorted(glob(f'{files_dir}/{x}/Product_{x}_*_opt.xyz')))
+        else:
+            self.bohr = True
+            files_dir='data/gdb7-22-ts/xyz'
+            self.xyz_files = lambda x: (f'{files_dir}/{x:06}/r{x:06}.xyz',
+                                        sorted(glob(f'{files_dir}/{x:06}/p{x:06}*.xyz')))
 
         if rxnmapper is True:
             if noH:
@@ -28,11 +39,10 @@ class GDB722TS(Dataset):
             csv_path = 'data/gdb7-22-ts/ccsdtf12_dz_cleaned.csv'
         print(f'{csv_path=}')
 
-        self.version = 9  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
+        self.version = 10  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
         self.max_number_of_reactants = 1
         self.max_number_of_products = 3
 
-        self.files_dir = files_dir + '/'
         self.processed_dir = processed_dir + '/'
         self.atom_mapping = atom_mapping
         self.noH = noH
@@ -40,16 +50,24 @@ class GDB722TS(Dataset):
         dataset_prefix = os.path.splitext(os.path.basename(csv_path))[0]
         if noH:
             dataset_prefix += '.noH'
+        if xtb:
+            dataset_prefix += '.xtb'
+        dataset_prefix += f'.v{self.version}'
+        print(f'{dataset_prefix=}')
 
         self.paths = SimpleNamespace(
-                rg = join(self.processed_dir, f'{dataset_prefix}.v{self.version}.reactants_graphs.pt'),
-                pg = join(self.processed_dir, f'{dataset_prefix}.v{self.version}.products_graphs.pt'),
-                mp = join(self.processed_dir, f'{dataset_prefix}.v{self.version}.p2r_mapping.pt'),
+                rg = join(self.processed_dir, f'{dataset_prefix}.reactants_graphs.pt'),
+                pg = join(self.processed_dir, f'{dataset_prefix}.products_graphs.pt'),
+                mp = join(self.processed_dir, f'{dataset_prefix}.p2r_mapping.pt'),
                 )
 
         print("Loading data into memory...")
 
         self.df = pd.read_csv(csv_path)
+        if xtb:
+            bad_idx = np.loadtxt('data/gdb7-22-ts/bad-xtb.dat', dtype=int)
+            for idx in bad_idx:
+                self.df.drop(self.df[self.df['idx']==idx].index, axis=0, inplace=True)
         self.nreactions = len(self.df)
         self.labels = torch.tensor(self.df['dE0'].values)
         self.indices = self.df['idx'].to_list()
@@ -71,7 +89,6 @@ class GDB722TS(Dataset):
             self.add_reverse()
 
         self.standardize_labels()
-
 
 
     def __len__(self):
@@ -101,19 +118,18 @@ class GDB722TS(Dataset):
         products_atomtypes_list = []
 
         for idx in tqdm(self.indices, desc='reading xyz files'):
-            rxn_dir = f'{self.files_dir}{idx:06}/'
+
+            r_file, p_files = self.xyz_files(idx)
             # 1 reactant
-            r_file = f'{rxn_dir}r{idx:06}.xyz'
-            atomtypes, coords = reader(r_file, bohr=True)
+            atomtypes, coords = reader(r_file, bohr=self.bohr)
             reactant_atomtypes_list.append(atomtypes)
             reactant_coords_list.append(coords)
             # multiple products
-            p_files = sorted(glob(rxn_dir +"p*.xyz"))
             products_atomtypes_list.append([])
             products_coords_list.append([])
             assert len(p_files) <= self.max_number_of_products, 'more products than the maximum number of products'
             for p_file in p_files:
-                atomtypes, coords = reader(p_file, bohr=True)
+                atomtypes, coords = reader(p_file, bohr=self.bohr)
                 products_atomtypes_list[-1].append(atomtypes)
                 products_coords_list[-1].append(coords)
 

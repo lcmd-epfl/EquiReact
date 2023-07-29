@@ -81,6 +81,7 @@ def parse_arguments(arglist=sys.argv[1:]):
     g_hyper.add_argument('--noH'                  , action='store_true', default=False    ,  help='if remove H')
     g_hyper.add_argument('--reverse'              , action='store_true', default=False    ,  help='if add reverse reactions')
     g_hyper.add_argument('--split_complexes'      , action='store_true', default=False    ,  help='if split reaction complexes into individual molecules (for rgd)')
+    g_hyper.add_argument('--xtb'                  , action='store_true', default=False    ,  help='if use xtb geometries (for gdb)')
 
     args = p.parse_args(arglist)
 
@@ -121,6 +122,7 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
           noH=False,
           reverse = False,
           split_complexes=False,
+          xtb = False,
           ):
 
     device = torch.device("cuda:0" if torch.cuda.is_available() and device == 'cuda' else "cpu")
@@ -129,7 +131,7 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
     if dataset=='cyclo':
         data = Cyclo23TS(process=process, atom_mapping=atom_mapping)
     elif dataset=='gdb':
-        data = GDB722TS(process=process, atom_mapping=atom_mapping, rxnmapper=rxnmapper, noH=noH, reverse=reverse)
+        data = GDB722TS(process=process, atom_mapping=atom_mapping, rxnmapper=rxnmapper, noH=noH, reverse=reverse, xtb=xtb)
     elif dataset=='rgd':
         data = RGD1(process=process, atom_mapping=atom_mapping, split_complexes=split_complexes)
     elif dataset=='proparg':
@@ -280,4 +282,5 @@ if __name__ == '__main__':
           graph_mode=args.graph_mode, dropout_p=args.dropout_p, random_baseline=args.random_baseline,
           combine_mode=args.combine_mode, atom_mapping=args.atom_mapping, CV=args.CV, attention=args.attention,
           noH=args.noH, two_layers_atom_diff=args.two_layers_atom_diff, rxnmapper=args.rxnmapper, reverse=args.reverse,
+          xtb=args.xtb,
           split_complexes=args.split_complexes)
