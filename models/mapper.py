@@ -95,7 +95,7 @@ class AtomMapper(EquiReact):
         return r2p_attention
 
     def training_step(self, batch, batch_idx):
-        print("Train step...")
+     #   print("Train step for batch...")
         # assuming attention DL
         rgraphs, pgraphs, targets, mapping, idx = tuple(batch)
         mappings = np.concatenate(mapping)
@@ -112,30 +112,40 @@ class AtomMapper(EquiReact):
         # not preds that goes into loss func
         # need something like class probabilities
         loss = self.loss(pred_att, ohe)
+    #    print(f'loss {loss}')
 
         preds = torch.argmax(pred_att, dim=1)
         #print(f'preds dims w argmax {preds.shape}')
         true_mappings = torch.tensor(mappings, device=self.device)
         acc = self.accuracy(preds, true_mappings)
-        print(f'accuracy {acc}')
+       # print(f'accuracy {acc}')
         return loss, acc
 
     def validation_step(self, batch, batch_idx):
-        print("Val step...")
+     #   print("Val step...")
         # assuming attention DL
-        true_maps = batch[:][-1] # last item in DL
+        rgraphs, pgraphs, targets, mapping, idx = tuple(batch)
+        mappings = np.concatenate(mapping)
+        # print('mappings shape', mappings.shape)
+        ohe = np.zeros((mappings.size, mappings.max() + 1))
+        ohe[np.arange(mappings.size), mappings] = 1
+        ohe = torch.tensor(ohe, device=self.device)
+        # print('ohe mappings shape', ohe.shape)
 
-        # Compute loss_digit for both input images
-        pred_att = self(x)
-        #print(f'pred att dims {pred_att.shape}')
+        # need reactants_data and products_data
+        pred_att = self(rgraphs, pgraphs)
+        # print(f'pred att dims {pred_att.shape}')
 
-        # do we need an argmax here ?
+        # not preds that goes into loss func
+        # need something like class probabilities
+        loss = self.loss(pred_att, ohe)
+        #    print(f'loss {loss}')
+
         preds = torch.argmax(pred_att, dim=1)
-        #print(f'preds dims w argmax {preds.shape}')
-        loss = self.loss(preds, true_maps)
-
-        acc = self.accuracy(preds, y_target)
-        print(f'accuracy {acc}')
+        # print(f'preds dims w argmax {preds.shape}')
+        true_mappings = torch.tensor(mappings, device=self.device)
+        acc = self.accuracy(preds, true_mappings)
+        # print(f'accuracy {acc}')
         return loss, acc
 
     def test_step(self, batch, batch_idx):

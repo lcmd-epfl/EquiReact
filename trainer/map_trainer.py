@@ -1,4 +1,5 @@
 import torch
+import wandb
 
 class MapTrainer:
     def __init__(self, nb_epochs, verbose=True):
@@ -45,35 +46,32 @@ class MapTrainer:
             loss_val = []
             acc_val = []
 
-            if self.verbose:
-                for batch_idx, batch in enumerate(dl_val):
-                    model.eval()
-                    with torch.no_grad():
-                        loss, acc = model.validation_step(batch, batch_idx)
-                        loss_val.append(loss.item())
-                        acc_val.append(acc)
-                avg_loss_train = round(sum(loss_train) / len(loss_train), 2)
-                avg_acc_train = round(sum(acc_train) / len(acc_train), 2)
-                train_loss_epochs.append(avg_loss_train)
-                train_acc_epochs.append(avg_acc_train)
 
-                avg_loss_val = round(sum(loss_val) / len(loss_val), 2)
-                avg_acc_val = round(sum(acc_val) / len(acc_val), 2)
-                val_acc_epochs.append(avg_acc_val)
+            for batch_idx, batch in enumerate(dl_val):
+                model.eval()
+                with torch.no_grad():
+                    loss, acc = model.validation_step(batch, batch_idx)
+                    loss_val.append(loss.item())
+                    acc_val.append(acc)
+            avg_loss_train = round(sum(loss_train) / len(loss_train), 2)
+            avg_acc_train = round(sum(acc_train) / len(acc_train), 2)
+            train_loss_epochs.append(avg_loss_train)
+            train_acc_epochs.append(avg_acc_train)
+
+            avg_loss_val = round(sum(loss_val) / len(loss_val), 2)
+            avg_acc_val = round(sum(acc_val) / len(acc_val), 2)
+            val_acc_epochs.append(avg_acc_val)
+
+            if self.verbose:
                 print(
                     f"# Epoch {e+1}/{self.nb_epochs}:\t loss={avg_loss_train}\t loss_val={avg_loss_val}\t acc_val={avg_acc_val}"
-                )
+                    )
 
-                # Write to tensor board
-                # self.tb.add_scalar("Training loss", avg_loss_train, e)
-                # self.tb.add_scalar("Training accuracy", avg_acc_train, e)
-                # self.tb.add_scalar("Validation loss", avg_loss_val, e)
-                # self.tb.add_scalar("Validation accuracy", avg_acc_val, e)
+            # Write to wandb
+            wandb.log({"val_loss": avg_loss_val, "train_loss": avg_loss_train,
+                       "acc_val": avg_acc_val, "acc_train": avg_acc_train, "epoch": e})
 
-        # self.tb.close()
-
-        if self.verbose:
-            return train_loss_epochs, train_acc_epochs, val_acc_epochs
+        return train_loss_epochs, train_acc_epochs, val_acc_epochs
 
     def test(self, model, dl_test, test_verbose=True, return_acc=True):
         """Test the model on the specified data

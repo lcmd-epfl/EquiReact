@@ -1,7 +1,7 @@
 wandb enabled
 #wandb disabled
-python train.py --device='cuda' \
-                --experiment_name='run-gpu' \
+python train_mapper.py --device='cuda' \
+                --experiment_name='test-mapper' \
                 --num_epochs=100 \
-                #--subset 4000 \
-                #--wandb_name layers-in-prediction-4
+                --CV=1 \
+                --wandb_name='test-mapper'
