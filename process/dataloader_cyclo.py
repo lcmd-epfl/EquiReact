@@ -17,6 +17,7 @@ class Cyclo23TS(Dataset):
                  processed_dir='data/cyclo/processed/', process=True,
                  atom_mapping=False):
 
+        self.version = 2  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
         self.max_number_of_reactants = 2
         self.max_number_of_products = 1
 
@@ -25,12 +26,16 @@ class Cyclo23TS(Dataset):
         self.map_dir = map_dir
         self.atom_mapping = atom_mapping
 
+        dataset_prefix = os.path.splitext(os.path.basename(csv_path))[0]
+        dataset_prefix += f'.v{self.version}'
+        print(f'{dataset_prefix=}')
+
         self.paths = SimpleNamespace(
-                r0g = join(self.processed_dir, 'reactant_0_graphs.pt'),
-                r1g = join(self.processed_dir, 'reactant_1_graphs.pt'),
-                pg  = join(self.processed_dir, 'product_graphs.pt'),
-                r0m = join(self.processed_dir, 'reactant_0_maps.pt'),
-                r1m = join(self.processed_dir, 'reactant_1_maps.pt'),
+                r0g = join(self.processed_dir, f'{dataset_prefix}.reactant_0_graphs.pt'),
+                r1g = join(self.processed_dir, f'{dataset_prefix}.reactant_1_graphs.pt'),
+                pg  = join(self.processed_dir, f'{dataset_prefix}.product_graphs.pt'),
+                r0m = join(self.processed_dir, f'{dataset_prefix}.reactant_0_maps.pt'),
+                r1m = join(self.processed_dir, f'{dataset_prefix}.reactant_1_maps.pt'),
                 )
 
         print("Loading data into memory...")

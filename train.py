@@ -54,7 +54,7 @@ def parse_arguments(arglist=sys.argv[1:]):
     g_run.add_argument('--device'             , type=str           , default='cuda'   ,  help='cuda or cpu')
     g_run.add_argument('--logdir'             , type=str           , default='logs'   ,  help='log dir')
     g_run.add_argument('--checkpoint'         , type=str           , default=None     ,  help='path the checkpoint file to continue training')
-    g_run.add_argument('--CV'                 , type=int           , default=5        ,  help='cross validate')
+    g_run.add_argument('--CV'                 , type=int           , default=1        ,  help='cross validate')
     g_run.add_argument('--num_epochs'         , type=int           , default=2500     ,  help='number of times to iterate through all samples')
     g_run.add_argument('--seed'               , type=int           , default=123      ,  help='initial seed values')
     g_run.add_argument('--verbose'            , action='store_true', default=False    ,  help='Print dims throughout the training process')
@@ -72,7 +72,7 @@ def parse_arguments(arglist=sys.argv[1:]):
     g_hyper.add_argument('--attention'            , type=str           , default=None     ,  help='use attention')
     g_hyper.add_argument('--sum_mode'             , type=str           , default='node'   ,  help='sum node (node, edge, or both)')
     g_hyper.add_argument('--graph_mode'           , type=str           , default='energy' ,  help='prediction mode, energy, or vector')
-    g_hyper.add_argument('--dataset'              , type=str           , default='cyclo'  ,  help='cyclo or gdb')
+    g_hyper.add_argument('--dataset'              , type=str           , default='cyclo'  ,  help='cyclo / gdb / rgd / proparg')
     g_hyper.add_argument('--combine_mode'         , type=str           , default='mean'   ,  help='combine mode diff, sum, or mean')
     g_hyper.add_argument('--atom_mapping'         , action='store_true', default=False    ,  help='use atom mapping')
     g_hyper.add_argument('--rxnmapper'            , action='store_true', default=False    ,  help='take atom mapping from rxnmapper')
@@ -263,14 +263,7 @@ if __name__ == '__main__':
     sys.stdout = Logger(logpath=logpath, syspart=sys.stdout)
     sys.stderr = Logger(logpath=logpath, syspart=sys.stderr)
 
-    if args.dataset=='gdb':
-        project = 'nequireact-gdb'
-    elif args.dataset=='rgd':
-        project = 'nequireact-rgd'
-    elif args.dataset=='proparg':
-        project = 'nequireact-proparg'
-    else:
-        project = 'nequireact'
+    project = f'nequireact-{args.dataset}'
     print(f'wandb name {args.wandb_name}' if args.wandb_name else 'no wandb name specified')
 
     print("\ninput args", args, '\n')
