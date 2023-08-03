@@ -123,6 +123,7 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
           reverse = False,
           split_complexes=False,
           xtb = False,
+          sweep = False,
           ):
 
     device = torch.device("cuda:0" if torch.cuda.is_available() and device == 'cuda' else "cpu")
@@ -150,10 +151,11 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
 
         hyper_dict['CV iter'] = i
         hyper_dict['seed'] = seed
-        wandb.init(project=project,
-                   name = wandb_name if CV==1 else f'{wandb_name}.cv{i}',
-                   config = hyper_dict,
-                   group = None if CV==1 else wandb_name)
+        if not sweep:
+            wandb.init(project=project,
+                       name = wandb_name if CV==1 else f'{wandb_name}.cv{i}',
+                       config = hyper_dict,
+                       group = None if CV==1 else wandb_name)
 
         torch.manual_seed(seed)
         torch.cuda.manual_seed(seed)
@@ -229,7 +231,8 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
             wandb.run.summary["test_score"] = mae_split
 
         seed += 1
-        wandb.finish()
+        if not sweep:
+            wandb.finish()
         print()
 
     if eval_on_test:
