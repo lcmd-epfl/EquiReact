@@ -1,0 +1,53 @@
+Fold 0
+Model 0 best validation mae = 8.747024 on epoch 233
+Model 0 test mae = 8.829610
+Ensemble test mae = 8.829610
+Fold 1
+Model 0 best validation mae = 8.941715 on epoch 296
+Model 0 test mae = 9.001880
+Ensemble test mae = 9.001880
+Fold 2
+Model 0 best validation mae = 8.953835 on epoch 171
+Model 0 test mae = 8.950915
+Ensemble test mae = 8.950915
+Fold 3
+Model 0 best validation mae = 8.732662 on epoch 209
+Model 0 test mae = 8.787276
+Ensemble test mae = 8.787276
+Fold 4
+Model 0 best validation mae = 8.960704 on epoch 223
+Model 0 test mae = 9.045402
+Ensemble test mae = 9.045402
+Fold 5
+Model 0 best validation mae = 8.564644 on epoch 163
+Model 0 test mae = 8.802472
+Ensemble test mae = 8.802472
+Fold 6
+Model 0 best validation mae = 9.126725 on epoch 297
+Model 0 test mae = 8.816492
+Ensemble test mae = 8.816492
+Fold 7
+Model 0 best validation mae = 8.835541 on epoch 290
+Model 0 test mae = 9.222275
+Ensemble test mae = 9.222275
+Fold 8
+Model 0 best validation mae = 8.345027 on epoch 288
+Model 0 test mae = 8.793189
+Ensemble test mae = 8.793189
+Fold 9
+Model 0 best validation mae = 8.858221 on epoch 244
+Model 0 test mae = 8.861965
+Ensemble test mae = 8.861965
+10-fold cross validation
+	Seed 0 ==> test mae = 8.829610
+	Seed 1 ==> test mae = 9.001880
+	Seed 2 ==> test mae = 8.950915
+	Seed 3 ==> test mae = 8.787276
+	Seed 4 ==> test mae = 9.045402
+	Seed 5 ==> test mae = 8.802472
+	Seed 6 ==> test mae = 8.816492
+	Seed 7 ==> test mae = 9.222275
+	Seed 8 ==> test mae = 8.793189
+	Seed 9 ==> test mae = 8.861965
+Overall test mae = 8.911148 +/- 0.135549
+Elapsed time = 4:03:08
