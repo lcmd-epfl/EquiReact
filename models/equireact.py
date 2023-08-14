@@ -205,7 +205,7 @@ class EquiReact(nn.Module):
         combine_diff = lambda r, p: p-r
         combine_sum  = lambda r, p: r+p
         combine_mean = lambda r, p: (r+p)*0.5
-        if self.atom_mapping is True or self.attention is not None:
+        if self.atom_mapping is True or self.attention is not None or self.graph_mode=='vector':
             combine_mlp  = lambda r, p: self.nodes_mlp(torch.cat((r, p), 1))
         else:
             combine_mlp  = lambda r, p: self.energy_mlp(torch.cat((r, p), 1))
@@ -337,20 +337,22 @@ class EquiReact(nn.Module):
             x_size = self.n_s_full + self.distance_emb_dim
         else:
             raise NotImplementedError(f'sum mode "{self.sum_mode}" is not compatible with vector mode')
-        X = torch.zeros((batch_size, x_size), device=self.device)
+        X_r = torch.zeros((batch_size, x_size), device=self.device)
+        X_p = torch.zeros_like(X_r)
 
-        stoichio = [-1]*len(reactants_data) + [+1]*len(products_data)
-        for stoi, graph in zip(stoichio, reactants_data + products_data):
-            if graph.x.shape[0]==0:
-                continue
-            x, (src, dst), edge_attr = self.forward_repr_mol(graph)
-            if self.sum_mode == 'both':
-                xedge = scatter_add(edge_attr, index=src, dim=0)
-                xedge = F.pad(xedge, (0, 0, 0, x.shape[0]-xedge.shape[0]))
-                x = torch.hstack((x, xedge))
-            x = scatter_add(x, index=graph.batch.to(self.device), dim=0)
-            x = F.pad(x, (0, 0, 0, batch_size-x.shape[0]))
-            X += stoi * x
+        for graphs, X_x in zip([reactants_data, products_data], [X_r, X_p]):
+            for graph in graphs:
+                if graph.x.shape[0]==0:
+                    continue
+                x, (src, dst), edge_attr = self.forward_repr_mol(graph)
+                if self.sum_mode == 'both':
+                    xedge = scatter_add(edge_attr, index=src, dim=0)
+                    xedge = F.pad(xedge, (0, 0, 0, x.shape[0]-xedge.shape[0]))
+                    x = torch.hstack((x, xedge))
+                x = scatter_add(x, index=graph.batch.to(self.device), dim=0)
+                x = F.pad(x, (0, 0, 0, batch_size-x.shape[0]))
+                X_x += x
+        X = self.combine(X_r, X_p)
 
         if self.verbose:
             print('reaction X dims', X.shape)
