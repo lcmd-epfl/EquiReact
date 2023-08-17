@@ -182,10 +182,14 @@ class EquiReact(nn.Module):
 
         self.energy_mlp = nn.Linear(2, 1)
 
-        self.nodes_mlp = nn.Sequential(
-            #nn.ReLU(),
-            nn.Linear(2*self.n_s_full, self.n_s_full)
-        )
+        if self.sum_mode=='both':
+            self.nodes_mlp = nn.Sequential(
+                nn.Linear(2*(self.n_s_full + distance_emb_dim), self.n_s_full + distance_emb_dim)
+            )
+        else:
+            self.nodes_mlp = nn.Sequential(
+                nn.Linear(2*self.n_s_full, self.n_s_full)
+            )
 
         n_s_full_with_edges = self.n_s_full + distance_emb_dim  if self.sum_mode=='both' else self.n_s_full
         if two_layers_atom_diff:
