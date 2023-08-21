@@ -246,8 +246,6 @@ if __name__ == '__main__':
 
     args, arg_groups = parse_arguments()
 
-    if not os.path.exists('logs'):
-        os.mkdir('logs')
     if not os.path.exists(args.logdir):
         print(f"creating log dir {args.logdir}")
         os.mkdir(args.logdir)
