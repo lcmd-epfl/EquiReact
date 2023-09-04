@@ -17,7 +17,7 @@ class Cyclo23TS(Dataset):
                  processed_dir='data/cyclo/processed/', process=True,
                  atom_mapping=False):
 
-        self.version = 2  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
+        self.version = 2.1  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
         self.max_number_of_reactants = 2
         self.max_number_of_products = 1
 
@@ -132,23 +132,27 @@ class Cyclo23TS(Dataset):
         patoms = []
 
         for idx in tqdm(self.indices, desc='reading xyz files'):
-            rxn_dir = self.files_dir + str(idx) + '/'
 
-            reactants = self.get_r_files(rxn_dir)
+            entry = self.df[self.df['rxn_id'] == idx]
+            rxnsmi = entry['rxn_smiles'].item()
+            switch = entry['switch_reactants'].item()
+
+            reactants, mapfiles = self.get_r_files(idx, switch=switch)
 
             r_0_atomtypes, r_0_coords = reader(reactants[0])
             r0atoms.append(r_0_atomtypes)
             r0coords.append(r_0_coords)
-            r0maps.append(np.loadtxt(f'{self.map_dir}/R1_{idx}.dat', dtype=int))
-            assert len(r0atoms[-1])==len(r0maps[-1]), 'different number of atoms in the xyz and mapping files'
 
             r_1_atomtypes, r_1_coords = reader(reactants[1])
             r1atoms.append(r_1_atomtypes)
             r1coords.append(r_1_coords)
-            r1maps.append(np.loadtxt(f'{self.map_dir}/R0_{idx}.dat', dtype=int))
+
+            r0maps.append(np.loadtxt(mapfiles[0], dtype=int))
+            r1maps.append(np.loadtxt(mapfiles[1], dtype=int))
+            assert len(r0atoms[-1])==len(r0maps[-1]), 'different number of atoms in the xyz and mapping files'
             assert len(r1atoms[-1])==len(r1maps[-1]), 'different number of atoms in the xyz and mapping files'
 
-            p_file = glob(rxn_dir + "p*.xyz")[0]
+            p_file = glob(f'{self.files_dir}/{idx}/p*.xyz')[0]
             p_atomtypes, p_coords = reader(p_file)
             patoms.append(p_atomtypes)
             pcoords.append(p_coords)
@@ -170,21 +174,13 @@ class Cyclo23TS(Dataset):
         self.reactant_1_maps = []
         self.product_graphs = []
         for i, idx in enumerate(tqdm(self.indices, desc="making graphs")):
-            # IMPORTANT : in db they are inconsistent about what is r0 and what is r1.
-            # current soln is to check both. not ideal.
-            rxnsmi = self.df[self.df['rxn_id'] == idx]['rxn_smiles'].item()
+            rxnsmi = self.df[self.df['rxn_id']==idx]['rxn_smiles'].item()
             rsmis, psmi = rxnsmi.split('>>')
             rsmi_0, rsmi_1 = rsmis.split('.')
-            try:
-                r_graph_0 = self.make_graph(rsmi_0, r0atoms[i], r0coords[i], idx)
-                r_graph_1 = self.make_graph(rsmi_1, r1atoms[i], r1coords[i], idx)
-                r_map_0 = r0maps[i]
-                r_map_1 = r1maps[i]
-            except:  # switch r0/r1 in atoms & coordinates & maps
-                r_graph_0 = self.make_graph(rsmi_0, r1atoms[i], r1coords[i], idx)
-                r_graph_1 = self.make_graph(rsmi_1, r0atoms[i], r0coords[i], idx)
-                r_map_0 = r1maps[i]
-                r_map_1 = r0maps[i]
+            r_graph_0 = self.make_graph(rsmi_0, r0atoms[i], r0coords[i], idx)
+            r_graph_1 = self.make_graph(rsmi_1, r1atoms[i], r1coords[i], idx)
+            r_map_0 = r0maps[i]
+            r_map_1 = r1maps[i]
             p_graph = self.make_graph(psmi, patoms[i], pcoords[i], idx)
 
             self.reactant_0_graphs.append(r_graph_0)
@@ -215,8 +211,8 @@ class Cyclo23TS(Dataset):
         return get_graph(mol, atoms, coords, idx)
 
 
-    def get_r_files(self, rxn_dir):
-        reactants = sorted(glob(rxn_dir +"r*.xyz"), reverse=True)
+    def get_r_files(self, idx, switch=False):
+        reactants = sorted(glob(f'{self.files_dir}/{idx}/r*.xyz'), reverse=True)
         reactants = self.check_alt_files(reactants)
         assert len(reactants) == 2, f"Inconsistent length of {len(reactants)}"
         # inverse labelling in their xyz files
@@ -224,4 +220,8 @@ class Cyclo23TS(Dataset):
         assert r0_label == 'r1', 'not r0'
         r1_label = reactants[1].split("/")[-1][:2]
         assert r1_label == 'r0', 'not r1'
-        return reactants
+        mapfiles = [f'{self.map_dir}/R1_{idx}.dat', f'{self.map_dir}/R0_{idx}.dat']
+        if switch:
+            reactants = reactants[::-1]
+            mapfiles = mapfiles[::-1]
+        return reactants, mapfiles
