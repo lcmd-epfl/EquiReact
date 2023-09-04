@@ -136,7 +136,7 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
     elif dataset=='rgd':
         data = RGD1(process=process, atom_mapping=atom_mapping, split_complexes=split_complexes)
     elif dataset=='proparg':
-        data = Proparg21TS(process=process, atom_mapping=atom_mapping)
+        data = Proparg21TS(process=process, atom_mapping=atom_mapping, rxnmapper=rxnmapper, noH=noH)
     else:
         raise NotImplementedError(f'Cannot load the {dataset} dataset.')
     labels = data.labels
