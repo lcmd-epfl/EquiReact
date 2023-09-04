@@ -17,7 +17,7 @@ class Cyclo23TS(Dataset):
                  processed_dir='data/cyclo/processed/', process=True,
                  atom_mapping=False):
 
-        self.version = 2.1  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
+        self.version = 2.2  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
         self.max_number_of_reactants = 2
         self.max_number_of_products = 1
 
@@ -118,79 +118,42 @@ class Cyclo23TS(Dataset):
             os.mkdir(self.processed_dir)
             print(f"Creating processed directory {self.processed_dir}")
 
-        # two reactants
-        r0coords = []
-        r0atoms = []
-        r0maps = []
-
-        r1coords = []
-        r1atoms = []
-        r1maps = []
-
-        # one product
-        pcoords = []
-        patoms = []
-
-        for idx in tqdm(self.indices, desc='reading xyz files'):
-
-            entry = self.df[self.df['rxn_id'] == idx]
-            rxnsmi = entry['rxn_smiles'].item()
-            switch = entry['switch_reactants'].item()
-
-            reactants, mapfiles = self.get_r_files(idx, switch=switch)
-
-            r_0_atomtypes, r_0_coords = reader(reactants[0])
-            r0atoms.append(r_0_atomtypes)
-            r0coords.append(r_0_coords)
-
-            r_1_atomtypes, r_1_coords = reader(reactants[1])
-            r1atoms.append(r_1_atomtypes)
-            r1coords.append(r_1_coords)
-
-            r0maps.append(np.loadtxt(mapfiles[0], dtype=int))
-            r1maps.append(np.loadtxt(mapfiles[1], dtype=int))
-            assert len(r0atoms[-1])==len(r0maps[-1]), 'different number of atoms in the xyz and mapping files'
-            assert len(r1atoms[-1])==len(r1maps[-1]), 'different number of atoms in the xyz and mapping files'
-
-            p_file = glob(f'{self.files_dir}/{idx}/p*.xyz')[0]
-            p_atomtypes, p_coords = reader(p_file)
-            patoms.append(p_atomtypes)
-            pcoords.append(p_coords)
-
-            assert np.all(np.hstack((r0atoms[-1], r1atoms[-1])) == patoms[-1][np.hstack((r0maps[-1], r1maps[-1]))]), 'mapping leads to atom-type mismatch'
-
-        assert len(pcoords)  == len(r0coords), 'not as many reactants 0 as products'
-        assert len(r1coords) == len(r0coords), 'not as many reactants 0 as reactants 1'
-        assert len(patoms)   == len(pcoords),  'not as many atomtypes as coords'
-        assert len(r0atoms)  == len(r0coords), 'not as many atomtypes as coords'
-        assert len(r1atoms)  == len(r1coords), 'not as many atomtypes as coords'
-        assert len(r0atoms)  == len(r0maps),   'not as many atomtypes as mappings'
-        assert len(r1atoms)  == len(r1maps),   'not as many atomtypes as mappings'
-
-        print(f"Processing csv file and saving graphs to {self.processed_dir}")
         self.reactant_0_graphs = []
         self.reactant_1_graphs = []
         self.reactant_0_maps = []
         self.reactant_1_maps = []
         self.product_graphs = []
+
+        print(f"Processing csv file and saving graphs to {self.processed_dir}")
         for i, idx in enumerate(tqdm(self.indices, desc="making graphs")):
-            rxnsmi = self.df[self.df['rxn_id']==idx]['rxn_smiles'].item()
+
+            entry = self.df[self.df['rxn_id'] == idx]
+
+            switch = entry['switch_reactants'].item()
+            rfiles, mapfiles = self.get_r_files(idx, switch=switch)
+            r0atoms, r0coords = reader(rfiles[0])
+            r1atoms, r1coords = reader(rfiles[1])
+            r0map = np.loadtxt(mapfiles[0], dtype=int)
+            r1map = np.loadtxt(mapfiles[1], dtype=int)
+            assert len(r0atoms)==len(r0map), 'different number of atoms in the xyz and mapping files'
+            assert len(r1atoms)==len(r1map), 'different number of atoms in the xyz and mapping files'
+
+            pfile = glob(f'{self.files_dir}/{idx}/p*.xyz')[0]
+            patoms, pcoords = reader(pfile)
+            assert np.all(np.hstack((r0atoms, r1atoms)) == patoms[np.hstack((r0map, r1map))]), 'mapping leads to atom-type mismatch'
+
+            rxnsmi = entry['rxn_smiles'].item()
             rsmis, psmi = rxnsmi.split('>>')
-            rsmi_0, rsmi_1 = rsmis.split('.')
-            r_graph_0 = self.make_graph(rsmi_0, r0atoms[i], r0coords[i], idx)
-            r_graph_1 = self.make_graph(rsmi_1, r1atoms[i], r1coords[i], idx)
-            r_map_0 = r0maps[i]
-            r_map_1 = r1maps[i]
-            p_graph = self.make_graph(psmi, patoms[i], pcoords[i], idx)
+            r0smi, r1smi = rsmis.split('.')
+            r0graph = self.make_graph(r0smi, r0atoms, r0coords, idx)
+            r1graph = self.make_graph(r1smi, r1atoms, r1coords, idx)
+            pgraph = self.make_graph(psmi, patoms, pcoords, idx)
 
-            self.reactant_0_graphs.append(r_graph_0)
-            self.reactant_1_graphs.append(r_graph_1)
-            self.reactant_0_maps.append(r_map_0)
-            self.reactant_1_maps.append(r_map_1)
-            self.product_graphs.append(p_graph)
-
-        assert len(self.reactant_0_graphs) == len(self.reactant_1_graphs), 'number of reactants dont match'
-        assert len(self.reactant_1_graphs) == len(self.product_graphs), 'number of reactants and products dont match'
+            self.reactant_0_graphs.append(r0graph)
+            self.reactant_1_graphs.append(r1graph)
+            self.reactant_0_maps.append(r0map)
+            self.reactant_1_maps.append(r1map)
+            self.product_graphs.append(pgraph)
 
         torch.save(self.reactant_0_graphs, self.paths.r0g)
         torch.save(self.reactant_1_graphs, self.paths.r1g)
