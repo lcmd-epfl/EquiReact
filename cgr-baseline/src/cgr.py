@@ -24,7 +24,7 @@ def argparse():
     g2.add_argument('--gdb_full', action='store_true', help='use GDB7-22-TS dataset')
     g2.add_argument('--proparg_combinat', action='store_true', help='use Proparg-21-TS dataset with fragment-based SMILES')
     g2.add_argument('--proparg_stereo', action='store_true', help='use Proparg-21-TS dataset with stereochemistry-enriched fragment-based SMILES')
-    g2.add_argument('-c', '--cyclo_full', action='store_true', help='use full Cyclo-23-TS dataset')
+    g2.add_argument('--cyclo_full', action='store_true', help='use full Cyclo-23-TS dataset')
     args = parser.parse_args()
     return parser, args
 
