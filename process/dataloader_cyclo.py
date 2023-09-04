@@ -8,6 +8,8 @@ from torch.utils.data import Dataset
 import pandas as pd
 from tqdm import tqdm
 from rdkit import Chem
+import networkx
+import networkx.algorithms.isomorphism as iso
 from process.create_graph import reader, get_graph, canon_mol
 
 
@@ -15,9 +17,10 @@ class Cyclo23TS(Dataset):
     def __init__(self, files_dir='data/cyclo/xyz/', csv_path='data/cyclo/mod_dataset.csv',
                  map_dir='data/cyclo/matches/',
                  processed_dir='data/cyclo/processed/', process=True,
+                 noH=False,
                  atom_mapping=False):
 
-        self.version = 2.2  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
+        self.version = 2.5  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
         self.max_number_of_reactants = 2
         self.max_number_of_products = 1
 
@@ -25,8 +28,11 @@ class Cyclo23TS(Dataset):
         self.processed_dir = processed_dir + '/'
         self.map_dir = map_dir
         self.atom_mapping = atom_mapping
+        self.noH = noH
 
         dataset_prefix = os.path.splitext(os.path.basename(csv_path))[0]
+        if noH:
+            dataset_prefix += '.noH'
         dataset_prefix += f'.v{self.version}'
         print(f'{dataset_prefix=}')
 
@@ -41,17 +47,10 @@ class Cyclo23TS(Dataset):
         print("Loading data into memory...")
 
         self.df = pd.read_csv(csv_path)
-        labels = torch.tensor(self.df['G_act'].values)
-
-        mean = torch.mean(labels)
-        std = torch.std(labels)
-        self.std = std
-        #TODO to normalise in train/test/val split
-        self.labels = (labels - mean)/std
-
+        self.labels = torch.tensor(self.df['G_act'].values)
         indices = self.df['rxn_id'].to_list()
         self.indices = indices
-        self.nreactions = len(labels)
+        self.nreactions = len(self.labels)
 
         if process == True:
             print("processing by request...")
@@ -77,6 +76,8 @@ class Cyclo23TS(Dataset):
                 else:
                     print("processed data not found, processing data...")
                     self.process()
+
+        self.standardize_labels()
 
 
     def __len__(self):
@@ -140,14 +141,29 @@ class Cyclo23TS(Dataset):
 
             pfile = glob(f'{self.files_dir}/{idx}/p*.xyz')[0]
             patoms, pcoords = reader(pfile)
-            assert np.all(np.hstack((r0atoms, r1atoms)) == patoms[np.hstack((r0map, r1map))]), 'mapping leads to atom-type mismatch'
 
             rxnsmi = entry['rxn_smiles'].item()
             rsmis, psmi = rxnsmi.split('>>')
             r0smi, r1smi = rsmis.split('.')
-            r0graph = self.make_graph(r0smi, r0atoms, r0coords, idx)
-            r1graph = self.make_graph(r1smi, r1atoms, r1coords, idx)
-            pgraph = self.make_graph(psmi, patoms, pcoords, idx)
+            if self.noH:
+                r0graph, r0atoms, r0coords, r0map = self.make_graph_noH(r0smi, r0atoms, r0coords, idx)
+                r1graph, r1atoms, r1coords, r1map = self.make_graph_noH(r1smi, r1atoms, r1coords, idx)
+                pgraph, patoms, pcoords, pmap = self.make_graph_noH(psmi, patoms, pcoords, idx)
+
+                rmap = np.hstack((r0map, r1map))
+                assert np.all(sorted(rmap)==sorted(pmap)), f'atoms missing from mapping {idx}'
+                assert np.all(sorted(pmap)==np.arange(len(patoms))), f'atoms missing from mapping {idx}'
+                p2rmap = np.hstack([np.where(pmap==j)[0] for j in rmap])
+                assert np.all(rmap == pmap[p2rmap])
+                assert np.all(np.hstack((r0atoms, r1atoms)) == patoms[p2rmap])
+                r0map, r1map = np.split(p2rmap, (len(r0atoms),))
+
+            else:
+                r0graph = self.make_graph(r0smi, r0atoms, r0coords, idx)
+                r1graph = self.make_graph(r1smi, r1atoms, r1coords, idx)
+                pgraph = self.make_graph(psmi, patoms, pcoords, idx)
+
+            assert np.all(np.hstack((r0atoms, r1atoms)) == patoms[np.hstack((r0map, r1map))]), 'mapping leads to atom-type mismatch'
 
             self.reactant_0_graphs.append(r0graph)
             self.reactant_1_graphs.append(r1graph)
@@ -161,6 +177,38 @@ class Cyclo23TS(Dataset):
         torch.save(self.reactant_1_maps,   self.paths.r1m)
         torch.save(self.product_graphs,    self.paths.pg)
         print(f"Saved graphs to {self.paths.r0g}, {self.paths.r1g} and {self.paths.pg}")
+
+
+    def make_graph_noH(self, smi, atoms, coords, idx, check=True):
+        mol = Chem.MolFromSmiles(smi)
+        mol = canon_mol(mol)
+        mol = Chem.RemoveAllHs(mol)
+        assert mol is not None, f"mol obj {idx} is None from smi {smi}"
+        ats = [at.GetSymbol() for at in mol.GetAtoms()]
+#        print()
+#        print([at.GetAtomMapNum() for at in mol.GetAtoms()])
+#        print(ats)
+
+        mol2 = Chem.MolFromSmiles(smi)
+        mapping = np.array([at.GetAtomMapNum() for at in mol2.GetAtoms()])
+        G1 = self.make_nx_graph_from_mol(mol)
+        G2 = self.make_nx_graph_from_mol(mol2)
+        GM = iso.GraphMatcher(G1, G2, node_match=iso.categorical_node_match('q', None))
+        assert GM.is_isomorphic(), f"smiles and xyz graphs are not isomorphic in {idx}"
+        match = next(GM.match())
+        src, dst = np.array(sorted(match.items(), key=lambda match: match[0])).T
+        assert np.all(src==np.arange(G1.number_of_nodes()))
+        mapping = mapping[dst]
+
+        noH_idx = np.where(atoms!='H')
+        atoms = atoms[noH_idx]
+#        print(atoms)
+        coords = coords[noH_idx]
+
+        assert len(ats) == len(atoms), f"nats don't match in idx {idx}"
+        if check:
+            assert np.all(ats == atoms), "atomtypes don't match"
+        return get_graph(mol, atoms, coords, idx), atoms, coords, mapping-1
 
 
     def make_graph(self, smi, atoms, coords, idx, check=True):
@@ -188,3 +236,19 @@ class Cyclo23TS(Dataset):
             reactants = reactants[::-1]
             mapfiles = mapfiles[::-1]
         return reactants, mapfiles
+
+
+    def standardize_labels(self):
+        mean = torch.mean(self.labels)
+        std = torch.std(self.labels)
+        self.std = std
+        self.labels = (self.labels - mean)/std
+
+
+    def make_nx_graph_from_mol(self, mol):
+        bonds = np.array(sorted(sorted((i.GetBeginAtomIdx(), i.GetEndAtomIdx())) for i in mol.GetBonds()))
+        atoms = np.array([at.GetSymbol() for at in mol.GetAtoms()])
+        G = networkx.Graph()
+        G.add_nodes_from([(i, {'q': q}) for i, q in enumerate(atoms)])
+        G.add_edges_from(bonds)
+        return G

@@ -130,7 +130,7 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
     print(f"Running on device {device}")
 
     if dataset=='cyclo':
-        data = Cyclo23TS(process=process, atom_mapping=atom_mapping)
+        data = Cyclo23TS(process=process, atom_mapping=atom_mapping, noH=noH)
     elif dataset=='gdb':
         data = GDB722TS(process=process, atom_mapping=atom_mapping, rxnmapper=rxnmapper, noH=noH, reverse=reverse, xtb=xtb)
     elif dataset=='rgd':
