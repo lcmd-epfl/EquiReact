@@ -17,10 +17,9 @@ class Cyclo23TS(Dataset):
     def __init__(self, files_dir='data/cyclo/xyz/', csv_path='data/cyclo/mod_dataset.csv',
                  map_dir='data/cyclo/matches/',
                  processed_dir='data/cyclo/processed/', process=True,
-                 noH=False,
-                 atom_mapping=False):
+                 noH=False, rxnmapper=False, atom_mapping=False):
 
-        self.version = 2.6  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
+        self.version = 3  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
         self.max_number_of_reactants = 2
         self.max_number_of_products = 1
 
@@ -29,8 +28,14 @@ class Cyclo23TS(Dataset):
         self.map_dir = map_dir
         self.atom_mapping = atom_mapping
         self.noH = noH
+        if rxnmapper:
+            self.column = 'rxn_smiles_rxnmapper'
+        else:
+            self.column = 'rxn_smiles_mapped'
+        if rxnmapper and not noH:
+            raise RuntimeError
 
-        dataset_prefix = os.path.splitext(os.path.basename(csv_path))[0]
+        dataset_prefix = os.path.splitext(os.path.basename(csv_path))[0]+'.'+self.column
         if noH:
             dataset_prefix += '.noH'
         dataset_prefix += f'.v{self.version}'
@@ -132,7 +137,7 @@ class Cyclo23TS(Dataset):
             pfile = glob(f'{self.files_dir}/{idx}/p*.xyz')[0]
             patoms, pcoords = reader(pfile)
 
-            rxnsmi = entry['rxn_smiles'].item()
+            rxnsmi = entry[self.column].item()
             rsmis, psmi = rxnsmi.split('>>')
             r0smi, r1smi = rsmis.split('.')
 
@@ -194,7 +199,6 @@ class Cyclo23TS(Dataset):
 
         noH_idx = np.where(atoms!='H')
         atoms = atoms[noH_idx]
-#        print(atoms)
         coords = coords[noH_idx]
 
         assert len(ats) == len(atoms), f"nats don't match in idx {idx}"
