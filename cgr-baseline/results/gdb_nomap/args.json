@@ -26,7 +26,7 @@
     "crossval_index_file": null,
     "crossval_index_sets": null,
     "cuda": true,
-    "data_path": "ccsdtf12_dz_nomap.csv",
+    "data_path": "ccsdtf12_dz_mod_nomap.csv",
     "data_weights_path": null,
     "dataset_type": "regression",
     "depth": 3,
@@ -90,7 +90,10 @@
     "reaction_solvent": false,
     "reproducibility": {
         "command_line": "python ./cgr.py",
-        "time": "Tue Aug  8 22:56:14 2023"
+        "git_has_uncommitted_changes": true,
+        "git_root": "/home/xe/WORK/equicrap/EquiReact",
+        "git_url": "https://github.com/puckvg/EquiReact/tree/eb35ff50047252f3b0f2ee461a323efef790be65",
+        "time": "Wed Aug  9 20:25:16 2023"
     },
     "resume_experiment": false,
     "save_dir": "./",

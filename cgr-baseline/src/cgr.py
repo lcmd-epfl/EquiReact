@@ -17,13 +17,14 @@ def argparse():
     g1.add_argument('--rxnmapper', action='store_true', help='use atom mapping from rxnmapper')
     g1.add_argument('--none', action='store_true', help='use non-mapped smiles')
     g2 = parser.add_mutually_exclusive_group(required=True)
-    g2.add_argument('-c', '--cyclo', action='store_true', help='use Cyclo-23-TS dataset')
+    g2.add_argument('-c', '--cyclo', action='store_true', help='use curated Cyclo-23-TS dataset')
     g2.add_argument('-p', '--proparg', action='store_true', help='use Proparg-21-TS dataset with SMILES from xyz')
     g2.add_argument('-g', '--gdb', action='store_true', help='use curated GDB7-22-TS dataset')
     g2.add_argument('-r', '--rgd', action='store_true', help='use RGD1 dataset')
     g2.add_argument('--gdb_full', action='store_true', help='use GDB7-22-TS dataset')
     g2.add_argument('--proparg_combinat', action='store_true', help='use Proparg-21-TS dataset with fragment-based SMILES')
     g2.add_argument('--proparg_stereo', action='store_true', help='use Proparg-21-TS dataset with stereochemistry-enriched fragment-based SMILES')
+    g2.add_argument('-c', '--cyclo_full', action='store_true', help='use full Cyclo-23-TS dataset')
     args = parser.parse_args()
     return parser, args
 
@@ -32,7 +33,7 @@ if __name__ == "__main__":
 
     parser, args = argparse()
     if args.cyclo:
-        data_path = '../../csv/cyclo.csv'
+        data_path = '../../../data/cyclo/mod_dataset.csv'
         target_columns = 'G_act'
     elif args.rgd:
         data_path = '../../csv/rgd.csv'
@@ -52,6 +53,9 @@ if __name__ == "__main__":
     elif args.proparg_stereo:
         data_path = '../../csv/proparg-stereo.csv'
         target_columns = "Eafw"
+    if args.cyclo_full:
+        data_path = '../../csv/cyclo.csv'
+        target_columns = 'G_act'
 
     if args.random:
         smiles_columns = 'rxn_smiles_random'
