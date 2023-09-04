@@ -20,7 +20,7 @@ class Cyclo23TS(Dataset):
                  noH=False,
                  atom_mapping=False):
 
-        self.version = 2.5  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
+        self.version = 2.6  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
         self.max_number_of_reactants = 2
         self.max_number_of_products = 1
 
@@ -40,8 +40,7 @@ class Cyclo23TS(Dataset):
                 r0g = join(self.processed_dir, f'{dataset_prefix}.reactant_0_graphs.pt'),
                 r1g = join(self.processed_dir, f'{dataset_prefix}.reactant_1_graphs.pt'),
                 pg  = join(self.processed_dir, f'{dataset_prefix}.product_graphs.pt'),
-                r0m = join(self.processed_dir, f'{dataset_prefix}.reactant_0_maps.pt'),
-                r1m = join(self.processed_dir, f'{dataset_prefix}.reactant_1_maps.pt'),
+                rm  = join(self.processed_dir, f'{dataset_prefix}.reactants_maps.pt'),
                 )
 
         print("Loading data into memory...")
@@ -57,12 +56,11 @@ class Cyclo23TS(Dataset):
             self.process()
         else:
             if self.atom_mapping:
-                if exists(self.paths.r0g) and exists(self.paths.r1g) and exists(self.paths.pg) and exists(self.paths.r0m) and exists(self.paths.r1m):
+                if exists(self.paths.r0g) and exists(self.paths.r1g) and exists(self.paths.pg) and exists(self.paths.rm):
                     self.reactant_0_graphs = torch.load(self.paths.r0g)
                     self.reactant_1_graphs = torch.load(self.paths.r1g)
                     self.product_graphs    = torch.load(self.paths.pg)
-                    self.reactant_0_maps   = torch.load(self.paths.r0m)
-                    self.reactant_1_maps   = torch.load(self.paths.r1m)
+                    self.reactants_maps    = torch.load(self.paths.rm)
                     print(f"Coords and graphs successfully read from {self.processed_dir}")
                 else:
                     print("processed data not found, processing data...")
@@ -90,9 +88,8 @@ class Cyclo23TS(Dataset):
         p_graph = self.product_graphs[idx]
         label = self.labels[idx]
         if self.atom_mapping:
-            r_0_map = self.reactant_0_maps[idx]
-            r_1_map = self.reactant_1_maps[idx]
-            return label, idx, r_0_graph, r_1_graph, p_graph, np.hstack((r_0_map, r_1_map))
+            r_map = self.reactants_maps[idx]
+            return label, idx, r_0_graph, r_1_graph, p_graph, r_map
         else:
             return label, idx, r_0_graph, r_1_graph, p_graph
 
@@ -121,61 +118,56 @@ class Cyclo23TS(Dataset):
 
         self.reactant_0_graphs = []
         self.reactant_1_graphs = []
-        self.reactant_0_maps = []
-        self.reactant_1_maps = []
+        self.reactants_maps = []
         self.product_graphs = []
 
         print(f"Processing csv file and saving graphs to {self.processed_dir}")
         for i, idx in enumerate(tqdm(self.indices, desc="making graphs")):
 
             entry = self.df[self.df['rxn_id'] == idx]
-
             switch = entry['switch_reactants'].item()
             rfiles, mapfiles = self.get_r_files(idx, switch=switch)
             r0atoms, r0coords = reader(rfiles[0])
             r1atoms, r1coords = reader(rfiles[1])
-            r0map = np.loadtxt(mapfiles[0], dtype=int)
-            r1map = np.loadtxt(mapfiles[1], dtype=int)
-            assert len(r0atoms)==len(r0map), 'different number of atoms in the xyz and mapping files'
-            assert len(r1atoms)==len(r1map), 'different number of atoms in the xyz and mapping files'
-
             pfile = glob(f'{self.files_dir}/{idx}/p*.xyz')[0]
             patoms, pcoords = reader(pfile)
 
             rxnsmi = entry['rxn_smiles'].item()
             rsmis, psmi = rxnsmi.split('>>')
             r0smi, r1smi = rsmis.split('.')
+
             if self.noH:
+                # atom mapping from SMILES
                 r0graph, r0atoms, r0coords, r0map = self.make_graph_noH(r0smi, r0atoms, r0coords, idx)
                 r1graph, r1atoms, r1coords, r1map = self.make_graph_noH(r1smi, r1atoms, r1coords, idx)
                 pgraph, patoms, pcoords, pmap = self.make_graph_noH(psmi, patoms, pcoords, idx)
-
                 rmap = np.hstack((r0map, r1map))
                 assert np.all(sorted(rmap)==sorted(pmap)), f'atoms missing from mapping {idx}'
                 assert np.all(sorted(pmap)==np.arange(len(patoms))), f'atoms missing from mapping {idx}'
                 p2rmap = np.hstack([np.where(pmap==j)[0] for j in rmap])
                 assert np.all(rmap == pmap[p2rmap])
-                assert np.all(np.hstack((r0atoms, r1atoms)) == patoms[p2rmap])
-                r0map, r1map = np.split(p2rmap, (len(r0atoms),))
-
             else:
+                # atom mapping from files
                 r0graph = self.make_graph(r0smi, r0atoms, r0coords, idx)
                 r1graph = self.make_graph(r1smi, r1atoms, r1coords, idx)
                 pgraph = self.make_graph(psmi, patoms, pcoords, idx)
+                r0map = np.loadtxt(mapfiles[0], dtype=int)
+                r1map = np.loadtxt(mapfiles[1], dtype=int)
+                assert len(r0atoms)==len(r0map), 'different number of atoms in the xyz and mapping files'
+                assert len(r1atoms)==len(r1map), 'different number of atoms in the xyz and mapping files'
+                p2rmap = np.hstack((r0map, r1map))
 
-            assert np.all(np.hstack((r0atoms, r1atoms)) == patoms[np.hstack((r0map, r1map))]), 'mapping leads to atom-type mismatch'
+            assert np.all(np.hstack((r0atoms, r1atoms)) == patoms[p2rmap]), 'mapping leads to atom-type mismatch'
 
             self.reactant_0_graphs.append(r0graph)
             self.reactant_1_graphs.append(r1graph)
-            self.reactant_0_maps.append(r0map)
-            self.reactant_1_maps.append(r1map)
+            self.reactants_maps.append(p2rmap)
             self.product_graphs.append(pgraph)
 
         torch.save(self.reactant_0_graphs, self.paths.r0g)
         torch.save(self.reactant_1_graphs, self.paths.r1g)
-        torch.save(self.reactant_0_maps,   self.paths.r0m)
-        torch.save(self.reactant_1_maps,   self.paths.r1m)
-        torch.save(self.product_graphs,    self.paths.pg)
+        torch.save(self.reactants_maps, self.paths.rm)
+        torch.save(self.product_graphs, self.paths.pg)
         print(f"Saved graphs to {self.paths.r0g}, {self.paths.r1g} and {self.paths.pg}")
 
 
