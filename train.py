@@ -130,13 +130,13 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
     print(f"Running on device {device}")
 
     if dataset=='cyclo':
-        data = Cyclo23TS(process=process, atom_mapping=atom_mapping)
+        data = Cyclo23TS(process=process, atom_mapping=atom_mapping, rxnmapper=rxnmapper, noH=noH)
     elif dataset=='gdb':
         data = GDB722TS(process=process, atom_mapping=atom_mapping, rxnmapper=rxnmapper, noH=noH, reverse=reverse, xtb=xtb)
     elif dataset=='rgd':
         data = RGD1(process=process, atom_mapping=atom_mapping, split_complexes=split_complexes)
     elif dataset=='proparg':
-        data = Proparg21TS(process=process, atom_mapping=atom_mapping)
+        data = Proparg21TS(process=process, atom_mapping=atom_mapping, rxnmapper=rxnmapper, noH=noH)
     else:
         raise NotImplementedError(f'Cannot load the {dataset} dataset.')
     labels = data.labels

@@ -7,24 +7,35 @@ from torch.utils.data import Dataset
 import pandas as pd
 from tqdm import tqdm
 from rdkit import Chem
+import networkx
+import networkx.algorithms.isomorphism as iso
 from process.create_graph import get_graph, reader, sanitize_mol_no_valence_check
 
 
 class Proparg21TS(Dataset):
 
-    def __init__(self, files_dir='data/proparg/xyz/', csv_path='data/proparg/data_fixarom_smiles.csv',
-                 processed_dir='data/proparg/processed/', process=True,
-                 noH=False, atom_mapping=False):
+    def __init__(self, process=True,
+                 files_dir='data/proparg/xyz/',
+                 processed_dir='data/proparg/processed/',
+                 noH=False, atom_mapping=False, rxnmapper=False):
 
-        self.version = 1  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
+        self.version = 2  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
         self.max_number_of_reactants = 1
         self.max_number_of_products = 1
         self.files_dir = files_dir + '/'
         self.processed_dir = processed_dir + '/'
         self.atom_mapping = atom_mapping
         self.noH = noH
-        if noH:
-            raise NotImplementedError
+        self.rxnmapper = rxnmapper
+
+        if not rxnmapper:
+            csv_path='data/proparg/data_fixarom_smiles.csv'
+            column = 'rxn_smiles_mapped'
+        else:
+            if not noH:
+                raise RuntimeError
+            csv_path='data/proparg/proparg.csv'
+            column = 'rxn_smiles_rxnmapper'
 
         dataset_prefix = os.path.splitext(os.path.basename(csv_path))[0]
         if noH:
@@ -42,7 +53,7 @@ class Proparg21TS(Dataset):
         self.nreactions = len(self.df)
         self.indices = [''.join(x) for x in zip(self.df['mol'].to_list(), self.df['enan'].to_list())]
         self.labels = torch.tensor(self.df['Eafw'].values)
-        self.smiles = self.df['rxn_smiles_mapped']
+        self.smiles = self.df[column]
 
         if process == True:
             print("Processing by request...")
@@ -95,8 +106,9 @@ class Proparg21TS(Dataset):
             assert len(p_coords) == len(p_atomtypes), f'{idx}'
 
             rsmi, psmi = self.smiles[i].split('>>')
-            rgraph, ratoms, rmap = self.make_graph(rsmi, r_atomtypes, r_coords,  f'r{idx}', i)
-            pgraph, patoms, pmap = self.make_graph(psmi, p_atomtypes, p_coords,  f'p{idx}', i)
+            rsmi2, psmi2 = self.df['rxn_smiles_mapped'][i].split('>>') if self.rxnmapper else (None, None)
+            rgraph, ratoms, rmap = self.make_graph(rsmi, r_atomtypes, r_coords,  f'r{idx}', i, rsmi2)
+            pgraph, patoms, pmap = self.make_graph(psmi, p_atomtypes, p_coords,  f'p{idx}', i, psmi2)
             self.reactants_graphs.append(rgraph)
             self.products_graphs.append(pgraph)
 
@@ -113,19 +125,49 @@ class Proparg21TS(Dataset):
         print(f"Saved graphs to {self.paths.rg} and {self.paths.pg}")
 
 
-    def make_graph(self, smi, atoms, coords, ireact, idx):
+    def make_graph(self, smi, atoms, coords, ireact, idx, smi2=None):
         mol = Chem.MolFromSmiles(smi, sanitize=False)
         assert mol is not None, f"mol obj {ireact} is None from smi {smi}"
         sanitize_mol_no_valence_check(mol)
 
-        atom_map = np.array([at.GetAtomMapNum() for at in mol.GetAtoms()])
-        assert len(atom_map)==len(atoms), f"mol {ireact} has a wrong number of atoms"
-        assert np.all(atom_map > 0), f"mol {ireact} is not atom-mapped"
-        atom_map -= 1
+        if self.noH:
+            mol = Chem.RemoveAllHs(mol, sanitize=False)
+            sanitize_mol_no_valence_check(mol)
+            noH_idx = np.where(atoms!='H')
+            new_atoms = atoms[noH_idx]
+            new_coords = coords[noH_idx]
 
-        new_atoms = atoms[atom_map]
-        new_coords = coords[atom_map]
-        graph = get_graph(mol, new_atoms, new_coords, idx)
+            if self.rxnmapper:
+                mol2 = Chem.MolFromSmiles(smi2, sanitize=False)
+                assert mol2 is not None, f"mol obj {ireact} is None from smi {smi2}"
+                sanitize_mol_no_valence_check(mol2)
+                mol2 = Chem.RemoveAllHs(mol2, sanitize=False)
+                sanitize_mol_no_valence_check(mol2)
+                G1 = self.make_nx_graph_from_mol(mol)
+                G2 = self.make_nx_graph_from_mol(mol2)
+                GM = iso.GraphMatcher(G1, G2, node_match=iso.categorical_node_match('q', None))
+                assert GM.is_isomorphic(), f"smiles and xyz graphs are not isomorphic in {idx}"
+                match = next(GM.match())
+                src, dst = np.array(sorted(match.items(), key=lambda match: match[0])).T
+                assert np.all(src==np.arange(G1.number_of_nodes()))
+                atom_map2 = np.array([at.GetAtomMapNum() for at in mol2.GetAtoms()])
+                atom_map2 = atom_map2.argsort().argsort()  # elements rank
+
+        atom_map = np.array([at.GetAtomMapNum() for at in mol.GetAtoms()])
+        assert np.all(atom_map>0), f"mol {ireact} is not atom-mapped"
+        assert len(atom_map)==len(new_atoms), f"mol {ireact} has a wrong number of atoms"
+        atom_map = atom_map.argsort().argsort()  # elements rank
+
+        if self.rxnmapper:
+            new_atoms = new_atoms[atom_map2]
+            new_coords = new_coords[atom_map2]
+            graph = get_graph(mol2, new_atoms, new_coords, idx)
+            atom_map = atom_map[dst.argsort()]
+        else:
+            new_atoms = new_atoms[atom_map]
+            new_coords = new_coords[atom_map]
+            graph = get_graph(mol, new_atoms, new_coords, idx)
+
         return graph, new_atoms, atom_map
 
 
@@ -134,3 +176,12 @@ class Proparg21TS(Dataset):
         std = torch.std(self.labels)
         self.std = std
         self.labels = (self.labels - mean)/std
+
+
+    def make_nx_graph_from_mol(self, mol):
+        bonds = np.array(sorted(sorted((i.GetBeginAtomIdx(), i.GetEndAtomIdx())) for i in mol.GetBonds()))
+        atoms = np.array([at.GetSymbol() for at in mol.GetAtoms()])
+        G = networkx.Graph()
+        G.add_nodes_from([(i, {'q': q}) for i, q in enumerate(atoms)])
+        G.add_edges_from(bonds)
+        return G

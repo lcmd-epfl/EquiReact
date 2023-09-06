@@ -18,7 +18,8 @@ def argparse():
     parser.add_argument('-p', '--proparg', action='store_true')
     parser.add_argument('--proparg_arom', action='store_true')
     parser.add_argument('--proparg_stereo', action='store_true')
-    parser.add_argument('--gdb_mod', action='store_true')
+    parser.add_argument('--gdb_full', action='store_true')
+    parser.add_argument('--cyclo_full', action='store_true')
     args = parser.parse_args()
     return args
 
@@ -31,7 +32,8 @@ if __name__ == "__main__":
 
     args = argparse()
     datasets = (
-        (args.cyclo,        "csv/cyclo.csv",   'rxn_smiles'       ),
+        (args.cyclo,        "../data/cyclo/mod_dataset.csv",   'rxn_smiles'),
+        (args.cyclo_full,   "csv/cyclo.csv",   'rxn_smiles'       ),
         (args.gdb,          "csv/gdb.csv",     'rxn_smiles'       ),
         (args.proparg,      "csv/proparg.csv", 'rxn_smiles_mapped'),
     )
