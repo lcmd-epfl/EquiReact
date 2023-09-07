@@ -1,0 +1,7 @@
+cv10-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both 2.34776250179508 0.1976234011757179
+cv10-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 2.400980265815675 0.1330600475087748
+cv10-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 3.009297231646249 0.23718250723603101
+cv10-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 2.430363846766972 0.18032933135530674
+cv10-cyclo-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 3.141563148136388 0.2478839419676402
+cv10-cyclo-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 2.4388136610365776 0.18678335997327872
+cv10-cyclo-ns64-nv48-d48-layers3-energy-mlp-both 2.5476085877437264 0.18786402341272865
