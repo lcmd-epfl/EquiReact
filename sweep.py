@@ -1,3 +1,5 @@
+import argparse
+from itertools import compress
 import pprint
 import wandb
 from train import train
@@ -17,6 +19,20 @@ def train_wrapper():
                   xtb=False, split_complexes=False, sweep=True)
         except:
             pass
+
+
+parser = argparse.ArgumentParser()
+g = parser.add_mutually_exclusive_group(required=True)
+g.add_argument('-c', '--cyclo', action='store_true', help='use Cyclo-23-TS dataset')
+g.add_argument('-g', '--gdb', action='store_true', help='use GDB7-22-TS dataset')
+g.add_argument('-p', '--proparg', action='store_true', help='use Proparg-21-TS dataset')
+args = parser.parse_args()
+dataset = next(compress(('cyclo', 'gdb', 'proparg'), (args.cyclo, args.gdb, args.proparg)))
+
+epochs = {'cyclo': 256, 'gdb': 128, 'proparg': 128}
+project = f'nequireact-{dataset}-sweep'
+run_dir = f'sweep_{dataset}'
+logname = 'sweep.log'
 
 wandb.login()
 
@@ -56,17 +72,15 @@ parameters_dict = {
         },
     }
 
-parameters_dict.update({ 'num_epochs': { 'value': 128} })
-parameters_dict.update({ 'dataset': { 'value': 'proparg'} })
 parameters_dict.update({ 'subset': { 'value': None} })
 parameters_dict.update({ 'attention': { 'value': None} })
 parameters_dict.update({ 'atom_mapping': { 'value': False} })
+parameters_dict.update({ 'dataset': { 'value': dataset} })
+parameters_dict.update({ 'num_epochs': { 'value': epochs[dataset]} })
+
 sweep_config['parameters'] = parameters_dict
 pprint.pprint(sweep_config)
 
-project = 'nequireact-proparg-sweep'
-run_dir = 'sweep_proparg'
-logname = 'sweep.log'
 wandb_name = 'test'
 sweep_id = wandb.sweep(sweep_config, project=project)
 print(sweep_id)
