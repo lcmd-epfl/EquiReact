@@ -6,3 +6,7 @@ data/rgd1/RGD1_CHNO.h5
 
 wandb/
 events.out.tfevents.*
+runs/
+
+slatm_baseline/slatm_cyclo.npy
+slatm_baseline/slatm_gdb.npy
