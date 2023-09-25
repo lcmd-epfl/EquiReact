@@ -82,6 +82,8 @@ def parse_arguments(arglist=sys.argv[1:]):
     g_hyper.add_argument('--reverse'              , action='store_true', default=False    ,  help='if add reverse reactions')
     g_hyper.add_argument('--split_complexes'      , action='store_true', default=False    ,  help='if split reaction complexes into individual molecules (for rgd)')
     g_hyper.add_argument('--xtb'                  , action='store_true', default=False    ,  help='if use xtb geometries (for gdb)')
+    g_hyper.add_argument('--lr'                   , type=float         , default=0.001    ,  help='learning rate for adam')
+    g_hyper.add_argument('--weight_decay'         , type=float         , default=0.0001   ,  help='weight decay for adam')
 
     args = p.parse_args(arglist)
 
@@ -111,6 +113,8 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
           lr=0.0001, weight_decay=0.0001,
           # lr scheduler params
           lr_scheduler=ReduceLROnPlateau, factor=0.6, min_lr=8.0e-6, mode='max', lr_scheduler_patience=60,
+          # factor 0.6 okay ?
+          # min_lr = lr / 100
           lr_verbose=True,
           verbose=False,
           random_baseline=False,
@@ -125,7 +129,6 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
           xtb = False,
           sweep = False,
           ):
-
     device = torch.device("cuda:0" if torch.cuda.is_available() and device == 'cuda' else "cpu")
     print(f"Running on device {device}")
 
@@ -277,5 +280,4 @@ if __name__ == '__main__':
           graph_mode=args.graph_mode, dropout_p=args.dropout_p, random_baseline=args.random_baseline,
           combine_mode=args.combine_mode, atom_mapping=args.atom_mapping, CV=args.CV, attention=args.attention,
           noH=args.noH, two_layers_atom_diff=args.two_layers_atom_diff, rxnmapper=args.rxnmapper, reverse=args.reverse,
-          xtb=args.xtb,
-          split_complexes=args.split_complexes)
+          xtb=args.xtb, split_complexes=args.split_complexes, lr=args.lr, weight_decay=args.weight_decay)

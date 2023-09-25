@@ -3,7 +3,7 @@ from itertools import compress
 import pprint
 import wandb
 from train import train
-
+import os
 def train_wrapper():
     with wandb.init(config=None):
         args = wandb.config
@@ -16,7 +16,7 @@ def train_wrapper():
                   graph_mode=args.graph_mode, dropout_p=args.dropout_p, random_baseline=False,
                   combine_mode=args.combine_mode, atom_mapping=args.atom_mapping, CV=1, attention=args.attention,
                   noH=False, two_layers_atom_diff=None, rxnmapper=False, reverse=False,
-                  xtb=False, split_complexes=False, sweep=True)
+                  xtb=False, split_complexes=False, sweep=True, lr=args.lr, weight_decay=args.weight_decay)
         except:
             pass
 
@@ -32,6 +32,8 @@ dataset = next(compress(('cyclo', 'gdb', 'proparg'), (args.cyclo, args.gdb, args
 epochs = {'cyclo': 256, 'gdb': 128, 'proparg': 128}
 project = f'nequireact-{dataset}-sweep'
 run_dir = f'sweep_{dataset}'
+if os not.path.exists(run_dir):
+    os.mkdir(run_dir)
 logname = 'sweep.log'
 
 wandb.login()
@@ -70,6 +72,12 @@ parameters_dict = {
     'sum_mode': {
           'values' : ['node', 'both']
         },
+    'lr':  {
+        'values' : [0.00005, 0.0001, 0.0005, 0.001]
+        },
+    'weight_decay' : {
+        'values' : [1e-5, 1e-4, 1e-3, 0]
+    },
     }
 
 parameters_dict.update({ 'subset': { 'value': None} })
