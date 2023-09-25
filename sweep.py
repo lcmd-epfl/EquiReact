@@ -32,7 +32,7 @@ dataset = next(compress(('cyclo', 'gdb', 'proparg'), (args.cyclo, args.gdb, args
 epochs = {'cyclo': 256, 'gdb': 128, 'proparg': 128}
 project = f'nequireact-{dataset}-sweep'
 run_dir = f'sweep_{dataset}'
-if os not.path.exists(run_dir):
+if not os.path.exists(run_dir):
     os.mkdir(run_dir)
 logname = 'sweep.log'
 

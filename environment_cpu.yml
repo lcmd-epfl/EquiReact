@@ -10,7 +10,7 @@ dependencies:
   - wandb=0.15.0
   - pyaml=20.4.0
   - numpy-base=1.23.5=py310h8e6c178_0
-  - rdkit=2022.03.1
+  - rdkit=2023.03.1
   - cpuonly=2.0
   - e3nn=0.5.1
   - pandas=1.5.3
