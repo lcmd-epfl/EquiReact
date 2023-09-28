@@ -62,6 +62,7 @@ def train(project, wandb_name,
           subset=None, tr_frac = 0.9, te_frac = 0.05, process=False, CV=0,
           #sampling / dataloader args
           batch_size=8, num_workers=0, pin_memory=False, # pin memory is not working
+          num_epochs=10
           ):
 
     device = torch.device("cuda:0" if torch.cuda.is_available() and device == 'cuda' else "cpu")
@@ -113,7 +114,7 @@ def train(project, wandb_name,
         dl_val = DataLoader(val_data, batch_size=batch_size, collate_fn=custom_collate, pin_memory=pin_memory,
                                     num_workers=num_workers)
 
-        trainer = MapTrainer(nb_epochs=10)
+        trainer = MapTrainer(nb_epochs=num_epochs)
 
         train_loss_epochs, train_acc_epochs, val_acc_epochs = trainer.train(model, dl_train, dl_val, verbose=True)
 
@@ -139,11 +140,11 @@ def train(project, wandb_name,
 if __name__ == '__main__':
 
     args = parse_arguments()
+    num_epochs = args.num_epochs
 
     if not os.path.exists(args.logdir):
         print(f"creating log dir {args.logdir}")
         os.mkdir(args.logdir)
-
 
     run_dir = os.path.join(args.logdir, args.experiment_name)
     if not os.path.exists(run_dir):
@@ -165,6 +166,7 @@ if __name__ == '__main__':
           #setup args
           device=args.device, seed=args.seed, eval_on_test=True,
           #dataset args
-          subset=None, tr_frac = 0.9, te_frac = 0.05, process=False, CV=args.CV,
-          batch_size=8, num_workers=0, pin_memory=False, # pin memory is not working
+          subset=None, tr_frac = 0.8, te_frac = 0.1, process=False, CV=args.CV,
+          batch_size=8, num_workers=0, pin_memory=False, # pin memory is not working,
+          num_epochs=num_epochs
           )
