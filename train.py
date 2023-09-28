@@ -81,7 +81,8 @@ def parse_arguments(arglist=sys.argv[1:]):
     g_hyper.add_argument('--noH'                  , action='store_true', default=False    ,  help='if remove H')
     g_hyper.add_argument('--reverse'              , action='store_true', default=False    ,  help='if add reverse reactions')
     g_hyper.add_argument('--split_complexes'      , action='store_true', default=False    ,  help='if split reaction complexes into individual molecules (for rgd)')
-    g_hyper.add_argument('--xtb'                  , action='store_true', default=False    ,  help='if use xtb geometries (for gdb)')
+    g_hyper.add_argument('--xtb'                  , action='store_true', default=False    ,  help='if use xtb geometries')
+    g_hyper.add_argument('--semiempirical'        , action='store_true', default=False    ,  help='if use semiempirical geometries')
     g_hyper.add_argument('--lr'                   , type=float         , default=0.001    ,  help='learning rate for adam')
     g_hyper.add_argument('--weight_decay'         , type=float         , default=0.0001   ,  help='weight decay for adam')
 
@@ -91,6 +92,12 @@ def parse_arguments(arglist=sys.argv[1:]):
     for group in p._action_groups:
         group_dict={a.dest: getattr(args, a.dest, None) for a in group._group_actions}
         arg_groups[group.title] = argparse.Namespace(**group_dict)
+
+    if args.xtb and args.semiempirical:
+        raise RuntimeError
+    if args.atom_mapping and args.attention:
+        raise RuntimeError
+
 
     return args, arg_groups
 
@@ -127,6 +134,7 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
           reverse = False,
           split_complexes=False,
           xtb = False,
+          semiempirical = False,
           sweep = False,
           ):
     device = torch.device("cuda:0" if torch.cuda.is_available() and device == 'cuda' else "cpu")
@@ -139,7 +147,7 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
     elif dataset=='rgd':
         data = RGD1(process=process, atom_mapping=atom_mapping, split_complexes=split_complexes)
     elif dataset=='proparg':
-        data = Proparg21TS(process=process, atom_mapping=atom_mapping, rxnmapper=rxnmapper, noH=noH, xtb=xtb)
+        data = Proparg21TS(process=process, atom_mapping=atom_mapping, rxnmapper=rxnmapper, noH=noH, xtb=xtb, semiempirical=semiempirical)
     else:
         raise NotImplementedError(f'Cannot load the {dataset} dataset.')
     labels = data.labels
@@ -280,4 +288,5 @@ if __name__ == '__main__':
           graph_mode=args.graph_mode, dropout_p=args.dropout_p, random_baseline=args.random_baseline,
           combine_mode=args.combine_mode, atom_mapping=args.atom_mapping, CV=args.CV, attention=args.attention,
           noH=args.noH, two_layers_atom_diff=args.two_layers_atom_diff, rxnmapper=args.rxnmapper, reverse=args.reverse,
-          xtb=args.xtb, split_complexes=args.split_complexes, lr=args.lr, weight_decay=args.weight_decay)
+          xtb=args.xtb, semiempirical=args.semiempirical,
+          split_complexes=args.split_complexes, lr=args.lr, weight_decay=args.weight_decay)
