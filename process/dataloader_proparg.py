@@ -15,14 +15,13 @@ from process.create_graph import get_graph, reader, sanitize_mol_no_valence_chec
 class Proparg21TS(Dataset):
 
     def __init__(self, process=True,
-                 files_dir='data/proparg/xyz/',
                  processed_dir='data/proparg/processed/',
+                 xtb = False,
                  noH=True, atom_mapping=False, rxnmapper=False):
 
         self.version = 2  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
         self.max_number_of_reactants = 1
         self.max_number_of_products = 1
-        self.files_dir = files_dir + '/'
         self.processed_dir = processed_dir + '/'
         self.atom_mapping = atom_mapping
         self.noH = noH
@@ -36,8 +35,14 @@ class Proparg21TS(Dataset):
                 raise RuntimeError
             csv_path='data/proparg/proparg.csv'
             column = 'rxn_smiles_rxnmapper'
+        if xtb:
+            self.files_dir='data/proparg/xyz-xtb/'
+        else:
+            self.files_dir='data/proparg/xyz/'
 
         dataset_prefix = os.path.splitext(os.path.basename(csv_path))[0]
+        if xtb:
+            dataset_prefix += '.xtb'
         if noH:
             dataset_prefix += '.noH'
         self.paths = SimpleNamespace(
