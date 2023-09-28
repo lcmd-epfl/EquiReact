@@ -14,7 +14,7 @@ for dataset in ('gdb', 'cyclo', 'proparg'):
     results = defaultdict(list)
 
     for run in runs:
-        if run.name.startswith('cv10'):
+        if run.name.startswith('cv10-LP'):
             test = run.summary['test_score']
             print(run.id, run.name, run.config['seed'], test)
             results[run.name].append(test)

@@ -17,7 +17,7 @@ class Proparg21TS(Dataset):
     def __init__(self, process=True,
                  files_dir='data/proparg/xyz/',
                  processed_dir='data/proparg/processed/',
-                 noH=False, atom_mapping=False, rxnmapper=False):
+                 noH=True, atom_mapping=False, rxnmapper=False):
 
         self.version = 2  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
         self.max_number_of_reactants = 1
@@ -152,6 +152,10 @@ class Proparg21TS(Dataset):
                 assert np.all(src==np.arange(G1.number_of_nodes()))
                 atom_map2 = np.array([at.GetAtomMapNum() for at in mol2.GetAtoms()])
                 atom_map2 = atom_map2.argsort().argsort()  # elements rank
+
+        else:
+            new_atoms = atoms
+            new_coords = coords
 
         atom_map = np.array([at.GetAtomMapNum() for at in mol.GetAtoms()])
         assert np.all(atom_map>0), f"mol {ireact} is not atom-mapped"
