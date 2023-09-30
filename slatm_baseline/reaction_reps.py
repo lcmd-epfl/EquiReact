@@ -84,23 +84,39 @@ class QML:
         self.mols_reactants = [[]]
         return
 
-    def get_GDB7_ccsd_data(self):
+    def get_GDB7_ccsd_data(self, xtb=False, xtb_subset=False):
         df = pd.read_csv("data/gdb7-22-ts/ccsdtf12_dz_cleaned.csv")
-        self.barriers = df['dE0'].to_numpy()
-        indices = df['idx'].apply(pad_indices).to_list()
+        if xtb or xtb_subset:
+            bad_idx = np.loadtxt('data/gdb7-22-ts/bad-xtb.dat', dtype=int)
+            for idx in bad_idx:
+                df.drop(df[df['idx']==idx].index, axis=0, inplace=True)
+        self.barriers = df['dE0'].values
+
+        if not xtb:
+            indices = df['idx'].apply(pad_indices).tolist()
+        else:
+            indices = [str(x) for x in df['idx'].tolist()]
+        print(f'{len(indices)} dataset size')
 
         r_mols = []
         p_mols = []
         for idx in indices:
-            filedir = 'data/gdb7-22-ts/xyz/'+idx
-            rfile = filedir + '/r' + idx + '.xyz'
+            if xtb:
+                filedir = 'data/gdb7-22-ts/xyz-xtb/' + idx
+                rfile = filedir + f'/Reactant_{idx}_0_opt.xyz'
+            else:
+                filedir = 'data/gdb7-22-ts/xyz/' + idx
+                rfile = filedir + '/r' + idx + '.xyz'
             r_atomtypes, r_ncharges, r_coords = reader(rfile)
             r_coords = r_coords * 0.529177 # bohr to angstrom
             r_mol = create_mol_obj(r_atomtypes, r_ncharges, r_coords)
             r_mols.append([r_mol])
 
             # multiple p files
-            pfiles = glob(filedir+'/p*.xyz')
+            if xtb:
+                pfiles = sorted(glob(filedir+f'/Product_{idx}_*_opt.xyz'))
+            else:
+                pfiles = sorted(glob(filedir+'/p*.xyz'))
             sub_pmols = []
             for pfile in pfiles:
                 p_atomtypes, p_ncharges, p_coords = reader(pfile)
@@ -154,6 +170,31 @@ class QML:
         self.unique_ncharges = np.unique(np.concatenate(self.ncharges, axis=0))
         self.mols_reactants = mols_reactants
         self.mols_products = mols_products
+        return
+
+    def get_proparg_data(self, xtb=False):
+        df = pd.read_csv("data/proparg/data.csv", index_col=0)
+        if xtb:
+            data_dir = 'data/proparg/xyz-xtb/'
+        else:
+            data_dir = 'data/proparg/xyz/'
+        indices = [''.join(x) for x in zip(df['mol'].to_list(), df['enan'].to_list())]
+
+        reactants_files = []
+        products_files = []
+        for idx in indices:
+            r_xyz, p_xyz = [f'{data_dir}{idx}.{x}.xyz' for x in ('r', 'p')]
+            reactants_files.append(r_xyz)
+            products_files.append(p_xyz)
+
+        all_mols = [qml.Compound(x) for x in reactants_files + products_files]
+        self.barriers = df.Eafw.to_numpy()
+        self.ncharges = [mol.nuclear_charges for mol in all_mols]
+        self.unique_ncharges = np.unique(np.concatenate(self.ncharges))
+
+        self.mols_reactants = [[qml.Compound(x)] for x in reactants_files]
+        self.mols_products = [[qml.Compound(x)] for x in products_files]
+
         return
 
     def get_SLATM(self):
