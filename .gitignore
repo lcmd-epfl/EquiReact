@@ -10,3 +10,7 @@ runs/
 
 slatm_baseline/slatm_cyclo.npy
 slatm_baseline/slatm_gdb.npy
+slatm_baseline/slatm_gdb_sub.npy
+slatm_baseline/slatm_gdb_xtb.npy
+slatm_baseline/slatm_proparg.npy
+slatm_baseline/slatm_proparg_xtb.npy
