@@ -13,7 +13,6 @@
 SEED=$(( $SLURM_ARRAY_TASK_ID + 123 ))
 
 module purge
-module load gcc/8.4.0-cuda cuda/10.2
 
 conda activate equireact
 python -c 'import torch; print(torch.cuda.is_available())'
@@ -36,6 +35,7 @@ python train.py --device cuda              \
                 --n_v 16                   \
                 --radius 5                 \
                 --sum_mode "node"          \
-                --wandb_name=cv10-proparg-noH-ns64-nv16-d16-layers3-vector-diff-node \
+                --wandb_name=cv10-LP-proparg-noH-ns64-nv16-d16-layers3-vector-diff-node \
                 --noH \
                 --logdir /scratch/izar/briling/cv  \
+                --lr 1e-3 --weight_decay 1e-5 \
