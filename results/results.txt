@@ -1,3 +1,182 @@
+98ytqehn cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH 130 6.265265115017994
+6cj8o87c cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH 131 6.328388988820322
+ug3qa07h cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 127 6.098015683098596
+hjxu9623 cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 130 6.569437160711683
+8pxi4aet cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 132 6.623131778670128
+70g2slmb cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 131 7.107218899199942
+3xxb7wct cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 125 6.886379741492081
+1d8s5l73 cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 126 5.89558848175801
+qxf56e1s cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 128 6.697708100558271
+r56ut1ub cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 124 6.4794771209035265
+j6px16o9 cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 129 6.856512359109494
+16xouekk cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 123 6.337560835214776
+z3yyfiwn cv10-LP-gdb-subset4xtb--ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 129 4.7187149387229415
+dvhloe3d cv10-LP-gdb-subset4xtb--ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 132 5.013796262044632
+90x4n0fk cv10-LP-gdb-subset4xtb--ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 131 5.329823765028061
+mhr5up7o cv10-LP-gdb-subset4xtb--ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 130 4.799021783330215
+unyfao43 cv10-LP-gdb-subset4xtb--ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 128 5.151011105810335
+78r05rhy cv10-LP-gdb-subset4xtb--ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 127 4.63287921539595
+3ba9ck8a cv10-LP-gdb-subset4xtb--ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 126 4.66490258344297
+h3bg3dg3 cv10-LP-gdb-subset4xtb--ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 125 5.066418192508419
+uc483yoi cv10-LP-gdb-subset4xtb--ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 124 4.965513290726614
+ud063pbm cv10-LP-gdb-subset4xtb--ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 123 5.030495934243371
+i8l9o2qw cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 131 6.009999803648018
+fihq6jv6 cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 132 6.153057487422715
+prkqot5f cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 130 6.213122784128497
+8h2yzopx cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 129 6.1671113795472685
+vum54ysd cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 128 6.134117044148362
+lx8grntq cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 127 5.7847408997961445
+n9v69kyv cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 126 6.11352858304725
+0tqvfs6g cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 125 6.1954972070093115
+yfvf4ccr cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 123 6.3905578401040035
+924l43ma cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 124 5.678505577150627
+9prgnifl cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH 132 5.981987249619885
+w7fvcyp7 cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH 124 5.628461326695278
+r00mxvp3 cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH 127 5.731188608398905
+noz9f1th cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH 126 6.128222630611833
+fj4aiy7o cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH 129 7.138425767562472
+7og1mcpi cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH 125 5.965271382613575
+tvh4o3u5 cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH 128 6.301947218197075
+xcx1577k cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH 123 6.364153323302286
+k1abk57w cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH 131 6.536710450771962
+327vb5gt cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH 129 6.805371836522528
+kak4ainn cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 132 5.279855477360462
+bn6ut42s cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 131 5.169478294152996
+isq2k63n cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 130 5.032784629809467
+rejaaldl cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 129 4.880629429654555
+xpircxxz cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 128 5.382600521945932
+wgj4fw10 cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 127 4.957171484979092
+4g69jsmw cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 126 5.048187177560584
+7htvvg00 cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 125 4.899830183845095
+xi1egqt7 cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 124 4.510010143193977
+0lqtjdrp cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 123 5.137557842596486
+7c2obgsp cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 132 6.256897901879513
+283qfy89 cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 131 6.266917404759019
+izmduggj cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 130 5.8645646769499455
+ovz5c1nf cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 129 6.305947119218953
+b5uwlkos cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 128 6.347400417746459
+oly3ixi7 cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 127 5.899442464822769
+3sv9tbv0 cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 125 6.574177822136759
+ttqdi84c cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 124 5.653025134869081
+juidnk04 cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 126 6.313657760367896
+spg67724 cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 123 6.358051933372742
+a00xohnl cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH 130 6.512572287124763
+uls1zjxc cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 130 6.747200835883037
+c91u1s50 cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 126 6.24865434604288
+ap50eybx cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH 132 6.649647580514767
+62ohagkx cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 131 7.325157338306928
+isgglfzr cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 125 6.957559333360949
+y7j1kre8 cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH 127 5.965514056517345
+gy5fwwes cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH 128 6.66703340931211
+bxuwcb3y cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 132 6.973788716205819
+ybn2dr02 cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 123 6.4993113441618835
+wjghnjja cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH 126 6.208118553298312
+u8sad1c1 cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 128 6.7331995607082815
+thwhcdai cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH 125 6.488638177817698
+igpxhs7x cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH 123 6.611797944874608
+hc3it7jn cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH 124 5.942519300161536
+b61539hw cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 124 6.635420674392011
+ah9xaqvq cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 129 6.92992448995814
+0qke6g5x cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 127 6.390696432930973
+wzunlzzf cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-crossattention 131 6.969986654515669
+hr12vd4f cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-crossattention 130 6.9531399222482015
+56pet1zk cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-crossattention 132 6.4948942784174415
+wy6qdbvq cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-crossattention 129 6.343857098554525
+iozbzqel cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 131 7.437108947499036
+tjsiaher cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-crossattention 123 6.553009327927582
+olvyx2ky cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 132 6.664367152163998
+gg5kdvrq cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-crossattention 124 6.85286806751077
+ejy7rt59 cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-crossattention 126 6.496923140048759
+9jrwbg77 cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-crossattention 128 6.275474827680138
+8mdebe57 cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-crossattention 127 6.63962165862373
+s8xgqifi cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 128 6.287861005130475
+1zogb9nu cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 125 6.784746318242089
+1bbjid5y cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-crossattention 125 6.747520555557561
+05jvfbim cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 124 6.506090312313607
+wmc5aldh cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 123 6.178490354864267
+wr0bmycx cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 129 6.168293739111375
+1mo05qlr cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 130 6.690288152580084
+swtqts3x cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 127 6.228975827739847
+0be6kynk cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 126 6.958635988468596
+vtikuxhb cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-rxnmapper 130 6.059856366712551
+3koz4g3r cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-rxnmapper 129 6.1337545036314065
+kozdkvxw cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-rxnmapper 128 6.415728383838979
+ebjfwwo9 cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH 125 6.35488034206349
+amr7wzo1 cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH 124 6.172411991995434
+47vn1n6m cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node 132 6.30684209732024
+983cf7yy cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node 131 7.029951966324661
+ecrz7obl cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node 130 6.364030955421127
+iq43oy7i cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node 129 5.816711735877733
+976v03wl cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node 128 6.082332982235009
+fjtj5tqm cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node 127 5.951452825108187
+7lv69er9 cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node 126 6.283817631403776
+lda9vhbg cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node 125 6.404318770162665
+k1t037r0 cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node 124 6.103161595326212
+zlclp0zo cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node 123 5.8789566030682066
+qiant55x cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-rxnmapper 132 6.610073886952319
+uoim7z9u cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-rxnmapper 131 6.548569298917236
+tmoyijcp cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-rxnmapper 127 6.354819844948756
+xm0ptekj cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-rxnmapper 126 6.562636700634652
+u5iipxxa cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-rxnmapper 125 6.467733641930121
+4ojwzehc cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-rxnmapper 124 6.563263858680572
+buhj0pce cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-rxnmapper 123 6.324513845012022
+nsvjx5y1 cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-truemapping 132 4.479342242054785
+tn2nhy9v cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-truemapping 131 5.2758802771087785
+ws87lmrw cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-truemapping 130 4.9026944813640245
+tu701e4y cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-truemapping 129 4.53955514972651
+s8uhodhu cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-truemapping 128 4.815546902033513
+elqwd9qx cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH 123 5.906034080944562
+thihvhc1 cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-truemapping 124 4.905179739071435
+1t7etsp1 cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-truemapping 125 4.706564572335975
+un84ldh5 cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 131 5.339120375581024
+qxofv1t5 cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 132 4.971380896736764
+kvhr79hk cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 132 6.163108157277177
+8jb5yyor cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 127 6.1439070825731505
+xx146lsf cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 126 5.143197351038814
+qx48l7on cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 128 4.907752133124946
+q5g8jvof cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 129 6.284148286190296
+lokjckfb cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 124 6.280411074543758
+fanu21ls cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 131 6.673681932967887
+6hypakce cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 123 4.77073411071923
+z8heed84 cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 123 5.9525184680447385
+vyl3zxg1 cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 127 4.8988032844496825
+sc2m7j4w cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 126 6.71842997745967
+oujxei0p cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 128 5.877988295993107
+ncb2tqtf cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 125 4.937781939981363
+805q63op cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 130 6.073097883993509
+vhq1i096 cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-truemapping 126 4.998929082300677
+v6m2taau cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH 129 5.774010904126581
+7lz12i1a cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-truemapping 127 5.2778620062086326
+2o0tm3dc cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-truemapping 123 4.423526908574442
+5u7a260y cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH 128 6.078038868165224
+3qdfbgdu cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 125 5.922858060697071
+uizh5no0 cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 124 5.062729567913195
+pfcms59b cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH 130 6.488889879100904
+hty5lorr cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH 127 6.092651755956824
+8wkjh7xl cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 130 5.05929956831286
+7lwhpu00 cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH 131 6.972296382605578
+7655ugx0 cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH 132 6.469857373248778
+cxo1vppp cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH 126 6.404894017193885
+cwc1utd8 cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 129 4.884981661471103
+
+cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH 6.183331161083963 0.39876896641259063
+cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 6.555103016071651 0.3503606038141704
+cv10-LP-gdb-subset4xtb--ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 4.93725770712535 0.21576020103645857
+cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 6.084023860600219 0.19939906784515216
+cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH 6.438792359691563 0.2831732842064617
+cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 5.029810518509866 0.23088203315768788
+cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 6.184008263612315 0.2679646176072274
+cv10-LP-gdb-xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 6.74409130719509 0.3021095427006138
+cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-crossattention 6.632729553108438 0.23086058366639345
+cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 6.5904857798113365 0.3850768281553145
+cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-rxnmapper 6.404095033125861 0.17840990876539445
+cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH 6.271396559540126 0.3259998145643039
+cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node 6.222157716224782 0.33256296001776997
+cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-truemapping 4.8325081360778785 0.28753866721583504
+cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 4.997578088932898 0.15235929307729829
+cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 6.2090149219740365 0.27717075479456604
+
+
 vlzc8ayf cv10-LP-proparg-semi-noH-ns64-nv16-d16-layers3-vector-diff-node 131 0.5879802835468624
 s6jqwb2j cv10-LP-proparg-semi-noH-ns64-nv16-d16-layers3-vector-diff-node 130 0.419713215657046
 wvok0eyp cv10-LP-proparg-semi-noH-ns64-nv16-d16-layers3-vector-diff-node 132 0.3741476900179882

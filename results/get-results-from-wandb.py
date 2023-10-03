@@ -8,7 +8,7 @@ import wandb
 
 api = wandb.Api()
 
-for dataset in ('gdb', 'cyclo', 'proparg'):
+for dataset in ('gdb', 'proparg'):
 
     runs = api.runs(f'nequireact-{dataset}')
     results = defaultdict(list)
