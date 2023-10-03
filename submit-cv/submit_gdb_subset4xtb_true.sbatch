@@ -1,6 +1,5 @@
 #!/bin/bash -l
 #SBATCH --partition=gpu
-#SBATCH --qos=gpu
 #SBATCH --nodes=1
 #SBATCH --gpus-per-node=1
 #SBATCH --cpus-per-task=1
@@ -14,7 +13,6 @@
 SEED=$(( $SLURM_ARRAY_TASK_ID + 123 ))
 
 module purge
-module load gcc/8.4.0-cuda cuda/10.2
 
 conda activate equireact
 python -c 'import torch; print(torch.cuda.is_available())'
@@ -38,6 +36,8 @@ python train.py --device cuda              \
                 --radius 2.5               \
                 --sum_mode "node"          \
                 --noH                      \
-                --wandb_name=cv10-gdb-subset4xtb--ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping \
+                --wandb_name=cv10-LP-gdb-subset4xtb--ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping \
                 --atom_mapping \
                 --two_layers_atom_diff \
+                --logdir /scratch/izar/briling/cv  \
+                --lr 1e-3 --weight_decay 1e-5 \
