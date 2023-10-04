@@ -20,7 +20,7 @@ class Cyclo23TS(Dataset):
                  xtb=False,
                  noH=False, rxnmapper=False, atom_mapping=False):
 
-        self.version = 4  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
+        self.version = 5  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
         self.max_number_of_reactants = 2
         self.max_number_of_products = 1
 
