@@ -20,21 +20,26 @@ class Cyclo23TS(Dataset):
                  xtb=False,
                  noH=False, rxnmapper=False, atom_mapping=False):
 
-        self.version = 5  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
+        self.version = 5.5  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
         self.max_number_of_reactants = 2
         self.max_number_of_products = 1
 
         self.processed_dir = processed_dir + '/'
         self.map_dir = map_dir
         self.atom_mapping = atom_mapping
+        self.rxnmapper = rxnmapper
         self.noH = noH
         self.xtb = xtb
         if rxnmapper:
-            self.column = 'rxn_smiles_rxnmapper'
+            if noH:
+                self.column = 'rxn_smiles_rxnmapper'
+            else:
+                self.column = 'rxn_smiles_rxnmapper_full'
         else:
-            self.column = 'rxn_smiles_mapped'
-        if rxnmapper and not noH:
-            raise RuntimeError
+            if noH:
+                self.column = 'rxn_smiles_mapped'
+            else:
+                self.column = 'rxn_smiles'
         if xtb:
             self.files_dir='data/cyclo/xyz-xtb/'
         else:
@@ -179,13 +184,19 @@ class Cyclo23TS(Dataset):
         mol = canon_mol(mol)
         assert mol is not None, f"mol obj {idx} is None from smi {smi}"
         atoms, coords, mapping = self.reorder_xyz(mol, atoms, coords, mapping, idx)
+
         if self.noH:
-            # use mapping from SMILES
             mol = Chem.RemoveAllHs(mol)
+
+        # use mapping from SMILES
+        if self.noH or self.rxnmapper:
             mapping = self.reorder_mapping(smi, mol, idx)
+
+        if self.noH:
             noH_idx = np.where(atoms!='H')
             atoms = atoms[noH_idx]
             coords = coords[noH_idx]
+
         ats = [at.GetSymbol() for at in mol.GetAtoms()]
         assert len(ats) == len(atoms), f"nats don't match in {idx}"
         assert np.all(ats == atoms), f"atomtypes don't match in {idx}"
@@ -212,7 +223,8 @@ class Cyclo23TS(Dataset):
 
 
     def reorder_mapping(self, smi, mol, idx):
-        mol2 = Chem.MolFromSmiles(smi)
+        mol2 = Chem.MolFromSmiles(smi, sanitize=False)
+        Chem.SanitizeMol(mol2)
         mapping = np.array([at.GetAtomMapNum() for at in mol2.GetAtoms()])-1
         G1 = self.make_nx_graph_from_mol(mol)
         G2 = self.make_nx_graph_from_mol(mol2)
