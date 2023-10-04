@@ -128,25 +128,19 @@ class Cyclo23TS(Dataset):
             pfile = glob(f'{self.files_dir}/{idx}/p*.xyz')[0]
             patoms, pcoords = reader(pfile)
 
+            # atom mapping is read from files
+            # in case of noH/rxnmapper will be reread from smiles
+            r0map = np.loadtxt(mapfiles[0], dtype=int)
+            r1map = np.loadtxt(mapfiles[1], dtype=int)
+            pmap = np.arange(len(patoms))
+
             rxnsmi = entry[self.column].item()
             rsmis, psmi = rxnsmi.split('>>')
             r0smi, r1smi = rsmis.split('.')
 
-            if self.noH:
-                # atom mapping from SMILES
-                r0graph, r0atoms, r0coords, r0map = self.make_graph_noH(r0smi, r0atoms, r0coords, idx)
-                r1graph, r1atoms, r1coords, r1map = self.make_graph_noH(r1smi, r1atoms, r1coords, idx)
-                pgraph, patoms, pcoords, pmap = self.make_graph_noH(psmi, patoms, pcoords, idx)
-            else:
-                # atom mapping from files
-                r0map = np.loadtxt(mapfiles[0], dtype=int)
-                r1map = np.loadtxt(mapfiles[1], dtype=int)
-                pmap = np.arange(len(patoms))
-                assert len(r0atoms)==len(r0map), 'different number of atoms in the xyz and mapping files'
-                assert len(r1atoms)==len(r1map), 'different number of atoms in the xyz and mapping files'
-                r0graph, r0atoms, r0map = self.make_graph(r0smi, r0atoms, r0coords, r0map, idx)
-                r1graph, r1atoms, r1map = self.make_graph(r1smi, r1atoms, r1coords, r1map, idx)
-                pgraph,  patoms,  pmap  = self.make_graph(psmi,  patoms,  pcoords,  pmap,  idx)
+            r0graph, r0atoms, r0map = self.make_graph(r0smi, r0atoms, r0coords, r0map, idx)
+            r1graph, r1atoms, r1map = self.make_graph(r1smi, r1atoms, r1coords, r1map, idx)
+            pgraph,  patoms,  pmap  = self.make_graph(psmi,  patoms,  pcoords,  pmap,  idx)
 
             rmap = np.hstack((r0map, r1map))
             p2rmap = np.hstack([np.where(pmap==j)[0] for j in rmap])
@@ -167,46 +161,27 @@ class Cyclo23TS(Dataset):
         print(f"Saved graphs to {self.paths.r0g}, {self.paths.r1g} and {self.paths.pg}")
 
 
-    def make_graph_noH(self, smi, atoms, coords, idx):
-        mol = Chem.MolFromSmiles(smi)
-        mol = canon_mol(mol)
-        mol = Chem.RemoveAllHs(mol)
-        assert mol is not None, f"mol obj {idx} is None from smi {smi}"
-        ats = [at.GetSymbol() for at in mol.GetAtoms()]
-#        print()
-#        print([at.GetAtomMapNum() for at in mol.GetAtoms()])
-#        print(ats)
-
-        mol2 = Chem.MolFromSmiles(smi)
-        mapping = np.array([at.GetAtomMapNum() for at in mol2.GetAtoms()])
-        G1 = self.make_nx_graph_from_mol(mol)
-        G2 = self.make_nx_graph_from_mol(mol2)
-        GM = iso.GraphMatcher(G1, G2, node_match=iso.categorical_node_match('q', None))
-        assert GM.is_isomorphic(), f"smiles and xyz graphs are not isomorphic in {idx}"
-        match = next(GM.match())
-        src, dst = np.array(sorted(match.items(), key=lambda match: match[0])).T
-        assert np.all(src==np.arange(G1.number_of_nodes()))
-        mapping = mapping[dst]
-
-        noH_idx = np.where(atoms!='H')
-        atoms = atoms[noH_idx]
-        coords = coords[noH_idx]
-
-        assert len(ats) == len(atoms), f"nats don't match in idx {idx}"
-        assert np.all(ats == atoms), "atomtypes don't match"
-        return get_graph(mol, atoms, coords, idx), atoms, coords, mapping-1
-
-
-
-
     def make_graph(self, smi, atoms, coords, mapping, idx):
         mol = Chem.MolFromSmiles(smi)
         mol = canon_mol(mol)
         assert mol is not None, f"mol obj {idx} is None from smi {smi}"
+        atoms, coords, mapping = self.reorder_xyz(mol, atoms, coords, mapping, idx)
+        if self.noH:
+            # use mapping from SMILES
+            mol = Chem.RemoveAllHs(mol)
+            mapping = self.reorder_mapping(smi, mol, idx)
+            noH_idx = np.where(atoms!='H')
+            atoms = atoms[noH_idx]
+            coords = coords[noH_idx]
         ats = [at.GetSymbol() for at in mol.GetAtoms()]
         assert len(ats) == len(atoms), f"nats don't match in {idx}"
+        assert np.all(ats == atoms), f"atomtypes don't match in {idx}"
+        return get_graph(mol, atoms, coords, idx), atoms, mapping
 
 
+    def reorder_xyz(self, mol, atoms, coords, mapping, idx):
+        ats = [at.GetSymbol() for at in mol.GetAtoms()]
+        assert len(ats) == len(atoms), f"nats don't match in {idx}"
         G1 = self.make_nx_graph_from_mol(mol)
         G2 = self.make_nx_graph_from_xyz(atoms, coords)
         assert len(G1.edges)==len(G2.edges), f"different number of bonds in {idx}"
@@ -219,16 +194,22 @@ class Cyclo23TS(Dataset):
             atoms = atoms[dst]
             coords = coords[dst]
             mapping = mapping[dst]
-
-
         assert np.all(ats == atoms), f"atomtypes don't match in {idx}"
-
-        return get_graph(mol, atoms, coords, idx), atoms, mapping
-
+        return atoms, coords, mapping
 
 
-
-
+    def reorder_mapping(self, smi, mol, idx):
+        mol2 = Chem.MolFromSmiles(smi)
+        mapping = np.array([at.GetAtomMapNum() for at in mol2.GetAtoms()])-1
+        G1 = self.make_nx_graph_from_mol(mol)
+        G2 = self.make_nx_graph_from_mol(mol2)
+        GM = iso.GraphMatcher(G1, G2, node_match=iso.categorical_node_match('q', None))
+        assert GM.is_isomorphic(), f"smiles and xyz graphs are not isomorphic in {idx}"
+        match = next(GM.match())
+        src, dst = np.array(sorted(match.items(), key=lambda match: match[0])).T
+        assert np.all(src==np.arange(G1.number_of_nodes()))
+        mapping = mapping[dst]
+        return mapping
 
 
     def get_r_files(self, idx, switch=False):
@@ -254,37 +235,27 @@ class Cyclo23TS(Dataset):
         self.labels = (self.labels - mean)/std
 
 
-    def make_nx_graph_from_mol(self, mol):
-        bonds = np.array(sorted(sorted((i.GetBeginAtomIdx(), i.GetEndAtomIdx())) for i in mol.GetBonds()))
-        atoms = np.array([at.GetSymbol() for at in mol.GetAtoms()])
-        return self.make_nx_graph(atoms, bonds)
-
     def make_nx_graph(self, atoms, bonds):
         G = networkx.Graph()
         G.add_nodes_from([(i, {'q': q}) for i, q in enumerate(atoms)])
         G.add_edges_from(bonds)
         return G
 
+    def make_nx_graph_from_mol(self, mol):
+        bonds = np.array(sorted(sorted((i.GetBeginAtomIdx(), i.GetEndAtomIdx())) for i in mol.GetBonds()))
+        atoms = np.array([at.GetSymbol() for at in mol.GetAtoms()])
+        return self.make_nx_graph(atoms, bonds)
+
     def make_nx_graph_from_xyz(self, atoms, coords):
         bonds = self.get_xyz_bonds(atoms, coords)
         return self.make_nx_graph(atoms, bonds)
 
     def get_xyz_bonds(self, atoms, coords):
-        def get_xyz_bonds_inner(atoms, coords, rscal=1.0):
-            rad = {'H': 0.455, 'C':  0.910, 'N': 0.845, 'O': 0.780, 'F': 0.650, 'Cl': 1.300, 'Br': 1.495}
-            xyz_bonds = []
-            for i1, (a1, r1) in enumerate(zip(atoms, coords)):
-                for i2, (a2, r2) in enumerate(list(zip(atoms, coords))[i1+1:], start=i1+1):
-                    rmax = (rad[a1]+rad[a2]) * rscal
-                    if np.linalg.norm(r1-r2) < rmax:
-                        xyz_bonds.append((i1, i2))
-            return np.array(xyz_bonds)
-#        for rscal in [1.0, 1.1, 1.0/1.1, 1.05, 1.0/1.05]:
-        if True:
-            rscal=1.0
-            xyz_bonds = get_xyz_bonds_inner(atoms, coords, rscal=rscal)
-            #if len(xyz_bonds) == nbonds:
-            if True:
-                return xyz_bonds
-        else:
-            return None
+        rad = {'H': 0.455, 'C':  0.910, 'N': 0.845, 'O': 0.780, 'F': 0.650, 'Cl': 1.300, 'Br': 1.495}
+        xyz_bonds = []
+        for i1, (a1, r1) in enumerate(zip(atoms, coords)):
+            for i2, (a2, r2) in enumerate(list(zip(atoms, coords))[i1+1:], start=i1+1):
+                rmax = (rad[a1]+rad[a2])
+                if np.linalg.norm(r1-r2) < rmax:
+                    xyz_bonds.append((i1, i2))
+        return np.array(xyz_bonds)
