@@ -10,7 +10,7 @@ from tqdm import tqdm
 from rdkit import Chem
 import networkx
 import networkx.algorithms.isomorphism as iso
-from process.create_graph import reader, get_graph, canon_mol, get_empty_graph
+from process.create_graph import reader, get_graph, get_empty_graph
 
 
 class GDB722TS(Dataset):

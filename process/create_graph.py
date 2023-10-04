@@ -41,7 +41,7 @@ def canon_mol(mol):
     smi = Chem.CanonSmiles(smi)
     mol = Chem.MolFromSmiles(smi)
     mol = Chem.AddHs(mol)
-    #Chem.SanitizeMol(mol)
+    Chem.SanitizeMol(mol)
     return mol
 
 
