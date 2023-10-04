@@ -36,7 +36,7 @@ python train.py --device cuda              \
                 --radius 2.5               \
                 --sum_mode "node"          \
                 --noH                      \
-                --wandb_name=cv10-LP-gdb-subset4xtb--ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping \
+                --wandb_name=cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping \
                 --atom_mapping \
                 --two_layers_atom_diff \
                 --logdir /scratch/izar/briling/cv  \

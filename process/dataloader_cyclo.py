@@ -20,7 +20,7 @@ class Cyclo23TS(Dataset):
                  xtb=False,
                  noH=False, rxnmapper=False, atom_mapping=False):
 
-        self.version = 6  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
+        self.version = '6a'  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
         self.max_number_of_reactants = 2
         self.max_number_of_products = 1
 
@@ -45,7 +45,7 @@ class Cyclo23TS(Dataset):
         else:
             self.files_dir='data/cyclo/xyz/'
 
-        dataset_prefix = os.path.splitext(os.path.basename(csv_path))[0]+'.'+self.column
+        dataset_prefix = os.path.splitext(os.path.basename(csv_path))[0]+'.'+self.column+'.xtb-subset'
         if noH:
             dataset_prefix += '.noH'
         if xtb:
@@ -63,7 +63,7 @@ class Cyclo23TS(Dataset):
         print("Loading data into memory...")
 
         self.df = pd.read_csv(csv_path)
-        if xtb:
+        if True:
             bad_idx = np.loadtxt('data/cyclo/bad-xtb.dat', dtype=int)
             for idx in bad_idx:
                 self.df.drop(self.df[self.df['rxn_id']==idx].index, axis=0, inplace=True)
