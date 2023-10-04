@@ -14,12 +14,11 @@ from process.create_graph import reader, get_graph, canon_mol
 
 
 class Cyclo23TS(Dataset):
-    def __init__(self, files_dir='data/cyclo/xyz/', csv_path='data/cyclo/mod_dataset.csv',
+    def __init__(self, files_dir='data/cyclo/xyz/', csv_path='data/cyclo/cyclo.csv',
                  map_dir='data/cyclo/matches/',
                  processed_dir='data/cyclo/processed/', process=True,
                  noH=False, rxnmapper=False, atom_mapping=False):
 
-        csv_path='data/cyclo/full_dataset_2.csv'
         self.version = 4  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
         self.max_number_of_reactants = 2
         self.max_number_of_products = 1
