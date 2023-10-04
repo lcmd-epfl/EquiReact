@@ -14,30 +14,37 @@ from process.create_graph import reader, get_graph, canon_mol
 
 
 class Cyclo23TS(Dataset):
-    def __init__(self, files_dir='data/cyclo/xyz/', csv_path='data/cyclo/cyclo.csv',
+    def __init__(self, csv_path='data/cyclo/cyclo.csv',
                  map_dir='data/cyclo/matches/',
                  processed_dir='data/cyclo/processed/', process=True,
+                 xtb=False,
                  noH=False, rxnmapper=False, atom_mapping=False):
 
         self.version = 4  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
         self.max_number_of_reactants = 2
         self.max_number_of_products = 1
 
-        self.files_dir = files_dir + '/'
         self.processed_dir = processed_dir + '/'
         self.map_dir = map_dir
         self.atom_mapping = atom_mapping
         self.noH = noH
+        self.xtb = xtb
         if rxnmapper:
             self.column = 'rxn_smiles_rxnmapper'
         else:
             self.column = 'rxn_smiles_mapped'
         if rxnmapper and not noH:
             raise RuntimeError
+        if xtb:
+            self.files_dir='data/cyclo/xyz-xtb/'
+        else:
+            self.files_dir='data/cyclo/xyz/'
 
         dataset_prefix = os.path.splitext(os.path.basename(csv_path))[0]+'.'+self.column
         if noH:
             dataset_prefix += '.noH'
+        if xtb:
+            dataset_prefix += '.xtb'
         dataset_prefix += f'.v{self.version}'
         print(f'{dataset_prefix=}')
 
@@ -51,6 +58,10 @@ class Cyclo23TS(Dataset):
         print("Loading data into memory...")
 
         self.df = pd.read_csv(csv_path)
+        if xtb:
+            bad_idx = np.loadtxt('data/cyclo/bad-xtb.dat', dtype=int)
+            for idx in bad_idx:
+                self.df.drop(self.df[self.df['rxn_id']==idx].index, axis=0, inplace=True)
         self.labels = torch.tensor(self.df['G_act'].values)
         indices = self.df['rxn_id'].to_list()
         self.indices = indices
@@ -124,7 +135,10 @@ class Cyclo23TS(Dataset):
             rfiles, mapfiles = self.get_r_files(idx, switch=switch)
             r0atoms, r0coords = reader(rfiles[0])
             r1atoms, r1coords = reader(rfiles[1])
-            pfile = glob(f'{self.files_dir}/{idx}/p*.xyz')[0]
+            if self.xtb:
+                pfile = f'{self.files_dir}/Product_{idx}.xyz'
+            else:
+                pfile = glob(f'{self.files_dir}/{idx}/p*.xyz')[0]
             patoms, pcoords = reader(pfile)
 
             # atom mapping is read from files
@@ -186,7 +200,7 @@ class Cyclo23TS(Dataset):
         assert len(G1.edges)==len(G2.edges), f"different number of bonds in {idx}"
         if not (np.all(ats==atoms) and (G1.edges==G2.edges)):
             GM = iso.GraphMatcher(G1, G2, node_match=iso.categorical_node_match('q', None))
-            assert GM.is_isomorphic()
+            assert GM.is_isomorphic(), f'xyz and smiles are not isomorphic for {idx}'
             match = next(GM.match())
             src, dst = np.array(sorted(match.items(), key=lambda match: match[0])).T
             assert np.all(src==np.arange(G1.number_of_nodes()))
@@ -212,17 +226,21 @@ class Cyclo23TS(Dataset):
 
 
     def get_r_files(self, idx, switch=False):
-        reactants = sorted(glob(f'{self.files_dir}/{idx}/r*.xyz'), reverse=True)
-        reactants = self.check_alt_files(reactants)
-        assert len(reactants) == 2, f"Inconsistent length of {len(reactants)}"
-        # inverse labelling in their xyz files
-        r0_label = reactants[0].split("/")[-1][:2]
-        assert r0_label == 'r1', 'not r0'
-        r1_label = reactants[1].split("/")[-1][:2]
-        assert r1_label == 'r0', 'not r1'
+        if self.xtb:
+            reactants = [f'{self.files_dir}/Reactant_{idx}_{ir}.xyz' for ir in (0,1)]
+        else:
+            reactants = sorted(glob(f'{self.files_dir}/{idx}/r*.xyz'), reverse=True)
+            reactants = self.check_alt_files(reactants)
+            assert len(reactants) == 2, f"Inconsistent length of {len(reactants)}"
+            # inverse labelling in their xyz files
+            r0_label = reactants[0].split("/")[-1][:2]
+            assert r0_label == 'r1', 'not r0'
+            r1_label = reactants[1].split("/")[-1][:2]
+            assert r1_label == 'r0', 'not r1'
         mapfiles = [f'{self.map_dir}/R1_{idx}.dat', f'{self.map_dir}/R0_{idx}.dat']
         if switch:
-            reactants = reactants[::-1]
+            if not self.xtb:
+                reactants = reactants[::-1]
             mapfiles = mapfiles[::-1]
         return reactants, mapfiles
 
