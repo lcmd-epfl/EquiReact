@@ -18,13 +18,11 @@ def argparse():
     g1.add_argument('--none', action='store_true', help='use non-mapped smiles')
     g2 = parser.add_mutually_exclusive_group(required=True)
     g2.add_argument('-c', '--cyclo', action='store_true', help='use curated Cyclo-23-TS dataset')
-    g2.add_argument('-p', '--proparg', action='store_true', help='use Proparg-21-TS dataset with SMILES from xyz')
+    g2.add_argument('-p', '--proparg_combinat', action='store_true', help='use Proparg-21-TS dataset with fragment-based SMILES')
     g2.add_argument('-g', '--gdb', action='store_true', help='use curated GDB7-22-TS dataset')
     g2.add_argument('-r', '--rgd', action='store_true', help='use RGD1 dataset')
-    g2.add_argument('--gdb_full', action='store_true', help='use GDB7-22-TS dataset')
-    g2.add_argument('--proparg_combinat', action='store_true', help='use Proparg-21-TS dataset with fragment-based SMILES')
+    g2.add_argument('--proparg_xyz', action='store_true', help='use Proparg-21-TS dataset with SMILES from xyz')
     g2.add_argument('--proparg_stereo', action='store_true', help='use Proparg-21-TS dataset with stereochemistry-enriched fragment-based SMILES')
-    g2.add_argument('--cyclo_full', action='store_true', help='use full Cyclo-23-TS dataset')
     args = parser.parse_args()
     return parser, args
 
@@ -33,29 +31,24 @@ if __name__ == "__main__":
 
     parser, args = argparse()
     if args.cyclo:
-        data_path = '../../../data/cyclo/mod_dataset.csv'
+        data_path = '../../../data/cyclo/cyclo.csv'
         target_columns = 'G_act'
-    elif args.rgd:
-        data_path = '../../csv/rgd.csv'
-        target_columns = 'DE_F'
     elif args.gdb:
         data_path = '../../csv/gdb.csv'
         target_columns = 'dE0'
-    elif args.gdb_full:
-        data_path = '../../csv/gdb-full.csv'
-        target_columns = 'dE0'
-    elif args.proparg:
-        data_path = '../../csv/proparg.csv'
-        target_columns = "Eafw"
     elif args.proparg_combinat:
         data_path = '../../csv/proparg-fixarom.csv'
+        target_columns = "Eafw"
+
+    elif args.rgd:
+        data_path = '../../csv/rgd.csv'
+        target_columns = 'DE_F'
+    elif args.proparg_xyz:
+        data_path = '../../csv/proparg.csv'
         target_columns = "Eafw"
     elif args.proparg_stereo:
         data_path = '../../csv/proparg-stereo.csv'
         target_columns = "Eafw"
-    if args.cyclo_full:
-        data_path = '../../csv/cyclo.csv'
-        target_columns = 'G_act'
 
     if args.random:
         smiles_columns = 'rxn_smiles_random'
@@ -71,6 +64,7 @@ if __name__ == "__main__":
         "--dataset_type",  "regression",
         "--target_columns", target_columns,
         "--smiles_columns", smiles_columns,
+        "--split_sizes", "0.9", "0.05", "0.05",
         "--metric", "mae",
         "--dropout", "0.05",
         "--epochs", "300",
