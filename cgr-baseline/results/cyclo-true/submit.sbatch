@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --partition=debug
+#SBATCH --partition=gpu
 #SBATCH --nodes=1
 #SBATCH --gpus-per-node=1
 #SBATCH --ntasks=1
