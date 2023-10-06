@@ -59,6 +59,7 @@ def parse_arguments(arglist=sys.argv[1:]):
     g_run.add_argument('--seed'               , type=int           , default=123      ,  help='initial seed values')
     g_run.add_argument('--verbose'            , action='store_true', default=False    ,  help='Print dims throughout the training process')
     g_run.add_argument('--process'            , action='store_true', default=False    ,  help='(re-)process data by force (if data is already there, default is to not reprocess)?')
+    g_run.add_argument('--eval_on_test_split' , action='store_true', default=False    ,  help='print error per test molecule')
 
     g_hyper = p.add_argument_group('hyperparameters')
     g_hyper.add_argument('--subset'               , type=int           , default=None     ,  help='size of a subset to use instead of the full set (tr+te+va)')
@@ -136,6 +137,7 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
           xtb = False,
           semiempirical = False,
           sweep = False,
+          eval_on_test_split=False
           ):
     device = torch.device("cuda:0" if torch.cuda.is_available() and device == 'cuda' else "cpu")
     print(f"Running on device {device}")
@@ -236,10 +238,16 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
 
             # file dump for each split
             data_split_string = 'test_split_' + str(CV)
-            test_metrics, _, _ = trainer.evaluation(test_loader, data_split=data_split_string)
+            test_metrics, pred, targ = trainer.evaluation(test_loader, data_split=data_split_string, return_pred=True)
+            if eval_on_test_split:
+                for x in zip(test_data.indices, np.squeeze(torch.vstack(targ).cpu().numpy()),
+                                                np.squeeze(torch.vstack(pred).cpu().numpy())):
+                    print('>>>', *x)
+
             mae_split = test_metrics['mae'] * std
             maes.append(mae_split)
-            wandb.run.summary["test_score"] = mae_split
+            if wandb.run is not None:
+                wandb.run.summary["test_score"] = mae_split
 
         seed += 1
         if not sweep:
@@ -250,7 +258,7 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
         mean_mae_splits = np.mean(maes)
         std_mae_splits = np.std(maes)
         print(f"Mean MAE across splits {mean_mae_splits} +- {std_mae_splits}")
-    return
+    return maes
 
 
 if __name__ == '__main__':
@@ -289,4 +297,5 @@ if __name__ == '__main__':
           combine_mode=args.combine_mode, atom_mapping=args.atom_mapping, CV=args.CV, attention=args.attention,
           noH=args.noH, two_layers_atom_diff=args.two_layers_atom_diff, rxnmapper=args.rxnmapper, reverse=args.reverse,
           xtb=args.xtb, semiempirical=args.semiempirical,
+          eval_on_test_split=args.eval_on_test_split,
           split_complexes=args.split_complexes, lr=args.lr, weight_decay=args.weight_decay)

@@ -150,7 +150,7 @@ class Trainer():
 
                 # val loss is MSE, shouldn't be affected by data normalisation
                 val_loss = metrics[type(self.loss_func).__name__]
-                if np.isfinite(self.best_val_score):
+                if np.isfinite(self.best_val_score.cpu()):
                     wandb.log({"val_loss": val_loss, "val_score": val_score, "epoch": self.epoch, "val_score_best": self.best_val_score})
                 else:
                     wandb.log({"val_loss": val_loss, "val_score": val_score, "epoch": self.epoch})
@@ -178,7 +178,10 @@ class Trainer():
                 #    raise Exception
 
         # evaluate on best checkpoint
-        checkpoint = torch.load(os.path.join(self.log_dir, f'{self.run_name}.best_checkpoint.pt'), map_location=self.device)
+        if os.path.exists(f'{self.run_name}.best_checkpoint.pt'):
+            checkpoint = torch.load(os.path.join(self.log_dir, f'{self.run_name}.best_checkpoint.pt'), map_location=self.device)
+        else:
+            checkpoint = torch.load(self.checkpoint, map_location=self.device)
         self.model.load_state_dict(checkpoint['model_state_dict'])
         return self.evaluation(val_loader, data_split='val_best_checkpoint')
 
