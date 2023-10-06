@@ -101,13 +101,12 @@ class Trainer():
             self.start_epoch = check['epoch']
             self.best_val_score = check['best_val_score']
             self.optim_steps = check['optim_steps']
-            self.log_dir = os.path.dirname(self.checkpoint)
         else:
             # not sure this is needed
             self.start_epoch = 1
             self.optim_steps = 0
             self.best_val_score = torch.tensor(-np.inf) if self.main_metric_goal == 'max' else torch.tensor(np.inf)  # running score to decide whether or not a new model should be saved
-            self.log_dir = run_dir
+        self.log_dir = run_dir
         self.run_name = run_name
 
         #for i, param_group in enumerate(self.optim.param_groups):

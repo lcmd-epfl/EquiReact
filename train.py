@@ -53,7 +53,7 @@ def parse_arguments(arglist=sys.argv[1:]):
     g_run.add_argument('--wandb_name'         , type=str           , default=None     ,  help='name of wandb run')
     g_run.add_argument('--device'             , type=str           , default='cuda'   ,  help='cuda or cpu')
     g_run.add_argument('--logdir'             , type=str           , default='logs'   ,  help='log dir')
-    g_run.add_argument('--checkpoint'         , type=str           , default=None     ,  help='path the checkpoint file to continue training')
+    g_run.add_argument('--checkpoint'         , type=str           , default=None     ,  help='path of the checkpoint file to continue training')
     g_run.add_argument('--CV'                 , type=int           , default=1        ,  help='cross validate')
     g_run.add_argument('--num_epochs'         , type=int           , default=2500     ,  help='number of times to iterate through all samples')
     g_run.add_argument('--seed'               , type=int           , default=123      ,  help='initial seed values')
@@ -264,10 +264,6 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
 if __name__ == '__main__':
 
     args, arg_groups = parse_arguments()
-
-    if not os.path.exists(args.logdir):
-        print(f"creating log dir {args.logdir}")
-        os.mkdir(args.logdir)
 
     if args.checkpoint:
         run_dir = os.path.dirname(args.checkpoint)
