@@ -312,3 +312,182 @@ cv10-LP-proparg-noH-ns64-nv16-d16-layers3-vector-diff-node 0.2712933677162441 0.
 cv10-LP-proparg-noH-ns64-nv16-d16-layers3-vector-diff-node-truemapping 0.2924520340787906 0.059234299217346326
 
 
+t0vvllzv cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both 123 2.345817118269172
+6p0df5i1 cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 132 2.4805403590768114
+wgjws273 cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 131 2.251477296265937
+qk7loxb6 cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 128 2.4135936819175132
+q0wsu28r cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both 127 2.3400172703965727
+3wx5qulu cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 129 2.324885861722409
+zsr8c6iw cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 126 2.2758109792789636
+xtip8fpp cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 127 2.253529437083132
+xqps5w60 cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both 129 2.119001077042374
+x59nvtxa cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 125 2.4071528475378465
+u1u389zx cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both 130 2.2241689866611067
+sqcb2anl cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both 132 2.417788900746252
+s4ewdu66 cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 123 2.3899999792901565
+q71055o1 cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 123 2.1703328598816616
+pqv9xhua cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 129 2.6107351672030896
+mv302hlj cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 128 2.4514865130442898
+itfmd7i3 cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 128 2.4741768313717656
+ggk8t9p4 cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 130 2.180484133436476
+evxwvftu cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 129 2.47921192981295
+e3lx55py cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both 131 2.2804929553526327
+b1ue3u6r cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both 126 2.334035955084708
+ax41k31p cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 124 2.215332290085848
+8r2fjsmi cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 132 2.4808098350462573
+6rkwyq4q cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 130 2.042575050137066
+6r55esu5 cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 131 2.3373101581865043
+4zzka0lz cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 127 2.30285939908832
+4ydvomm4 cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both 125 2.255886415031906
+2cwcqew7 cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 131 2.3193084185729145
+y05p15bf cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 130 2.1988110942329513
+vi3ozrwi cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 127 2.301057298975859
+mwynq325 cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 126 2.388726369315466
+bycq869h cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both 124 2.165031758258597
+8w6x2tyu cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 125 2.2939384959879643
+4tobldme cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both 128 2.4995071861263005
+1e3td08h cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 123 2.2473950630603055
+14d6rhe4 cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 125 2.25694127825591
+au5hm7is cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 132 2.4041693000658046
+0kzjp71n cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 124 2.415157442264517
+rruog0xq cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 126 2.3587060618211546
+7zivtne2 cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 124 2.059108255570662
+fjhrxygw cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 132 3.112269024917667
+09dyhnw5 cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 131 3.2975634212108496
+0xkzyn3z cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 130 3.0292488854433848
+wi3zk074 cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 129 3.2657908260434994
+56c18ruc cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 128 3.139269127483828
+pz9jv8ef cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 127 3.046029472693013
+slpbsvax cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 125 2.934283975395711
+jz5hdoso cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 126 2.887640448911491
+5d57gp6x cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 124 2.738838545602155
+tgyodk12 cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 123 2.859086236186815
+y7idh27n cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 132 3.117213007838348
+kyj5dr1r cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 131 3.0184418265968342
+husg7f4e cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 130 3.000366792647122
+dsoj6q5m cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 129 3.3907437574064176
+bmxchye1 cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 128 3.3697091951460623
+u0ww503p cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 127 3.0898445840292688
+5jp7r7nv cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 126 3.1037913126107264
+8rtggig9 cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 125 2.682966702301677
+rtsplv3j cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 124 2.7323702124148244
+aal43uks cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 123 3.215508762404501
+5ycilbu3 cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both 131 3.2951439468032895
+qubbh9uo cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both 132 3.095499102943875
+7wrlexo2 cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both 130 2.826379911552132
+qf6abklk cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both 129 3.065994302071478
+fuazd9jz cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both 128 3.310065076932919
+uhohoobo cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 127 2.877129125703892
+ngnofc04 cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 128 3.4595363228942713
+nibwt3zi cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both 124 2.76411155020785
+7y9syzsb cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both 123 2.9208879682794047
+ynrifq4k cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both 126 3.099909833503941
+t7bdg6ts cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both 125 2.8715860263429507
+810qp7ke cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both 127 2.9103953167347743
+tgnr9dcf cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 130 3.093923721675741
+rw3ly6jf cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 123 3.042911019198141
+h190myky cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 125 2.8244160330369534
+gkoaww80 cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 131 2.9802928230890555
+b5irivs1 cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 126 3.1506515625296374
+4w7n5k3n cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 132 3.044259471288533
+3ekni7o5 cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 129 3.321643947383887
+a0532xz1 cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 124 2.796598286758192
+369e7fs0 cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 132 2.5126609451620863
+7aqw6op0 cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 131 2.788767807231101
+ojsp9mpq cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 130 2.4379768385157714
+5zaagan5 cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 129 2.853829506196594
+73skzvy2 cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 128 2.658780776161151
+9ihnlvs3 cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 127 2.678251793968931
+z7kvxra1 cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 126 2.93472893353914
+9ohyduif cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 125 2.6960478421286327
+oraiv1ln cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 124 2.693618257527879
+l2m7s853 cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 123 2.7375647462880974
+qy82ng7p cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 132 2.54156303529433
+2n70rhu6 cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 131 2.8593626536020538
+e4vitquz cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 130 2.377813677306123
+ek6s8cdj cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 129 2.8772561182974368
+6p0ep480 cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 128 2.7182942736790765
+4mym4kyz cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 127 2.703619472806357
+6r9zv7m8 cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 126 3.1856182565724676
+dffkaked cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 125 2.671195443407747
+txu0kdws cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 124 2.6433113446271026
+kydwet6x cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 123 2.700160217259409
+bkg5ysca cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both 132 2.1905039818022334
+f8c29zrj cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both 131 2.513871440709986
+ozogy2ma cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both 130 2.1781744351592796
+uywevzuj cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both 129 2.379867670269964
+m9r6ea3m cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both 128 2.2744710614884593
+3csftrbi cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both 127 2.2454767364574875
+rsxyks2j cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both 126 2.447311830436088
+93pwy5tg cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both 125 2.0754023365005088
+ahtkuoer cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both 124 2.2493562747097675
+z9xdfdc1 cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both 123 2.2666458453723757
+zudu559r cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 126 2.404735484030605
+yuj118w4 cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 125 2.334092829684723
+y4c4glkj cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 130 2.2698507450591565
+u4nz83kw cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 131 2.4529863634503535
+sg3vj84x cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 125 2.201809323091413
+pxhzj4a0 cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 123 2.654369404729508
+ozrostpe cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both 123 2.4032454926583746
+o1lgrg54 cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 132 2.2323111698925304
+nazg82rk cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 128 2.3770756528367585
+l221imga cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 130 2.3078677924424467
+bk80khnx cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 129 2.3779027688838785
+9xfvh61p cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 124 2.3620695309653574
+8q8aeyb9 cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 123 2.4803485784989703
+3k0pu2x6 cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both 132 2.2569113083005647
+32omjumw cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 132 2.4265600039838953
+1iqizmo0 cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 129 2.4705313069299137
+ky3o7j31 cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 131 2.4639822329032968
+zs7qou2i cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both 127 2.3199082305981245
+svwzbr21 cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both 126 2.3560292919265637
+kr9b8xrb cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both 125 2.042465078508571
+h5wqvgvi cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both 128 2.5271041088131234
+8axtayng cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both 129 2.3816110291612427
+0w1u8d9m cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both 124 2.1868250437788417
+oyob6k1t cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 125 2.5059553522411697
+icw6deqq cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 128 2.3675997463655403
+e3t8etgm cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 127 2.4230316393996594
+9sij8c7m cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both 131 2.492432246122838
+o8rjgt7x cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both 130 2.2486805575537385
+40n8mhuf cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 124 2.246485462936558
+qyly4oh4 cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 126 2.5429203798422497
+8vk1c8ml cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 124 2.332407877571232
+q6ppuofb cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 127 2.344598728478088
+nn58gj1j cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 123 2.3625995679613077
+itb30ov3 cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 131 2.5164410791904235
+dv69uyr1 cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 123 2.622189101571334
+yugseed6 cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 132 2.262460887702564
+u67yz4w2 cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 129 2.690139006233233
+jghr5odc cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 128 2.396922922643001
+ie5ciaky cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 127 2.471135575167566
+ex08cbsx cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 126 2.601310199545098
+4z3yerq8 cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 130 2.1496485728122416
+1ru771nc cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 126 2.375813675502513
+ase5d2b2 cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 125 2.0937933109831524
+qge7w0zr cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 124 2.365293631764773
+zofoncdz cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 129 2.3285041480742135
+rh9e0057 cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 128 2.396109473878736
+phbywlpo cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 132 2.259427334228059
+cntik070 cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 130 2.319133738762829
+6ecje5bf cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 131 2.300428920850496
+67zngxtv cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 127 2.256295723667171
+
+cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both 2.298174762296962 0.10842369490454204
+cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 2.260585726236871 0.128296394006926
+cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 2.3404899467339213 0.11325889513681717
+cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 2.3774866957882588 0.1073631595366086
+cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 3.031001996388842 0.17016380556352165
+cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 3.0720956153395784 0.22110889799047567
+cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both 3.015997303537261 0.17908479074940534
+cv10-LP-cyclo-xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 3.0591362313558306 0.2006646327801321
+cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 2.6992227446719386 0.13929335785061242
+cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 2.72781944928521 0.2044992595378148
+cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both 2.282108161290615 0.124577763095396
+cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 2.354775673228683 0.08565082426563161
+cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 2.4438590008673713 0.16618594926758382
+cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both 2.3215212387421986 0.1372783837611319
+cv10-LP-cyclo-noH-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 2.4185643967584554 0.11152980700829691
+cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 2.3175148536210917 0.09796023962143208
+
+
