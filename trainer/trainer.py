@@ -106,7 +106,7 @@ class Trainer():
             # not sure this is needed
             self.start_epoch = 1
             self.optim_steps = 0
-            self.best_val_score = -np.inf if self.main_metric_goal == 'max' else np.inf  # running score to decide whether or not a new model should be saved
+            self.best_val_score = torch.tensor(-np.inf) if self.main_metric_goal == 'max' else torch.tensor(np.inf)  # running score to decide whether or not a new model should be saved
             self.log_dir = run_dir
         self.run_name = run_name
 
@@ -178,7 +178,7 @@ class Trainer():
                 #    raise Exception
 
         # evaluate on best checkpoint
-        if os.path.exists(f'{self.run_name}.best_checkpoint.pt'):
+        if os.path.exists(os.path.join(self.log_dir, f'{self.run_name}.best_checkpoint.pt')):
             checkpoint = torch.load(os.path.join(self.log_dir, f'{self.run_name}.best_checkpoint.pt'), map_location=self.device)
         else:
             checkpoint = torch.load(self.checkpoint, map_location=self.device)
