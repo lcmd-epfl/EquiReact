@@ -16,6 +16,15 @@ parser.add_argument('--checkpoint',  required=True,             type=str, help='
 parser.add_argument('--logdir',      default='logs/evaluation', type=str, help='dir for the new log file')
 script_args = parser.parse_args()
 
+run_dir = script_args.logdir
+if not os.path.exists(run_dir):
+    os.makedirs(run_dir)
+logname = f'{datetime.now().strftime("%y%m%d-%H%M%S.%f")}-{getuser()}'
+logpath = os.path.join(run_dir, f'{logname}.log')
+print(f"stdout/stderr to {logpath}")
+sys.stdout = train.Logger(logpath=logpath, syspart=sys.stdout)
+sys.stderr = train.Logger(logpath=logpath, syspart=sys.stderr)
+
 with open(script_args.checkpoint, 'r') as f:
     lines = f.readlines()
     for line in lines:
@@ -41,15 +50,6 @@ if 'semiempirical' not in vars(args):
     args.semiempirical = False
 print(args)
 print()
-
-run_dir = args.logdir
-if not os.path.exists(run_dir):
-    os.makedirs(run_dir)
-logname = f'{datetime.now().strftime("%y%m%d-%H%M%S.%f")}-{getuser()}'
-logpath = os.path.join(run_dir, f'{logname}.log')
-print(f"stdout/stderr to {logpath}")
-sys.stdout = train.Logger(logpath=logpath, syspart=sys.stdout)
-sys.stderr = train.Logger(logpath=logpath, syspart=sys.stderr)
 
 maes = train.train(run_dir, logname, None, None, {}, seed=args.seed,
                    device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint,
