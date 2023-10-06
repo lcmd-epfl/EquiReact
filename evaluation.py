@@ -29,6 +29,8 @@ with open(script_args.checkpoint, 'r') as f:
         if re.search('Mean MAE across splits', line):
             mae_logged = float(line.split()[-3])
 
+print(args)
+print()
 args.logdir             = script_args.logdir
 args.experiment_name    = None
 args.wandb_name         = None
