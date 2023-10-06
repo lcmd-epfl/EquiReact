@@ -37,6 +37,8 @@ args.wandb_name         = None
 args.num_epochs         = best_epoch
 args.checkpoint         = script_args.checkpoint.replace('.log', '.best_checkpoint.pt')
 args.eval_on_test_split = True
+if 'semiempirical' not in vars(args):
+    args.semiempirical = False
 print(args)
 print()
 
