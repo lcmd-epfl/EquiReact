@@ -101,13 +101,12 @@ class Trainer():
             self.start_epoch = check['epoch']
             self.best_val_score = check['best_val_score']
             self.optim_steps = check['optim_steps']
-            self.log_dir = os.path.dirname(self.checkpoint)
         else:
             # not sure this is needed
             self.start_epoch = 1
             self.optim_steps = 0
-            self.best_val_score = -np.inf if self.main_metric_goal == 'max' else np.inf  # running score to decide whether or not a new model should be saved
-            self.log_dir = run_dir
+            self.best_val_score = torch.tensor(-np.inf) if self.main_metric_goal == 'max' else torch.tensor(np.inf)  # running score to decide whether or not a new model should be saved
+        self.log_dir = run_dir
         self.run_name = run_name
 
         #for i, param_group in enumerate(self.optim.param_groups):
@@ -150,7 +149,7 @@ class Trainer():
 
                 # val loss is MSE, shouldn't be affected by data normalisation
                 val_loss = metrics[type(self.loss_func).__name__]
-                if np.isfinite(self.best_val_score):
+                if np.isfinite(self.best_val_score.cpu()):
                     wandb.log({"val_loss": val_loss, "val_score": val_score, "epoch": self.epoch, "val_score_best": self.best_val_score})
                 else:
                     wandb.log({"val_loss": val_loss, "val_score": val_score, "epoch": self.epoch})
@@ -178,7 +177,10 @@ class Trainer():
                 #    raise Exception
 
         # evaluate on best checkpoint
-        checkpoint = torch.load(os.path.join(self.log_dir, f'{self.run_name}.best_checkpoint.pt'), map_location=self.device)
+        if os.path.exists(os.path.join(self.log_dir, f'{self.run_name}.best_checkpoint.pt')):
+            checkpoint = torch.load(os.path.join(self.log_dir, f'{self.run_name}.best_checkpoint.pt'), map_location=self.device)
+        else:
+            checkpoint = torch.load(self.checkpoint, map_location=self.device)
         self.model.load_state_dict(checkpoint['model_state_dict'])
         return self.evaluation(val_loader, data_split='val_best_checkpoint')
 
