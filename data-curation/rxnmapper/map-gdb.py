@@ -2,6 +2,7 @@
 
 import numpy as np
 import pandas as pd
+from tqdm import tqdm
 from rxnmapper import RXNMapper
 from operator import itemgetter
 
@@ -10,8 +11,11 @@ data.drop(axis=1, inplace=True, labels=set(data.columns.values)-{'Unnamed: 0', '
 reactions = data['rxn_smiles'].to_list()
 
 rxn_mapper = RXNMapper()
-results = map(lambda x: rxn_mapper.get_attention_guided_atom_maps([x], canonicalize_rxns=False)[0], reactions)
+results = [rxn_mapper.get_attention_guided_atom_maps([r], canonicalize_rxns=True)[0] for r in tqdm(reactions)]
 reactions, confidence = zip(*map(itemgetter('mapped_rxn', 'confidence'), results))
+
+#np.savetxt('vcdvfvrf', np.array(list(confidence)))
+#exit(0)
 
 print(np.mean(list(confidence)))
 
