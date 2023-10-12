@@ -182,10 +182,14 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
         np.random.seed(seed)
 
         indices = np.arange(data.nreactions)
+        len_before = len(indices)
         np.random.shuffle(indices)
+        len_after = len(indices)
+        assert len_before == len_after, "lost data in shuffle"
 
         if subset:
             indices = indices[:subset]
+            assert len(indices) == subset, "lost data in subset"
 
         tr_size = round(tr_frac * len(indices))
         te_size = round(te_frac * len(indices))
