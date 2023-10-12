@@ -28,7 +28,7 @@ from process.dataloader_gdb import GDB722TS
 from process.dataloader_rgd import RGD1
 from process.dataloader_proparg import Proparg21TS
 from process.collate import CustomCollator
-from process.dataloader_chemprop import get_scaffold_splits_gdb
+from process.dataloader_chemprop import get_scaffold_splits
 
 
 class Logger(object):
@@ -156,9 +156,6 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
     else:
         raise NotImplementedError(f'Cannot load the {dataset} dataset.')
 
-    if dataset != 'gdb' and splitter == 'scaffold':
-        return ValueError("scaffold splitting is only implemented for gdb for now")
-
     labels = data.labels
     std = data.std
     print(f"Data stdev {std:.4f}")
@@ -201,7 +198,8 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
 
         elif splitter == 'scaffold':
             print("Using scaffold splits")
-            tr_indices, te_indices, val_indices = get_scaffold_splits_gdb(shuffle_indices=indices)
+            tr_indices, te_indices, val_indices = get_scaffold_splits(dataset=dataset,
+                                                                          shuffle_indices=indices)
 
         if reverse:
             tr_indices = np.hstack((tr_indices, tr_indices+data.nreactions))
