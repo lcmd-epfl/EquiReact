@@ -5,6 +5,7 @@ from ast import literal_eval
 import traceback
 from datetime import datetime
 from getpass import getuser  # os.getlogin() won't work on a cluster
+import copy
 
 import numpy as np
 import torch
@@ -27,6 +28,7 @@ from process.dataloader_gdb import GDB722TS
 from process.dataloader_rgd import RGD1
 from process.dataloader_proparg import Proparg21TS
 from process.collate import CustomCollator
+from process.dataloader_chemprop import get_scaffold_splits_gdb
 
 
 class Logger(object):
@@ -60,6 +62,7 @@ def parse_arguments(arglist=sys.argv[1:]):
     g_run.add_argument('--verbose'            , action='store_true', default=False    ,  help='Print dims throughout the training process')
     g_run.add_argument('--process'            , action='store_true', default=False    ,  help='(re-)process data by force (if data is already there, default is to not reprocess)?')
     g_run.add_argument('--eval_on_test_split' , action='store_true', default=False    ,  help='print error per test molecule')
+    g_run.add_argument('--splitter', type=str, default='random', help='what splits to use, random or scaffold')
 
     g_hyper = p.add_argument_group('hyperparameters')
     g_hyper.add_argument('--subset'               , type=int           , default=None     ,  help='size of a subset to use instead of the full set (tr+te+va)')
@@ -108,7 +111,7 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
           device='cuda', seed=123, eval_on_test=True,
           #dataset args
           subset=None, tr_frac = 0.9, te_frac = 0.05, process=False, CV=0,
-          dataset='cyclo',
+          dataset='cyclo', splitter='random',
           #sampling / dataloader args
           batch_size=8, num_workers=0, pin_memory=False, # pin memory is not working
           #graph args
@@ -152,6 +155,10 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
         data = Proparg21TS(process=process, atom_mapping=atom_mapping, rxnmapper=rxnmapper, noH=noH, xtb=xtb, semiempirical=semiempirical)
     else:
         raise NotImplementedError(f'Cannot load the {dataset} dataset.')
+
+    if dataset != 'gdb' and splitter == 'scaffold':
+        return ValueError("scaffold splitting is only implemented for gdb for now")
+
     labels = data.labels
     std = data.std
     print(f"Data stdev {std:.4f}")
@@ -179,10 +186,19 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
 
         if subset:
             indices = indices[:subset]
-        tr_size = round(tr_frac*len(indices))
-        te_size = round(te_frac*len(indices))
-        va_size = len(indices)-tr_size-te_size
-        tr_indices, te_indices, val_indices = np.split(indices, [tr_size, tr_size+te_size])
+
+        tr_size = round(tr_frac * len(indices))
+        te_size = round(te_frac * len(indices))
+        va_size = len(indices) - tr_size - te_size
+
+        if splitter == 'random':
+            print("Using random splits")
+            tr_indices, te_indices, val_indices = np.split(indices, [tr_size, tr_size+te_size])
+
+        elif splitter == 'scaffold':
+            print("Using scaffold splits")
+            tr_indices, te_indices, val_indices = get_scaffold_splits_gdb(shuffle_indices=indices)
+
         if reverse:
             tr_indices = np.hstack((tr_indices, tr_indices+data.nreactions))
             te_indices = np.hstack((te_indices, te_indices+data.nreactions))
@@ -294,4 +310,4 @@ if __name__ == '__main__':
           noH=args.noH, two_layers_atom_diff=args.two_layers_atom_diff, rxnmapper=args.rxnmapper, reverse=args.reverse,
           xtb=args.xtb, semiempirical=args.semiempirical,
           eval_on_test_split=args.eval_on_test_split,
-          split_complexes=args.split_complexes, lr=args.lr, weight_decay=args.weight_decay)
+          split_complexes=args.split_complexes, lr=args.lr, weight_decay=args.weight_decay, splitter=args.splitter)
