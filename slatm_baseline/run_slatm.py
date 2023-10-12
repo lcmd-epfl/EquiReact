@@ -33,7 +33,7 @@ if __name__ == "__main__":
         qml.get_GDB7_ccsd_data(xtb=xtb, xtb_subset=xtb_subset)
 
     elif database == 'cyclo':
-        qml.get_cyclo_data(xtb=xtb)
+        qml.get_cyclo_data(xtb=xtb, xtb_subset=xtb_subset)
 
     elif database == 'proparg':
         qml.get_proparg_data(xtb=xtb)

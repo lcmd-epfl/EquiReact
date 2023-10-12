@@ -131,27 +131,47 @@ class QML:
         self.unique_ncharges = np.unique(np.concatenate(self.ncharges))
         return
 
-    def get_cyclo_data(self):
-        df = pd.read_csv("data/cyclo/mod_dataset.csv", index_col=0)
+    def get_cyclo_data(self, xtb=False, xtb_subset=False):
+        df = pd.read_csv("data/cyclo/cyclo.csv", index_col=0)
+        if xtb or xtb_subset:
+            bad_idx = np.loadtxt('data/cyclo/bad-xtb.dat', dtype=int)
+            for idx in bad_idx:
+                df.drop(df[df['rxn_id']==idx].index, axis=0, inplace=True)
         self.barriers = df['G_act'].to_numpy()
         indices = df['rxn_id'].to_list()
-        self.indices = indices
-        rxns = ["data/cyclo/xyz/" + str(i) for i in indices]
 
-        reactants_files = []
-        products_files = []
-        for rxn_dir in rxns:
-            reactants = glob(rxn_dir + "/r*.xyz")
-            reactants = check_alt_files(reactants)
-            assert len(reactants) == 2, f"Inconsistent length of {len(reactants)}"
-            reactants_files.append(reactants)
-            products = glob(rxn_dir + "/p*.xyz")
-            products_files.append(products)
+        print(f"{len(df['rxn_id'])} dataset size")
+        if xtb:
+            datadir = 'data/cyclo/xyz-xtb'
+            products_files = [[datadir+'/Product_'+str(idx)+'.xyz'] for idx in indices]
+         #   print(products_files)
+            reactants_files = []
+            for idx in indices:
+                reactant_file = [datadir+'/Reactant_'+str(idx)+'_'+reactant_id+'.xyz' for reactant_id in ['0', '1']]
+                reactants_files.append(reactant_file)
+       #     print(reactants_files)
+
+        else:
+            datadir = 'data/cyclo/xyz/'
+            rxns = [datadir + str(i) for i in indices]
+            reactants_files = []
+            products_files = []
+            for rxn_dir in rxns:
+                reactants = glob(rxn_dir + "/r*.xyz")
+                reactants = check_alt_files(reactants)
+                assert len(reactants) == 2, f"Inconsistent length of {len(reactants)}"
+                reactants_files.append(reactants)
+                products = glob(rxn_dir + "/p*.xyz")
+                products_files.append(products)
+
+        assert len(reactants_files) == len(indices), 'missing reactants'
+        assert len(products_files) == len(indices), 'missing products'
 
         mols_reactants = []
         mols_products = []
         ncharges_products = []
-        for i in range(len(rxns)):
+
+        for i in range(len(indices)):
             mols_r = []
             mols_p = []
             ncharges_p = []
