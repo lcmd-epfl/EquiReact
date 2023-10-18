@@ -62,7 +62,6 @@ def parse_arguments(arglist=sys.argv[1:]):
     g_run.add_argument('--verbose'            , action='store_true', default=False    ,  help='Print dims throughout the training process')
     g_run.add_argument('--process'            , action='store_true', default=False    ,  help='(re-)process data by force (if data is already there, default is to not reprocess)?')
     g_run.add_argument('--eval_on_test_split' , action='store_true', default=False    ,  help='print error per test molecule')
-    g_run.add_argument('--splitter', type=str, default='random', help='what splits to use, random or scaffold')
 
     g_hyper = p.add_argument_group('hyperparameters')
     g_hyper.add_argument('--subset'               , type=int           , default=None     ,  help='size of a subset to use instead of the full set (tr+te+va)')
@@ -78,6 +77,7 @@ def parse_arguments(arglist=sys.argv[1:]):
     g_hyper.add_argument('--graph_mode'           , type=str           , default='energy' ,  help='prediction mode, energy, or vector')
     g_hyper.add_argument('--dataset'              , type=str           , default='cyclo'  ,  help='cyclo / gdb / rgd / proparg')
     g_hyper.add_argument('--combine_mode'         , type=str           , default='mean'   ,  help='combine mode diff, sum, or mean')
+    g_hyper.add_argument('--splitter'             , type=str           , default='random' ,  help='what splits to use, random or scaffold')
     g_hyper.add_argument('--atom_mapping'         , action='store_true', default=False    ,  help='use atom mapping')
     g_hyper.add_argument('--rxnmapper'            , action='store_true', default=False    ,  help='take atom mapping from rxnmapper')
     g_hyper.add_argument('--random_baseline'      , action='store_true', default=False    ,  help='random baseline (no graph conv)')
