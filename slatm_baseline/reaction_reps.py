@@ -4,6 +4,7 @@ import qml
 from glob import glob
 from periodictable import elements
 import os
+from tqdm import tqdm
 
 pt = {}
 for el in elements:
@@ -23,7 +24,7 @@ def create_mol_obj(atomtypes, ncharges, coords):
 
 def pad_indices(idx):
     idx = str(idx)
-    if len(idx) < 6: 
+    if len(idx) < 6:
         pad_len = 6 - len(idx)
         pad = '0'*pad_len
         idx = pad + idx
@@ -55,7 +56,7 @@ def reader(xyz):
         nat = int(lines[0])
     except:
         print('file', xyz, 'is empty')
-        return [], [], [] 
+        return [], [], []
     start_idx = 2
     end_idx = start_idx + nat
 
@@ -230,7 +231,7 @@ class QML:
                     for x in reactants
                 ]
             )
-            for reactants in self.mols_reactants
+            for reactants in tqdm(self.mols_reactants, desc="reactants")
         ]
 
         slatm_reactants_sum = np.array([sum(x) for x in slatm_reactants])
@@ -243,7 +244,7 @@ class QML:
                     for x in products
                 ]
             )
-            for products in self.mols_products
+            for products in tqdm(self.mols_products, desc="products")
         ]
         slatm_products = np.array([sum(x) for x in slatm_products])
         slatm_diff = slatm_products - slatm_reactants_sum
