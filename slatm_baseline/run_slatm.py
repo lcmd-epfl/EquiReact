@@ -8,6 +8,7 @@ if __name__ == "__main__":
 
     parser = ap.ArgumentParser()
     parser.add_argument('-d', '--database', default='gdb')
+    parser.add_argument('--test_size', default=0.1)
     parser.add_argument('-xtb', '--xtb', action='store_true', default=False)
     parser.add_argument('-s', '--xtb_subset', action='store_true', default=False, help='Run on the xtb data subset (not necessarily at xtb level')
     args = parser.parse_args()
@@ -52,7 +53,7 @@ if __name__ == "__main__":
     save_file = f'slatm_baseline/slatm_hypers_{database}{xtb_text}{s_text}.csv'
 
     if not os.path.exists(slatm_save):
-        maes_slatm = predict_CV(slatm, barriers, CV=CV, save_hypers=True,
+        maes_slatm = predict_CV(slatm, barriers, CV=CV, save_hypers=True, test_size=args.test_size,
                                     save_file=save_file)
         np.save(slatm_save, maes_slatm)
     else:
