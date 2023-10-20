@@ -199,7 +199,8 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
         elif splitter == 'scaffold':
             print("Using scaffold splits")
             tr_indices, te_indices, val_indices = get_scaffold_splits(dataset=dataset,
-                                                                          shuffle_indices=indices)
+                                                                      shuffle_indices=indices,
+                                                                      sizes=(tr_frac, 1-(tr_frac+te_frac), te_frac))
 
         if reverse:
             tr_indices = np.hstack((tr_indices, tr_indices+data.nreactions))

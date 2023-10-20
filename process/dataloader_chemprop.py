@@ -12,7 +12,7 @@ def remove_atom_map_number_manual(smiles):
 def get_reactant_from_reaction_smi(reaction_smiles):
     return reaction_smiles.split('>>')[0]
 
-def get_scaffold_splits(dataset, shuffle_indices=None):
+def get_scaffold_splits(dataset, shuffle_indices=None, sizes=(0.8, 0.1, 0.1)):
     if dataset == 'gdb':
         data = 'data/gdb7-22-ts/ccsdtf12_dz_cleaned.csv'
     elif dataset == 'cyclo':
@@ -35,5 +35,5 @@ def get_scaffold_splits(dataset, shuffle_indices=None):
     rsmiles_shuffled = rsmiles[shuffle_indices]
 
     dataset = get_data_from_smiles([[x] for x in rsmiles_shuffled])
-    train_idx, test_idx, val_idx = scaffold_split(dataset)
+    train_idx, test_idx, val_idx = scaffold_split(dataset, sizes=sizes)
     return train_idx, test_idx, val_idx
