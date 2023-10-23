@@ -8,13 +8,15 @@ if __name__ == "__main__":
 
     parser = ap.ArgumentParser()
     parser.add_argument('-d', '--database', default='gdb')
-    parser.add_argument('--test_size', default=0.1)
+    parser.add_argument('--train_size', default=0.9)
     parser.add_argument('-xtb', '--xtb', action='store_true', default=False)
-    parser.add_argument('-s', '--xtb_subset', action='store_true', default=False, help='Run on the xtb data subset (not necessarily at xtb level')
+    parser.add_argument('--xtb_subset', action='store_true', default=False, help='Run on the xtb data subset (not necessarily at xtb level')
+    parser.add_argument('--splitter', default='random', help='splitter random or scaffold')
     args = parser.parse_args()
     database = args.database
     xtb = args.xtb
     xtb_subset = args.xtb_subset
+    splitter = args.splitter
     print("Running for database", database)
     if xtb:
         print("Using xtb geoms")
@@ -28,16 +30,21 @@ if __name__ == "__main__":
     else:
         s_text = ''
 
+    print(f"Using {splitter} splits")
+
     qml = QML()
 
     if database == 'gdb':
         qml.get_GDB7_ccsd_data(xtb=xtb, xtb_subset=xtb_subset)
+        kernel = 'laplacian'
 
     elif database == 'cyclo':
         qml.get_cyclo_data(xtb=xtb, xtb_subset=xtb_subset)
+        kernel = 'laplacian'
 
     elif database == 'proparg':
         qml.get_proparg_data(xtb=xtb)
+        kernel = 'gaussian'
 
     slatm_save = f'slatm_baseline/slatm_{database}{xtb_text}{s_text}.npy'
     barriers = qml.barriers
@@ -46,15 +53,16 @@ if __name__ == "__main__":
     if not os.path.exists(slatm_save):
         slatm = qml.get_SLATM()
         np.save(slatm_save, slatm)
+        print("SLATM saved to", slatm_save)
     else:
         slatm = np.load(slatm_save)
 
-    slatm_save = f'slatm_baseline/slatm_{CV}_fold_{database}{xtb_text}{s_text}.npy'
-    save_file = f'slatm_baseline/slatm_hypers_{database}{xtb_text}{s_text}.csv'
+    slatm_save = f'slatm_baseline/slatm_{CV}_fold_{database}{xtb_text}{s_text}_split_{splitter}.npy'
 
     if not os.path.exists(slatm_save):
-        maes_slatm = predict_CV(slatm, barriers, CV=CV, save_hypers=True, test_size=args.test_size,
-                                    save_file=save_file)
+        maes_slatm = predict_CV(slatm, barriers, CV=CV, train_size=args.train_size,
+                                    splitter=splitter, kernel=kernel,
+                                    dataset=database)
         np.save(slatm_save, maes_slatm)
     else:
         maes_slatm = np.load(slatm_save)

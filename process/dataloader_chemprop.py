@@ -19,6 +19,8 @@ def get_scaffold_splits(dataset, shuffle_indices=None, sizes=(0.8, 0.1, 0.1)):
         data = 'data/cyclo/cyclo.csv'
     elif dataset == 'proparg':
         data = 'data/proparg/proparg.csv'
+    else:
+        raise ValueError("dataset has to be a string gdb, cyclo or proparg")
     df = pd.read_csv(data, index_col=0)
     if dataset == 'gdb':
         rsmiles = df['rsmi'].to_numpy()
