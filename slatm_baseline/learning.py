@@ -144,7 +144,10 @@ def predict_CV(X, y, CV=10, seed=1, train_size=0.8, kernel='laplacian',
             idx_train, idx_test_val = train_test_split(np.arange(len(y)), random_state=seed, train_size=train_size)
             idx_test, idx_val = train_test_split(idx_test_val, shuffle=False, test_size=0.5)
         elif splitter == 'scaffold':
+            indices = np.arange(len(y))
+            np.random.shuffle(indices)
             idx_train, idx_test, idx_val = get_scaffold_splits(dataset=dataset,
+                                                               shuffle_indices=indices,
                                                                sizes=(train_size, (1-train_size)/2,
                                                                (1-train_size)/2))
 
