@@ -109,7 +109,8 @@ class QML:
                 filedir = 'data/gdb7-22-ts/xyz/' + idx
                 rfile = filedir + '/r' + idx + '.xyz'
             r_atomtypes, r_ncharges, r_coords = reader(rfile)
-            r_coords = r_coords * 0.529177 # bohr to angstrom
+            if not xtb:
+                r_coords = r_coords * 0.529177 # bohr to angstrom
             r_mol = create_mol_obj(r_atomtypes, r_ncharges, r_coords)
             r_mols.append([r_mol])
 
@@ -121,7 +122,8 @@ class QML:
             sub_pmols = []
             for pfile in pfiles:
                 p_atomtypes, p_ncharges, p_coords = reader(pfile)
-                p_coords = p_coords * 0.529177
+                if not xtb:
+                    p_coords = p_coords * 0.529177
                 p_mol = create_mol_obj(p_atomtypes, p_ncharges, p_coords)
                 sub_pmols.append(p_mol)
             p_mols.append(sub_pmols)
