@@ -58,11 +58,13 @@ if __name__ == "__main__":
         slatm = np.load(slatm_save)
 
     slatm_save = f'slatm_baseline/slatm_{CV}_fold_{database}{xtb_text}{s_text}_split_{splitter}.npy'
+    slatm_pred = f'slatm_baseline/slatm_{CV}_fold_{database}{xtb_text}{s_text}_split_{splitter}.predictions.'+'{i}'+'.txt'
 
     if not os.path.exists(slatm_save):
         maes_slatm = predict_CV(slatm, barriers, CV=CV, train_size=args.train_size,
-                                    splitter=splitter, kernel=kernel,
-                                    dataset=database)
+                                save_predictions = slatm_pred,
+                                splitter=splitter, kernel=kernel,
+                                dataset=database)
         np.save(slatm_save, maes_slatm)
     else:
         maes_slatm = np.load(slatm_save)

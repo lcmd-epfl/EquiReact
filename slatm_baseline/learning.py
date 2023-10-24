@@ -110,6 +110,7 @@ def opt_hyperparams_gaussian(
 
 
 def predict_CV(X, y, CV=10, seed=1, train_size=0.8, kernel='laplacian',
+               save_predictions = None,
                splitter='random', dataset=''):
 
     if kernel == 'laplacian':
@@ -144,8 +145,8 @@ def predict_CV(X, y, CV=10, seed=1, train_size=0.8, kernel='laplacian',
             idx_test, idx_val = train_test_split(idx_test_val, shuffle=False, test_size=0.5)
         elif splitter == 'scaffold':
             idx_train, idx_test, idx_val = get_scaffold_splits(dataset=dataset,
-                                                                sizes=(train_size, (1-train_size)/2,
-                                                                (1-train_size)/2))
+                                                               sizes=(train_size, (1-train_size)/2,
+                                                               (1-train_size)/2))
 
 
         D_train = D_full[np.ix_(idx_train, idx_train)]
@@ -169,14 +170,16 @@ def predict_CV(X, y, CV=10, seed=1, train_size=0.8, kernel='laplacian',
 
         if kernel == 'laplacian':
             print(f"Making prediction with optimal params gamma={gamma},l2reg={l2reg}")
-            mae, _ = predict_KRR(D_train, D_test,
+            mae, y_pred = predict_KRR(D_train, D_test,
                                  y_train, y_test,
                                  l2reg=l2reg, gamma=gamma)
         elif kernel == 'rbf' or kernel == 'gaussian':
             print(f"Making prediction with optimal params sigma={sigma},l2reg={l2reg}")
-            mae, _ = predict_KRR(D_train, D_test,
+            mae, y_pred = predict_KRR(D_train, D_test,
                                  y_train, y_test,
                                  l2reg=l2reg, sigma=sigma)
+        with open(save_predictions.format(i=i), 'w') as f:
+            print(*zip(idx_test, y_pred), sep='\n', file=f)
 
         maes[i] = mae
 
