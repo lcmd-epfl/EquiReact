@@ -1,0 +1,88 @@
+namespace(experiment_name='final-cv', wandb_name='cv10-LP-proparg-xtb-noH-ns64-nv16-d16-layers3-vector-diff-node-truemapping', device='cuda', logdir='/scratch/izar/briling/cv', checkpoint=None, CV=1, num_epochs=512, seed=123, verbose=False, process=False, subset=None, max_neighbors=50, n_s=64, n_v=16, n_conv_layers=3, distance_emb_dim=16, radius=5.0, dropout_p=0.1, attention=None, sum_mode='node', graph_mode='vector', dataset='proparg', combine_mode='diff', atom_mapping=True, rxnmapper=False, random_baseline=False, two_layers_atom_diff=True, noH=True, reverse=False, split_complexes=False, xtb=True, lr=0.001, weight_decay=1e-05)
+
+namespace(experiment_name=None, wandb_name=None, device='cuda', logdir='logs/evaluation', checkpoint='/home/briling/scratch/cv/final-cv-proparg-xtb/230928-141025.325115-briling.best_checkpoint.pt', CV=1, num_epochs=156, seed=123, verbose=False, process=False, subset=None, max_neighbors=50, n_s=64, n_v=16, n_conv_layers=3, distance_emb_dim=16, radius=5.0, dropout_p=0.1, attention=None, sum_mode='node', graph_mode='vector', dataset='proparg', combine_mode='diff', atom_mapping=True, rxnmapper=False, random_baseline=False, two_layers_atom_diff=True, noH=True, reverse=False, split_complexes=False, xtb=True, lr=0.001, weight_decay=1e-05, eval_on_test_split=True, semiempirical=False)
+
+Running on device cuda:0
+Loading data into memory...
+dataset_prefix='data_fixarom_smiles.xtb.noH'
+Coords and graphs successfully read from data/proparg/processed//
+Data stdev 2.1798
+
+CV iter 1/1
+Using random splits
+total / train / test / val: 753 678 38 37
+trainable params in model:  4329094
+Log directory: logs/evaluation
+checkpoint: /home/briling/scratch/cv/final-cv-proparg-xtb/230928-141025.325115-briling.best_checkpoint.pt
+num epochs: 156
+eval_per_epochs: 0
+patience: 150
+minimum_epochs: 0
+models_to_save: []
+clip_grad: 100
+log_iterations: 100
+lr: 0.001
+weight decay: 1e-05
+lr scheduler: <class 'torch.optim.lr_scheduler.ReduceLROnPlateau'>
+factor: 0.6
+min_lr: 8e-06
+mode: max
+lr_scheduler_patience: 60
+lr_verbose: True
+In trainer, metrics is {'mae': MAE()} and std is 2.1798295067663513
+Statistics on val_best_checkpoint
+mae: 0.3915120166318551
+MSELoss: 0.10212225690484047
+mean_pred: -0.07860229611396789
+std_pred: 0.9822582364082336
+mean_targets: -0.030800524353981017
+std_targets: 1.106097400188446
+Evaluating on test, with test size:  38
+Statistics on test_split_1
+mae: 0.38646299973229153
+MSELoss: 0.10669639287516475
+mean_pred: 0.30093219578266145
+std_pred: 1.244011688232422
+mean_targets: 0.26718281507492064
+std_targets: 1.1969885110855103
+>>> 465 0.7463919 1.2921927
+>>> 530 2.6719604 2.2773817
+>>> 305 -0.5075737 -0.7071573
+>>> 434 -1.307567 -1.3418144
+>>> 537 0.10300043 0.14308639
+>>> 357 -0.97104585 -0.9074157
+>>> 186 1.6552004 1.7728324
+>>> 555 2.1506262 1.8536922
+>>> 129 -1.3447022 -1.1897106
+>>> 359 -0.03690482 1.6585839
+>>> 244 -1.3343389 -1.6376688
+>>> 255 -0.42121246 -0.5730273
+>>> 390 0.6709697 0.5279145
+>>> 154 -1.4549569 -1.3682541
+>>> 371 -0.5317549 -0.5115622
+>>> 751 0.79101187 1.1638662
+>>> 582 0.6542732 0.5398356
+>>> 712 1.9076631 1.868789
+>>> 158 -0.28303444 -0.2992702
+>>> 708 0.044274773 -0.08803378
+>>> 271 -0.038919915 0.033019513
+>>> 484 -0.9670157 -0.9745937
+>>> 146 0.13639346 0.25931734
+>>> 394 1.6649879 1.566474
+>>> 418 -0.43359092 -0.42677015
+>>> 576 1.9534346 1.9188236
+>>> 744 -1.3280058 -1.3594995
+>>> 680 -0.5464363 -0.6057823
+>>> 588 -0.04064714 -0.16493575
+>>> 290 1.3972679 1.5629199
+>>> 411 0.46370268 0.3271594
+>>> 630 1.5748843 1.6023623
+>>> 213 0.024411682 0.43230748
+>>> 358 1.8152565 1.8008975
+>>> 180 -1.1630558 -1.3250934
+>>> 380 1.4571451 1.4707632
+>>> 99 -1.285113 -1.1601737
+>>> 135 1.8880879 1.6496991
+
+Mean MAE across splits 0.38646299973229153 +- 0.0
+delta MAE: 2.92e-08
