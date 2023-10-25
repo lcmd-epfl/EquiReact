@@ -4,6 +4,7 @@ import qml
 from glob import glob
 from periodictable import elements
 import os
+from tqdm import tqdm
 
 pt = {}
 for el in elements:
@@ -23,7 +24,7 @@ def create_mol_obj(atomtypes, ncharges, coords):
 
 def pad_indices(idx):
     idx = str(idx)
-    if len(idx) < 6: 
+    if len(idx) < 6:
         pad_len = 6 - len(idx)
         pad = '0'*pad_len
         idx = pad + idx
@@ -55,7 +56,7 @@ def reader(xyz):
         nat = int(lines[0])
     except:
         print('file', xyz, 'is empty')
-        return [], [], [] 
+        return [], [], []
     start_idx = 2
     end_idx = start_idx + nat
 
@@ -108,7 +109,8 @@ class QML:
                 filedir = 'data/gdb7-22-ts/xyz/' + idx
                 rfile = filedir + '/r' + idx + '.xyz'
             r_atomtypes, r_ncharges, r_coords = reader(rfile)
-            r_coords = r_coords * 0.529177 # bohr to angstrom
+            if not xtb:
+                r_coords = r_coords * 0.529177 # bohr to angstrom
             r_mol = create_mol_obj(r_atomtypes, r_ncharges, r_coords)
             r_mols.append([r_mol])
 
@@ -120,7 +122,8 @@ class QML:
             sub_pmols = []
             for pfile in pfiles:
                 p_atomtypes, p_ncharges, p_coords = reader(pfile)
-                p_coords = p_coords * 0.529177
+                if not xtb:
+                    p_coords = p_coords * 0.529177
                 p_mol = create_mol_obj(p_atomtypes, p_ncharges, p_coords)
                 sub_pmols.append(p_mol)
             p_mols.append(sub_pmols)
@@ -131,27 +134,47 @@ class QML:
         self.unique_ncharges = np.unique(np.concatenate(self.ncharges))
         return
 
-    def get_cyclo_data(self):
-        df = pd.read_csv("data/cyclo/mod_dataset.csv", index_col=0)
+    def get_cyclo_data(self, xtb=False, xtb_subset=False):
+        df = pd.read_csv("data/cyclo/cyclo.csv", index_col=0)
+        if xtb or xtb_subset:
+            bad_idx = np.loadtxt('data/cyclo/bad-xtb.dat', dtype=int)
+            for idx in bad_idx:
+                df.drop(df[df['rxn_id']==idx].index, axis=0, inplace=True)
         self.barriers = df['G_act'].to_numpy()
         indices = df['rxn_id'].to_list()
-        self.indices = indices
-        rxns = ["data/cyclo/xyz/" + str(i) for i in indices]
 
-        reactants_files = []
-        products_files = []
-        for rxn_dir in rxns:
-            reactants = glob(rxn_dir + "/r*.xyz")
-            reactants = check_alt_files(reactants)
-            assert len(reactants) == 2, f"Inconsistent length of {len(reactants)}"
-            reactants_files.append(reactants)
-            products = glob(rxn_dir + "/p*.xyz")
-            products_files.append(products)
+        print(f"{len(df['rxn_id'])} dataset size")
+        if xtb:
+            datadir = 'data/cyclo/xyz-xtb'
+            products_files = [[datadir+'/Product_'+str(idx)+'.xyz'] for idx in indices]
+         #   print(products_files)
+            reactants_files = []
+            for idx in indices:
+                reactant_file = [datadir+'/Reactant_'+str(idx)+'_'+reactant_id+'.xyz' for reactant_id in ['0', '1']]
+                reactants_files.append(reactant_file)
+       #     print(reactants_files)
+
+        else:
+            datadir = 'data/cyclo/xyz/'
+            rxns = [datadir + str(i) for i in indices]
+            reactants_files = []
+            products_files = []
+            for rxn_dir in rxns:
+                reactants = glob(rxn_dir + "/r*.xyz")
+                reactants = check_alt_files(reactants)
+                assert len(reactants) == 2, f"Inconsistent length of {len(reactants)}"
+                reactants_files.append(reactants)
+                products = glob(rxn_dir + "/p*.xyz")
+                products_files.append(products)
+
+        assert len(reactants_files) == len(indices), 'missing reactants'
+        assert len(products_files) == len(indices), 'missing products'
 
         mols_reactants = []
         mols_products = []
         ncharges_products = []
-        for i in range(len(rxns)):
+
+        for i in range(len(indices)):
             mols_r = []
             mols_p = []
             ncharges_p = []
@@ -210,7 +233,7 @@ class QML:
                     for x in reactants
                 ]
             )
-            for reactants in self.mols_reactants
+            for reactants in tqdm(self.mols_reactants, desc="reactants")
         ]
 
         slatm_reactants_sum = np.array([sum(x) for x in slatm_reactants])
@@ -223,7 +246,7 @@ class QML:
                     for x in products
                 ]
             )
-            for products in self.mols_products
+            for products in tqdm(self.mols_products, desc="products")
         ]
         slatm_products = np.array([sum(x) for x in slatm_products])
         slatm_diff = slatm_products - slatm_reactants_sum

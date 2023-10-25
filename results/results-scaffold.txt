@@ -1,0 +1,13 @@
+cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 4.95144619493776 0.18399740025272582
+cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 6.016669827820842 0.3335708082620114
+cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH 6.293885735755444 0.3353134117957966
+cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 6.509253393100259 0.27063109474901
+
+cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 2.7331627037840542 0.19138943957302443
+cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 2.823180161920415 0.1801013240749855
+cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 2.4673168333213984 0.15310806635550578
+cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both 2.3664570996649736 0.21092641709028848
+
+cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-truemapping 0.3108335659062365 0.07788741215074756
+cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node 0.2679702648349685 0.031244629812131608
+cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-crossattention 0.2992364687399366 0.04908117246629879

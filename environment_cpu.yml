@@ -21,5 +21,6 @@ dependencies:
   - pyg=2.3.0
   - tqdm=4.65.0
   - h5py=3.7
+  - chemprop=1.5.0
 
 prefix: /home/puck/anaconda3/envs/nequireact

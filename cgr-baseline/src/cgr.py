@@ -23,6 +23,8 @@ def argparse():
     g2.add_argument('-r', '--rgd', action='store_true', help='use RGD1 dataset')
     g2.add_argument('--proparg_xyz', action='store_true', help='use Proparg-21-TS dataset with SMILES from xyz')
     g2.add_argument('--proparg_stereo', action='store_true', help='use Proparg-21-TS dataset with stereochemistry-enriched fragment-based SMILES')
+    parser.add_argument('--scaffold', action='store_true', help='use scaffold splits (random otherwise)')
+    parser.add_argument('--withH', action='store_true', help='use explicit H')
     args = parser.parse_args()
     return parser, args
 
@@ -53,7 +55,10 @@ if __name__ == "__main__":
     if args.random:
         smiles_columns = 'rxn_smiles_random'
     elif args.rxnmapper:
-        smiles_columns = 'rxn_smiles_rxnmapper'
+        if args.withH:
+            smiles_columns  ='rxn_smiles_rxnmapper_full'
+        else:
+            smiles_columns = 'rxn_smiles_rxnmapper'
     elif args.true:
         smiles_columns = 'rxn_smiles_mapped'
     elif args.none:
@@ -72,7 +77,11 @@ if __name__ == "__main__":
         "--num_folds",  "10",
         "--batch_size", "50",
         "--save_dir", "./"]
+    if args.scaffold:
+        arguments.extend(('--split_type', 'scaffold_balanced'))
+    if args.withH:
+        arguments.append('--explicit_h')
 
-    args = chemprop.args.TrainArgs().parse_args(arguments)
-    mean_score, std_score = chemprop.train.cross_validate(args=args, train_func=chemprop.train.run_training)
+    args_chemprop = chemprop.args.TrainArgs().parse_args(arguments)
+    mean_score, std_score = chemprop.train.cross_validate(args=args_chemprop, train_func=chemprop.train.run_training)
     print("Mean score", mean_score, "std_score", std_score)
