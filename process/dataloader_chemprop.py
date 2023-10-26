@@ -26,16 +26,16 @@ def get_scaffold_splits(dataset, shuffle_indices=None, sizes=(0.8, 0.1, 0.1)):
         rsmiles = df['rsmi'].to_numpy()
     elif dataset == 'cyclo' or dataset == 'proparg':
         rsmiles = df['rxn_smiles'].apply(get_reactant_from_reaction_smi).to_numpy()
-    if shuffle_indices is None:
-        shuffle_indices = np.arange(len(df))
     else:
         bool = len(shuffle_indices) == len(df)
         if not bool:
             warnings.warn("Shuffle indices are not the same len as the original df")
 
     rsmiles = np.array([remove_atom_map_number_manual(smiles) for smiles in rsmiles])
-    rsmiles_shuffled = rsmiles[shuffle_indices]
 
-    dataset = get_data_from_smiles([[x] for x in rsmiles_shuffled])
-    train_idx, test_idx, val_idx = scaffold_split(dataset, sizes=sizes)
+    if shuffle_indices is not None:
+        rsmiles = rsmiles[shuffle_indices]
+
+    dataset = get_data_from_smiles([[x] for x in rsmiles])
+    train_idx, test_idx, val_idx = scaffold_split(dataset, sizes=sizes, balanced=False)
     return train_idx, test_idx, val_idx

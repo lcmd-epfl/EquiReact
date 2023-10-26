@@ -183,7 +183,6 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
         np.random.shuffle(indices)
         len_after = len(indices)
         assert len_before == len_after, "lost data in shuffle"
-
         if subset:
             indices = indices[:subset]
             assert len(indices) == subset, "lost data in subset"
@@ -201,6 +200,7 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
             tr_indices, te_indices, val_indices = get_scaffold_splits(dataset=dataset,
                                                                       shuffle_indices=indices,
                                                                       sizes=(tr_frac, 1-(tr_frac+te_frac), te_frac))
+        print("first few te indices", te_indices[:5])
 
         if reverse:
             tr_indices = np.hstack((tr_indices, tr_indices+data.nreactions))

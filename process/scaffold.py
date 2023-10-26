@@ -86,9 +86,6 @@ def scaffold_split(data: MoleculeDataset,
     key_mols = [m[key_molecule_index] for m in data.mols(flatten=False)]
     scaffold_to_indices = scaffold_to_smiles(key_mols, use_indices=True)
 
-    # Seed randomness
-    random = Random(seed)
-
     if balanced:  # Put stuff that's bigger than half the val/test size into train, rest just order randomly
         index_sets = list(scaffold_to_indices.values())
         big_index_sets = []
