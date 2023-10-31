@@ -290,7 +290,7 @@ if __name__ == '__main__':
         run_dir = os.path.join(args.logdir, args.experiment_name)
     if not os.path.exists(run_dir):
         print(f"creating run dir {run_dir}")
-        os.mkdir(run_dir)
+        os.makedirs(run_dir)
 
     logname = f'{datetime.now().strftime("%y%m%d-%H%M%S.%f")}-{getuser()}'
     logpath = os.path.join(run_dir, f'{logname}.log')
