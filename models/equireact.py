@@ -380,7 +380,7 @@ class EquiReact(nn.Module):
         return reaction_energy
 
 
-    def forward_mapped_mode(self, reactants_data, products_data, mapping):
+    def forward_mapped_mode(self, reactants_data, products_data, mapping, return_repr=False):
 
         if self.sum_mode == 'node':
             predictor = self.score_predictor_nodes
@@ -430,10 +430,14 @@ class EquiReact(nn.Module):
             x = self.atom_diff_nonlin(x)
             x = scatter_add(x, index=batch, dim=0)
             score = predictor(x)
-        return score
+
+        if return_repr and self.graph_mode == 'vector':
+            return score, x
+        else:
+            return score, None
 
 
-    def forward(self, reactants_data, products_data, mapping=None):
+    def forward(self, reactants_data, products_data, mapping=None, return_repr=False):
         """
         :param reactants_data: reactant graphs
         :param products_data: product graphs
@@ -444,10 +448,12 @@ class EquiReact(nn.Module):
         batch_size = reactants_data[0].num_graphs
 
         if self.atom_mapping is True or self.attention is not None:
-            reaction_energy = self.forward_mapped_mode(reactants_data, products_data, mapping)
+            reaction_energy, representations = self.forward_mapped_mode(reactants_data, products_data, mapping, return_repr=return_repr)
         elif self.graph_mode == 'vector':
             reaction_energy = self.forward_vector_mode(reactants_data, products_data, batch_size)
+            representations = None
         else:
             reaction_energy = self.forward_energy_mode(reactants_data, products_data, batch_size)
+            representations = None
 
-        return reaction_energy
+        return reaction_energy, representations
