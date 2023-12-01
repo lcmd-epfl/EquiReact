@@ -22,13 +22,13 @@ repr_path  = 'gdb.noH.true.123.dat'
 csv_path   = '../../data/gdb7-22-ts/ccsdtf12_dz_cleaned.csv'
 error_path = '../by_mol/cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping.123.dat'
 repr_len = 128
-color_errors = False
+how_to_color = 'rxnclass' # errors / targets / rxnclass
 img_path = './gdb.img.npy'
 
 
 def main():
     df, data = load_data()
-    if True:
+    if False:
         for n in (10, 20, 50, 100, 200):
             for d in (0.1, 0.25, 0.5, 0.8, 0.99):
                 print(f'{n=} {d=}')
@@ -36,7 +36,7 @@ def main():
     else:
         n = 10
         d = 0.1
-        write_plot(n, d, df)
+        write_plot(n, d, data, df)
 
 
 def load_data():
@@ -60,21 +60,27 @@ def load_data():
     errors = np.zeros_like(targets)
     errors[test_idx] = prediction_errors
 
+    rxnclass  = df['rmg_family']
+    rxnclasses_dict = {x:i for i,x in enumerate(set(rxnclass))}
+    rxnclass_num = rxnclass.replace(rxnclasses_dict)
+
     if os.path.isfile(img_path):
         images = np.load(img_path)
     else:
         images = np.array([*map(embeddable_image, smiles)])
         np.save(img_path, images)
 
-    labels = [f'#{i} ({c}) target:{t} error:{e}' for i,c,t,e in zip(indices, classes, targets, errors)]
-    if color_errors:
+    labels = [f'#{i} ({c}) target:{t} error:{e} class:{rc}' for i,c,t,e,rc in zip(indices, classes, targets, errors, rxnclass)]
+    if how_to_color=='errors':
         colors = errors
-    else:
+    elif how_to_color=='targets':
         colors = targets
+    elif how_to_color=='rxnclass':
+        colors = rxnclass_num
 
     radii = np.zeros_like(targets, dtype=int)
     radii[:] = 4
-    if color_errors:
+    if how_to_color=='errors':
         radii[test_idx] = 16.0
 
     df = pd.DataFrame({'image': images, 'label':labels, 'radii':radii, 'color':colors})
@@ -85,7 +91,7 @@ def load_data():
 def write_plot(n, d, data, df):
 
     emb_path = f'{repr_path}.{d=}.{n=}.npy'
-    out_path = f'{repr_path}.{color_errors=}.{d=}.{n=}.html'
+    out_path = f'{repr_path}.{how_to_color}.{d=}.{n=}.html'
 
     if os.path.isfile(emb_path):
         embedding = np.load(emb_path)
