@@ -15,6 +15,7 @@ import pyaml
 from models import *  # do not remove
 from torch.optim.lr_scheduler import *  # do not remove
 from trainer.lr_schedulers import WarmUpWrapper
+from tqdm import tqdm
 
 
 def move_to_device(element, device):
@@ -270,11 +271,11 @@ class Trainer():
     def get_repr(self, data_loader):
         self.model.eval()
         representations = []
-        for i, batch in enumerate(data_loader):
+        for batch in tqdm(data_loader):
             *batch, batch_indices = move_to_device(list(batch), self.device)
             _, _, _, rs = self.forward_pass(batch, return_repr=True)
-            representations.append(rs)
-        representations = torch.vstack(representations)
+            representations.append(rs.detach().numpy())
+        representations = np.vstack(representations)
         return representations
 
 

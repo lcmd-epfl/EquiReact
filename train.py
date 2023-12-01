@@ -274,7 +274,7 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
                                                         (train_loader, val_loader, test_loader),
                                                         ('train', 'val', 'test')):
                     representations = trainer.get_repr(x_loader)
-                    for x in zip(x_indices, representations.detach().numpy()):
+                    for x in zip(x_indices, representations):
                         print(f'>>>{x_title}', x[0], *x[1])
 
         seed += 1
