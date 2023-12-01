@@ -27,12 +27,12 @@ img_path = './gdb.img.npy'
 
 
 def main():
-    df = load_data()
+    df, data = load_data()
     if True:
         for n in (10, 20, 50, 100, 200):
             for d in (0.1, 0.25, 0.5, 0.8, 0.99):
                 print(f'{n=} {d=}')
-                write_plot(n, d, df)
+                write_plot(n, d, data, df)
     else:
         n = 10
         d = 0.1
@@ -79,10 +79,10 @@ def load_data():
 
     df = pd.DataFrame({'image': images, 'label':labels, 'radii':radii, 'color':colors})
 
-    return df
+    return df, data
 
 
-def write_plot(n, d, df):
+def write_plot(n, d, data, df):
 
     emb_path = f'{repr_path}.{d=}.{n=}.npy'
     out_path = f'{repr_path}.{color_errors=}.{d=}.{n=}.html'
@@ -144,5 +144,5 @@ def embeddable_image(smi):
     return 'data:image/png;base64,' + base64.b64encode(for_encoding).decode()
 
 
-if __name__ = '__main__':
+if __name__ == '__main__':
     main()
