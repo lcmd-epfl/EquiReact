@@ -1,11 +1,6 @@
 import numpy as np
 
-errors_file = '../../results/by_mol/cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-truemapping.123.dat'
 sign_file = 'signatures.dat'
-
-idx = np.loadtxt(errors_file, usecols=0, dtype=int)
-err = np.loadtxt(errors_file, usecols=(1,2)).T
-err = err[1]-err[0]
 
 classes = np.loadtxt(sign_file, dtype=str, delimiter=',')
 
