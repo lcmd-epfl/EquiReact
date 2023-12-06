@@ -25,6 +25,7 @@ def main():
     parser.add_argument('--csv_path',   help='path to dataset csv', default='../../data/gdb7-22-ts/ccsdtf12_dz_cleaned.csv')
     parser.add_argument('--error_path', help='path to error per mol', default='../by_mol/cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping.123.dat')
     parser.add_argument('--img_path',   help='file with mol image cache', default='./gdb.img.npy')
+    parser.add_argument('--class_path', help='file with bond-based classes', default='../../data-curation/gdb-reaction-classes/class_indices.dat')
 
     parser.add_argument('--umap_n',      help='umap neighor number', type=float, default=10)
     parser.add_argument('--umap_d',      help='umap min distance',   type=float, default=0.1)
@@ -32,7 +33,7 @@ def main():
     parser.add_argument('--pcovr_gamma', help='pcovr rbf kernel gamma (None for linear)', type=float, default=None)
 
     parser.add_argument('--loop', action='store_true', help='loop over parameters')
-    parser.add_argument('--how_to_color', type=str, default='targets', help='how to color (targets/errors/rxnclass)')
+    parser.add_argument('--how_to_color', type=str, default='targets', help='how to color (targets/errors/rxnclass/bonds)')
     parser.add_argument('--method', type=str, default='umap', help='dimensionality reduction method (umap/pca/tsne/pcovr)')
 
     args = parser.parse_args()
@@ -92,11 +93,16 @@ def load_data(args):
         colors = targets
     elif args.how_to_color=='rxnclass':
         colors = rxnclass_num
+    elif args.how_to_color=='bonds':
+        bonds = np.loadtxt(args.class_path, dtype=int)
+        colors = bonds
 
     radii = np.zeros_like(targets, dtype=int)
     radii[:] = 4
     if args.how_to_color=='errors':
         radii[test_idx] = 16.0
+    elif args.how_to_color=='bonds':
+        radii[np.where(bonds<0)] = 1.0
 
     df = pd.DataFrame({'image': images, 'label':labels, 'radii':radii, 'color':colors, 'targets':targets})
 
