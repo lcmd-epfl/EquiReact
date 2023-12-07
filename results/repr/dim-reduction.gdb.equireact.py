@@ -31,6 +31,8 @@ def main():
     parser.add_argument('--umap_d',      help='umap min distance',   type=float, default=0.1)
     parser.add_argument('--pcovr_mix',   help='pcovr pca:regression mixing', type=float, default=0.5)
     parser.add_argument('--pcovr_gamma', help='pcovr rbf kernel gamma (None for linear)', type=float, default=None)
+    parser.add_argument('--tsne_perp',   help='tsne perplexity', type=float, default=30.0)
+    parser.add_argument('--tsne_ex',     help='tsne early exaggeration', type=float, default=12.0)
 
     parser.add_argument('--loop', action='store_true', help='loop over parameters')
     parser.add_argument('--how_to_color', type=str, default='targets', help='how to color (targets/errors/rxnclass/bonds)')
@@ -44,31 +46,45 @@ def main():
             for n in (10, 20, 50, 100, 200):
                 for d in (0.1, 0.25, 0.5, 0.8, 0.99):
                     print(f'{n=} {d=}')
-                    write_plot(n, d, None, None, data, df, args)
+                    write_plot(n, d, None, None, None, None, data, df, args)
         elif args.method=='pcovr':
             for mix in (0.25, 0.5, 0.75):
                 for gamma in (None, 1e-3, 1e-2, 1e-1, 1, 1e1, 1e2, 1e3):
                     print(f'{mix=} {gamma=}')
-                    write_plot(None, None, mix, gamma, data, df, args)
+                    write_plot(None, None, mix, gamma, None, None, data, df, args)
+        if args.method=='tsne':
+            for perp in (10, 30, 64, 128, 256):
+                for ex in (1, 6, 12, 24, 48):
+                    print(f'{perp=} {ex=}')
+                    write_plot(None, None, None, None, perp, ex, data, df, args)
     else:
-        write_plot(args.umap_n, args.umap_d, args.pcovr_mix, args.pcovr_gamma, data, df, args)
+        write_plot(args.umap_n, args.umap_d, args.pcovr_mix, args.pcovr_gamma, args.tsne_perp, args.tsne_ex, data, df, args)
 
 
 def load_data(args):
-    data = np.loadtxt(args.repr_path, converters={0:lambda s: 0.0, 1:lambda s: 0.0})[:,2:]  # remove first 2 columns
+
+    try:
+        data = np.loadtxt(args.repr_path, converters={0:lambda s: 0.0, 1:lambda s: 0.0})[:,2:]  # remove first 2 columns
+
+        indices = np.loadtxt(args.repr_path, usecols=1, dtype=int)
+        classes = np.loadtxt(args.repr_path, usecols=0, dtype=str)
+        train_idx = indices[np.where(classes=='train')]
+        val_idx   = indices[np.where(classes=='val')]
+        test_idx  = indices[np.where(classes=='test')]
+
+        prediction_idx = np.loadtxt(args.error_path, usecols=0, dtype=int)
+        assert np.all(test_idx==prediction_idx)
+        prediction_errors = np.loadtxt(args.error_path, usecols=[1,2]).T
+        prediction_errors = prediction_errors[1]-prediction_errors[0]
+    except:
+        data = np.load('slatm_gdb.npy')
+        indices = np.arange(len(data))
+        prediction_errors = np.zeros_like(indices)
+        classes = np.zeros_like(indices)
+        test_idx = np.arange(len(data))
+
 
     data = StandardScaler().fit_transform(data)
-
-    indices = np.loadtxt(args.repr_path, usecols=1, dtype=int)
-    classes = np.loadtxt(args.repr_path, usecols=0, dtype=str)
-    train_idx = indices[np.where(classes=='train')]
-    val_idx   = indices[np.where(classes=='val')]
-    test_idx  = indices[np.where(classes=='test')]
-
-    prediction_idx = np.loadtxt(args.error_path, usecols=0, dtype=int)
-    assert np.all(test_idx==prediction_idx)
-    prediction_errors = np.loadtxt(args.error_path, usecols=[1,2]).T
-    prediction_errors = prediction_errors[1]-prediction_errors[0]
 
     df = pd.read_csv(args.csv_path)
     smiles = df['rxn_smiles'].values[indices]
@@ -109,7 +125,7 @@ def load_data(args):
     return df, data
 
 
-def write_plot(n, d, mix, gamma, data, df, args):
+def write_plot(n, d, mix, gamma, perp, ex, data, df, args):
 
     if args.method=='umap':
         emb_path = f'{args.repr_path}.{args.method}.{d=}.{n=}.npy'
@@ -117,6 +133,9 @@ def write_plot(n, d, mix, gamma, data, df, args):
     elif args.method=='pcovr':
         emb_path = f'{args.repr_path}.{args.method}.{mix=}.{gamma=}.npy'
         out_path = f'{args.repr_path}.{args.method}.{args.how_to_color}.{mix=}.{gamma=}.html'
+    elif args.method=='tsne':
+        emb_path = f'{args.repr_path}.{args.method}.{perp=}.{ex=}.npy'
+        out_path = f'{args.repr_path}.{args.method}.{args.how_to_color}.{perp=}.{ex=}.html'
     else:
         emb_path = f'{args.repr_path}.{args.method}.npy'
         out_path = f'{args.repr_path}.{args.method}.{args.how_to_color}.html'
@@ -134,7 +153,7 @@ def write_plot(n, d, mix, gamma, data, df, args):
             embedding = pca.fit_transform(data)
         elif args.method=='tsne':
             from sklearn.manifold import TSNE
-            tsne = TSNE(n_components=2)
+            tsne = TSNE(n_components=2, perplexity=perp, early_exaggeration=ex)
             embedding = tsne.fit_transform(data)
         elif args.method=='pcovr':
             if args.pcovr_gamma is None:
