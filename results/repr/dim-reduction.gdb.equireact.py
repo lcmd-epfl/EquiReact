@@ -107,6 +107,8 @@ def load_data(args):
     rxnclass_num = rxnclass.replace(np.nan, '')
     rxnclasses_dict = {x:i for i,x in enumerate(sorted(set(rxnclass_num)))}
     rxnclass_num = rxnclass_num.replace(rxnclasses_dict)
+    rxnclass = rxnclass.values[indices]
+    rxnclass_num = rxnclass_num.values[indices]
 
     img_path = f'{args.cache_dir}/gdb.img.npy'
     if os.path.isfile(img_path):
@@ -123,7 +125,7 @@ def load_data(args):
     elif args.how_to_color=='rxnclass':
         colors = rxnclass_num
     elif args.how_to_color=='bonds':
-        bonds = np.loadtxt(args.class_path, dtype=int)
+        bonds = np.loadtxt(args.class_path, dtype=int)[indices]
         colors = bonds
 
     radii = np.zeros_like(targets, dtype=int)
