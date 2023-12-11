@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import os
 from PIL import Image
 from bokeh.embed import file_html
@@ -24,8 +26,9 @@ def main():
     parser.add_argument('--repr_path',  help='path to representation', default='gdb.noH.true.123.dat')
     parser.add_argument('--csv_path',   help='path to dataset csv', default='../../data/gdb7-22-ts/ccsdtf12_dz_cleaned.csv')
     parser.add_argument('--error_path', help='path to error per mol', default='../by_mol/cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping.123.dat')
-    parser.add_argument('--img_path',   help='file with mol image cache', default='./gdb.img.npy')
     parser.add_argument('--class_path', help='file with bond-based classes', default='../../data-curation/gdb-reaction-classes/class_indices.dat')
+
+    parser.add_argument('--cache_dir', help='path to cache', default='./data')
 
     parser.add_argument('--umap_n',      help='umap neighor number', type=float, default=10)
     parser.add_argument('--umap_d',      help='umap min distance',   type=float, default=0.1)
@@ -38,7 +41,15 @@ def main():
     parser.add_argument('--how_to_color', type=str, default='targets', help='how to color (targets/errors/rxnclass/bonds)')
     parser.add_argument('--method', type=str, default='umap', help='dimensionality reduction method (umap/pca/tsne/pcovr)')
 
+    parser.add_argument('--dump', action='store_true', help='dump data for gnuplot instead of making html')
+
     args = parser.parse_args()
+
+
+    if not os.path.exists(args.cache_dir):
+        os.makedirs(args.cache_dir)
+
+
 
     df, data = load_data(args)
     if args.loop:
@@ -77,7 +88,7 @@ def load_data(args):
         prediction_errors = np.loadtxt(args.error_path, usecols=[1,2]).T
         prediction_errors = prediction_errors[1]-prediction_errors[0]
     except:
-        data = np.load('slatm_gdb.npy')
+        data = np.load(args.repr_path)
         indices = np.arange(len(data))
         prediction_errors = np.zeros_like(indices)
         classes = np.zeros_like(indices)
@@ -96,11 +107,12 @@ def load_data(args):
     rxnclasses_dict = {x:i for i,x in enumerate(set(rxnclass))}
     rxnclass_num = rxnclass.replace(rxnclasses_dict)
 
-    if os.path.isfile(args.img_path):
-        images = np.load(args.img_path)
+    img_path = f'{args.cache_dir}/gdb.img.npy'
+    if os.path.isfile(img_path):
+        images = np.load(img_path)
     else:
         images = np.array([*map(embeddable_image, smiles)])
-        np.save(args.img_path, images)
+        np.save(img_path, images)
 
     labels = [f'#{i} ({c}) target:{t} error:{e} class:{rc}' for i,c,t,e,rc in zip(indices, classes, targets, errors, rxnclass)]
     if args.how_to_color=='errors':
@@ -128,17 +140,21 @@ def load_data(args):
 def write_plot(n, d, mix, gamma, perp, ex, data, df, args):
 
     if args.method=='umap':
-        emb_path = f'{args.repr_path}.{args.method}.{d=}.{n=}.npy'
-        out_path = f'{args.repr_path}.{args.method}.{args.how_to_color}.{d=}.{n=}.html'
+        emb_path = f'{args.cache_dir}/{os.path.basename(args.repr_path)}.{args.method}.{d=}.{n=}.npy'
+        out_path = f'{os.path.basename(args.repr_path)}.{args.method}.{args.how_to_color}.{d=}.{n=}.html'
+        dump_path= f'{os.path.basename(args.repr_path)}.{args.method}.{args.how_to_color}.{d=}.{n=}.dat'
     elif args.method=='pcovr':
-        emb_path = f'{args.repr_path}.{args.method}.{mix=}.{gamma=}.npy'
-        out_path = f'{args.repr_path}.{args.method}.{args.how_to_color}.{mix=}.{gamma=}.html'
+        emb_path = f'{args.cache_dir}/{os.path.basename(args.repr_path)}.{args.method}.{mix=}.{gamma=}.npy'
+        out_path = f'{os.path.basename(args.repr_path)}.{args.method}.{args.how_to_color}.{mix=}.{gamma=}.html'
+        dump_path= f'{os.path.basename(args.repr_path)}.{args.method}.{args.how_to_color}.{mix=}.{gamma=}.html'
     elif args.method=='tsne':
-        emb_path = f'{args.repr_path}.{args.method}.{perp=}.{ex=}.npy'
-        out_path = f'{args.repr_path}.{args.method}.{args.how_to_color}.{perp=}.{ex=}.html'
+        emb_path = f'{args.cache_dir}/{os.path.basename(args.repr_path)}.{args.method}.{perp=}.{ex=}.npy'
+        out_path = f'{os.path.basename(args.repr_path)}.{args.method}.{args.how_to_color}.{perp=}.{ex=}.html'
+        dump_path= f'{os.path.basename(args.repr_path)}.{args.method}.{args.how_to_color}.{perp=}.{ex=}.dat'
     else:
-        emb_path = f'{args.repr_path}.{args.method}.npy'
-        out_path = f'{args.repr_path}.{args.method}.{args.how_to_color}.html'
+        emb_path = f'{args.cache_dir}/{os.path.basename(args.repr_path)}.{args.method}.npy'
+        out_path = f'{os.path.basename(args.repr_path)}.{args.method}.{args.how_to_color}.html'
+        dump_path= f'{os.path.basename(args.repr_path)}.{args.method}.{args.how_to_color}.dat'
 
     if os.path.isfile(emb_path):
         embedding = np.load(emb_path)
@@ -170,44 +186,48 @@ def write_plot(n, d, mix, gamma, perp, ex, data, df, args):
 
         np.save(emb_path, embedding)
 
-    df['x'] = embedding[:,0]
-    df['y'] = embedding[:,1]
-    datasource = ColumnDataSource(df)
-    color_mapping = LinearColorMapper(palette=Turbo256)
+    if args.dump:
+        np.savetxt(dump_path, np.hstack((embedding, np.array(df.color)[:,None])))
 
-    plot_figure = figure(
-           title=f'{args.method} projection of the GDB dataset',
-           width=1000,
-           height=1000,
-           tools=('pan, wheel_zoom, reset')
-       )
+    else:
+        df['x'] = embedding[:,0]
+        df['y'] = embedding[:,1]
+        datasource = ColumnDataSource(df)
+        color_mapping = LinearColorMapper(palette=Turbo256)
 
-    plot_figure.add_tools(HoverTool(tooltips="""
-    <div>
+        plot_figure = figure(
+               title=f'{args.method} projection of the GDB dataset',
+               width=1000,
+               height=1000,
+               tools=('pan, wheel_zoom, reset')
+           )
+
+        plot_figure.add_tools(HoverTool(tooltips="""
         <div>
-            <img src='@image' style='float: left; margin: 5px 5px 5px 5px'/>
+            <div>
+                <img src='@image' style='float: left; margin: 5px 5px 5px 5px'/>
+            </div>
+            <div>
+                <span style='font-size: 18px'>@label</span>
+            </div>
         </div>
-        <div>
-            <span style='font-size: 18px'>@label</span>
-        </div>
-    </div>
-    """))
+        """))
 
-    plot_figure.circle(
-        'x',
-        'y',
-        source=datasource,
-        color=dict(field='color', transform=color_mapping),
-        line_alpha=0.6,
-        fill_alpha=0.6,
-        size='radii',
-        #size=4
-    )
+        plot_figure.circle(
+            'x',
+            'y',
+            source=datasource,
+            color=dict(field='color', transform=color_mapping),
+            line_alpha=0.6,
+            fill_alpha=0.6,
+            size='radii',
+            #size=4
+        )
 
-    html = file_html(plot_figure, CDN, "{d=} {n=}")
+        html = file_html(plot_figure, CDN, f"{args.method} {os.path.basename(args.repr_path)}")
 
-    with open(out_path, "w") as f:
-        f.write(html)
+        with open(out_path, "w") as f:
+            f.write(html)
 
 
 def embeddable_image(smi):
