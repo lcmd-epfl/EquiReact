@@ -104,8 +104,9 @@ def load_data(args):
     errors[test_idx] = prediction_errors
 
     rxnclass  = df['rmg_family']
-    rxnclasses_dict = {x:i for i,x in enumerate(set(rxnclass))}
-    rxnclass_num = rxnclass.replace(rxnclasses_dict)
+    rxnclass_num = rxnclass.replace(np.nan, '')
+    rxnclasses_dict = {x:i for i,x in enumerate(sorted(set(rxnclass_num)))}
+    rxnclass_num = rxnclass_num.replace(rxnclasses_dict)
 
     img_path = f'{args.cache_dir}/gdb.img.npy'
     if os.path.isfile(img_path):
