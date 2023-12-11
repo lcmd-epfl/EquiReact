@@ -126,7 +126,10 @@ def load_data(args):
         colors = rxnclass_num
     elif args.how_to_color=='bonds':
         bonds = np.loadtxt(args.class_path, dtype=int)[indices]
-        colors = bonds
+        unique_bonds, count_bonds = np.unique(bonds, return_counts=True)
+        bonds_dict = {x:i for i, x in enumerate(unique_bonds[np.argsort(count_bonds)][::-1])}
+        bonds_num = np.squeeze(pd.DataFrame(bonds).replace(bonds_dict).values)
+        colors = bonds_num
 
     radii = np.zeros_like(targets, dtype=int)
     radii[:] = 4
