@@ -15,6 +15,7 @@ import pyaml
 from models import *  # do not remove
 from torch.optim.lr_scheduler import *  # do not remove
 from trainer.lr_schedulers import WarmUpWrapper
+from tqdm import tqdm
 
 
 def move_to_device(element, device):
@@ -184,11 +185,11 @@ class Trainer():
         self.model.load_state_dict(checkpoint['model_state_dict'])
         return self.evaluation(val_loader, data_split='val_best_checkpoint')
 
-    def forward_pass(self, batch):
+    def forward_pass(self, batch, return_repr=False):
         pass
 
     def process_batch(self, batch, optim):
-        loss, predictions, targets = self.forward_pass(batch)
+        loss, predictions, targets, _ = self.forward_pass(batch)
 
         if optim != None:  # run backpropagation if an optimizer is provided
             loss.backward()
@@ -265,6 +266,18 @@ class Trainer():
             if not hasattr(metric, 'val_only') or val:
                 metrics[key] = metric(predictions, targets).item()
         return metrics
+
+
+    def get_repr(self, data_loader):
+        self.model.eval()
+        representations = []
+        for batch in tqdm(data_loader):
+            *batch, batch_indices = move_to_device(list(batch), self.device)
+            _, _, _, rs = self.forward_pass(batch, return_repr=True)
+            representations.append(rs.detach().numpy())
+        representations = np.vstack(representations)
+        return representations
+
 
     def evaluation(self, data_loader: DataLoader, data_split: str = '', return_pred=False):
         self.model.eval()

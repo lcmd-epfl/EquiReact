@@ -60,7 +60,7 @@ maes = train.train(run_dir, logname, None, None, {}, seed=args.seed,
                    combine_mode=args.combine_mode, atom_mapping=args.atom_mapping, CV=args.CV, attention=args.attention,
                    noH=args.noH, two_layers_atom_diff=args.two_layers_atom_diff, rxnmapper=args.rxnmapper, reverse=args.reverse,
                    xtb=args.xtb, semiempirical=args.semiempirical,
-                   splitter=args.splitter,
+                   splitter=args.splitter if hasattr(args, 'splitter') else 'random',
                    split_complexes=args.split_complexes, lr=args.lr, weight_decay=args.weight_decay,
                    eval_on_test_split=args.eval_on_test_split, sweep=True)
 

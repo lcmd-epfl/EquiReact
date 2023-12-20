@@ -140,7 +140,8 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
           xtb = False,
           semiempirical = False,
           sweep = False,
-          eval_on_test_split=False
+          eval_on_test_split=False,
+          print_repr=False,
           ):
     device = torch.device("cuda:0" if torch.cuda.is_available() and device == 'cuda' else "cpu")
     print(f"Running on device {device}")
@@ -267,6 +268,14 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
             maes.append(mae_split)
             if wandb.run is not None:
                 wandb.run.summary["test_score"] = mae_split
+
+            if print_repr:
+                for x_indices, x_loader, x_title in zip((train_data.indices, val_data.indices, test_data.indices),
+                                                        (train_loader, val_loader, test_loader),
+                                                        ('train', 'val', 'test')):
+                    representations = trainer.get_repr(x_loader)
+                    for x in zip(x_indices, representations):
+                        print(f'>>>{x_title}', x[0], *x[1])
 
         seed += 1
         if not sweep:
