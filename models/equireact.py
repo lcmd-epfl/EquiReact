@@ -78,9 +78,13 @@ class EquiReact(nn.Module):
                  sum_mode='node', verbose=False, device='cpu', graph_mode='energy',
                  random_baseline=False, combine_mode='diff', atom_mapping=False,
                  attention=None, two_layers_atom_diff=False,
+                 invariant=False,
                  **kwargs):
 
         super().__init__(**kwargs)
+
+        if invariant:
+            sh_lmax = 0
 
         self.node_fdim = node_fdim
         self.edge_fdim = edge_fdim
@@ -107,12 +111,22 @@ class EquiReact(nn.Module):
             self.graph_mode = 'node'
             print("random baseline is on, i.e. features will be replaced with random numbers")
 
-        irrep_seq = [
-            f"{n_s}x0e",
-            f"{n_s}x0e + {n_v}x1o",
-            f"{n_s}x0e + {n_v}x1o + {n_v}x1e",
-            f"{n_s}x0e + {n_v}x1o + {n_v}x1e + {n_s}x0o"
-        ]
+        if invariant:
+            irrep_seq = [
+                f"{n_s}x0e",
+                f"{n_s}x0e",
+                f"{n_s}x0e",
+                f"{n_s}x0e"
+            ]
+        else:
+            irrep_seq = [
+                f"{n_s}x0e",
+                f"{n_s}x0e + {n_v}x1o",
+                f"{n_s}x0e + {n_v}x1o + {n_v}x1e",
+                f"{n_s}x0e + {n_v}x1o + {n_v}x1e + {n_s}x0o"
+            ]
+
+
 
         self.node_embedding = nn.Sequential(
             nn.Linear(node_fdim, n_s),

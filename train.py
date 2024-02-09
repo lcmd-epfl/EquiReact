@@ -87,6 +87,7 @@ def parse_arguments(arglist=sys.argv[1:]):
     g_hyper.add_argument('--split_complexes'      , action='store_true', default=False    ,  help='if split reaction complexes into individual molecules (for future datasets)')
     g_hyper.add_argument('--xtb'                  , action='store_true', default=False    ,  help='if use xtb geometries')
     g_hyper.add_argument('--semiempirical'        , action='store_true', default=False    ,  help='if use semiempirical geometries')
+    g_hyper.add_argument('--invariant'            , action='store_true', default=False    ,  help='if run "InReact"')
     g_hyper.add_argument('--lr'                   , type=float         , default=0.001    ,  help='learning rate for adam')
     g_hyper.add_argument('--weight_decay'         , type=float         , default=0.0001   ,  help='weight decay for adam')
 
@@ -142,6 +143,7 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
           sweep = False,
           eval_on_test_split=False,
           print_repr=False,
+          invariant=False,
           ):
     te_frac = (1. - tr_frac) / 2
     device = torch.device("cuda:0" if torch.cuda.is_available() and device == 'cuda' else "cpu")
@@ -223,7 +225,8 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
         model = EquiReact(node_fdim=input_node_feats_dim, edge_fdim=1, verbose=verbose, device=device,
                           max_radius=radius, max_neighbors=max_neighbors, sum_mode=sum_mode, n_s=n_s, n_v=n_v, n_conv_layers=n_conv_layers,
                           distance_emb_dim=distance_emb_dim, graph_mode=graph_mode, dropout_p=dropout_p, random_baseline=random_baseline,
-                          combine_mode=combine_mode, atom_mapping=atom_mapping, attention=attention, two_layers_atom_diff=two_layers_atom_diff)
+                          combine_mode=combine_mode, atom_mapping=atom_mapping, attention=attention, two_layers_atom_diff=two_layers_atom_diff,
+                          invariant=invariant)
         print('trainable params in model: ', sum(p.numel() for p in model.parameters() if p.requires_grad))
 
         sampler = None
@@ -321,4 +324,5 @@ if __name__ == '__main__':
           xtb=args.xtb, semiempirical=args.semiempirical,
           eval_on_test_split=args.eval_on_test_split,
           split_complexes=args.split_complexes, lr=args.lr, weight_decay=args.weight_decay, splitter=args.splitter,
-          tr_frac=args.train_frac)
+          tr_frac=args.train_frac,
+          invariant=args.invariant)
