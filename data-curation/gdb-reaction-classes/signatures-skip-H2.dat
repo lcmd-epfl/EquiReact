@@ -1,0 +1,11883 @@
+-N-O
++C-N -C-C -N-O
++C-C -C-O
++C-O -C-O
+-C-O
+-C-O
++N-O -C-O -N-N
+-C-C
+-C-C -C-C
++C-C -C-C
+-C-C
+None
++C-N -C-N
+None
+None
+-N-N
+None
++C-C -C-N
+-C-N
+-C-N -C-N
++N-N -N-N
+-C-O
+-C-C -C-C
+-C-C
+-C-C -C-C
++C-C -C-O
+-C-C -C-C
+None
++C-C -C-C
+None
+-C-C
++C-C -C-C
+None
++C-O -C-C -C-O
++C-C -C-C
++C-C -C-C -C-C
++C-O -C-C -C-O
++C-O -C-N -C-N
+None
+None
++C-O -C-N
+-C-N
++C-N -C-N -C-N
++C-C +N-O
+None
+None
+None
+None
++C-C
++C-N -C-C
+-C-O
++C-N -C-C
++C-N -C-C -C-O
+-C-C
++C-O
+None
++C-O -C-C
++O-O -C-O
+-C-O
++C-N -C-C
++C-N -C-C
++C-C +C-C +C-N -C-C -C-C
++C-N -C-C
+None
+-C-C
++C-C
++C-N
+None
++C-O -C-C
+-C-C
+-C-C
+-C-C
+-C-C
++C-O -C-C
+None
++C-C
+None
++C-C +C-N -C-N -C-N
+None
++C-C -C-N
+-C-N -C-N
+None
+None
+None
+None
+None
+-C-C
+None
+-C-N
++C-N -C-N
+-C-C
+-C-N
+-C-C -C-N
+-C-C -C-N
+-C-C -C-N
+-C-N
+-C-C
+-C-C
+-C-C -C-C
+-C-C -C-C
+-C-C
++C-C -C-C -C-C
+-C-C
++C-N -C-C
+-C-C
+-C-C
+-C-N
++C-N -C-C -C-N
+-C-C
+-C-C -C-C
++C-C -C-C -C-C
+-C-O -C-O
++C-C -C-O
+None
+-C-O
+-C-O -C-O
+-C-C
+None
++C-N -C-O
+-C-O
++C-N +C-O -C-O
+-C-O
+-C-O
+None
++C-N -C-O -C-O
+None
+-C-C
++C-N -C-C
+-C-C
++C-O -C-C
+-C-C
+-C-O
++C-O -C-C -C-O
++C-O -C-C -C-O
++C-C -C-C -C-C
+-C-C
+-C-C
++C-C -C-C -C-C
+None
+-C-O
+-C-C -C-C
+None
++O-O -C-O -C-O
++C-C -C-C -C-O
+-C-C -C-O
+-C-C
+-C-C
+-C-N -C-N -N-N
+-C-N
+None
+None
+-C-C
+None
++N-O -C-O
+-C-C
++C-N -C-C
++C-N -C-C -C-N
+-C-N
+-C-N
++N-O
+-C-C
+-C-O
++C-O -C-C
+None
++C-O
++C-O -C-C
+None
++C-C
+None
+-C-C
+-C-C -C-O
++O-O -C-O
++C-O +C-O -C-O
+-C-O
+-C-O
+None
++C-O -C-O
+-C-C
+-C-O
+None
+None
+None
+-C-C -C-O
+None
+-C-O
+None
+None
+-C-O
+None
++C-N -C-C -C-N -C-O
++C-C -C-O
+None
++C-O -C-C -C-O
++C-O -C-O
+-C-C
+None
+-C-C
++C-C +C-O -C-O
+None
++C-C -C-C
+None
+-C-O
++C-O -C-C
+None
+None
+-C-C
+-C-C
+-C-O
++C-N -C-C
+None
++C-O
+None
+None
++C-C -C-C
+-C-C
+None
++C-C -C-C -C-C
++C-C
+-C-C
+None
+None
++C-C -C-C
+-C-C
+None
++C-C -C-C
++C-C -C-C
+None
+None
+None
++C-C -C-C
+None
+-C-C
+None
+None
++C-C
++C-C -C-C
++C-C +C-N
++N-N
+-C-C
++C-N
+-C-C
++C-C
+None
++C-N -C-C
+None
++C-N -C-C
++C-C
+None
+None
+None
+-C-C
+None
++C-N -C-C
++C-N +C-N -C-N
++C-N -C-C
+-C-N
+-C-O
++C-C -C-C -C-C
+-C-C
+-C-C -C-O
++C-C -C-C -C-C
+None
+-C-C
+-C-C -C-C
+-C-C
+-C-C
++C-C -C-C
+-C-C
+-C-O
+-C-C
++C-C
+None
++C-C -C-C
+None
+None
++C-C
++C-C -C-C
+-C-C -C-O
+-C-O
+-C-C -C-O
+-C-C
+-C-C
+-C-O
++C-O -C-C -C-O
+None
++C-C -C-C -C-O
+-C-C
+-C-C
+-C-C
++C-C -C-C -C-C
+-C-O
++C-O -C-C
++C-N -C-C -C-C -C-N
+-C-C
++C-O -C-C
+None
+None
++C-O -C-C
++C-O -C-C -C-O
+-C-O
+None
++C-C -C-C -C-O
+-C-C
+-C-O
++C-C -C-C -C-C
+-C-C -C-O
+-C-C
+-C-C
+None
+None
+None
+-C-O
+None
++C-N
++N-O -C-O -N-O
++C-N -N-O
+None
+-C-N
+-C-N
++C-O -C-N
+None
++C-C -C-C -C-N
+-C-N -C-N
+None
++C-O -C-C
+-C-C
+-C-C -C-C
+None
+None
+-C-C -C-O
+-C-O
+-C-C
+None
++C-N -C-C
++C-N +C-O -C-O
+None
+-C-C
+None
+-C-O
+-C-C
+-C-O
++C-C -C-C
+-C-O
++C-O -C-O
+-C-C
+None
++C-C -C-C
+-C-C
+None
+None
+-N-N
+-C-N -C-N
+-C-N
+None
+None
+None
+None
+-C-N -C-N
+None
++N-N -C-N -C-N -N-N
++N-N -C-N
+-N-N
++N-N -N-N
++C-C -C-N
+None
+None
+None
+None
+-C-N -C-N
+None
++C-N
+-C-O
++C-N -C-O
++C-N +C-N -C-O
++C-N -C-C
+None
+None
+-C-O
+-C-C
++N-N -C-O
++C-N
+-C-C
+None
+-C-C
++C-O -C-C -C-O
+-C-C
+-C-C -C-C
+None
+None
++C-C
++C-C -C-C
++C-O
+-C-O
++N-N -N-N
+None
++N-O -C-O -N-N
+None
+-C-N -C-N
+-C-N
+None
++N-O -C-O
++N-O -C-N -C-O
+None
++C-N -C-N -C-N -N-N
+-N-N
++C-C -C-N
+-C-N -N-N
+None
++C-N -C-N
+None
+None
++N-O -C-O
+-C-C
+-C-C
+None
+None
+-C-C
++C-C +C-C -C-C -C-C
+-C-N
++C-N -C-C
+-C-C
+None
+-C-C
+-C-C
+-C-C
+None
+-C-N
+None
++C-O -C-O
++C-C -C-N
++C-O -C-O
+None
+None
+-C-C -C-N
+-N-N
+None
+None
+-N-N
++C-C -C-C
+None
+None
++C-O -C-N -C-O
+None
++C-N -C-C
+-C-C -C-N
++C-N -C-C
+-C-C
+-C-C
++C-C -C-C -C-C -C-N
++C-O -C-N
++C-N -C-C -C-N
+-C-C
+-C-O
++C-C -C-C -C-N
+-C-C
++C-C -C-C
+-C-C -C-N
+-C-C
+-C-C
+-C-C
++C-C -C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-O
++C-C -C-C
+None
+-C-C -C-C
+-C-C
+None
++C-C -C-C
+None
+None
++C-C -C-C
++C-C -C-C
+None
+None
++C-C
+-C-C
++C-C -C-C
+None
++C-C -C-C
+-C-C
+None
+-C-C
++C-N -C-C
++C-N +C-N -C-C
++C-O -C-C -C-O
++C-C -C-C -C-C
+-C-O
+-C-O
++C-C -C-C -C-C
+-C-C -C-O
++C-O -C-C -C-O
+-C-C
+-C-C
+-C-C
+None
+None
+-C-C -C-C
+None
+None
+-C-N
+None
+None
+-C-C -C-N
+None
++C-C -C-N
+None
+None
++C-C
+-C-O
+None
+-C-C -C-O
+-C-C
+None
++C-O -C-C -C-O
+-C-C -C-N
+None
++C-C -C-C -C-C
+-C-C -C-N
+None
+-C-C
+-C-C -C-C -C-N
+-C-C -C-N
+None
+None
+-C-C -C-C
+None
+None
+-C-C
+-C-C
+-C-O
+-C-C -C-O
+-C-C -C-C
+-C-C
+-C-C
++C-C -C-C -C-O
+-C-C
+-C-C
+-C-C
+None
+None
++C-C -C-C
++C-O -C-O
+None
++C-C -C-C
++C-C
+None
+None
+None
++C-C
+-C-C -C-C
++C-O -C-C -C-O
++C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C -C-C -C-O
+-C-C
++C-C -C-C -C-C
+-C-O
+None
++C-C -C-C
+-C-C -C-O
+-C-C
++C-O -C-C -C-O
+-C-O
+-C-C -C-C
+-C-C
+None
+-C-C -C-C
++C-O -C-C
++C-N -C-C
++C-N -C-C
++C-C -C-C
+None
++C-C
+None
+None
+None
++C-N -C-C
++C-N -C-C
+None
+None
+-C-C
+-C-C -C-N
+-C-C
+None
+None
+None
+None
+None
+-C-N -C-N
+-N-N
++C-N -N-N
+None
++C-C -C-C -C-N
+-C-C
+None
+-C-C
+-C-C
+-C-C -C-C
+-C-C
+-C-C
+-C-C -C-O
+-C-C
+None
+None
++C-O -C-C
+-C-O
+-C-C -C-O
++C-O
+-C-C
+None
+-C-C
++C-C -C-C -C-N
++C-O -C-N
++C-O -C-O
++C-C -C-N
++C-C -C-C
++C-N -C-N
+None
++C-C +C-O -C-O
+None
++C-O
++C-C +C-N -C-N
++C-C +N-O -C-N
++C-O -C-C
+None
+-C-N
+-C-N
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-C
+None
+-C-O
+-C-C
++C-C -C-C
+-C-C
+-C-C -C-C
++C-O -C-C -C-O
+-C-C
+-C-C
+-C-C -C-C
++C-C -C-C -C-C
+-C-C
+-C-O
++C-C -C-C
++C-C
++C-C -C-C
++C-C -C-C
+-C-C
+-C-C
++C-O -C-C
++C-O -C-C
++C-O -C-C
+None
+None
++C-O -C-C
++C-O
+-C-C
+None
+None
+None
+None
+None
++C-C -C-N
+None
+None
+-C-N
+None
+None
+None
++C-C -C-C -C-N
++C-C -C-C -C-C
+None
+None
+None
+None
++C-C +C-C
++C-C -C-C
+None
++C-C -C-C -C-O
+-C-C
++C-O -C-C -C-O
+None
++N-O
+None
+-C-C -C-N
+None
+-C-C -C-C
++C-C -C-N
++C-N +C-O -C-N
+None
+-C-C -C-O
+-C-O
+None
++C-O -C-O
+-C-O
+-C-C
++C-O
++C-C +C-O -C-C
+None
++C-C +C-O -C-O
++C-C
+-C-C
++C-C -C-C
+None
+None
+-C-O
+-C-C -C-C
++C-O -C-C
++C-O -C-C -C-O
++C-O -C-C -C-O
+-C-C
+-C-O
+-C-C
+-C-C
+-C-C -C-O
++C-C -C-C
++C-C -C-C
++C-O
++C-O -C-C
+None
++C-N +C-O
+None
++C-N -C-C
++C-N +C-O -C-C
++C-O -C-C
++C-O -C-C -C-O
++C-O -C-C -C-O
+-C-O
+-C-O
+-C-C
+-C-C
+-C-C
++C-N +C-N -C-N -N-N
+None
+None
+None
+None
+-C-C -N-N
++C-N -C-C -N-N
+None
+-C-C -N-N
+-C-O
++C-C -C-C
+None
+-C-C
+-C-C
+-C-C -C-C
+-C-C -C-C
+-C-C
+-C-C
++C-C -C-C -C-C
++C-O -C-C -C-O
+-C-C -C-O
++C-O -C-C -C-O
+-C-C
+None
+-C-C
+-C-N
+None
++N-O -C-N -C-N
+-C-C
++C-N
+-C-N
+None
+None
+-C-C
++C-N -C-C
++N-O -C-N
+-C-C
+-C-C
+None
+None
+-C-C
+None
++C-O -C-O
++C-N -C-N
+None
++C-C -C-C
+None
++C-N -C-N -C-N
+-C-N -C-N
+None
+None
+-C-N
+-C-N
+-C-O
+-C-O
++C-C
+-C-N -C-O
+None
+-C-O
+-C-C
+-C-C
+-C-C -C-C
+-C-C
+None
+None
+-C-C
+-C-C -C-C -C-C
++C-C -C-C
+-C-C
+None
+-C-C
+None
+-C-C -C-C
+-C-C
++C-C
++C-O -C-N -C-N
+None
+None
+None
+-C-N
++C-N -C-N
+-C-C -C-N
+-C-N
+None
+None
+None
+None
++C-O -N-O
++C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C -C-C
+-C-C -C-C
++C-C +C-C -C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-C
+-C-N
++C-N
++C-N
+-C-C -C-N -N-N
++C-N -N-N
+-N-N
++C-C -C-N
++C-C -C-C
++C-C -C-C
++C-C -C-C -C-C
+-C-C
+None
+-C-O
++C-N
++C-C
++C-C -C-C -C-O
++C-N -C-C
+-C-O
+-C-N
++C-O -C-N
++C-C -C-O
+None
+-C-C
+-C-C -C-N
++C-C -C-C -C-N
+-C-C -C-O
++C-O -C-O
+-C-O
+-C-C
++C-C +C-N
+-C-O
+-C-O
++N-O -C-O
+-C-C
+None
++C-N -C-O
+None
++C-N -C-C
+None
++C-O -C-O
+None
+None
+-C-C -C-C -C-O
+-C-C
+-C-O
+-C-C
+None
+None
+None
++C-N -N-N
+-C-C -C-N
++C-N -C-C -C-N
+None
+-C-N
++C-N
+None
+None
+None
+None
++C-C -C-N
++N-N -N-N
++C-N
+None
+None
+-N-N
+None
+None
++N-N -N-N
+-C-N -N-N
+None
+-C-C
++C-C +C-C -C-C -C-C
++C-O -C-C -C-O
+-C-C -C-O
+-C-C
++C-O -C-C -C-O
+-C-C
+None
+-C-C
+-C-O
+-C-C -C-O
+-C-C
+-C-C
+-C-C
+-C-O
++C-C -C-C -C-O
+-C-C -C-O
++C-C -C-C
++C-C -C-C
+-C-C
+None
+-C-C
+None
++C-C -C-C
+None
+-C-C
+-C-C
++C-C +C-O -C-C
++C-O -C-C
++C-C -C-C
+-C-C
+None
++N-O
+-C-C -C-C
+None
+-C-C -C-N
+None
++C-C -C-O
+None
+-C-O
+None
+None
++C-C -C-C -C-O
+-C-O
++C-C
+-C-C -C-O
++C-C -C-O
++N-O -C-N
+None
+None
+-C-N
+None
++C-O
+-C-C
++C-C
++C-N +C-O -C-N
+None
+None
+None
+None
+None
+-C-C
+-C-C
+-C-O
+-C-C -C-O
+-C-O
++C-C -C-C -C-C -C-O
+-C-O
+None
+-C-C
++C-C -C-C -C-C
+-C-C
+-C-C
+-C-C
++C-N +C-O -C-C -C-O
++C-N -C-O
++C-C
++C-C -C-O
+None
++C-O
++C-O -C-O
+None
+-C-O
+-C-O
+None
+-C-C -C-O
+None
+None
++C-C -C-C -C-O
++C-N -C-C
+-C-O
+-C-C
+-C-C
+-C-O
+-C-C
+-C-C -C-N
++C-N -C-C
++C-N -C-C -C-N
+-C-N
++C-O -C-C
++O-O -C-O
+None
++C-C +C-C +C-O -C-C -C-C -C-O
++C-O -C-C
+-C-C
+-C-C
+-C-C
++C-N +N-N
++N-N
++C-C -C-N
+-C-N
++C-C +N-N
+-C-N
++C-N
+-C-N -C-N -N-N
+-N-N
+None
+-C-C
+None
+-C-O
+-C-O
+-C-O
++C-O -C-C -C-O
+None
+-C-C
++C-N -C-C
+-C-C
+-C-C
++C-O -C-C
+None
++C-O -C-C
+None
+None
+None
+None
+-C-N
++C-C
+-C-N
+None
+None
+None
++N-N -C-N
+None
+None
++C-C -C-C
+-C-C
++C-C +C-N -C-C -C-N
+None
+None
+-C-N
+None
+None
+None
+None
+None
+None
+-C-N
+None
+None
++C-O -C-N
+None
++C-O -C-N
+None
++C-N -C-N -C-N
+-C-N
+None
+-C-C -C-O
+-C-O
++C-O -N-O
++C-N -N-O
+-N-O
+None
+-C-C -C-C
++C-C -C-C -C-C
+None
+-C-C -C-O
++C-O -C-C -C-O
+-C-C
++C-N -C-C -C-O
++C-N -C-O
+None
+-C-O
++N-O
++C-C -C-C -C-O
++C-N -C-O
+-C-O
+None
++C-N -C-C
++C-C +N-O
+None
+-C-C -C-O
+None
++C-O -C-C -C-O
+-C-O
++C-C -C-C -C-C -C-O
+-C-C
++C-C +C-O -C-C -C-O
+-C-O
+-C-C
+None
+-C-C
++C-O -C-C
+None
++C-O -C-O -C-O
+-C-C
+-C-C
+-C-C
+-C-O
++C-O -C-C
++C-C +C-C +C-C
+None
++C-C -C-C
+-C-C
+-C-C
+-C-C
+None
+-C-C
+-C-C
+None
++C-C
++C-C +C-O -C-C
++C-O -C-C
++C-O
+-C-C
++C-O -C-C
++C-O -C-C
+None
+-C-C
+None
+-C-O
++C-O -C-C -C-O
+-C-C
++C-O
+None
+-C-O
+None
+-C-O
+-C-C
+None
+-C-C
+None
++C-O -C-C
+None
++C-O -C-C
++C-O
++C-O -C-C
+-C-O
+None
+-C-O
+-C-O
+-C-C
+-C-C
++C-C -C-C
+-C-C
++C-C -C-C -C-C
+-C-O
++C-C -C-C -C-C
++C-C -C-C
+-C-C -C-C
+None
+-C-N
++C-C -C-C -C-C
++C-N +C-O -C-N -C-O
+None
++C-N -C-C -C-N -C-N
++C-O -C-N
++C-O -C-C
+-C-N
+None
++C-C +C-N -C-C -C-N
+-C-C
+None
++C-C -C-C -C-N
+-C-N
++C-C +N-O -C-N
+None
+None
+None
+None
++C-C -C-C
+None
+None
+-C-C
++C-C -C-C
++C-O
++C-O -C-C
++C-C -C-C
++C-C +C-C -C-C
+-C-C
++C-O -C-C
+None
+None
+-C-C
+-C-C -C-C
++C-O -C-C
++C-C +C-O -C-C
++N-N -N-O
+-C-C -C-O
++C-N -N-O
+None
++C-N
+None
+-C-O
+None
+None
++C-N -C-N -N-O
++C-N -C-N
++C-C -C-N -C-N
+None
+-C-N
+None
+-C-N -C-N
+-C-N -N-N
+-C-N
+-C-C
+None
+-C-C
+None
+-C-O
+-C-O
+-C-O
+None
+-C-C
+-C-O
+None
++C-O -C-C
++C-C -C-C
+-C-N
+None
+None
+None
+-C-C
+None
+None
+None
+None
++C-N -C-C -C-N
+None
+None
+None
++C-N -C-C
++C-C -C-C -C-N
+None
+None
+-C-N
+None
++C-N -C-N
+-C-O
+-C-O
++C-O -C-C -C-O
+-C-O
+-C-O
++C-O -C-O
+-C-C
+None
+None
+-C-C
+-C-C
+-C-N
+None
+-C-O
++C-O
++C-O
++C-C
+-C-C
+-C-C
++C-O -C-C
++C-O -C-C
+-C-C -C-O
+-C-C
+-C-C -C-N
++C-N -C-C
+-C-C -C-N -C-O
+-C-C
++C-N -C-O
+-C-C
++C-C -C-C -C-C
+None
+None
+-C-C
+-C-C -C-N
+-C-C
+-C-C
++C-N -C-C
++C-C +C-C -C-C
++C-C -C-C
++C-N -C-C
+None
+None
++C-O -C-C -C-O
+None
+-C-C
+-C-C -C-O
+-C-O
+-C-O
++C-C -C-O
+-C-C -C-O
++C-O -C-C -C-O
++C-C -C-C -C-O
++C-O -C-C
++C-O -C-O
++C-C -C-O
+-C-O
++C-N -C-O
++C-N -C-O
+None
+None
++C-O -C-C
+-C-O
+-C-C -C-N
+-C-C
+None
+None
++C-C -C-C -C-C
+-C-C
+None
++C-O -C-O
+-C-O
++C-O -C-C -C-O
+-C-C
+None
+None
++N-O
+-C-N
+-C-C
+-C-C
+None
++C-N -C-N
+-C-C
++C-O -C-C
++C-O -C-N
++C-N
+-C-C -C-O
+None
++C-N +C-O -C-N -C-O
++C-N -C-O
++C-N +C-O
++C-N +C-O -C-O
+-C-O
++C-N +N-O
+None
++C-O +N-O -C-O
+-C-O
+None
++C-N -C-O
++N-O -C-O
+None
++C-O +C-O -C-O
++C-O +N-O -C-O
++C-C -C-C -C-C -C-C
+-C-C
+-C-C
++C-C -C-C
++C-O
++C-O -C-C
++C-O -C-C
+None
+None
++C-O
+-C-C -C-O
+-C-C
+-C-O
++C-O -C-C -C-O
+-C-C
++C-O -C-C -C-O
+-C-C
++C-C -C-C -C-C
++C-N +C-O -C-O
++C-N -C-C
+None
+-C-O
+None
+-C-C
++C-O -C-C -C-C
++C-O
+-C-C
++C-O +C-O
++C-O -C-C
++C-C -C-C
+-C-C
++C-C +C-C -C-C -C-C
++C-O +C-O -C-C
+-C-C
++C-O -C-C
+None
++C-O
+None
++C-C -C-C
++C-O -C-C
++C-O -C-C
++C-C -C-C
++C-C
+-C-N
+-C-C
+None
++C-C -C-C
+-C-C
++C-C -C-C
+None
+-C-O
+-C-C
+-C-C
++C-O -C-C
+-C-C
++C-O -C-C
++C-C -C-C
++C-O
+-C-C
+None
+None
+-C-C
++C-O -C-C -C-O
++C-N +C-O -C-N -C-O
++C-O -C-N
++C-O -C-C
+-C-C
+-C-C -C-N
+-C-C -C-N
++N-O -C-N
+-C-C
+-C-C
++C-N -C-C -C-N
+None
+-C-C
+None
+-C-C -C-N
+-C-O
+-C-O
++C-O -C-C -C-O
++C-N -C-C
+-C-O
++C-N -C-C
+None
++C-N -C-C
++C-O -C-C -C-O
+-C-C
++N-O -C-O
++C-N -C-C
+-C-C
+-C-C
+-C-C
++C-O -C-C
++C-N
+None
++C-O -C-O
+-C-C
+None
++C-C -C-C
+None
++C-C -C-C -C-C
+-C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C
++C-C -C-C -C-C
++C-C -C-C
++C-N -C-C
+None
++C-C +C-O -C-C
+None
++C-O -C-C
+None
++C-C -C-C
+-C-C
+None
+-C-C
+None
++C-C -C-C -C-C
+-C-C
+-C-C
++C-C -C-C -C-C -C-C
+-C-C
+-C-C
+-C-C
++C-C -C-C -C-C
++C-C -C-C -C-C
+-C-C -C-C
+-C-C
+-C-C
++C-C -C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C
+None
+-C-C -C-C
+-C-C
+-C-C -C-C
++C-C -C-C -C-C
+-C-O
+-C-C
++C-C -C-C -C-C
++C-O -C-C -C-O
+-C-C
+-C-C -C-O
+-C-C
++C-O -C-C -C-O
+-C-C
+-C-C
+-C-O
+-C-C
+-C-C
+-C-C
+None
+-C-C
+-C-C
++C-O -C-C
++C-O -C-C
++C-O -C-C
++C-O -C-C -C-O
+-C-C -C-O
+-C-C
+-C-C
+-C-C -C-C -C-O
+None
++C-N -C-C
+-C-O
+-C-O
++C-N -C-O
+-C-C
+None
++C-N -C-C
++C-N -C-C -C-O
+-C-O
+-C-C -C-O
+None
+None
+-C-O
+None
+-C-C
+-C-C
++C-C -C-C
+-C-O
+None
++N-N -N-N
++C-C -C-N
+None
++C-N -C-N -C-N
+None
+-C-N
+-C-N -N-N
+None
+-C-N -C-N
+None
+-N-N
+-C-O
+-C-C -C-O
+-C-C
++C-O -C-C -C-O
+-C-C
+-C-C -C-O
+-C-O
++C-N -C-C
+-C-C
++C-N -C-C
++C-C
+-C-C
++C-N -C-C
++C-C +C-N -C-C
++C-N
++C-O
++C-C -C-C
+None
+None
+None
+None
++C-O +C-O -C-O
++C-N
++C-N -C-C
++C-N +C-O -C-O
+None
++C-N +C-O -C-O
++N-O -C-O
++C-O -C-C
++C-O -C-C
++C-N -C-C -C-N
++C-O +C-O -C-C
++C-O -C-C
+None
+None
++C-O -C-C
+-C-C
+-C-C
++C-C -C-C
+-C-C
++C-O -C-C
+-C-N
++C-O
++C-O +C-O -C-C
+-C-O
++N-O
+None
+-C-C
+-C-O
+-C-C
++C-O -C-C
++O-O -C-O -C-O
+-C-N
+-C-C
++C-C
++C-O
++C-C +C-O -C-C -C-O
+None
+None
++C-O -C-O
+-C-C
+-C-O
+-C-C
+-C-C
+None
+-C-O
+-C-O
++C-C -C-C
+None
+-C-C -C-N
+None
++N-N -C-N
+None
++C-O -N-O
+None
+-C-C
+None
+-C-C
+None
+None
+-C-C -C-O
+-C-O
+-C-C
+-C-O
+None
+-C-C
++C-C -C-C -C-C
+-C-C
+None
+None
++C-O
++O-O -C-O
+-C-O
++N-O -C-O
+-C-C
+None
+-C-C
+-C-O
+-C-O
+-C-C
+-C-C
++C-O -C-O -C-O
+-C-C -C-O
+-C-C -C-O
+None
+None
++C-N -C-N
+None
+-C-O
+None
+None
++N-N -C-N -C-O
+None
+None
++C-C -C-C
+-C-O
+-C-O
+-C-C -C-O
+-C-O
+None
++C-O -C-O
+-C-C
+-C-C
+-C-C
+-C-C -C-C
+-C-C
+None
++C-C -C-C -C-C
++C-C -C-C
++C-C -C-C
++C-N -C-C
++C-N -C-C
++C-O -C-C -C-O
+-C-C
++C-C -C-C
+-C-O
+-C-C
+None
+-C-C
+-C-O
++C-O -C-O
++C-C -C-O
+-C-C
+-C-C -C-O
++C-C -C-C
+None
+-C-C
+-C-C -C-O
+-C-C
++C-O -C-O
++C-O -C-C -C-O
+-C-C
+-C-C -C-O
+-C-C
+-C-O
+None
+-C-C -C-N
+-C-C
+-C-O
+None
+-C-C
+None
+-C-C
+-C-C
++C-N -C-C
+-C-C
+-C-C
+-C-C
+-C-C -C-C
++C-N
+None
+-N-N
+None
+None
+-N-N
+-N-N
++C-N -C-N
+None
+-C-N -N-N
+None
++C-C -C-N
+None
++C-C -C-N
+None
+None
++C-C -C-C
+-C-C -C-N
+None
+None
+None
+-N-N
+None
+-N-N
+None
+None
+-C-C -C-C
+None
+-C-C
+-C-C
++C-C -C-C
++C-C -C-C -C-C
+None
+-C-O
+-C-C
+None
++C-C -C-C
+None
+-C-C
++C-O -C-O
++C-N
+None
+None
++C-N -C-C
++C-N -N-N
++C-N -C-N
++C-C -C-N
+-C-C -C-N
+None
+None
+-C-N
+-C-C
+None
+None
+None
+None
+-C-C
++C-C +C-C -C-C -C-C
+-C-C
+-C-C
+-C-C
+None
+-C-C -C-C
+-C-C
+None
+None
++C-O
+-C-C
++C-C
+-C-O
++C-C
++C-O
+None
++C-O -C-C
+-C-C
+None
+-C-C -C-N
++C-N -C-C -C-N
+-C-C -C-N
++C-C -C-N
+-C-C
++C-O -C-C
++C-C +C-O -C-C
+None
+None
+None
+-C-O
+-C-O
+None
+None
++C-C
+None
+None
+None
++C-N -C-O
++C-N +C-O -C-O
++C-C -C-O
+-C-C
+-C-O
++C-C -C-C -C-C
++C-O -C-C -C-O
+-C-C -C-O
+-C-O
++C-O -C-C -C-O
++C-C -C-O
+-C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C -C-C
++C-C -C-C -C-C
+-C-O
+-C-O
+-C-C
++C-O -C-C -C-O
++C-O -C-C -C-O
++C-C -C-C -C-C
+-C-O
++C-O -C-C
++C-O -C-C -C-O
+None
++C-O -C-C -C-O
+None
++C-O -C-C -C-O
+-C-C -C-C
+-C-C
++C-O -C-C
++O-O -C-O
+None
++C-O
+None
++C-O -C-O
+-C-O
+None
++C-O -C-C -C-O
+-C-C
+-C-C -C-C -C-O
+-C-C
++C-C -C-C
+-C-C
++C-O
++C-C
++C-N -C-C -C-N
++C-O -C-C
+-C-C
++C-O
++C-C +C-O -C-C
+None
++C-O -C-C
++C-O -C-C -C-O
++C-C -C-C -C-C
+-C-C -C-O
+-C-O
+-C-C
++C-O -C-C -C-O
+-C-C
+-C-O
+-C-C -C-C
++C-C -C-O
+-C-C -C-C
+-C-C
+None
++C-C -C-O
++C-O -C-C -C-O
+-C-C
++C-C -C-C -C-C
++C-C -C-C
+-C-C
+-C-O
+None
++C-N -C-C
+None
+-C-C
+-C-O
++C-O -C-C -C-O
+-C-C -C-O
+-C-C
+-C-O
+-C-O
++C-O -C-O
+-C-O
++C-O -C-C
+None
++C-O
+-C-C -C-O
+-C-O
+None
+None
+-C-O
+-C-O
+-C-N
+None
++C-C -C-N
+None
+None
+None
++C-C -C-N
+None
+-C-N
+None
+None
++C-C
++C-N -C-N
+None
+-C-O
+-C-O
++C-N -C-O
+None
+None
+None
+None
++C-O
++C-C -C-C
++C-O
++C-C +C-O -C-O
++C-C +C-O -C-O
+None
+None
+-C-C
++C-O -C-C
+None
++C-C
++C-O -C-C
+None
+-C-C
+-C-C
++C-C
++C-N +C-N -C-N
+-C-C
++C-N -C-C
+None
++C-N -C-C
+None
+None
++C-O +C-O -C-O
+None
++C-O -C-C -C-O
+-C-O
+-C-C -C-O
++C-O
+-C-C
++C-C -C-C -C-N
+None
++C-C -C-C -C-N
+None
+-C-O
++C-C -C-C -C-C -C-C
+-C-C
++C-C
+-C-C
+-C-C
+-C-C -C-C
+-C-C
+None
+None
++C-C +C-O -C-O
+None
++C-C -C-C
++C-C -C-C
+None
+-C-C
++C-C
++C-O
++C-C +C-C +C-O -C-C -C-O
+-C-O
+None
++C-C -C-C -C-O
++C-O -C-O
+-C-C
+-C-C
+None
+-C-O
+-C-C
++C-C -C-O
+-C-N
+-C-C -C-C -C-N
+None
++C-C
++C-O -C-N
++C-C -C-C -C-N
+-C-C
++C-O -C-C
+-C-N
+-C-C
+-C-C
+None
+-C-N
+None
+-C-C
+None
+-C-O
+-C-O
+-C-C
++C-O -C-O -C-O
+None
+-C-C -C-O -C-O
+None
++C-O -C-C -C-O
+None
+None
++C-N -C-C
++C-N -C-C
+-C-C
+None
++C-N +C-N -C-N
++C-O -C-O
+-C-O
+None
+None
+-C-O
++C-C
+None
++C-N -C-C
++C-C -C-C -C-O
+None
++C-C
++C-C -C-O
++C-C -C-O
+None
+None
+None
+-C-N -C-O
+-C-O
+-C-N -C-O
+None
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C
++C-O -C-C
+None
+None
+None
+None
+None
+None
+None
+None
+None
+None
++C-C -C-C
+None
+None
+None
+None
+-C-C
++C-C -C-C -C-C -C-N
+None
+None
+-C-N
++C-O -C-O
++C-C -C-C
+-C-C
+None
+-C-O
+None
++N-O -C-N
+None
+-C-C -C-N -C-N
++C-C
+None
+None
+None
+None
+None
++C-N -C-N -C-N
+-C-N
+-C-C
+None
++C-C +C-C +C-C
+None
++C-C -C-C
+None
+-C-C
++C-C -C-C -C-C
+-C-C -C-C
+-C-C
+None
+None
+-C-O
+-C-C
+None
++C-O -C-C -C-O
++C-C -C-C -C-C
+-C-C -C-O
+-C-C
++C-O -C-C -C-O
+-C-C
+-C-C -C-C -C-O
++C-C -C-C -C-O
+-C-C
+-C-C
+-C-C
+-C-C -C-C
+-C-O
+-C-C
+-C-C
+None
+-C-C -C-O
++C-C
+-C-O
++C-C
+-C-O
+-C-C
+None
+-C-O
+None
++C-C -C-C
+None
+None
+-C-C
+-C-C
+-C-C -C-O
++C-C -C-C
+-C-C
+-C-C
+-C-C
+None
++C-O
++C-C +C-O -C-O
++C-C -C-C
+None
+None
++C-C -C-O
++C-N -C-C
+-C-O
+-C-O
+None
+None
+-C-C
+None
+-C-C
+None
++C-O
+None
++C-O -C-N
++C-O -C-C
++C-O -C-O
++N-O -C-N
++C-C -C-C -C-C -C-N
++C-N -C-C -C-C -C-N
++C-C -C-C -C-C -C-N
+-C-C
+-C-C -C-N
+-C-C
++C-C -C-C
+None
++C-N +C-O -C-N
+None
+None
+None
+-C-C
+None
+None
+-C-C
+-C-N -C-O
+-N-O
++N-N -N-O
+None
+None
+-C-O
++C-C -C-C
+-C-C
+None
+None
+-C-C
+-C-C
+None
+None
++C-C -C-C -C-N
+None
++C-C -C-O
+-C-C -C-O
+None
+-C-C
+-C-C
+None
+None
+-C-C
+-C-O
+-C-O
++C-O -C-O
++C-O
+None
+None
+-C-C
+None
++C-C
++C-O -C-C
+None
++C-O
++C-O -C-C
+-C-C
+-C-C -C-C
+-C-O
+None
++C-C -C-C
++C-C -C-C -C-C
+None
+-C-C -C-N
++C-N -C-N
++C-N -C-C
+-C-C
+-C-C -C-C -C-N
+-C-C
+-C-C -C-N
++C-C +C-N -C-N
+-C-C
+-C-N
+None
++C-C -C-C -C-C
+-C-C
++C-N -C-C
++C-N
+-C-C
+None
+-C-C
+None
++C-C +C-N -C-N
++C-C -C-C
+None
+-C-C
+None
++C-C
+-C-O
+-C-C -C-O
++C-C -C-C -C-O
+None
++C-O -C-C -C-O
++C-O -C-C
+-C-C -C-C -C-O
+-C-O
++C-O -C-C -C-O
+-C-C
+-C-C -C-O
+None
+-C-O
+-C-O
++C-C -C-C -C-O
++C-C
+None
+-C-C
+-C-C
+-C-O
+-C-C -C-O
++C-C
+-C-C
+None
+-C-N
++C-C
+None
++N-N -C-C
++N-N -C-N
++C-N -C-C
++C-N -C-C
+-C-C
+-C-C
+None
+None
++C-C -C-C -C-N
++C-N -C-C -C-C
+-C-C
++C-O -C-C -C-N
++C-O -C-N
+None
+-C-N
+None
+None
++C-C +C-N -C-C -C-C -C-N
++C-O -C-C
++C-C -C-C -C-C -C-C
+-C-C
++C-O -C-C -C-C
++C-C
+None
++C-O -C-C
+None
+-C-C
+-C-C
++C-O -C-C
++C-C +C-O -C-C -C-C
+-C-C -C-C
+None
+-C-O
+-C-O
+-C-C
+None
++C-N -C-C
+-C-N
+None
++C-O +C-O
+None
++C-O -C-N
++C-N +C-O -C-N
+None
+None
+None
++C-O -C-C
+None
+-C-C -C-O
++C-O
++C-O -C-C -C-O
++C-O -C-C -C-O
+-C-C
++C-C +C-O -C-C
+-C-C
+-C-C
+None
+-C-O
+None
+-C-C
++C-C -C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-C
+None
+-C-O
+-C-O
+-C-C
+-C-C
+-C-O
+-C-C -C-O
+-C-O
++C-O -C-O
++C-C -C-C
+None
++C-C
+-C-C -N-N
+None
+None
++C-N -N-N
+None
+None
++C-N -N-N
+None
+-C-C -N-N
+-N-N
+-C-O
+-C-O
+None
++C-C
++C-N -C-O
+None
+-C-O
+None
+None
++C-O -C-N -C-O
+-C-C
+-C-C
+-C-C
+None
+None
+-C-C
++C-C -C-C -C-C
+-C-C -C-O
+-C-O
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C -C-O
+-C-C
+-C-O
++C-C -C-C -C-N
+-C-C -C-N
+None
+-C-C
+-C-C -C-N
++C-C -C-C -C-N
+-C-C
+-C-C -C-N
++C-N -C-C -C-N
+-C-C -C-N
+-C-N
++C-C -C-C
+-C-C -C-C
++C-O -C-N -C-O
+None
++C-O -C-C -C-O
++C-C
+None
+-C-C
+-C-C
+None
++C-N -C-C
+-C-N
++C-N +C-N -C-N
+None
++N-N -C-N
+None
+-C-C
+None
++C-C +C-N -C-C
+None
++C-N
++C-C +C-N -C-C -C-C
++C-N -C-C -C-C
+-C-C
++C-N
++C-N -C-C -C-C
++C-N -C-C
++C-C
++C-C
+-C-C -C-C
+-C-C
+None
++C-O -C-C
+None
+-C-N
+-C-C -C-N
+-C-C -C-N
+-C-N
+-C-O -C-O
+-C-O -N-O
+-C-O -N-O
+None
++C-N -C-C
+-C-C
++C-N +C-N -C-N
+-C-C -C-C
++C-N -C-C
++C-C -C-C -C-C
+None
+None
++C-O -C-N -C-O
+-C-N -C-N
+None
+None
+None
+-C-N -C-N
+None
+None
+-C-N
++C-N -C-C
+-C-O
++C-C -C-C
+-C-C
++C-O -C-O
++C-C -C-C
+None
++C-C +C-C
+-C-C -C-C -C-C
+None
+-C-O
+None
+None
+None
+-C-C
+None
+None
++C-C -C-C -C-N
+-C-C
+None
++C-N -C-C
+None
+-C-N -N-O
++N-O -C-O -N-O
+-C-N -N-O
++C-O -C-N
++N-O
+-C-N
+None
++C-C -C-C -C-N
++C-C +N-O
+None
+None
++C-N -C-C
+None
+None
+None
+None
++C-N -C-C
++C-N -C-N -C-N
++C-N
+None
+-C-C
++C-C +C-N -C-C -C-N
+-C-C
+-C-N
+-C-N
++C-O -C-N
++C-O -C-C
+None
++C-O -C-C
++C-N -C-C -C-N
+None
++C-O
++C-O
++C-N -C-C
++C-C -C-C
++C-N -C-C
+None
++C-C
+-C-O -N-O
+None
++C-C +C-O -C-C -C-O
+-C-O
+-C-C
+-C-C -C-O
+-C-C -C-O
+-C-C
+-C-O
++C-C -C-O
+-C-C
+-C-O
+-C-C
+-C-C
+-C-C
+-C-C
++C-O -C-C -C-O
+-C-C
+-C-C
++C-C -C-C -C-N
+-C-C
++C-C -C-C -C-C
++C-N -C-C -C-N
+-C-C -C-N
+-C-C -C-C
+-C-C
+None
++C-O -C-C -C-O
+-C-C
+-C-C
+-C-C
+-C-C
+-C-O
+-C-C -C-N
+None
+-C-C
++C-C -C-C
++C-C +C-N -C-C -C-N
++C-C +C-C -C-C -C-C
+-C-O
+-C-C
++N-O -C-O
+None
+-C-O
+None
+None
++C-N -C-C
++C-N -C-C
++C-C -C-C
++C-N -C-C
+None
++C-C
++C-O -C-C -C-O
++C-C +O-O -C-O -C-O
++C-C -C-C -C-C -C-O
+-C-C
+-C-C
+-C-O
++C-C -C-C
+-C-C -C-O
+-C-C
+None
+-C-O
+-C-O
+-C-C
+-C-O
++C-O -C-O
++C-N -C-C
+-C-C
+None
++C-N -C-C
+-C-O
++C-O
+-C-C
++C-C -C-C -C-C
+None
+-C-O
++C-O
+None
+-C-O
++C-O +C-O -C-O
+-C-C
+-C-C
+-C-O
+None
++C-C +C-C +C-C
++C-C -C-C
+None
+None
++C-N -C-C
+None
+-C-N
++C-N -C-C -C-N
+-C-C
+None
++C-C -C-C -C-N
+-C-C
++C-C -C-C -C-N
+None
+None
+-C-N -N-N
++C-C -C-N
+-C-N
++C-N -C-N
+None
+None
+-C-N
+None
++C-N
+None
+None
+-C-C
+None
+None
+None
++C-N +C-O -C-N -C-O
+-C-C -C-N
++C-N -C-N -C-N
++C-C -C-C
+None
++C-C
+-C-C
++C-C -C-C -C-C
+None
++C-O -C-C -C-C
++C-O -C-C
++C-C +C-O -C-C
+None
++C-O -C-C
+-C-C
++C-C -C-C -C-C
++C-N -C-C
++C-O
++C-N -C-C
++C-C
++C-C -C-C
+-C-C -C-C
+None
++C-N
++C-O -C-C
++C-C
++C-O -C-C
++C-C -C-C -C-C
++C-C -C-C -C-C
+None
+-C-C
+-C-C -C-C
+-C-O
++C-O -C-C
++C-C -C-C
+-C-C -C-C
+-C-C
+-C-C
+-C-C
++C-N -C-C -C-N
+-C-C -C-N
++C-N -C-C -C-N
++C-C -C-C -C-C
+-C-C -C-N
+-C-C
+-C-N
+-C-O
++C-O -C-C
+-C-C
++C-C -C-C -C-C
+None
++C-C -C-C
+-C-O
++C-O
+-C-C
+-C-C
++C-N -C-C
++C-C
++C-N
+-C-C -C-O
++N-O -C-C
+None
++C-C -C-C
++C-C +C-C -C-C
++C-C +C-C +C-C
++C-C +C-O -C-C
++C-C
++C-C -C-C
++C-O
++C-C +C-C -C-C
+-C-C
++C-C -C-C
+None
+-C-C
+None
+-C-O
+None
+None
+-C-C
+-C-N
++C-C -C-C -C-C -C-O
+-C-C
+-C-C
++C-N -C-O
+-C-C
++C-O -C-C -C-O
+None
+-C-C
++N-O -C-N -C-O
+-C-N
+-C-C
+-C-C
+-C-O
+None
+-C-C
++C-O -C-C
+-C-C
+-C-O
+-C-C
+-C-C
++C-O -C-C -C-O
+None
++C-C -C-O
++C-O -C-C -C-O
+-C-C
+-C-C
+-C-C
++C-N -C-O
+-C-N -C-N
+-C-O
+None
+None
++C-N -C-C
++C-C
+-C-C
++N-N -C-N
+-C-N
++C-N
++C-N -C-C -C-N
+None
+None
+None
+-C-O
+None
+-C-O
++C-C -C-C -C-O
+-C-C -C-O
++C-C -C-C -C-C
+-C-C
++C-C -C-C -C-C
+-C-C
+-C-O
++C-O -C-C
+-C-C
+None
++C-C -C-C
++C-O +C-O -C-O
++C-O
++C-C +C-O -C-C -C-O
+None
+-C-C
++O-O -C-O -C-O
+-C-O
+None
+-C-C
++C-C -C-C
++C-C -C-C
+None
+None
++C-C
+-C-C
++C-C
++C-O -C-C
+-C-C
++C-O -C-C
++C-O -C-C
++C-O -C-C
++C-C +C-O -C-C
++C-C -C-C
+None
+None
++C-C -C-C -C-C
+-C-C
++C-C
++C-C -C-C
++C-C
+None
++C-C -C-C
+None
++C-C
+None
++C-N -N-O
+-C-C -C-O
+None
++C-N -C-C -N-O
+-C-O
+None
++C-N -C-C
+-C-C
++C-N +C-N -C-N
++N-N -C-N
+None
+None
++C-N
+-C-N
++C-O -C-O
+-C-C
++C-N +C-O -C-O
+None
+-C-O
++C-C -C-C
+-C-C
+-C-C
++C-N
+None
++C-N -C-C
+-C-O
++N-O -C-C -C-O
+-C-C
++C-C -C-O
+-C-C
++C-N -C-C
+-C-C
++C-N -C-C
+-C-N -C-O
+None
+-C-C -N-N
+None
++C-O -C-C
++C-O
++C-C -C-C
++C-C +C-O
+-C-C
++C-O -C-C
+None
+None
+-C-C
+-C-C
+-C-C -C-C
+-C-C -C-C
++C-C -C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C -C-C
+-C-C
+-C-C -C-C
+-C-C
+-C-C
+-C-C
+None
+-C-C -C-N
+-C-C
+None
+-C-C -C-N
++C-O -C-N
+-C-C
+-C-N
+None
++C-O -C-C
+None
+-C-C -C-N
+-C-C
+-C-O
+None
+-C-N -C-O
+None
+None
+-C-C
+-C-O
+-C-O
+-C-O
++C-N -C-O
++C-N -C-C -C-N -C-O
+None
+None
+-C-C
+None
+-C-C
++C-C -C-C -C-N
+None
+-C-C
++C-N -C-C
+-C-C
+None
+None
++C-C -C-C
++C-O -C-O
+None
+-C-O
+None
++C-C
++C-C -C-C
+-C-O
+-C-O
+None
+-C-O
++C-C +C-C +C-C
++C-C
+None
+None
+None
+None
++C-O -C-C -C-O
+-C-C -C-C
+-C-C -C-O
++C-O -C-O
+None
+-C-O
+-C-C
+None
++C-N -C-C
+None
++C-N
+None
+None
+-C-N
++N-N -C-N
+-C-C
+-C-C -C-C
++C-C -C-C -C-C
++C-C -C-C -C-C
+-C-C -C-C -C-C
+-C-O
+-C-C
++C-O -C-C -C-O
+-C-C
+-C-O
+-C-O
+-C-O
+-C-O
+-C-O
+-C-C -C-O
+-C-C
+-C-C
+None
++C-C -C-C
++C-C -C-C -C-C
+-C-C
++C-O -C-O
+None
+-C-C
++C-N -C-C
++C-C
+-C-C
+-C-O
+-C-C
++C-O -C-C -C-O
++C-O -C-C -C-O
+None
+-C-C
+None
++C-C -C-C -C-N
+None
+None
+-C-N -C-N
+-N-N
+None
++C-N -N-N
++C-N -C-C -N-N
+None
+None
++C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-C -C-C
+-C-O
+-C-C
+-C-C
+None
+-C-C -C-C
++C-C -C-C -C-C
+None
+None
+-C-O
+None
+-C-O
+None
++C-O
++C-O
++C-C
++C-O +C-O
++C-O -C-C
++C-O -C-C
++C-O -C-C
++C-O
++C-C +C-O -C-C
++C-O -C-C -C-O
++C-O -C-C -C-O
++C-O -C-C
+-C-C
++C-C -C-C -C-C
+-C-C
++C-C -C-C
+-C-C
+-C-C
+-C-O
+-C-C
+None
+-C-C
++C-N -C-C
+-C-C
+-C-C
+-C-C
++C-N -C-C
++C-C -C-C -C-C
+-C-O
+-C-C
++C-O -C-C -C-O
+-C-C
+-C-C
++C-C +C-N
+None
+None
+None
+None
++C-C -C-C
+None
++C-O
+None
++C-N -C-C
++C-O -C-C
++C-N -C-C
++C-O -C-C
+-C-C
++N-O -C-C
++C-N -C-C -C-N
+-C-C
+-C-O
+None
+None
+-C-N -C-O
++C-N -C-O
+None
+-C-C
+None
++C-C
+None
+-C-N -C-O
+-C-C
+None
+-C-C
+-C-C
+None
+-C-O -N-N
+-C-N -N-O
++C-C -C-C -C-C
+-C-O
++C-C -C-O
+-C-C
++C-N -C-C
++C-N -C-C -C-N
+-C-C
+-C-C
++C-N -C-C
+-C-N
+-C-C
+-C-C
+-C-O
++C-C -C-C
+None
+None
++C-N -C-O
++C-C -C-C -C-N -C-O
+-C-O
+None
+-C-O
++N-O -C-N -C-O
+None
+None
++C-C -C-O
+-C-C
+None
++C-N -C-C
++C-N
+-C-C
++C-C -C-O
+-C-O
++C-O
++C-N -C-C
+-C-C
+None
+-C-C
+None
+None
++C-N
++C-C +C-C
++C-C
+None
+None
+None
+None
+None
+None
+-C-C
++C-C -C-C
+None
+None
++C-C +C-O
+None
+-C-C
++C-O -C-C
+None
+None
+None
+-C-C
++C-O
+-C-C
++C-C -C-C
++C-C -C-C
+None
++C-O -C-C
+None
++C-C +C-N -C-N
+None
++C-N -C-C
++C-N -C-C
+None
+-C-C
+-C-C
+-C-C
+-C-C -C-C
+-C-C
+-C-O
+None
+None
+-C-O
++C-O -C-N -C-O -C-O
++C-N -C-N
++C-O -C-O -C-O
+None
+None
+None
++C-N -C-N
++C-O -C-O
+-C-C
+None
+-C-C
+-C-C -C-C
+-C-C
+None
+None
+None
++C-O -C-C -C-O
+None
++C-O +C-O -C-C
++C-O +C-O
+-C-C
++O-O -C-O
+None
++C-O
++C-O +C-O
++C-N -C-N
+None
+None
+None
+None
++C-C -C-C
+None
++C-C -C-N
+-C-C -C-N
+None
++C-N -N-N
+None
+-N-N
++C-O -C-C -C-O
+-C-O
+None
+-C-C
+-C-O
+-C-O
+None
+-C-C
++C-O -C-C -C-O
+-C-O
+-C-C
+-C-C -C-O
+-C-C -C-O
+-C-C -C-C
+None
+-C-C
+-C-C -C-C
++C-O -C-C -C-O
++C-C -C-C -C-C
++C-C +C-O -C-C -C-O
++C-O -C-C -C-O
++C-O -C-C -C-O
++C-C -C-O
++C-O -C-C -C-O
+-C-C
+None
+-C-C -C-O
+-C-C
+-C-C
+-C-O
+-C-C
++C-C -C-C
+-C-C -C-O
+-C-O
+-C-C -C-O
++C-C -C-C -C-C
+None
+None
+None
+-C-C -C-O
+None
+None
+-C-C -C-C
+-C-C -C-O
+-C-C -C-C -C-O
+None
++C-C -C-C -C-C
+-C-C -C-C
+-C-C
+-C-C
+-C-C
++C-C -C-C -C-C
++C-C -C-C
+-C-O
++C-C -C-C
+None
++C-C -C-O
++C-N -C-C -C-N
+-C-C
+None
+-C-C
++C-C -C-C -C-C
+None
+-C-C
+None
++C-C -C-C -C-N
++C-C -C-C -C-C
+-C-C -C-N
++C-N -C-C
+-C-C -C-N
+-C-N
+-C-C -C-N
+-C-C
++C-O -C-C
++C-C -C-C -C-C
++N-O -C-N
+None
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C -C-C
+None
++C-O -C-C
+None
++C-C -C-C
++C-O
++C-O -C-C
+-C-C
+None
+None
+-C-C
+None
++C-C -C-C
++C-C -C-C
+None
+None
+None
+-C-C
++C-N +C-O -C-O
++C-O -C-C
++C-N +C-O -C-C
++C-C +C-O -C-C
+None
++C-N -C-C
++C-C -C-C
++C-N -C-C
+None
+-C-C
+None
++C-C +C-O -C-O
+-C-C -C-O
+None
+None
+None
+-C-O
+-C-N
++C-C -C-C -C-C
+-C-C
+-C-C
+-C-C -C-C
+-C-C -C-N
++C-C -C-C -C-N
+None
+-C-C -C-C
++C-C +C-C -C-C -C-C -C-N
+-C-C
+-C-C
+None
++C-O -C-N
+None
+None
+None
+-C-C -C-C
+None
+-C-C
+-C-C
+-C-C
+-C-C
+-C-O
+-C-C
++C-O -C-C -C-O
+-C-C -C-O
++C-O -C-C -C-O
+-C-O
+-C-O
+-C-C
++C-O -C-C -C-O
+-C-C -C-O
++C-N -N-O
++C-N -C-C
+-N-O
+-C-N -C-O
+-C-C -C-O
+None
++C-N
+None
+-C-C
+-C-C
+None
+-C-C
+None
+None
+None
+None
+-C-C
++C-C -C-C
+-C-C
+-C-C -C-N
++C-C -C-C -C-C
++C-N -C-C
++C-O -C-N
+None
+-C-C
++C-C -C-C -C-C
+-C-C
++C-N
+None
++C-C -C-C
++C-N -C-O
++C-O -C-O
+-C-O
+-C-C
++C-N -C-C
+-C-C -C-C
+-C-O
+None
++C-N -C-O
++C-N -C-C -C-O
+-C-O
++C-C -C-C -C-O
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C -C-C
+-C-C
++C-C -C-C
+-C-C -N-O
+-C-N -C-N
++C-N -N-O
+-N-O
++O-O
++C-O -C-N
++C-O -C-N
+-C-N
++C-O -C-N
+None
++C-O
++C-O
+None
+-C-N
+-C-N
++C-O -C-C
+None
++C-O -C-C -C-N
++C-C +C-N -C-C -C-C
++C-O
++C-N -C-C -C-N
+None
+None
++C-O -C-C
++C-O -C-C
+None
+-C-N
++C-O -C-C
+-C-C
++C-N -C-C -C-C -C-N
+-C-N
+-C-C
+-C-C
+None
+-C-C -C-C
++C-C -C-C -C-C -C-C
+-C-C
+-C-C
++C-N -C-N -C-N
+None
++C-O -C-N
+-C-N
+-C-C
+None
+-C-N
++C-C -C-C -C-N
+-C-C -C-O
+-C-C -C-O
+None
++N-N -C-N
+None
+-C-C -C-O
+-C-O
+-C-C
++C-N -C-C
+None
+-C-C
+-C-C
+-C-C
++C-N -C-C
++C-C -C-C
+None
++C-N -C-C
++C-C -C-C
++C-C -C-C -C-C
++C-O -C-C -C-O
+-C-C
+-C-C
+-C-C
++C-O -C-C -C-O
+None
+None
+-C-O
+-C-C
++C-O -C-C -C-O
+-C-C -C-O
+-C-O
+-C-C
++C-O -C-C -C-O
++C-C -C-C -C-C
+-C-C -C-C
+-C-C
+-C-C
+None
+None
+-C-C
+None
+-C-C
++C-N -N-N
+-N-N
++C-C -C-C
+None
++C-C -C-C
++C-C -C-C
+-C-C
+None
+-C-C
++C-C -C-C
+-C-O
+None
+-C-O
++C-N -C-O
+None
+None
++C-O -C-N -C-O
+-C-C
+-C-C
+None
+None
+None
++C-O
+-C-C
+-C-C -C-C
+-C-C
+-C-C
+None
+-C-O
++C-C -C-C -C-C
++C-C -C-O
+-C-C
+-C-C
+-C-C
+-C-O
+-C-C
++C-O -C-C -C-O
+-C-C
++C-C -C-O
+-C-C
+-C-C -C-C
++N-O -C-C -C-O
++C-N
++C-N -C-C
+-C-C
++C-C
+-C-C
+-C-C
++C-O -C-C -C-O
+None
++C-O -C-C -C-O
+-C-O
+-C-C
+-C-C -C-O
+-C-O
+-C-C
++C-O -C-C -C-O
++C-C -C-C -C-C -C-O
+-C-O
+-C-C
+-C-C
+-C-C
+None
++C-O -C-O
++C-C -C-C -C-C
++C-O -C-O
+-C-O
+None
+-C-C
+-C-C
+-C-C
+-C-C
+None
+-C-C -C-O
+-C-C
+-C-C -C-O
++C-O -C-O
+-C-O
+-C-C -C-C
+-C-C
+-C-O
++C-O -C-C -C-O
++C-C
+-C-C
+None
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C
+-C-O
++C-O -C-N
++C-C -C-O
++C-C -C-C -C-C
+-C-C
++C-O -C-C -C-O
+-C-C -C-C
+None
++C-C -C-C -C-C
++C-O -C-C -C-O
+None
++C-N
+-C-C
+-C-C
+None
+None
+None
+-C-C
++C-N -C-C
++C-C +C-O -C-O
+-C-C
++C-O
+-C-O
+None
+-C-C
+None
++C-C -C-C -C-C -C-O
++C-C -C-C
+-C-O
++C-C +C-C -C-C -C-O
+-C-C
+-C-C
+None
++C-C -C-C -C-O
++C-C -C-C
+-C-C
+-C-C
++C-C +C-N -C-C
++C-C
++C-C -C-C
+None
+None
+None
++C-O -C-C -N-O
+None
++C-N -C-C
+-C-C
+-C-C
+None
++C-N -C-C
+None
+-C-C -C-C -C-N
+None
+-C-C -C-C
+-C-C
+None
+None
+-C-C
++C-N -C-C -C-N
+-C-C
+-C-C
++C-N
++C-N -C-C
+-C-C
+None
+None
+None
+-C-C
++C-N -C-C
+-C-C
+None
++C-C -C-C -C-C
+-C-O
+-C-O
++C-O -C-C -C-O
++C-O -C-C -C-O
+-C-C
+-C-C
+-C-C
+-C-C -C-O
+None
+-N-O
+None
+None
+None
+None
+None
+None
+None
++C-C -C-N
+None
++C-C
++C-N
+-C-C -C-N -C-N
++C-C +C-N
+-C-C -C-N
+-C-C
+-C-N
+-C-C
+-C-C
++C-N -C-C -C-N
+None
++C-O -C-C
+-C-N
++C-N -C-C -C-N
++C-O -C-N
+-C-N
+None
+None
++C-O
+None
+-C-C -N-O
+-C-O
+None
+None
+None
+-C-C
+-C-C
++C-O -C-C -C-O
+-C-C
++C-O
++C-O -N-O
+None
+None
++C-C +C-O
++C-O
++C-C
+None
++C-C -C-C
+None
+-C-N -N-O
+-N-O
++C-C -C-C
++C-C +C-C -C-C -C-C
++C-C -C-C
+None
+-C-C -C-O
+-C-C
+-C-C
+-C-C
+-C-C -C-N
+-C-C
+None
++C-C
+-C-N
+None
++C-N -C-C
+-C-C
+None
++C-N +C-N -C-N
+None
+None
+-C-C
+-C-C
+-C-C -C-O
+-C-C
+-C-O
++C-O -C-C -C-O
+-C-C
+-C-O
++C-C -C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C
++C-N -C-C -C-N
+None
+-C-C
++C-N -C-C
++C-N -C-C
+None
+-C-C
++C-N -C-C
+-C-N
+None
+None
+None
++C-C -C-N
+-C-N -C-N
+-N-N
+-C-N
+None
+-C-C
++C-C
++C-N -C-N
++C-C -C-C
+-C-N
++C-C -C-C -C-N
+None
+None
++C-C -C-C -C-N
+-C-N
++C-C +C-N -C-N
+None
+-C-C
+-C-C -C-O
++C-C -C-C -C-C
+-C-C -C-O
+-C-C
+-C-C -C-C
++C-C -C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-C
++C-C -C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-C -C-C
+None
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C
++C-N -C-C
+-C-C
+None
+None
++C-N -C-C -C-N
++C-C -C-C -C-C
++C-N -C-C
++C-N -C-C
++C-N -C-C
+None
++C-C
+None
+None
+-C-C
++C-O -C-O
+-C-C
+None
+None
++C-C
+-C-C
+-C-C
+None
++C-N -C-C -C-N
++C-C +C-N -C-C -C-N
++C-N -C-C -C-N
+None
++C-N
+None
+None
++C-C
+-C-C
++C-N -C-C -C-N
+-C-C
++C-C -C-C -C-C -C-N
+-C-C
++C-N -C-C
++C-N -C-C
+None
++C-C +C-O -C-C
++C-O -C-C -C-O
+-C-O
+-C-C
+-C-C
+-C-C
+None
+-C-C -C-C
+None
++C-O -C-C
+-C-C
+None
+-C-C
+-C-C -C-C
+-C-C
+-C-C
++C-C -C-C -C-C
+-C-C
+-C-C
+-C-O
++C-O -C-O
+-C-C
+None
++C-C -C-C
+None
+-C-N
+-C-N
+None
+None
+None
+-C-N
+-C-N
++C-O
++C-O -C-N
++C-O
++C-O -C-N
+-C-O
++C-O -C-C
++C-N -C-C
+None
+None
+-C-C
++C-O -C-C
++C-O
+None
++C-O -C-N
++C-C
+-C-N
++C-O -C-C
++C-C -C-C -C-N
+-C-N
+-C-C
+None
++C-C -C-C
++C-C -C-C
+-C-C
+-C-C
+-C-C
++C-C -C-C
+-C-O
+-C-O
++C-C -C-C -C-C
+-C-C
++C-O -C-C -C-O
++C-N -N-O
+-N-O
+-C-O
+None
++C-C -C-C -C-N
+None
++C-C -C-O
++C-O -C-C -C-O
+-C-O
+-C-C
+-C-O
+-C-C
+-C-C
++C-O -C-C
++C-N -C-C
++C-N -C-C
++C-N -C-C
++N-O -C-O
++C-O -C-N
+None
++C-N
++C-N +C-O -C-N
+None
++C-N +C-O -C-O
++C-O -C-C
++N-O -C-N
+None
+None
+None
++C-C -C-C
+-C-C
+None
++C-C -C-C
++C-C
++C-C -C-C
+None
+None
+None
+-C-C
+None
+-C-N
++C-O -C-N
++C-N -C-N
++C-C -C-C -C-N
+None
++C-N -C-C
+-C-C -C-N
++C-O -C-C
+-C-N
++C-C
+-C-C
+-C-C
+-C-C
+-C-C
++C-O -C-C -C-O
++C-O -C-C -C-O
+-C-O
++C-O -C-C
+-C-C
+None
+-C-O
+None
++C-O -C-C
+None
+-C-C
++C-C
+None
++C-O +C-O -C-O
++C-C -C-C
+None
+None
+-C-C
+-C-C
+-C-N
+None
+-C-N
+-C-N
+-C-C -C-N
+None
++C-N -C-C
+None
+-C-C -C-N
++C-N -C-N -C-N
++N-N -C-N
+None
+None
+None
+None
++N-O -C-O -N-N
+None
+-C-C
+-C-C -C-O
+-C-O
+-C-C
++C-O -C-C -C-O
+-C-O
+-C-C
+-C-O
+-C-C
+-C-C
+-C-C
+None
++C-C -C-C -C-C
++C-N -C-C
+-C-C
++C-C -C-C -C-C
++C-N -C-C
+None
++C-O -C-O
++C-C -C-C
++C-C -C-C
++C-C -C-C
+-C-O
+None
+-C-N
+None
+None
+None
+None
+None
+None
+None
+-C-C
+None
+None
++C-C -C-N
++C-C -C-N
+None
++C-C +C-C
+None
++C-O -C-O
++C-C -C-C
+-C-C
+-C-O
++C-O -C-O
++C-O -C-O
++C-C -C-C
++C-C -C-C
+-C-C
++C-C +C-N -C-N -C-O
+None
+-C-O
+None
++C-N -C-O
+None
++C-C -C-O
+-C-N -C-O
++C-N +C-N -C-N -C-N -C-N -C-O
+None
++C-C -C-C -C-C
+-C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C
++C-C -C-C -C-C
+-C-C
++C-C -C-C -C-C
+-C-O
+-C-O
++C-O -C-C -C-O
++C-O -C-C
+None
+-C-C
+-C-C
+-C-C -C-C
++C-O -C-C -C-O
+None
++C-C -C-O
++C-O -C-O
+-C-C
++C-O
++C-O -C-C
+-C-O
+-C-C -C-C
+None
+-C-C -C-C
+None
+-C-N -C-O
++C-N -N-O
+None
++C-N -C-C -N-O
++C-O -C-C -C-O
+-C-O
+None
++C-C -C-C -C-C
+None
+-C-N -C-N
+-C-N
+None
+-N-N
+None
+None
+None
+None
+-C-C
++C-O -C-O
+-C-C
+-C-C
++C-O -C-O
+-C-C
+-C-O
+-C-C
+None
++C-C -C-O
+-C-O
+-C-O
++C-O -C-C
+-C-C
+None
++C-O -C-C
+-C-C
++C-O
++C-O
+-C-C
++C-O
+-C-C
+-C-C
++C-C -C-C
++C-C -C-C
++C-N -C-N
+None
+-C-N
+None
+None
+None
+None
+None
+-C-N
+None
+None
+-C-O
+-C-O
+None
++C-C -C-C -C-O
+-C-N -C-O
++C-C -C-O
++C-N -C-O
+-C-C
++C-N -C-C
+None
+None
+None
++C-C -C-C
+-C-O
+None
+-C-C -C-O -C-O
++C-O -C-O
+None
++C-O -C-C -C-O
+-C-O
+None
+None
++N-O -C-O
+-C-O
+None
+None
++C-N -C-C
+-C-O
++C-O
++C-N +C-O -C-O
+-C-C
++C-O -C-O
++C-N -C-C
+None
+-C-N
+None
++C-C -C-C -C-C -C-N
+-C-C -C-N
+-C-C
+-C-N
+None
+-C-C
+-C-C
+None
+-C-C
+-C-N
+-C-C
+-C-C
+-N-O
++N-N -N-O
++C-C -C-O
+-C-O
+-C-N -C-O
+None
+-C-N -N-O
++C-C -C-C
+-C-N
+None
+None
+None
+None
+None
++C-O -C-O
+-C-C
+-C-N
+None
+None
+None
++C-C -C-N
++C-C
+None
+None
+None
++C-O -C-C -C-O
+None
+-C-C -C-O
+-C-C
+-C-C
+-C-C
+None
+-C-O
++C-C -C-C -C-C
+None
+-C-C
++N-O
+None
++C-N -C-C
++C-N -C-C
+None
+None
+-C-C
++C-O
+None
+-C-C -C-C
+-C-C
+-C-C
+-C-C
++C-C -C-C -C-C
+-C-O
+-C-C
++C-O -C-C -C-O
++C-O
+None
+-C-O
+None
++C-O
+None
+-C-C
++C-O -C-O
++C-C
+None
++C-C +C-C -C-C
++C-C -C-C
++C-C -C-C
++C-C
++C-C -C-C
+None
+-C-C
+None
+None
++C-C
++C-C
+-C-C -C-O
++C-O -C-C -C-O
+-C-O
+-C-C -C-O
++C-C -C-O
+-C-C
+-C-C
+-C-O
+None
+-C-O
+-C-O
+-C-O
++C-O -C-O
+-C-C
++N-O
+None
+None
+None
+None
+None
+None
++C-O -C-O
+None
+-C-N
++C-C
+None
+None
++C-N -C-N
+None
+-C-N
+-C-C
+-C-C
+-C-C
++C-C -C-O
+-C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-O
+-C-C
+-C-C
++C-O -C-C -C-O
++C-O -C-O
++C-C -C-C -C-C
++C-O -C-C -C-O
+-C-O
+-C-O
+-C-C
++C-C -C-C -C-C
+-C-C -C-O
++C-N -C-C
++C-N +C-O -C-O
++C-O -C-C -C-O
+-C-C
++C-C
++C-C -C-C -C-C
++C-N -C-C
+-C-C
+None
++C-C -C-C -C-N
+-C-N
+None
+-C-C
+-C-N -C-N -C-N
+None
++C-N
+None
+-C-O
+-C-C
+None
+None
++C-C -C-C
++C-C
+None
++C-O -C-O
++C-C -C-C
++C-O -C-C
++C-C +C-O -C-C -C-O
+-C-C
++C-O
+-C-O
+None
++C-O -C-C
+-C-O
+-C-C
++C-C
++C-O -C-C
+-C-C
+-C-O
+-C-O
+None
++C-O -C-O
++O-O -C-O -C-O
+None
+-C-C
+-C-O
+-C-O
+None
+-C-C -C-O
+None
+-C-C -C-C
++C-C -C-C
+None
+-C-C -N-N
+None
+-N-N
+None
+None
++N-O -C-N
+-C-C
+-C-C
+None
++C-O +C-O -C-O
+None
+None
++C-C -C-C -C-N
+None
+-C-N
+None
+None
++N-O -C-N
++C-O -C-C
+-C-O
+-C-C
++C-C -C-C
+None
+-C-C
+None
+None
++C-O
++C-C -C-C
++C-C +C-O -C-O
++C-O
+-C-C
++C-C -C-C
+-C-C
+None
+None
++C-O -C-C
+None
++C-C -C-C
+-C-C
+-C-O
+-C-O
+-C-C -C-C
++C-O -C-C -C-O
+-C-C
+-C-C
+-C-C
++C-O -C-C -C-O
+-C-C
++C-O -C-C -C-O
++C-C -C-O
+-C-C
+-C-C
++C-N -C-C
+-C-C
++C-C -C-C
+None
+None
++C-N -C-C
+None
++C-N -C-C
+-C-C
++C-N -C-C
+None
+-C-C -C-N
++C-C -C-C -C-C
++C-C -C-C -C-C
+-C-C
+-C-O
+-C-C -C-O
+-C-C
+-C-C
++C-N -C-C -C-N
++C-N +C-O -C-O
+-C-C
+None
++C-C
+-C-O
++C-N -C-C
+-C-C
++C-O -C-C
+-C-C
++C-O -C-C
++C-O
++C-O -C-C
++C-O
+None
+None
++C-O -C-C
++C-O -C-C
+None
++O-O -C-O
+-C-C
++O-O
++C-O -C-C
++C-O +O-O -C-O
+-C-C -C-C -C-C
+-C-C -C-C
+-C-C -C-C
+-C-C
+-C-C
+None
+-C-C
+-C-C -C-C
+-C-C
+-C-C
+None
+None
+-C-O
++C-C -C-O
++C-N -C-O
+-C-N -C-O
+None
+None
+-C-C
++C-N +C-O -C-C
++C-O -C-C
++C-C +N-O -C-O
++C-O -C-C
++C-C +C-O -C-C
++C-N -C-C
+-C-C
++C-N -C-C
++C-C
+-C-C
+None
++N-O -C-C
++C-C +C-N +N-O -C-C -C-N -C-O
++C-C -C-C
++C-O -C-C -C-O
+-C-C -C-O
+-C-C
+-C-C
+-C-C -C-O
+-C-C -C-O
+-C-C
+-C-C
+None
++C-C -C-O
+-C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C -C-C
+-C-C
++C-N -C-O
+-C-C -C-O
+-C-N -C-O
++C-C -C-C -C-O
++C-C -C-C -C-N -C-O
+-C-O
+None
++C-C -C-C -C-C
++C-O -C-N -C-O
++C-N -C-C
+-C-O
+None
++C-O -C-C -C-O
+-C-O
+-C-O
+None
++C-C -C-C
++C-C
+None
+-C-C -C-N
+-C-C
+None
+-C-N
+None
+None
++C-C
+None
+-C-C
+None
++C-C -C-C
++C-O -C-C -C-O
+-C-C -C-O
+-C-C -C-O
+-C-O
+-C-C
+None
+-C-C -C-O
++C-O -C-N
+-C-N
+-C-C
++N-O -C-N
++C-O -C-C
+-C-N
+-C-N
+-C-N
+None
+None
++C-O -C-C
+-C-N
++C-C -C-C -C-N
++C-O -C-N
+-C-N
+-C-N
++C-O -C-N
+None
++C-N -C-C
+-C-C
++C-C -C-C -C-N
+-C-O
+None
+-C-C
+None
++C-C -C-O
+-C-C
++C-C -C-C
+-C-C
++C-N -C-C
+-C-C
+-C-C
+None
+None
+None
+-C-N -C-N
++C-C -C-C -C-N
++C-C -C-C -C-N
+None
++C-O -C-N -C-O
+-N-N
+-C-N -C-N
+None
+None
+None
++C-N
+None
++C-N -C-N
+None
+-N-N
+None
+None
+None
+None
+None
+-C-N -C-N
++C-C -C-C
+None
++C-C
++C-C -C-C
+-C-N
++N-O -C-N -N-N
+None
+None
+None
+-C-N -N-N
+None
+-C-C -C-C
+-C-C -C-C -C-C
+-C-C
+None
+None
++C-C -C-C
+None
+-C-C -C-C
+None
++C-O -C-C
++C-O -C-C
++C-N -C-C
++C-C -C-C
+None
++C-C +C-O -C-C
+-C-C
++C-C -C-C
++C-C +C-O
++C-O -C-C
+-C-C
++C-O -C-C
++C-O -C-C
+None
++C-C -C-C -C-C
+-C-C -C-O
+-C-C
+-C-C -C-O
+-C-C -C-C
+-C-C
++C-C -C-C -C-O
+-C-C
+-C-O
+-C-C
+-C-C
++C-O -C-C
++C-C -C-C -C-C
+-C-C -C-C -C-C
++C-C -C-C -C-C
+-C-C -C-C
+None
+-C-C
+None
+-C-C
+-C-C
+-C-C
+-C-C -C-C
+None
+-C-C
++C-O -C-O
+-C-C
++C-C -C-C -C-O
++C-O -C-C -C-O
++C-O -C-C -C-O
+-C-C
+-C-O
+-C-O
++C-C
++C-O -C-C
++C-C
++C-C -C-C
+None
++C-C
++C-C -C-C
++C-C +C-O -C-C -C-O
+None
++C-O -C-O
++C-C
++C-C -C-C
++C-C -C-C
++C-O -C-O
+None
+-N-N
+-C-C -N-N
+None
+None
+None
+None
+None
+None
++C-O
++O-O -C-O
++C-O -C-C
++C-O -C-C
++C-N
+-C-N -C-O
++N-O -C-O -N-O
++C-O -C-N -C-O
+None
++N-N -N-O
+None
+-C-C
+-C-O
++C-C -C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-C
++C-O -C-C -C-O
++C-C -C-C -C-C
++C-C -C-O
++C-O -C-C -C-O
+None
+None
+-C-C
++C-O -C-O
+-C-C
++C-O -C-O
+-C-O
+-C-O
+None
++C-O -C-C -C-O
+-C-N
++C-C +N-O
+None
+-C-N
+None
+None
++C-O -C-N
++C-O +N-N -C-N
+None
++C-N +C-O
+-C-C
+None
++C-O -C-C
++C-O
++C-O -C-C
++C-C -C-C
+None
+None
+-C-C
++C-O
+None
++C-O +C-O
++C-O -C-O
++C-O -C-C
+None
+-C-O
+None
+None
++C-O -C-C
++C-O +C-O -C-O
++C-O -C-O
+None
++C-N -C-C
++C-C
++C-N -C-C
+None
+None
+None
+None
++C-O -C-N
+-C-C
++C-N -C-C -C-N
+-C-N
+None
++C-O -N-O
+-N-O
++C-C -C-C -C-O
+-C-C -C-O
+None
+None
++C-N -N-O
++C-O -C-N
+-C-N
+None
+None
++C-O
+-C-C
++N-O -C-N -C-N
+None
+None
+-C-N -C-N
+-C-N -C-N
+-C-N
+None
+None
+-C-C
++C-O -C-C -C-O
+-C-C -C-O
+-C-C
+-C-C
+-C-C
+-C-C -C-O
+-C-C
+None
+-C-C -C-C -C-O
+-C-O
+None
+-C-C
++C-N -C-C
++C-N
++C-C -C-C -C-C
+None
++C-N -C-C
+None
+-C-C -C-C
+-C-C -C-N
+-C-C -C-N
+-C-C
++N-O
+-C-C
+None
++C-C -C-C -C-C
+None
+-C-C
+None
++C-C -C-C
+-C-C -C-C
+-C-C -C-C
++C-C -C-C
+-C-C
+None
+-C-C
+-C-C
+-C-O
++C-O -C-C -C-O
+-C-C
+-C-C
+None
++C-O -C-C
++C-O -C-C
+None
+-C-C
+-C-C
++C-C -C-C
++C-O -C-C
++C-O -C-C
+-C-N
+-C-N
++C-N -C-N
++C-O -C-N
++C-O
+-C-O
++C-O -C-C -C-O
+-C-C
++C-C
++C-O -C-C -C-O
++C-C -C-C
+None
+-C-C
++C-C +C-O -C-C
++C-O -C-C
++C-O -C-C
+None
+None
++C-O -C-C
+None
++C-C -C-C -C-C
++N-O -C-N
++C-N -C-C
+-C-N
+None
+-C-C
+None
+-C-C
++C-O -C-O
+None
+-C-O
+-C-C
+-C-O
++C-C -C-C
+None
+-C-O
+None
+-C-C
++C-C -C-C -C-C -C-O
++C-O -C-C -C-O
+-C-C
+None
+-C-C -C-O
+-C-C
++C-C -C-C -C-C
+-C-C -C-O
+-C-O
++C-C -C-C -C-O
++C-C -C-C -C-C
++C-O -C-C -C-O
+None
++C-O -C-C
+None
+-C-C
+None
+None
++C-O
+-C-C
+None
++C-O -C-C -C-O
+-C-C -C-C -C-O
+-C-C
++O-O -C-O
+-C-C
+None
++C-C -C-C -C-C
++C-O +C-O -C-O
++C-O
+None
++C-O -C-C
+None
+None
+None
++C-O
+-C-O
+-C-C -C-O
++N-N -C-N
++C-N
++C-N -C-C
++C-C -C-C
+-C-O
+-C-C
++C-O -C-C -C-O
+-C-O
+-C-O
+-C-C
+-C-C
+-C-O
+None
+-C-O
++C-O -C-O
+-C-C
++C-C -C-C
+None
+-C-C
++C-O -C-C
++C-O
++C-C -C-C -C-C
+-C-C -C-C -C-C
+-C-C
+None
++C-O -C-C
+-C-C -C-C
++C-C
+None
++C-N -C-C
++C-N -C-C
++C-O -C-C
++C-O
++C-C -C-C
+-C-C
+-C-O
+-C-O
++C-O -C-C -C-O
++C-C -C-C -C-C
++C-C
+-C-C -C-O
+-C-O
+-C-O
++C-O -C-C -C-O
+-C-C
++C-C -C-C -C-C
+-C-O
++C-O -C-O
+None
+None
+None
+None
+-C-C
++C-O -C-C -C-O
+None
+-C-C
+-C-O
+-C-O
+-C-O
+None
++C-N -C-O
+-C-O
+-C-C -C-O
+-C-C
+-C-C -C-C
+-C-C
+None
+-C-C -C-N
++C-C -C-C -C-C
+None
+-C-C -C-N
+None
+-C-C
+-C-C
+None
+-C-C
+-C-O
+-C-N
+-C-C
++C-O -C-C
+None
+-C-C
+-C-C
++C-C -C-O
+-C-O
++C-O -C-O
+None
+None
+-C-O
++C-O -C-O
+-C-O
++C-C -C-C -C-O
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C
+None
+None
+-C-N
+-C-N
++C-O -C-N
+None
+-C-C
++C-C -C-C
++C-C -C-C -C-C
+-C-C -C-C
++C-C -C-C -C-C
+-C-C
+None
++N-N -N-O
+-N-O
+None
++C-N -C-C
+-C-C
+None
+-C-O
++C-O -C-C -C-O
+-C-C
+-C-C
+None
+-C-O
++C-C -C-C -C-O
+-C-C
+-C-C
+-C-O
+-C-O
++C-C +C-O -C-C -C-O
+-C-O
++C-N -C-C
++C-N -C-C
+None
++C-N +C-N -C-N
++C-N -C-C
++C-N
++C-C
+None
+-C-C
+None
++C-C +C-C +C-C
+None
++C-O -C-C
+-C-C
+-C-C
+None
++C-O -C-C
++C-C -C-C -C-C -C-O
+-C-C
++C-N -C-C
++C-N -C-C -C-O
+-C-O
+-C-C
+-C-O
++C-N
+None
+-C-C
++C-O -C-C -C-O
+-C-O
+-C-C
++C-O -C-C -C-O
+None
+-C-C
+-C-O
++C-N -C-C
+-C-C
++N-O -C-O
++N-N -N-N
+None
+None
++C-N -N-N
+-C-C -N-N
+-C-C -N-N
+None
+None
+-N-N
++C-N -N-N
+None
+None
+-C-O -C-O
+-C-O
+-C-C
+None
+None
+None
++C-O -C-N
+-C-O
+-C-O
+-C-N
+None
++C-O -C-C
+None
++C-C +C-C +C-O -C-C
+-C-C
+None
++C-O -C-C
++C-C -C-C
+None
+-C-C -C-C
++C-C -C-C
+-C-C
+-C-C
++C-C -C-C -C-O
+-C-C
+None
+-C-O
+-C-C
+-C-C -C-O
+-C-C -C-O
+-C-N -C-O
++C-C -C-C
+-C-C -C-N -C-O
+-C-N -N-O
+-C-N -N-O
+None
+-C-N -C-O
+None
++C-O -C-C
++C-C +C-C -C-C -C-C
++C-C -C-C -C-C
+-C-C
++C-O -C-C
++C-C -C-C
++C-O -C-C
+None
+-C-C
+None
++C-O -C-C
++C-O
+None
+-C-O
+-C-C -C-O
++C-O -C-C -C-O
++C-O -C-C -C-O
+-C-C
+None
+-C-C
+-C-O
+-C-O
++C-O -C-C -C-O
+-C-C
+None
++N-N -N-N
+-C-N
+-C-N -C-N
+None
+None
++N-N -N-N
+None
+None
+None
+-C-C
++C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-C
+-C-O
++C-C -C-C -C-C
++C-O -C-C
++C-C -C-C
+None
++C-O +C-O -C-C
+None
++C-O +C-O
+-C-C
++C-O -C-C
+-C-C
++C-O -C-C -C-C
+None
++C-O -C-C
++N-N -C-C
++C-N -C-C
+-C-C -C-C
+-C-C
+None
++C-C -C-C -C-C
+-C-C
+-C-C
+-C-C
++C-C -C-C
++C-C -C-C
+None
+-C-O
+None
+-C-O
+None
++C-O -C-O
+None
++C-C -C-C -C-O
++C-N -C-C
++C-N -C-C
++C-N +C-N -C-N
+None
++C-N
+None
++C-N -C-C
+-C-C
++C-N
++C-C -C-C -C-N
+-N-N
+None
++C-C -C-C -C-N
++C-C -C-C
+-C-C -C-N
+-C-C
++C-C -C-N
+-N-N
+None
+None
+None
++C-N -N-N
++C-N -C-C
++C-C -C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C -C-C
+-C-C
++C-C -C-C -C-C
+-C-C
++C-C -C-O
+-C-C
+-C-C
+None
+-N-N
+None
+-C-C -C-N
++C-C -C-N
+None
++C-N
+-N-N
+None
+None
+None
++C-N -C-N
+None
++C-N
+None
+None
+None
++C-C
++C-N
++C-N -C-N
++C-C -C-C
+-C-C
+None
+None
+-C-N
++C-C -C-N -C-N
+-C-C -C-N -C-N
++C-C +C-C
+-C-C -C-O
+-C-C
++C-O -C-C -C-O
++C-C -C-C -C-O
+-C-O
+-C-C
+-C-C
+-C-C -C-C
+-C-C
+-C-C
++C-C -C-C -C-C
+-C-C
+-C-C -C-C
+-C-C
+-C-C
+None
+None
+-C-N
+None
++C-O -C-N
+-C-N
++C-O -C-N
++C-C -C-C
+None
+-C-C
+-C-C
+None
+-C-O
+-C-C
++C-O -C-C -C-O
++C-O -C-C -C-O
+-C-C -C-O
+-C-O
+-C-C -C-O
+-C-O
+-C-C
+-C-C -C-O
++C-C -C-O
+-C-C
+-C-C
+-C-O
+None
++C-O -C-O
+-C-O
+-C-N -N-O
+None
+None
+-C-C -C-O
+-C-O
+-C-C -C-O
++C-O -C-C -C-O
++C-O -C-C -C-O
++C-N -C-C -C-C
++C-O
++C-C +C-C -C-C -C-C
++C-O -C-C
++C-C -C-C
++C-C +C-O -C-C
++N-O -C-C
+None
++C-N -C-C
+-C-C
++C-N -C-C
+-C-C
++C-O -C-C -C-O
++C-O -C-C
+None
++C-C +C-O -C-C
++C-O -C-C
+-C-C
+-C-C
+-C-C
++C-O -C-C -C-C
++C-O
+None
+-C-O
+None
+-C-C
++C-C +C-O -C-C -C-C
+-C-O
+None
++C-O -C-C -C-O
+None
++C-O
++C-C -C-C
+-C-C
++C-C -C-C
+None
+None
++C-C +C-O -C-O
+-C-N
+None
++C-O -C-N
++C-N -C-N -C-N
+None
+None
+-C-C -C-N
++C-C -C-N
+-N-N
+None
+None
+None
+None
+None
++C-N -C-C
++C-N -N-N
+None
+-C-C
+-C-N
+None
+None
+-C-C
+-C-C
++C-O -C-C -C-O
++C-O -C-C -C-O
++C-O -C-O
+-C-C -C-O
+-C-O
++C-C -C-C -C-C
+None
+None
+None
+None
+None
+None
+-C-C
+-C-C
++C-O -C-O
+None
++C-C -C-C -C-O
++C-O -C-O
+None
+-C-O
++C-O -C-C -C-O
+-C-O
+None
++C-O -C-O
+None
++C-C -C-O
+-C-O
++C-O -C-C
+None
+None
++C-O -C-N
++C-O -C-C
++C-N -C-C -C-N
+None
++C-O -C-C
+-C-C -C-N
+-C-C
+-C-C
+-C-N -C-O
+-C-O
+None
+None
++C-O -C-N
+None
++C-N -C-N -C-O
+-C-O
++C-C
+-C-C -C-N -C-O
++C-C -C-C -C-O
+-C-O
++C-C
+-C-N
++C-O -C-N -C-O
+None
+-C-C
+None
+-C-C
+-C-O
+-C-O
++C-O -C-C -C-O
+-C-C
++C-O -C-C -C-O
++C-O -C-O
+None
++C-O -C-O
++C-C
+-C-N
++C-O -C-N
+None
++C-N -C-C -N-O
++C-N -C-C -N-O
+-C-N -C-O
++C-N
+None
++N-N -N-O
+None
++C-O -C-C
+-C-C -C-N
+None
+None
+-C-C -C-N
+-C-C
+-C-C
+None
+-C-C
++N-O -C-N
+-C-C -C-N
+None
+None
+None
+-C-O
++C-N +C-O -C-O
+-C-C
+-C-O
+-C-C
++C-N +C-O -C-C -C-O
++C-N -C-C
++C-N
++C-C +C-N -C-C
++C-C
++C-N
+None
++C-C -C-C -C-C
+-C-C
++C-C -C-O
++C-C -C-C -C-C
++C-C
++C-O -C-O
+-C-C
+-C-O
+None
+-C-C
+None
+-C-C
+None
+-C-C
+None
+None
++C-O -C-N -C-O
++C-N -C-O
+None
+-C-C -N-O
+-C-C -N-O
+-N-O
+-C-C
++C-O -C-C
+None
++C-N -C-N -C-N
+-C-C
+-C-C
++C-O -C-C -C-N
+None
+-C-C
+-C-C
++C-C -C-C -C-C -C-N
+-C-C
++C-O -C-C
+None
+-C-C
++C-C +C-O -C-C -C-O
+None
++N-O -C-O -N-N
+None
+None
+None
++C-N
+-C-N
+None
++C-N -N-N
+None
+None
+None
+-C-C
+-C-O
++C-O +C-O -C-O -C-O
+-C-C -C-O
+-C-C
+-C-C -C-O
+-C-O
+-C-C
++C-O -C-C -C-O -C-O
+-C-O
+-C-O
+None
+-C-C -C-O
+-C-O
+-C-O
++C-C -C-O
+None
+-C-C
+-C-C -C-O
++C-O -C-O
+-C-C
+-C-O
++C-O -C-C -C-O
+-C-C
++C-O -C-C -C-O
+None
+-C-C -C-O
+-C-C
+-C-C -C-O
++C-C -C-C
++C-C -C-C -C-C
+-C-C
+None
+None
+None
+-C-N
++C-C +N-O
++C-O -C-N
+-C-N
++N-O
+None
+-C-N
+None
+-C-C -N-O
+-C-C -N-O
+-N-O
+-C-C
+-C-C
+None
+None
++C-C -C-C
+-C-C
++C-O -C-C -C-O -C-O
+None
+-C-O
+-C-C
+-C-O -C-O
+-C-C
+None
+-C-C
++C-O -C-O
+-C-C
++C-O -C-C -C-O
+-C-N
+-C-N
+-C-N
++C-O -C-N
+None
++C-O -C-C -C-O
+-C-C
+-C-C
+-C-C
+-C-C -C-C
+-C-O
+-C-C -C-C
++C-C -C-C -C-C
+-C-C -C-O
++C-C -C-C -C-C
+-C-C -C-O
+-C-C
+-C-C
+-C-C
++C-O -C-C -C-O
+-C-C
++C-C -C-C -C-C
+-C-C -C-O
+-C-C
++C-C
+-C-C
+-C-C
++C-C -C-C
++C-C -C-C -C-C
+-C-C
+None
+-C-C
+None
++C-O +C-O -C-O -C-O
+-C-O
+None
+-C-O
+-C-C
+-C-C -C-O
+None
+None
+None
+None
+None
+-C-N
+None
+None
+None
++C-C -C-N
+None
+None
+None
+None
+None
++C-C -C-C
+-C-C -C-N
+None
+-C-C
+-C-O
+-C-C
+None
+-C-C
+None
+-C-C
++C-C -C-C
+-C-C
++C-N +C-O -C-O
++C-N -C-C
+-C-C
+-C-C
++C-C -C-C
++C-N -C-C
+None
++C-N -C-C
++C-N -C-C
++C-C -C-C -C-O
++C-O -C-C -C-O
+-C-O
+None
+-C-O
++C-N -C-C
+-C-C
+-C-C
+-C-C
++C-O -C-C
++C-O -C-C
+-C-C -C-O
+None
++C-C +C-O -C-O
++C-O -C-C -C-O
+None
+-C-O
+-C-O
++C-C +C-O -C-O
+None
++C-C -C-C
++C-O -C-O
+-C-N -C-O
+None
++N-N -N-O
+None
+None
+None
+None
++C-C
+-C-C
+-C-C
++C-O -C-C
+-C-C -C-C
+-C-C
++C-C -C-C
+-C-C -C-C
+None
+-C-C -C-C
+-C-C
++C-C +C-C -C-C -C-C
++C-O -C-C -C-C
+-C-C -C-C
++C-O -C-C
+-C-C
++C-O +C-O -C-O
+-C-O
+None
+None
++C-O -C-C
+-C-C
++C-C
+-C-C
+None
+-C-O
++C-O -C-C
+-C-C
+-C-C
++C-O -C-C -C-O
++C-O -C-C
+-C-O
+-C-N -C-O
+-C-N -C-O
+None
+-C-O
++C-C -C-O
++C-C
+None
++C-N -C-O
+-C-O
+None
+None
+-C-O
+None
+-C-C
+-C-C
++C-C -C-C -C-C
+-C-C
++C-C -C-C -C-C
+-C-C
+-C-C
++C-O -C-C -C-O
+-C-C -C-C
+-C-C -C-C
++C-O -C-O
+None
+-C-O
+-C-C
+-C-C -C-O
+None
++C-O -C-C -C-O
++C-C +C-O -C-O
+-C-C
+-C-C
+None
+-C-C -C-O
+-C-C
++C-O -C-C -C-O
+-C-O
++C-C -C-C -C-C
+-C-C
++C-O -C-C -C-O
++C-C -C-C -C-O
++C-C -C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-C -C-C
+-C-C
+None
++C-O -C-C -C-O
++C-C -C-C -C-C
++C-C -C-C -C-O
++C-C -C-C -C-C
++C-C -C-C -C-O
+-C-C
++C-O -C-C -C-O
+-C-C
+-C-O
+-C-C
++C-C +N-O -C-N
++C-N -C-C
+-C-N
+-C-N
++C-O -C-N
++C-O -C-C
++C-C
+-C-N
++C-O -C-N
+None
+-C-N
+None
++N-O
+-C-C
++C-N -C-C
++C-O
+-C-C
++C-N +C-N -C-N
++C-N -C-C
++C-N -C-C
+-C-C
+None
+-C-C
++C-N -C-O
+-C-O
+None
+-C-C
++C-N -C-C
++C-O -C-C
+-C-C
+-C-C
+-C-C
+-C-O
+-C-C
+-C-C
+None
++C-C -C-C
+-C-O
+-C-C -C-O
+None
+-C-C
+-C-O
++C-C -C-C
+-C-C
++C-C -C-C -C-C -C-O
+-C-C
+-C-C
++C-C -C-C
+None
+-C-C
++C-C -C-C
++C-O -C-C
++C-C +O-O
++C-C +C-O
+None
+-C-C
+-C-C
+None
++C-C -C-C
++C-O -C-C
+-C-C
++C-O +C-O
++C-C
+None
+-C-N
+-C-N -C-N
+-N-N
++C-N -N-N
+-N-N
++C-C -C-N
++C-N -C-N
+None
+-C-C
+-C-C
++C-O -C-C
+None
++C-O
+None
+-C-C
++C-O
++C-C
+-C-O
++C-O -C-C -C-O
+-C-C
+-C-O
++C-C -C-C -C-C -C-O
+-C-C
+-C-C
+-C-C
+None
++C-O -C-C -C-O
+-C-O
+-C-C
+-C-O -C-O
+-C-O
++N-O -C-O -C-O
+None
+-C-C -C-O -C-O
+-C-O
++C-O +C-O -C-O
+-C-O -C-O
+-C-O
+None
+-C-O
+None
++C-O -C-O
+None
++C-O -C-O
++C-O -C-N
++C-O -C-N
+-C-N
+-C-N
+-C-N
++C-O -C-N
+-C-C -C-O
+-C-C
+-C-C
++C-O -C-C -C-O
++C-N -C-O
+-C-C -C-O
++N-O -C-N
+None
++C-C +C-O -C-C
+None
++N-O -C-N -C-O
++C-N
+-C-C
++C-C -C-C
++C-C -C-C
+None
+-C-C
+-C-C
++N-N
+-C-C
++C-N -C-O
+-C-C
+None
+-C-C
++C-N -C-C
++C-C
+None
++C-O -C-O
+-C-C
++C-O -C-C -C-O
+-C-O
++C-C -C-O
+None
+None
++C-O -C-C
+-C-C
+None
++C-C +C-N -C-C -C-N
++C-O -C-N
++C-O -C-C
++C-O
++C-C +C-O -C-C
++C-N -C-C -C-N
+None
+-C-O
+-C-C
+-C-C
+-C-C
++C-O
+-C-C
+None
++C-C -C-C
++C-O
++C-C -C-C
+None
++C-C -C-C
+-C-C
+None
+-C-C
+None
+-C-C
+-C-C
++C-N -C-N
++C-C -C-C
+-C-C -C-N
+-C-C
++C-N -C-C -C-N
+None
+None
+None
+-C-C
++C-C -C-C -C-N
+None
+-C-C
+None
++C-N -C-C -C-N
++C-O -C-C -C-N
++C-O
++C-C -C-O
+-C-C
++C-O -C-C -C-O
+None
+-C-C
+-C-C
+-C-C
+-C-C
++C-N
+-C-O
++C-N -C-C
++C-N +C-O -C-O
++C-N -C-O
+None
++C-C
+-C-O
+-C-O
+-C-C
+None
+-C-C
+None
+-C-C
++C-C
+None
+None
+None
+-C-C -C-C -C-O
++C-O -C-C -C-O
++C-C -C-C
+None
+None
+-C-C
++C-C -C-C -C-O
++C-O -C-O -C-O
+-C-O -C-O
++C-C
+-C-C -C-O -C-O
+-C-O
+-C-O
+None
+None
++C-O -C-O
++C-C -C-C
+None
+None
+-C-C
+-C-C -C-C
+-C-C -C-C
+-C-C
+-C-C
++C-N +C-N -C-N
++C-C
+-C-C
++C-N -C-C
+-C-C
++C-O
++C-C
++C-O -C-C
+None
++C-N -C-C -C-N
++C-O
+None
++C-C
+-C-C
++C-O -C-C
++C-C
++C-C +C-O
++C-C +C-O -C-O
++C-O -C-C
++C-C +C-O -C-C
+None
+-C-C
++C-C
++C-O -C-C -C-N
+None
+-C-C
+-C-C
+None
+-C-C
+-C-C
+None
+None
++C-C -C-C -C-C
++N-O -C-N
+-C-C -C-O
+-C-C
+-C-C
+-C-O
+-C-O
+None
+-C-C
+-C-O
+None
+None
+-C-C
+-C-O
++C-O -C-C -C-O
+-C-O
+None
+-C-O
+-C-O
+-C-C
+-C-N -C-O
+-C-O
++C-C -C-C
+-C-C
+-C-N -C-O
+None
+None
+-C-C -C-O
+-C-C
++C-N -C-O
+None
+None
++C-C -C-C -C-O
+None
+-C-O
+None
+-C-C -C-O
+-C-C
+None
+None
+None
++C-N -C-C
+-C-C
+-C-O
+-C-O
+None
+None
++C-C -C-O
+-C-C
+-C-C
++C-C
+-C-C -C-O
+None
+None
+None
+-C-O
+-N-O
++C-C -C-O
++C-N -N-O
+None
+-C-C -C-C
++C-C -C-C
+-C-C -C-C
+-C-O
++C-O -C-C -C-O
+-C-C
+-C-C
++C-C
+-C-C
++C-C -C-C -C-C
+-C-C
++C-N -C-C
+None
++C-N -C-C
+None
+-C-C
+-C-C
++C-N -C-C
+-C-C
++C-C -C-C -C-C
+None
+-C-C -C-C
++C-N -C-C
+-C-C
++C-N -C-C
+None
++C-C -C-C
+None
+-C-O
+-C-C
++C-C -C-C -C-C
++C-O -C-C -C-O
+-C-C
+-C-C -C-C
+-C-C
+-C-C
++C-C -C-C -C-C
++C-C -C-C -C-C
+-C-C
+-C-O
+-C-C
+-C-C
++C-O -C-C -C-O
+-C-O
+-C-O
+-C-C
+-C-O
+-C-C
++C-O -C-C -C-O
+-C-C
+None
+-C-C
+None
+-C-C -C-C
+None
+-C-O
+-C-C
++C-C -C-C -C-C
+-C-C -C-O
+-C-C
+-C-C
+-C-O
+-C-C
++C-O -C-C -C-O
+-C-C
+-C-C
++C-C -C-O
+-C-C
+-C-C -C-C
+-C-O
++C-O -C-C -C-O
+-C-N
+None
+None
++C-C -C-C
++C-C +N-O -C-N
+None
+-C-C -C-N
+None
+-C-N
+None
++C-O -C-C -C-N
+-C-C
++C-C -C-N
+None
++C-O -C-N
+None
+-C-C -C-N
+None
+None
++C-C
+None
+-C-N
+None
+-C-C
++C-O -C-N
+-C-C
+None
+-C-C
+-C-C
+-C-C
++C-O -C-C
+-C-C
+None
++C-O -C-C
+-C-C
+None
++C-C -C-C -C-C
++C-O -C-C
+-C-C
+-C-C
+None
++C-O -C-C
++C-C -C-C -C-C
++C-C +C-O -C-C
+-C-C -C-C
+None
+-C-O
+None
+-C-O
++C-C +C-O -C-C -C-C -C-O
++C-O -C-C -C-O
+-C-O
+-C-C -C-O
++C-O -C-C
++C-C -C-C -C-O
+-C-O
+-C-O -C-O
+-C-O
+-C-C
+-C-C
+-C-O
+-C-C
+-C-O -C-O
+-C-O -C-O
+-C-C
+None
+-C-O
+-C-C
+None
+None
+-C-C -C-O
+-C-O
+-C-C
+-C-C
+None
++C-C -C-C -C-C
++C-O -C-C -C-O
+-C-O
+None
+-C-O
++C-O -C-C -C-O
+None
++C-N -C-C
++C-N -C-O
+-C-O
+None
++C-O -C-N -C-O
+None
+None
+-C-C
+-C-O
+-C-O
+-C-N -C-O
++C-C -C-O
++C-C -C-N
+-C-O
+None
+None
+None
++O-O -C-N -C-O
+None
+None
++C-C -C-N
+None
+None
++C-N -C-O
+None
++C-O
++C-C +C-O
++C-C -C-C
++C-O -C-O
+None
+None
+None
++C-C -C-O
++C-C
+None
+None
++C-C
+None
++C-C -C-O
++C-C -C-O
++C-O -C-C -C-O
++C-O -C-C
+-C-C
++C-O
+-C-O
+-C-O
+None
+-C-C
++C-O -C-O
+-C-O
+None
+-C-C -C-O
+-C-C -C-O
+-C-C
+None
++C-O
++C-C -C-O
+None
++C-C -C-O
+-C-O
+-C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C -C-C
+-C-C -C-C
++C-N -N-N
++C-N -C-C -N-N
++C-C -C-C
+None
++C-N -C-C
+-N-N
++C-C -C-N
+None
++C-N -C-N
+-C-N -C-N
+-C-C
+-C-O
+-C-C
++C-O -C-C -C-O
+-C-C -C-O
+-C-O
+-C-C
++C-C -C-C -C-C
+-C-C -C-O
+-C-O
++C-C
+-C-C
+-C-O
+None
++O-O -C-O
+None
+-C-C
+-C-C -C-O
+-C-O
+-C-C -C-O
+-C-C
++C-N -C-C
++N-N -C-N
+-C-C -C-O
+-C-C
+-C-C
++C-C -C-C
++C-C -C-C -C-C
++C-O
++C-C -C-C -C-C
+None
+-C-C
+None
++C-O -C-C
+-C-C -C-C
+-C-C
++C-O -C-C
++C-O -C-C
++C-O -C-C -C-O
++C-C -C-C
++C-C -C-C
++C-O
+-C-C
+-C-O
+-C-O
++C-C -C-O
+None
++C-C -C-O
+-C-C
++C-C -C-C
++C-C -C-C -C-C
+-C-C -C-C
++C-C -C-C -C-C
+-C-C -C-C
+-C-C
+-C-C
+-C-C
++C-C -C-C -C-C
++C-C -C-C -C-C
++C-C -C-C -C-C
+-C-C
+-C-C
++C-O -C-C
++C-C +C-O -C-C
+None
++C-C
++C-O -C-C
++C-C -C-C
++C-O +C-O -C-O
+-C-O
+-C-C
++C-O -C-C
++C-C +C-O -C-C
+None
++C-N +C-O -C-O
++C-N -C-C
++N-O -C-O
++C-N -C-O
+-C-C
++C-C
++C-N -C-O
++C-C -C-C -C-O
+-C-O
+-C-N
+-C-C
++C-C
+-C-O
+None
+-C-N
++C-C -C-C -C-N
++C-O -C-C
++N-O
+None
+-C-N
++C-O
+None
+None
+-C-N
++C-C
+None
+-C-C
++C-O -C-N
++C-O -C-N
+None
+None
+-C-N -C-O
+-C-N -N-O
++C-O -C-N
+None
++C-N -C-N
++C-N -C-N -C-N
+-C-C -C-N
+-C-C
+-C-C
+None
+None
+-C-N
+-C-C -C-N
++N-O -C-N
+-C-C
+-C-C
++C-C -C-C -C-C
+-C-C -C-O
++C-C +C-O -C-O
+-C-C
+-C-C
+-C-C
++C-C -C-C
+-C-C -C-O
++C-C -C-C -C-C
+-C-C
++C-O -C-C -C-O
+-C-C
++C-C -C-C -C-O
+None
++C-C -C-C
++C-O -C-O
++C-C -C-C
++C-C -C-O
++C-C
+-C-O
+-C-C
++C-O -C-C -C-O
+None
+-C-C
+-C-C
++C-C -C-C
++C-O -C-N -C-O
++N-N
++C-N -C-N
++C-N -N-N
+None
+None
+None
++N-O -C-N -C-O
+None
+None
+None
+-C-O
+-C-C
++C-O
+None
+-C-C
+-C-C
++C-N -C-C
+None
++C-N -C-C
++C-N +C-N -C-N
++C-N
+-C-N
++C-C +C-N -C-C -C-N
+-C-C
++C-N -C-C
+-C-N
+-C-C
+-C-C -C-N
+None
++C-N -C-C
+-C-O
++C-N -C-C
++C-C
++C-N
++C-N -C-C
+-C-C
++C-C +C-N -C-C
+None
++C-N -C-C
++C-C -C-C -C-C
+-C-O
++C-C -C-O
++C-C -C-C
+-C-C
+-C-C -C-O
+-C-C
+-C-C
+-C-O
++C-O -C-C -C-O
+-C-O
++C-O -C-C -C-O
++C-C
++C-C -C-C
++C-C +C-C +C-C -C-C
+-C-C
++C-C
++C-C +C-C
++C-C -C-C
+None
+None
+-C-O -C-O
+-C-O -C-O
++C-N -C-O
+-C-N -C-O
+-C-C -C-O
+None
++C-N -C-O -C-O
++C-O -C-N -C-O
+-C-O
+None
++C-C
++C-O -C-N
+-C-C
+None
+-C-O
++C-O -C-N
+None
+-C-N
+-C-C -C-N
+-C-O
+None
+-C-O
+None
++C-C -C-C -C-N
+None
++C-N +C-O -C-N -C-O
++C-O
+-C-N
++C-O
++C-N +C-O -C-N
++C-C
++C-N -C-C -C-N
+None
+None
+-C-C
+None
+-C-C -C-C
++C-C -C-C
++C-O -C-C
+-C-C
+-C-C -C-C
++C-O -C-N
++C-O -C-C
++C-O -C-N
+None
++C-C -C-C -C-N
++C-O -C-N
++N-O -C-N
+None
++C-O -C-C -C-O
+-C-C
++C-O -C-C -C-O
+-C-C
+-C-C
+-C-C
+None
++C-C -C-C
+None
+-C-O
+-C-O
+-C-C -C-O
+-C-C
+None
+-C-O
+-C-O
++C-O -C-C -C-O
++C-O -C-C -C-O
+None
+-C-C -C-O
++C-O -C-O -C-O
+-C-O
++C-C -C-O
+None
+-C-C
+None
++C-C -C-C
+-C-O
++C-O -C-O
+-C-C -C-C
+-C-O
++C-O -C-C -C-O
++C-C -C-C -C-C
+-C-C
+-C-C -C-C
+-C-C -C-C
++C-C -C-C
+-C-C
+-C-C
++C-C -C-C
++C-C -C-C
+-C-C
+-C-O
+-C-C
++C-C -C-C
++C-O -C-C
+-C-O
+None
+None
+-C-O
++C-C -C-O
++C-C +C-N -C-N -C-O
+None
++C-C
++C-C -C-C
++C-C -C-C -C-N -C-O
+None
++C-O -C-C
++C-O -C-O
+-C-O
++C-N -C-O
+None
+None
+-N-O
+-C-C
++C-O -C-C -C-O
++N-N -N-O
+-C-C
++C-O -C-C -C-O
+-C-C
+None
+-C-C
+-C-C
+None
+-C-C -C-O
+-C-C
+-C-C
++C-O -C-C -C-O
+-C-C
+-C-C
+-C-O
+-C-C
+-C-O
++C-O -C-C -C-O
++C-C -C-C
+-C-C
+-C-C -C-O
+-C-C
+-C-C -C-O
++C-C -C-C
++C-C -C-C -C-C
+-C-C
+-C-C
++C-C
+-C-C
+None
+-C-O
++C-C -C-C
++C-O -C-C -C-O
++C-C -C-C
+-C-C
++C-O -C-O
+-C-C -C-O
+-C-C
++C-C -C-C -C-N
+None
++C-O -C-C
+-C-C -C-N
+None
+-C-N
++C-O -C-C
++C-C +N-O -C-N
++N-O -C-N
++C-C -C-C -C-N
+None
++C-O -C-N
++C-C +C-O
+None
++C-O -C-O
++C-O -C-N -C-O
+None
+None
+-C-O
++C-N -C-C
+None
+None
+-C-O
++C-C
++C-C -C-C -C-O
++C-N -C-O
+None
++C-O
+-C-O
++C-C -C-C -C-N
++C-O +C-O -C-N
++C-O -C-C -C-N
+-C-N
+-C-C
++C-C -C-C -C-N
++C-C +O-O
++C-O -C-C -C-N
++C-C +C-O +N-O -C-N
+-C-N
++C-O -C-N
++C-O +C-O -C-N
+None
++C-O -C-N
++C-C -C-C
+-C-N -C-N
+-C-C -C-N
+None
+None
++C-O -C-N
++C-O +C-O -C-C
++C-O +C-O
++C-O +N-O -C-N
+None
++N-O -C-N
+-C-N
+None
+-C-C
++C-O -C-C
+None
++C-O -C-C
++C-N
+None
++C-N -C-C
++C-C
++C-C
++C-C
+-C-C
+None
++C-N
+None
++C-C
+-C-C
+None
++C-C -C-C
++C-C +C-C -C-C -C-C
++C-C
+-C-C
+-C-C
+None
+None
++C-O -C-C -N-O
+None
++C-N -C-C
++C-C +C-C -C-C -C-C
+-C-C
+None
++C-O -N-O
++C-C
+-C-C
+None
+None
+None
+-C-N
+None
+None
+None
++C-N -C-N
+None
++C-O -C-O
++C-O -C-O
++C-N -C-C
+None
+None
+None
+None
++C-C -C-O
+-C-O
++C-N -C-O
+None
++C-C -C-C
+None
+None
++C-C -C-C -C-C -C-O
+None
+None
+None
+-C-C
++C-O -C-N
+-C-C
+None
++N-O -C-N -C-N
+None
++C-O -C-C -C-N
+None
++C-C -C-C -C-N
++N-O -C-N
++C-N -C-C -C-C
+None
++C-C -C-C -C-N
+None
++C-C -C-C
+None
+-C-O
+None
+-C-C -C-C -C-O
+-C-O
++C-O -C-C -C-O
++C-C
+-C-O
+None
+-C-C -C-C
++C-O -C-C -C-O
+-C-C
+-C-C
+-C-C
+-C-C -C-C -C-O
+-C-C
+None
+None
+-C-C
+-C-C
+-C-C
++C-C -C-C
++C-C -C-C
+-C-C
+-C-C
+-C-O
++C-C -C-C -C-C
+None
+-C-C
++C-C -C-C -C-C -C-O
+-C-C -C-C
+-C-C -C-C
+-C-C -C-C
+-C-C -C-C
++C-C -C-C -C-C
+-C-C -C-O
++C-C -C-C -C-C
+None
+None
+None
++C-N -C-N
+None
+None
+None
++C-C -C-N
+None
+None
+None
++C-C
+None
++C-C +C-C
++C-C -C-C
+None
+None
+None
+None
+None
+None
++C-N -C-C
+-C-N
++C-O -C-C
++C-C +C-O -C-N
++C-O -C-N
+-C-C
++C-C
+None
+-C-N
++C-C +C-O -C-C
++C-C +C-N -C-N
++C-C -C-C -C-N
+None
++C-O -C-C
+None
+None
+-C-N
+None
++C-N -C-C
++C-C
+None
++C-C -C-C -C-C
+-C-C
++C-N -C-C
+-C-C
++N-N -C-N
++C-N -C-C
+-C-C -C-N
++C-N -C-C
+-C-C
++C-N -C-C
++C-N -C-C
+-C-C
+-C-C
++C-N -C-C
+None
++C-O -C-C -C-O
++C-C -C-C -C-C
+None
++C-C
+-C-C
+-C-C
++C-O
++C-N
+None
+-C-N
++C-N
+None
+-C-N
++C-N +C-N
+None
+-C-N
+None
++N-N
+-C-C
+None
+None
+-C-C -C-N -N-N
+None
++C-N -C-N
+None
+-C-N
+-C-N -C-N
+-C-C
++N-O -C-O
++N-N
++C-N -C-O
++C-N
++C-C +C-N -C-C
+None
+-C-C
++C-C -C-N
++C-O -C-C
+None
+-C-C -C-N
++C-C -C-C
++C-C -C-C -C-N
++C-O -C-N
+None
+None
+None
+None
++C-N -C-C
+None
+None
+-C-C -C-N
++C-C -C-C -C-N
+-C-N
++C-C -C-N
++C-N -C-N
+None
++C-O -C-C -C-O
++C-C -C-C -C-C
+-C-O
+-C-C
+-C-O
+-C-C
++C-O -C-C -C-O
+None
+-C-C
+-C-C -C-C
+-C-C
+None
+-C-C
++C-C -C-C -C-C
+-C-O
++C-O -C-C -C-O
++C-C -C-C -C-C
+-C-C
++C-C -C-O
+-C-C
++C-O -C-O
+-C-O
+-C-C
+-C-C -C-O
+-C-C
++C-C -C-C -C-C
+None
+-C-C
++C-C
+-C-C
+-C-O
+None
+-C-O
++C-O -C-C -C-O
+-C-N
+None
+None
+None
+-C-C
+-C-C -C-O
++C-O -C-C -C-O -C-O
+None
++C-O -C-C -C-O
+-C-C
+None
+None
+-C-C
+-C-O
+-C-C
+-C-O
++N-O -C-N
+None
+-C-C
+-C-C -C-O
+-C-O
++C-C +C-N -C-C -C-N -C-O
+None
+None
+None
+None
++C-O -C-C
+-C-C
+-C-C
+None
+-C-C
+-C-O
++C-C
++C-O
+None
++C-O -C-C
+-C-C
+None
+None
+-C-C
+-C-O -C-O
++C-O -C-C -C-O
+-C-O
+-C-O
+-C-C
+None
+-C-O
+-C-C
+-C-C
+-C-O
+-C-C
+-C-O -C-O
+-C-C
+-C-C
+-C-O
+-C-C -C-C -C-O
++C-C -C-C -C-C
+-C-C
++C-C +C-N -C-C
++C-N -C-C -C-O
+-C-O
+-C-C
+-C-C
+None
++C-C -C-O
+-C-C
+-C-C
+-C-C -C-O
+-C-C -C-C
++C-N -C-C -C-C
+-C-C -C-C
++C-C -C-C
+None
++C-N -C-C -C-O
++C-O -C-C -C-O
+None
+-C-C -C-O
++C-O -C-C -C-O
+None
+-C-C
++C-O -C-C -C-C
+-C-C
++C-C
++C-O -C-C
+-C-O
+None
+-C-C
++C-C -C-C -C-C -C-C
++C-O -C-C -C-O
++C-O -C-C
++C-C -C-C -C-C
+None
++C-O
+-C-C
+-C-C -C-C
+-C-C
++C-O -C-C -C-O
+-C-C -C-C
++N-N -C-N
++C-N -C-C
+None
+None
++C-N +C-N -C-N
++C-C -C-C -C-N
++C-C -C-C -C-C
++C-C -C-C -C-N
++C-C
+None
+-C-C
++C-C
+None
++C-N
+-C-C
+-C-N
++C-N -C-C
+None
++C-C -C-C
+-C-N
++C-N -C-C
+-C-C
+None
+None
+None
+None
++C-C -C-C
+-C-N
+None
+None
+None
+-C-N
++N-O
++C-O
+-C-C -C-O
+None
++C-C +N-O -C-O -C-O
+-C-C
++C-N -C-C
++C-O +C-O
++C-N -C-O
+-C-O
++C-O -C-C
++C-O -C-O
++C-N +C-O -C-O
++C-O +N-O -C-O
+-C-O
+None
+None
+-C-C
++C-O
+-C-C -C-C
+-C-C
+-C-C
+-C-C -C-C
++C-O -C-C -C-O
++C-C -C-C -C-C
+-C-C
++C-O -C-C -C-O
+-C-C
+-C-C
+-C-C
+-C-C -C-C
+None
+None
+-C-C
++C-C -C-C -C-O
++C-O -C-C -C-C
+-C-C
+-C-O
++C-C -C-C
+None
+None
++C-C -C-N
++C-N -C-N
+None
+None
++C-C -C-N
++C-N -C-C
+None
++C-C -C-C
+None
+None
++C-C -C-C -C-N
+-C-N
+None
+-C-O
++C-C -C-C
+-C-N -C-O
+-C-C
++C-N -C-O
++C-N -C-C
+-C-C -C-O
++C-C -C-C -C-O
++C-C -C-O
+-C-N -C-O
+-C-O
+None
+None
++C-C -C-C -C-C
+None
+-C-N
++C-C -C-N
+None
++C-N -C-C
++C-C -C-C
+None
++N-N -C-C -C-N -C-N
++C-N -C-N
+None
++C-N -C-C -C-N
+None
+None
+None
+None
+-C-C
+None
+None
+None
+-C-C -C-N
++N-O -C-O
+-C-C -C-C -C-N
+None
++N-O -C-N
+None
++C-N -C-O
+None
++C-O
++C-N
++O-O -C-O
+-C-C
++C-C -C-C
+None
+None
++C-N -C-C
+None
++C-O -C-C
+None
+None
++C-O
++C-C
++C-C -C-C
++C-C +C-O -C-C -C-O
+-C-C
++C-C +C-C -C-C
++C-C -C-C
+-C-C
++C-O -C-C
+None
++N-O -N-N
+None
+None
+-C-N -N-N
++C-N -C-C -N-N
+-C-N -C-N
+None
+None
++N-N -C-N
+None
++C-N -C-C
+None
+-C-O
++C-N -C-C -C-N
+None
+-C-N
++N-N -N-N
++C-N -C-N
+None
+-C-O
+None
+None
++C-N +C-O -C-O
+-C-O
++C-N -C-N -C-N -C-O
+None
+None
+None
+None
++C-N -C-N -C-O
++C-C -C-N
+-C-N -C-O
+-C-N -C-O
++C-N -C-C
++C-N +C-O -C-N
+-C-C -C-C
+-C-C -C-N
+None
+None
+None
+-C-C -C-N
+-C-C
++C-N +C-O -C-C
+-C-C
+None
+-C-C -C-O
+-C-O
+-C-C
++C-O -C-C -C-O
++C-O -C-C -C-O
++C-C -C-C -C-C
+-C-C -C-C
+-C-C
+-C-C
++C-C +C-C -C-C -C-C -C-C
+-C-C
+-C-O
+-C-C -C-C
+-C-C
++C-C -C-C -C-O
+-C-C
+-C-C
+None
+-C-C
+-C-C
+None
++C-C +C-N -C-C -C-C
++C-C -C-C
++C-C -C-C
++C-O -C-C -C-O
++C-N -C-O
+-C-C -C-C
+-C-C
+None
+None
+-C-O
+-C-O
+-C-C -C-N -C-O
+-C-C
+-C-C
++C-C -C-C
++C-O -C-N -C-O
+-C-C
+-C-C -C-C
+-C-C -C-O
++C-C -C-C
++C-C -C-C -C-C
++C-O -C-O
++C-O -C-C -C-O
+-C-C
++C-O -C-C -C-O
+-C-O
+-C-C -C-C
+-C-C
++C-O -C-C -C-O
+-C-C -C-O
+None
+-C-C -C-O
+None
+-C-C
+-C-C
+-C-C
+-C-C -C-O
++C-C +C-C -C-C
+-C-C
++C-C -C-C
+None
++C-C -C-C
+None
+-C-C
+None
+None
++C-C -C-C
+-C-C
++C-C -C-C -C-C
++C-C -C-C
++C-C -C-C
++C-C
+-C-C
+-C-C
+-C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-C -C-C
+-C-C
+-C-C
++C-C -C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C -C-C
+-C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-C -C-O
+None
++C-C -C-C -N-O
+-C-O
++C-N -C-C -N-O
++C-C +N-O -C-O -N-O
+-C-O
++C-O -C-C -C-O
++C-N -C-N
++C-N -N-O
+None
+None
++C-C -C-O
+-C-N -C-N
+-C-N
+None
+None
++C-O +C-O -C-O
+None
++C-N -C-N -C-N -C-N
+None
+None
++C-C -C-N
+None
+-C-N
+-C-N -C-N
++C-C -C-C -C-N
+None
+-C-N
+None
+None
++C-C -C-C
+None
+None
+-C-N
++C-N -C-N
++C-C
+None
+None
+None
++C-O -C-O
++C-O -C-N -C-N -C-O
+None
+-C-C
++C-C -C-C -C-N
++C-N -C-C -C-N
+None
+-C-C
++C-C -C-C -C-C -C-N
+-C-C
++N-O -C-N
++C-N -C-C -C-N
+-C-C
++C-O -C-C
+-C-C
++C-C
+None
++C-N -C-C -C-C -C-N
+None
++C-C +C-C -C-C -C-N
+None
++C-O -C-C
+-C-C
++C-O
+None
+None
+None
+None
++C-O -C-C
++C-O -C-C
+-C-C -C-C
++C-O
+-C-C
++C-N -C-C
++C-N -C-C
++C-C -C-C
++C-C +C-N -C-C
+-C-C
++C-N -C-C
++C-C -C-C -C-C
+-C-C
++C-N -C-C
++C-N
++C-N -C-C
++C-C
++C-N -C-C
+-C-O
++C-N -C-C
+None
++C-O -C-C -C-O
++C-N -C-C
++C-N -C-C
+-C-C
+-C-C -C-O
++C-O -C-C -C-O
+-C-O
++C-O -C-O
+-C-C
+-C-C
+None
+-C-C
++C-C -C-O
++C-C
+None
++C-C -C-O
+-C-O
+-C-C
++C-C +C-C -C-C -C-N
++C-C -C-C
+-C-C
++C-C -C-C
+-C-C
+-C-C
+-C-C
++C-C -C-C -C-N
++C-N -C-C -C-N
+None
+-C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-C -C-C
+-C-O
++C-C -C-C -C-C -C-C
++C-O -C-C -C-O
++C-O -C-C
+-C-C
++C-O -C-C
++C-O -C-C -C-O
+-C-C
+-C-C
+-C-C
+-C-C -C-C
+-C-C
++C-O -C-C -C-O
+-C-C
++C-C +C-C -C-C -C-C
+-C-C -C-O
++C-O -C-C -C-O
+-C-C
++C-O -C-C -C-O
+None
++C-O -C-C
++C-O -C-O
++C-C -C-O
++C-O -C-C -C-O
+-C-O
++C-C -C-C -C-C
+-C-C -C-O
+-C-C -C-O
++C-C -C-O
+-C-O
+-C-C
+-C-C
+-C-C
+-C-C
++C-C
+None
+-C-C
+-C-C
++C-C -C-C -C-C
++C-O -C-C -C-N
+None
+-C-C
+-C-C
+-C-C
++C-N -C-C -C-N
++C-C -C-C -C-C -C-N
+-C-N
+-C-C
+None
++C-N +C-O -C-N
+-C-C -C-C
++C-O -C-C
++C-N -C-C
+None
+-C-C -C-N
+-C-C
++C-N -C-C -C-N
+-C-C
+-C-C
++C-C -C-C -C-C
+-C-C
+-C-C -C-C
+-C-C
+-C-C
+-C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-C
++C-C -C-C -C-C
+-C-C
+-C-C -C-C
++C-C -C-C -C-C
+-C-C -C-C
+-C-C
+-C-C -C-C
+-C-C -C-C
++C-C
++C-C -C-O
++C-O -C-O
+-C-O
++C-C -C-C -C-O
++C-C +C-N -C-O
++C-C -C-O
++C-N -C-C
+None
+None
+-C-O
++C-N -C-C
+-C-C -C-O
++C-N -C-C -C-O
++C-N +C-O -C-O
++C-N -C-O
+None
+-C-O
+-C-C
++N-O -C-O
+None
+None
+None
+-C-O
+None
+-C-O
+-C-C
++C-O -C-C -C-O
++C-O -C-C -C-O
++C-C -C-C -C-O
+-C-C
+-C-C
+-C-C -C-O
+-C-O
+-C-C -C-O
+-C-C
+-C-C
+-C-C
+-C-C
++C-C -C-C -C-C
+-C-C
+-C-C -C-C
++C-C -C-O
+-C-C
++C-C -C-C -C-O
+-C-O
+-C-C
+-C-C
+-C-O
+-C-C
++C-C -C-C -C-C -C-O
++C-C -C-O
++C-C -C-C -C-C
++C-O -C-C -C-O
+-C-C
+-C-O
+-C-C
+None
++C-O -C-C -C-O
+None
+-C-C
+-C-C
+-C-O
+-C-C
++C-O -C-N -C-O
+-C-C -C-O
+None
+None
+-C-C
+-C-C
+None
+-C-C
+-C-C
+None
+-C-C
+None
++C-C -C-O
++C-C -C-C
++C-C -C-O
+-C-C
+None
+-C-O
++C-C -C-C -C-C
+None
+-C-C
++C-C -C-C
+-C-C
++C-C -C-C -C-C
++C-C
+-C-O
++C-C -C-C
+None
+-C-C
+None
++C-O
+None
+None
+-C-C
+None
+None
+-C-C
++C-O -C-O
+-C-C
+-C-C -C-C -C-O
+-C-O
++C-C -C-C -C-C -C-O
+-C-O
+None
++C-C +C-O -C-C -C-O
+None
+None
++C-C -C-C -C-O
++C-C -C-C
+None
+-C-O
++N-O -C-N -C-O
+-C-N
+-C-N
+-N-N
++C-C +C-O +N-N
++C-C -C-N
++C-N
+-C-N
+-C-N -C-N
++C-C -C-N
++N-O -N-N
+None
+None
+-C-N -C-N
+-C-N
++C-N -C-C -C-N -N-N
+None
+-C-N
+-C-N
+None
+-C-C -C-C
++C-C -C-C -C-C
++C-C +C-C -C-C -C-C
+-C-C
+-C-C
+None
++C-C -C-C
+None
+None
+-C-C
+None
+-C-N
++C-C -C-N
+None
+None
+None
+None
+None
+None
+-C-C -C-N
++C-O -C-N
++C-C +N-O -C-N
++C-O -C-O
+None
+-C-C
++C-O -C-C -C-O
++C-O -C-C -C-O
+-C-C -C-O
+-C-O
++C-C -C-C -C-C -C-O
++C-O
+-C-C
+None
+-C-C
++C-O -C-O
+-C-C
+-C-C
+-C-C
+-C-C
++C-C -C-C -C-C
++C-C -C-C
+None
+None
+None
+None
+-C-C
++C-O -C-C
++C-O
+None
+-C-O
++C-C -C-C -C-C
+-C-C
++C-C -C-C -C-C
+-C-O
++C-O -C-C
++C-O -C-C -C-O
+-C-C
++C-C -C-C
++C-O
+None
+-C-C
++C-O -C-C -C-O
+-C-C
++C-C -C-C -C-C
++C-C -C-C -C-C
++C-C -C-O
++C-O -C-C -C-O
+-C-C
+None
+-C-C -C-O
+-C-C -C-O
+-C-O
+-C-C
++C-O +C-O -C-O
++C-O
+None
++C-N +C-O -C-N -C-O
++C-C -C-N
++C-O +N-O -C-O
+-C-C -C-O
++C-N +C-N -C-N -C-O
++C-N -C-O
++C-O
++C-N -C-N
+-C-O
+None
++C-N +C-O
++C-O +N-O -C-O
+None
++C-C
++C-N +C-O -C-O
++C-N -C-C
+-C-C
++C-C -C-C
++C-C +C-C +C-N -C-C -C-C
++C-C
+-C-C
++C-N
+-C-C
++C-N -C-C
+-C-C
+-C-C
+-C-C -C-C
++C-N
++C-N -C-N
+-C-C
+None
+-C-O
+None
+None
++C-C +C-N -C-C -C-O
+None
++C-N -C-C
++C-O -C-C -C-O
++C-O -C-C -C-O
+-C-C
++C-N -C-C -C-O
+-C-O
++C-N -C-C -C-O
++C-N -C-O
++C-N -C-O
++C-C -C-C -C-O
++C-O -C-N
++C-C +N-O
+None
+-C-O
++C-O -C-N -C-O
++C-N -C-O
+None
+-C-N
+-C-O
++C-C
+-C-N
++C-O -C-N -C-O
+None
+None
++C-N
++C-N -C-C
++C-N
++C-N +C-O -C-C
++C-C -C-C
++C-O -C-O
++C-C
+-C-N
+None
+None
++C-N -C-C
+None
++C-C -C-N
+None
+None
+-C-N
+-C-C
+None
++C-C
+None
++C-C -C-N
+None
++N-O -C-O
+None
++C-N
+None
+None
+None
+None
+-C-N
++N-N
+-C-N -C-N -C-N
+-C-C
++C-C -C-C -C-N
++C-C -C-C
+-C-C
++C-N -C-C
+None
+-N-N
++C-N -C-C -N-N
+-N-N
+None
+-C-N -C-N
++C-N -C-C
+None
+-C-C
+-C-N
++C-C -C-C -C-C
++C-C -C-C -C-N
+-C-C
+None
+-C-C
+None
++C-N -C-C -C-N
+-C-O
+None
+-C-C
+None
+None
++C-C
+None
++C-C +N-N -C-N -C-N
++C-N -C-N
+None
++C-N
+None
++C-N -C-N
+None
++C-C +N-N -C-N
++C-C +N-N
+None
+None
++C-C -C-C
+-C-C
+None
+-C-C
+None
+-C-C
++C-C -C-C
+-C-C
++C-C
+-C-N
++C-C +C-C -C-C -C-N
+None
++C-C -C-C -C-N
+-C-C
++C-N -C-C -C-N
+None
++C-C -C-C
+None
++C-O -C-O
++C-C -C-C -C-O
++C-O -C-C -C-O
+-C-C
++C-O -C-O
+-C-O
+-C-C -C-O
+-C-C
++C-O -C-O
+None
++C-C -C-C
+None
++C-C +C-O -C-O
++C-C
+-C-C
++C-O
++C-C -C-C
++C-N -C-C
+-C-C
+None
+-C-C -C-N
++C-C -C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-C -C-N
++C-N
+-C-C
+None
++C-N -C-C
++C-N -C-C
++C-N -C-C
+-C-C
+-C-C
++C-C -C-C -C-C
++C-C -C-C -C-C
++C-C -C-C
+-C-C
+None
++C-N +C-N -C-N
+None
+-C-N
++C-N -C-C
++C-C -C-C -C-C
++C-C -C-C -C-N
+None
+None
+None
+-C-C
+None
+None
+-C-C
++C-N -C-C -C-N
+-C-N
+-C-C
+-C-C -C-N
+-C-C
+None
+-C-C
+-C-C
++C-O -C-C -C-O
++C-O -C-C -C-O
+-C-C
+None
+-C-O
+-C-O
+None
++C-O -C-C -C-O
+-C-O
++C-C -C-C -C-C
++C-C -C-C
++C-O -C-O
+-C-C
+-C-O
+-C-O
+-C-C -C-O
+None
+-C-O
++C-C -C-C -C-O
+-C-C
++C-N -C-C
++C-N -C-C -C-O
++C-N -C-O
+-C-O
++C-N -C-C
+-C-N
++C-C +N-O -C-N
+None
+-C-N
+None
+-C-N
++C-O
++C-O -C-C
++C-N -C-C
++C-C -C-C -C-N
+-C-C
++C-O -C-N
++C-O -C-N
++C-N -C-C
+-C-N
++C-C
+-C-C
++C-O
+-C-C
++C-O -C-C
+None
++C-O
+-C-C
++C-O -C-N
++C-C
++C-O -C-C
+None
+None
++C-N -C-C -C-N
+-C-O
+-C-C
++C-C -C-O
+-C-C -C-O -C-O
+-C-C -C-C
+-C-C -C-O
++C-O -C-O -C-O
++C-O -C-C -C-O
+-C-C -C-O
++C-O -C-C -C-O
+None
+-C-O
+-C-O
+-C-C
+-C-C
+-C-C
+-C-C -C-C
+-C-C
++C-C -C-C -C-C
++C-C -C-C -C-C
+-C-C
+-C-C
+-C-C -C-C
++C-C -C-C -C-C
+-C-C -C-C -C-C
+-C-C
+-C-C -C-C
+-C-C -C-C
+-C-C
+-C-C -C-C
++C-O -C-C -C-O
+-C-C
++C-C -C-C -C-C
++C-C -C-C -C-C
++C-C -C-C -C-C
+-C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C -C-C
+-C-C -C-C
+-C-C
++C-C -C-C -C-C
+-C-C -C-C
++C-O -C-C -C-O
+-C-C
+-C-C
+-C-C
+-C-O
+-C-C
++C-C -C-C -C-C
+None
++C-N -C-C
+-C-O
++C-O -C-C -C-O
+None
+-C-C
++C-O
+None
+None
++C-C
++C-C -C-C
++C-N -C-C
+-C-C
++C-N
+-C-C
++C-C +C-O -C-O
++C-O
+None
++C-O -C-O
++C-O
++C-O -C-O
+None
+-C-C -C-O
++C-C -C-C
+None
+-C-O
+-C-C
+None
+-C-C
+-C-O
+-C-C
+-C-C -C-O
+None
+-C-C
++C-C -C-C
++C-C -C-C
+None
+None
+-C-O
+-C-O
+-C-C -C-O
+-C-C
++C-C -C-C
++C-C +C-O -C-O
++C-N -C-C
+None
++C-N
++C-O -C-N
+None
+-C-C -C-N
+None
++C-C
++C-O -C-C
++C-O -C-N
+None
+-C-C
++C-C +C-N -C-C -C-N
+-C-C
++C-C
+None
+-C-N
++C-C -C-C -C-N
+-C-C -C-C -C-N
+None
+-C-C
+-C-C
++C-N
+-C-C
++C-N -C-C -C-N
++C-N -C-C -C-N
+-C-C
++C-N -C-C -C-N
+-C-C
++C-N -C-C
+-C-C -C-C
++C-C -C-C -C-C
+None
+-C-C
++C-O -C-C
++C-C -C-C -C-N
+-C-C
++C-C -C-C -C-C
+None
+None
+-C-C
++C-N -C-N -C-O
+-C-C -C-O
+-C-C -C-N -C-O
+-C-O
++C-O -C-N
+-C-N
++C-O -C-O
+-C-O
+-C-O
++C-O -C-N -C-O
+None
++C-C -C-C -C-O
+-C-O
+-C-N -C-O
++C-C
+-C-C
+None
++C-N -C-C
+-C-N -C-O
++C-C -C-C -C-C
+None
+-C-C
+-C-C
+-C-C
+-C-C
+-C-O
+-C-C
+None
++C-C -C-O
+-C-C
+-C-C
++C-O -C-C -C-O
++C-C +C-C -C-C -C-C
+-C-C
+-C-O
+-C-C -C-C
++C-N -C-O
++C-O -C-N -C-O
+None
++C-C -C-O
+None
+None
+-C-N -C-N
+None
+None
+None
+None
+-C-N
++C-C
++C-N -C-O
+None
++C-O -C-O -C-O
+None
++C-N -C-O
+-C-O
+None
++C-C -C-C
++C-N -C-O
+-C-C
++C-N -C-C
+-C-O
+-C-O
+-C-C
+-C-O
+None
++C-C -C-C -C-O
++C-O -C-C -C-O
+-C-O
+-C-C -C-O
++C-N -C-C
+None
++C-N -C-C
+None
++C-C +C-C +C-C -C-C
+-C-C
++C-C +C-O -C-O
++C-C +C-O -C-O
++C-C +C-O -C-O
++C-O
++C-C
+None
++C-C +C-C -C-C
++C-C -C-C
++C-C -C-C
+-C-C
++C-C +C-C -C-C
+None
+-C-C -C-O
+None
++C-C +C-C -C-C
++C-C -C-C
+None
++C-O -C-O
++C-C -C-C
+None
+-C-C -C-N
+-C-C
++C-C -C-C -C-C
+-C-O
+-C-C
++C-O
+-C-C
++C-C -C-C -C-C
+-C-C
+None
++C-O -C-C -C-O
+None
+None
+None
++C-N +C-O -C-N -C-O
+None
+-C-C
+None
++C-C +C-C -C-C
++C-C -C-C -C-C
+None
+-C-C
++C-C -C-C
++C-C -C-C -C-C
++C-C -C-C
++C-C -C-C
+-C-C
++C-C +C-C -C-C
++C-O +C-O -C-O
++C-O -C-C
++C-C -C-C
+None
+None
++C-O -C-C -C-O
+-C-C
+-C-C
++C-C -C-C -C-C
+-C-C -C-C
+-C-C -C-C
+None
+-C-C
+-C-C -C-O
+None
+-C-C
+-C-C
+-C-O
+-C-C
+-C-C
+None
+-C-C -C-C -C-C
++C-C -C-C
++C-O -C-C -C-O
++C-C -C-C
++C-C -C-C
++C-C -C-C
+-C-C
+None
+-C-C
+None
+None
+-C-C
++C-C -C-C
+None
+-C-C -C-C
++C-O
++C-O
++C-C -C-C -C-O
+-C-C
++C-C -C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-C -C-C
+-C-C -C-C -C-O
++C-C -C-C
+-C-C
+-C-C
+-C-C
++C-C -C-C -C-C
+-C-C
+-C-C
+-C-C -C-O
+-C-C -C-C
+-C-C -C-O
+-C-C -C-C -C-O
+None
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C
++C-C -C-O
++C-C -C-C -C-C
+-C-C
+-C-C
+-C-C
++C-C -C-C -C-C
+-C-C -C-C
+-C-C
+None
++C-C -C-N
+None
+-C-N
+None
+None
+None
+None
+None
+-C-N
+None
+None
+None
+None
+None
+None
+None
+None
+None
++C-C -C-C
++C-O -C-C
++C-O
++C-O -C-C
+-C-C
++C-O
+-C-O
++C-O -C-C -C-O
+-C-O
+-C-O
+None
+-C-C
++C-C -C-C -C-C
+-C-C
++C-C -C-C -C-C
+None
+None
++C-C -C-C
++C-C
+-C-O
+-C-C
++C-O -C-C -C-O
+-C-C
+-C-C
+-C-O
+-C-C
+-C-O
+-C-C -C-C
+-C-C
+-C-C -C-C
++C-O -C-C -C-O
+-C-C -C-C
+-C-O
+None
+-C-C -C-C
+-C-C -C-C -C-O
+-C-C
+-C-O
+-C-C
++C-O
+-C-C
+-C-C
+-C-C
++C-O -C-C
+-C-C
+-C-C -C-C -C-O
+None
+None
++C-C +C-O -C-C -C-C
++C-C -C-C -C-C
++C-O +C-O -C-O
+-C-O
+None
+None
++C-O
+-C-C
+-C-C
++O-O -C-O
+-C-C -C-O
+-C-O
++C-O -C-C
++C-O -C-C
+-C-O
++C-N -C-C -N-O
++C-N -N-O
+None
++C-C -C-O
+-C-O
+None
+None
+None
+-C-N
++C-C
++C-C +C-N +C-N -C-C -C-N
+-C-O
++C-O -C-C -C-O
+-C-O
+None
++C-N -C-O
++C-N +C-N -C-C
++C-N
+-C-O
++C-N -C-C -C-O
+-C-C
++C-N -C-C
++C-N +C-N
++N-N
++C-N
++C-C -C-C -C-C -C-N
+None
++C-C +C-C -C-C
++C-C -C-C -C-C
+None
+None
++C-C -C-C
++C-C -C-C
+None
++C-C -C-C
+None
+None
++C-C -C-C -C-N
+None
+None
+None
++C-N -C-C
+None
++C-C
+-C-N
+None
++C-C -C-C
+None
+None
++C-C -C-N
+None
+None
+-C-N
+-C-C
+-C-C -C-C
+-C-C
+-C-C -C-C -C-N
+-C-C
++C-C -C-C
+-C-C -C-N
++C-C -C-C -C-N
++C-C -C-C -C-C -C-N
++C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-C -C-C
+-C-C
+-C-C
+-C-C
++C-C -C-C -C-C
++C-C -C-C -C-C
+-C-C
+None
+-C-C -C-C
++C-O -C-C -C-O
+-C-C
+-C-C
+-C-C
+None
++C-C
+-C-O
++C-C -C-N
++C-C
+-C-O
+-C-C -C-O
+-C-O
+None
+None
++C-O -C-C
++C-O -C-C -C-O -C-O
++C-O +C-O -C-O
+None
++C-N -C-O
+None
++C-C -C-C -C-O
++C-O -C-O
++O-O -C-O -N-N
++C-O -C-N
+-C-O
++C-N -C-O
++C-N -C-N -C-O
+-C-N -C-O
+-C-C
+None
++C-C -C-C -C-C
+-C-O
++C-C +C-O -C-C -C-O
+None
+-C-C
+-C-O
+-C-C
+-C-C -C-O
++C-O -C-C -C-O
+-C-C
+None
+-C-C -C-O
+-C-C
++C-C -C-C -C-C
++C-C -C-C
++C-C -C-C
++C-C -C-O
+-C-C
+-C-C
+-C-C
++C-O -C-C -C-O
+-C-C
++C-C -C-C
+-C-C
+-C-C -C-C
+-C-C -C-C
++C-C -C-C -C-C
+-C-C
+-C-C
++C-O -C-C -C-O
++C-C -C-C -C-C
++C-N -C-O
+None
+-C-C
+-C-C
+-C-N
+-C-O
+None
++C-N -C-O
+-C-O
++C-N -C-N
+None
+None
+None
+None
+None
++C-C
+None
+-C-C
+None
++C-C -C-N
+None
+None
+-C-N
+-C-N
++C-C
++C-C -C-C
++C-C -C-C
++C-C -C-C
++C-C
+None
+-C-C
+None
++C-O -C-C
+None
++N-N -C-N
+None
+None
+None
+None
+None
+None
+None
+None
+-C-C
++C-O
+-C-C
++C-C -C-C
++C-C
++C-O -C-C
+-C-C
++C-C
+-C-C
++C-C -C-C -C-C
+None
++C-O -C-C
+-C-C
++C-C +O-O -C-O
+None
++C-O -C-N
+-C-C
+-C-C
+-C-N
++C-O
++C-O -C-N
+None
+-C-N
+None
++C-O -C-N
+-C-O
+-C-N
+None
+None
++C-O -C-C
++C-N -N-O
++C-C -C-C -N-O
+-C-O
++C-N -C-C -N-O
+-C-C -C-O
+None
+-C-C
+-C-C
+-C-C
+-C-C
++C-C
++C-O -C-C -C-O
+-C-O
+-C-C
++C-O -C-O
+-C-C
+-C-O
+-C-C
++C-C -C-C -C-C
++C-O
++C-O -C-C
+None
++C-C -C-C
+-C-C -C-C
++C-C +C-O -C-C
+None
++C-C -C-C
++C-O -C-C
++C-C +C-O -C-C
+-C-C
++C-C -C-C
++C-O
+None
+-C-C
++C-C -C-C
+-C-C
++C-C +C-C -C-C
+None
++C-C +C-O
+None
+None
+-C-C
+None
++C-C -C-C
+None
+-C-C
+-C-C
+None
++C-C
+None
+None
+None
+-C-C
++C-O -C-O
+None
+None
+None
+None
++C-C -C-N
+None
++C-N
++C-O -C-O
+None
+None
+-C-N
+None
+None
+None
+None
++C-C -C-C
+None
++C-N -N-N
++C-O -C-C -C-O
+None
+None
+None
++N-O -C-O -N-N
++C-N
+None
+-C-C
++C-N
++C-C +C-N -C-C -C-N
+-C-C
++C-N -C-C
++C-N
++C-C -C-C -C-C
+-C-C
++C-N
++C-N -C-C
+-C-C
+-C-C
+None
+None
++C-C +C-N -C-C -C-N
++C-C
++C-N -C-C -C-N
++C-C -C-C -C-C -C-N
++C-N -C-C -C-N
++C-C
++C-C -C-C -C-C
++C-C -C-N
+-C-C
++C-C
++C-C -C-C -C-N
++C-N -C-C
++C-N
++C-N -C-N
++C-N -C-C -C-N
+-C-C
++C-N -C-C
+-C-N
++C-N -C-C
+None
+-C-C -C-N
++C-C -C-C -C-C
+-C-C -C-N
++C-N -C-C
+None
+None
+None
++C-N -C-N
+None
+None
+None
++C-C -C-N
++C-C -C-N
+None
+None
+None
+-C-N
+None
++C-C -C-N
+None
+None
+None
+None
++C-O -C-C
+None
+None
+None
++C-N -C-C
++C-C
+None
+-C-C
++C-C -C-N
+None
+-C-C
++C-C -C-N
++C-C
+None
+-C-N
+None
+None
+None
+None
+None
++C-C
+None
+None
+None
+None
+None
+None
+-C-N
+None
+-C-N
++C-C -C-N
++C-N -C-N
+None
+-C-O
+None
++C-O -C-O
++C-O -C-O
++C-O -C-C -C-O
+-C-C
+None
++C-C
+-C-C
+None
+-C-N
+-C-C -C-N
+-C-C
++C-N -C-C -C-N
+-C-C
+None
+-C-C -C-N
++C-O -C-C
++C-O -C-N
+None
+None
+-C-C
++C-C +C-N -C-C -C-N
++C-O -C-C -C-O
+-C-C -C-O
+-C-C
++C-C +C-O -C-C -C-O
+-C-C -C-C
+-C-C
+None
++C-C -C-C -C-C
+-C-O
+-C-C
+-C-O
+-C-C
+None
+None
++C-C -C-C -C-N
+-C-C
+-C-N
+-C-C
+None
++C-C +C-C -C-C -C-C
+-C-C
+-C-O
++C-N -C-N
++C-C +C-N
+None
+-C-C -C-N -C-N
+None
++C-N +C-N -C-N
++C-C
+None
+None
+None
++C-C +C-N -C-C -C-N
++C-N
++N-N -C-N
+-C-C
++C-C -C-C
+None
+-C-N
+None
+-C-C -C-N
+-C-N
+None
++C-O -C-N
++C-N +C-O
+-C-N
+-C-N
++N-N -C-N
+-C-N -C-N
+None
+-C-N
++C-N -C-N -C-N
++C-N +C-O -C-N -C-O
+None
++C-O -C-N
++C-C +N-O
+None
++C-O +N-N -C-N
++C-O -C-N
+None
++C-C -C-C -C-C
++C-N -C-C
+-C-N -N-N
+None
+None
++C-N -C-C
+-N-N
+-C-C -C-C
+-C-C
+-C-C
+-C-C -C-C
+-C-O
+-C-C
++C-O -C-C -C-O
+-C-C
+-C-C -C-O
+-C-C
++C-C -C-C -C-C
++C-C -C-C -C-C
+-C-C -C-O
++C-O -C-C -C-O
++C-C -C-C -C-C
++C-C -C-C -C-C
+None
+None
+-C-C -C-C -C-O
++C-C -C-C
+None
+-C-C -C-O
++C-C +C-C -C-C
++C-O -C-C -C-O
+-C-O
+-C-O
+-C-C
+None
+-C-O
+None
+None
+None
++C-N
++C-C
++C-N -C-C -C-C
++C-C
++C-C +C-N -C-C -C-C
++C-N -C-C
++N-N -C-N
++C-N -C-C
++C-C -C-C -C-C
++C-N +C-N -C-N
++C-N -C-C -C-N
++C-N -C-C -C-C
++C-N -C-C
+-C-C
+-C-N
+-C-C
+-C-C
++C-O
++O-O -C-O
+None
++C-O -C-C
+-C-C
+-C-C -C-C -C-C
++C-C -C-C
+None
++C-N -N-N
+None
+None
+None
+None
++C-N
++C-N -C-N
+None
++C-N -C-C -N-N
+None
+None
+None
+None
+None
+None
++C-C -C-N
+None
+None
+-C-C
+-C-C -C-C
+None
++C-C -C-C
+None
++C-O -C-C
+None
++C-O -C-C
+None
++C-O -C-C -C-O
+-C-C -C-C
+-C-O
+-C-C -C-C
+-C-C
+None
+-C-C -C-O
+-C-C
+-C-C
+-C-C -C-O -C-O
+-C-O
++C-O -C-C -C-O
+-C-C -C-O -C-O
+None
++C-C +C-O -C-C -C-O
+None
+-C-O
++C-C -C-C -C-C
+-C-C
+-C-O
++C-O
++C-C -C-C
++C-O -C-C
+None
+-C-O
++C-O -C-C
++C-C -C-C -C-C
+-C-C
+-C-C
++C-C +C-O -C-C
++C-C -C-C
+None
++C-N -C-C
++C-C -C-C -C-N
+-C-N
+-C-C -C-N
++C-C -C-C -C-N
+-C-C
+None
+-C-C
+-C-C
++C-N -C-C
++C-C -C-C -C-N
++C-C -C-N
+-C-O
+None
+None
+None
++C-C -C-C
+None
+-C-O
+-C-N -C-O
+None
++C-C -C-O
+None
+None
+None
+None
+None
++C-C -C-N
+None
+None
+None
+None
+None
+-C-N
+None
++C-C -C-N
++C-C
+None
++C-C -C-O
+-C-O
+-C-C
++C-C -C-O
+-C-C
++C-C -C-O
+-C-O
++C-O -C-N -C-O
++C-O
++C-O -C-C -C-O
+None
+None
+-C-N -C-N
+None
+None
+None
+-C-C -C-N
+None
+None
++C-N -C-N
+None
++C-C -C-C
++C-O -C-C
++C-C +C-O
++N-N
+None
+None
++C-C -C-O
++C-N -C-O
+-C-C
++C-O -C-O
+-C-O
+None
+None
+-C-C
++C-C -C-C
++C-O
+None
+None
++C-N
+-C-O
++C-C
++C-C -C-C -C-O
+None
+-C-C
++C-C -C-C
+None
+-C-C
+None
+-C-O
+-C-C -C-O
+-C-C
++C-C -C-C
++C-C -C-C
++C-N +O-O -C-O
++N-N -C-C
++C-N +C-O -C-O
++N-O -C-O
++C-N -C-C -C-O
+None
++C-N -C-C
++C-N -C-O
++C-N -C-C
+None
+None
+-C-C
+-C-C -C-N
+None
+None
+None
+-C-C
++C-N -C-C -C-O -N-O
+-C-O -C-O
+-C-O -C-O
+-C-C -C-N
++C-O -C-C
++C-O -C-C
++C-C
++C-C
++C-O +C-O -C-C
++C-O
+-C-C
+None
+-C-C
++C-N +C-O -C-N
++C-C +C-O -C-C
++C-O -C-C
+None
+None
+-C-N
+-C-C
++C-O
+None
++N-O -C-C -C-N
++C-O -C-C
++C-N -C-C
++C-C -C-C
+-C-C
+-C-C
++C-C -C-C -C-C
+-C-C
++C-N -C-C
+-C-C
+-C-C -C-N
++C-N -C-C -C-N
+-C-O
+None
+-C-C
++C-O -C-C -C-O
+-C-O
+-C-C -C-O
++C-O
++C-O -C-C
++C-O -C-C
++C-O
++C-O -C-O
++C-C
++C-C -C-C
++C-O -C-C
++C-C -C-C
+None
++C-C -C-C
++C-C -C-C -C-C
+None
+-C-C
++C-C +C-O
++C-O -C-C
++C-C +C-O -C-C
++C-O -C-C
++C-C +C-O
++C-O -C-C -C-O
++C-O +C-O -C-C
+-C-C -C-O
++C-O -C-C
+-C-C
+None
++C-O +C-O -C-C
+None
++C-O -C-C -C-O
+None
++C-O -C-C
++C-N -C-C
+-C-C
++C-C +C-N -C-C
++C-C +C-N -C-C -C-O
+-C-O
++C-N -C-C
++C-C -C-C -C-C -C-O
+-C-C
++C-O -C-C -C-O
++C-C -C-C -C-O
+-C-O
+-C-C
+-C-O
++C-O -C-C -C-O
++C-N -C-C
++C-C -C-C -C-C
+None
+None
+None
+None
++C-C -C-C
+-N-N
++C-C -C-C -C-N
+None
+None
++C-C -C-C
+-C-C -C-N
++C-N -N-N
++C-C -C-N
+None
+None
+None
++C-N
++C-N -C-C
++C-C -C-N
++C-C -C-C -C-N
+-N-N
++C-C -C-C -C-C
+-C-C -C-N
+None
+-C-N
++C-N -C-C
+-C-C -C-N
+-C-C
+-C-C
++C-N -C-C -C-N
+-C-C
++C-C -C-C -C-C
+-C-C -C-C
+None
++C-C +C-C -C-C -C-C
+-C-C
+-C-C -C-N
+-C-N
+-N-O
+None
+None
++C-C -C-C
++C-C -C-C
++C-C -C-C -C-O
++C-C +C-C -C-C
++C-N -N-O
+-C-C -C-O
++C-N -C-C
++C-N +C-O -C-C -C-O
+None
++C-O -C-C
++C-N -C-C -C-C
++N-O -C-O
++C-C +C-N -C-C
++C-C -C-C
++C-O -C-C
+None
++C-N -C-C
++C-N -C-C -C-C
++C-O
++C-C +C-O -C-C
++C-C
++C-O -C-N
++C-O -C-N
+-C-N
++C-O -C-N
++C-O -C-C -C-N
++C-O -C-N
++C-O -C-N -C-O
+None
+-C-N
+None
+None
++C-N +C-O -C-O
++C-O -C-O
+-C-C
+-C-C
+-C-O
+-C-C
+-C-C
++C-O -C-N -C-O
++C-N -C-O
+None
+-C-O
++C-O -C-C -C-O
+-C-O
+-C-C
+-C-C -C-O
+-C-O
+None
++C-C -C-C
+-C-O
++C-O -C-O
++C-N -C-O
+None
+-C-C
++C-O -C-O
+None
++C-O -C-C -C-O
+-C-C
+-C-C -C-O
++C-O -C-C -C-O
+-C-O
+-C-C
+-C-C -C-O
++C-C -C-O
+-C-C
+-C-O
+-C-C
+None
+-C-C
+-C-C -C-O
+-C-C
++C-C -C-C -C-O
+None
+-C-C -C-C
++C-C +C-O -C-C -C-O
+-C-C
++C-N
++C-N -C-C
++C-N -C-O
+None
+None
++C-C +C-N +C-N
+None
+-C-N
+-C-N
+None
++C-O -C-N -C-O
+None
+None
+None
++C-N -C-N
+None
+None
++C-N -C-C
+None
+None
++C-C -C-C
+-C-O
+-C-C
+-C-C
++C-O -C-C -C-O
+-C-C -C-O
+-C-C -C-O
+-C-O
++C-O -C-O
+-C-C -C-O
+-C-O
++C-O -C-C
+-C-C
+-C-C -C-O
+-C-C -C-C
+-C-C
++C-O
++C-O -C-C
+-C-O
++C-O -C-O
+None
+-C-O
+-C-C
++C-C
++C-N -C-C -C-N
+None
+None
+None
+None
+-C-C -C-N
+-C-N
+None
++C-N -N-N
+None
++C-N -C-N
+None
++N-N -N-N
+None
+None
+None
++C-N
+None
++C-C -C-N
+None
+None
++N-O -C-N -C-O
+None
+-C-C
++C-N -C-C -C-N
+-C-O
+-C-O
+None
++C-C -C-C -C-O
++C-C +N-O -C-N -C-O
++C-C -C-O
++C-N -C-C
++C-O -C-O
+-C-C
+None
+None
++C-C +C-C +C-C
+None
+None
++C-C +C-O -C-C -C-O
++C-C -C-C
++C-C -C-C
+-C-C
+None
+-C-C
+-C-C -C-C
+-C-C
+None
++C-C -C-C -C-O
++C-N +C-O -C-O
+-C-O
+-C-C
++C-O -C-C -C-O
+-C-O
++C-O -C-C -C-O
+-C-C
+None
+None
+-C-C -C-O
++C-N -C-O -C-O
++C-C +C-O -C-C -C-O
+-C-C
+-C-C
++C-C -C-C -C-C
+None
+-C-C -C-O
+-C-C
++C-O -C-C -C-O
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C
++C-C +C-C -C-C -C-C
+-C-C
++C-C -C-C -C-C
+-C-C
++C-C -C-C -C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-C -C-C
+-C-C -C-C
+-C-C
++C-C -C-C -C-C
++C-C -C-C -C-C -C-C
+-C-C -C-C
++C-C -C-C -C-C
+-C-C
+-C-C -C-C
+-C-C -C-C
+-C-C
++C-C -C-C -C-C
+-C-C -C-C
+-C-C
++C-N +C-O -C-N
+None
++N-O
+-C-C
++C-N -C-C
+-C-C -C-N
+-C-C
+-C-C -C-C
+-C-C
++C-O -C-C -C-O
+-C-C
+-C-O
+-C-C
++C-C -C-C -C-C
+-C-C
+-C-C -C-C
+-C-C
+-C-O
++C-C -C-C -C-C
+-C-C -C-C
+-C-C
+-C-O
++C-C -C-C
+-C-C
+-C-C
+-C-C
++C-O -C-C -C-O
+None
++C-N -N-O
++C-N -C-O
++N-O -C-O -N-O
+None
++C-N
+None
+None
+-C-C -C-O
+-C-C
++C-C -C-C -C-C
+None
+None
+None
+-C-C
+-C-C
+-C-C
+-C-O
+-C-C
++C-C -C-C -C-C
+None
+None
+None
+-C-N
+-C-O
+-C-C -C-N
++N-O -C-N -C-O
+-C-C -C-N
++C-N -C-O
+-C-C
++C-O -C-C -C-O
+None
+-C-C
+-C-O
+-C-N
+-C-C
+-C-C
+-C-C
++C-N -C-C
+-C-C -C-N
+None
+-C-C -C-O
+-C-C
+-C-C -C-O
++C-O -C-C -C-O
+-C-O
+-C-C
+-C-C
++C-O -C-C -C-O
+None
++C-C -C-C -C-C
+-C-C
+-C-C
++C-C -C-C
++C-C -C-C
++C-O -C-C -C-O
++C-C +C-C -C-O
+None
++C-C -C-C
++C-C -C-C -C-O
++C-O -C-O
+None
++C-N -C-C -C-N
+None
++C-O -C-O
+-C-N
+None
++C-N -C-N
+None
+None
+-C-N
+-C-C
++C-C -C-C -C-N
++C-N -C-N -C-N
+None
++C-C -C-C
++C-C -C-N
++C-O
+-C-C -C-C
+None
+None
+-C-C
++C-O -C-C -C-O
+None
+-C-C
++C-C -C-O
++C-O -C-O
+-C-O
+-C-C -C-C
+-C-C
+-C-C -C-O
+-C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C -C-C
+None
+-C-C
+-C-C
+-C-C -C-C
+-C-C -C-C -C-C
+-C-C
+-C-O
+-C-C
++C-C -C-C -C-O
+-C-C
++C-O
++C-O -C-C -C-O
+None
++C-O
+None
+-C-O
+-C-C -C-N
+-C-C -C-N
+None
++C-C -C-C -C-C
+-C-O
+-C-C
+None
++C-O -C-N
+None
++C-C +C-N -C-C -C-N
+-C-C
++C-C
+-C-N
++C-C -C-C
+-C-O
++C-N -C-C
+-C-C
++C-C +C-C +C-N -C-C -C-C
+None
++C-C -C-C
++C-C +C-N -C-C
++C-C
++C-N -C-C
+None
++C-N -C-C -C-O
+None
+-C-O
+-C-O
++C-N -C-O
+None
+None
++C-N -C-O
+None
+-C-C -C-O
++C-N -C-C
+-C-O
+-C-C
+None
+-C-C -C-O
++C-O
++C-O
++C-C +C-O
++C-O -C-O
+None
+None
+-C-O
+None
+None
++C-C +C-O -C-O
++C-C -C-C
++C-C +C-O -C-C
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C
+None
++C-C -C-C -C-C
++C-C -C-C -C-C
+-C-C -C-C
+None
+-C-O
+None
+-C-O
+None
+None
++C-C -C-O
++C-C -C-C
++C-C
+None
+None
++C-N -C-C
++C-C -C-C -C-N
+-C-N
+None
+None
+-C-C -C-N
++C-N -C-C
+None
+-C-C
++C-O -C-C -C-O
+None
+-C-O
++C-C -C-O
+None
+-C-O
++C-O -C-C -C-O
+None
+None
++C-C -C-C -C-O
+None
+None
+-C-C
++C-C -C-C
+-C-C
+-C-C
+-C-O
+-C-C
++C-O -C-O
+-C-C
+-C-C
++C-O -C-C -C-O
+-C-C -C-O
+-C-C
+-C-C -C-C
+None
++C-C -C-C -C-C
++C-O -C-C -C-O
+-C-C
+-C-C
+-C-C -C-O
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C
++C-O -C-C -C-O
+-C-C -C-O
+-C-C
+-C-C
+-C-C -C-C
+-C-C
+-C-O
+None
++C-N -C-C
+-C-O
+-C-C
+-C-C
++C-C -C-C -C-C
++C-C -C-C -C-N
+-C-C
+-C-C
+-C-C -C-N
++C-C -C-C
+-C-C
+-C-C
++C-N -C-C -C-N
+-C-C -C-O
++C-C -C-C -C-C
+-C-O
+None
+-C-C -C-C
+-C-C
+-C-O
++C-C
+-C-C
++C-O -C-O -C-O
+None
+-C-C -C-O
+-C-C
++C-O -C-O
++C-C +O-O -C-O
+None
+None
+-C-O
++C-O -C-O
+-C-C
++C-C -C-C
+-C-O
+None
++C-C
++C-O -C-O
++C-C -C-O
++C-O -C-C
++C-C -C-C -C-O
++C-C +C-N -C-C -C-N
++C-N -C-C
++N-N -C-N
++C-C
+None
+None
+None
+-C-C
++C-N -C-C
+None
++C-N -C-N
+None
++C-C -C-C -C-N
++C-N -C-C
+-C-C
++C-N -C-C
++C-C -C-C -C-N
++C-N -C-C
+-C-C
++C-N +C-N -C-N
++C-N -C-C
++C-O -C-C -C-O
++C-C -C-C -C-C
+-C-C -C-O
+-C-C -C-O
++C-N -C-C
++N-O
++N-N -C-N
+-C-N
+None
++C-O
++C-N
++C-C -C-C
+-C-C
++C-C -C-O
+-C-C
++C-C +N-O -C-O
+None
+-C-C -C-O
+-C-C
++C-O -C-C -C-O
++C-C
+None
+None
+-C-C
+-C-O
+None
++C-C -C-C
++C-O -C-C
++C-O +C-O -C-C
++C-O -C-C -C-C
++C-O +C-O -C-C
++C-O
++C-O -C-C
+None
++C-O -C-C
++C-O
+-C-C
++C-O -C-C
++C-O -C-C
++C-O -C-C
+-C-C
++C-O +C-O
++C-O +C-O
+None
++C-C
+None
+-C-C
+None
+None
++C-C -C-C
+None
+None
+None
++C-C
+-C-N
+-C-C
++C-C +C-O -C-O
+-C-O
+None
+None
+None
++C-O -C-C
++C-C -C-C
++C-O
+-C-C
++C-C +C-O -C-C -C-O
+-C-N
++C-C -C-C -C-C
++C-C -C-C -C-C
+-C-N
+-C-C -C-N
+None
+None
++C-O -C-C -C-O
++C-O
+None
+-C-C
+-C-C -C-N
+-C-C
++N-O -C-N
+-C-C
+-C-C
+-C-C
++C-C +C-O +C-O -C-C -C-O
+None
+None
+None
++C-C -C-C
+None
+None
+None
+None
+-N-N
++C-O +C-O -C-O
+None
+None
+-C-N
++C-O -C-N
++C-O -C-C
+-C-N
+None
++C-C
+-C-N
+-C-C -C-N
+-C-C -C-O
++C-C -C-C -C-C
+None
+None
+None
++C-C
+None
++C-O -C-O
+-C-N
+None
++C-C -C-N
++C-O -C-O
+None
+None
+None
+None
+None
+None
+None
+None
+None
+None
+None
++C-O -C-N -C-O
+-C-O
+None
++C-C
+-C-O
++C-O -C-N
+-C-N
++N-O -C-N -C-O
+-C-N
++C-N -C-N -C-O
+None
++C-C -C-C -C-N
+None
++C-C -C-C
++C-O -C-C -C-O
+-C-C
+-C-C
++C-O -C-C -C-O
+-C-O
+-C-C
+-C-C -C-C
+-C-C
+-C-C -C-C
+-C-C
++C-O -C-C -C-O
+None
+-C-C
++C-O -C-C
+-C-O
++C-N
++O-O -C-O
++C-C +O-O
++C-O
++C-O +C-O
++C-N +C-O -C-N
++C-O +C-O -C-O
+None
+None
++C-O -C-O
++C-O +N-O
++C-N +C-O -C-N -C-O
++C-C
++C-C
+None
+-C-O
+-C-O
++C-O -C-C
+-C-O
+None
+-C-C
+-C-O
++O-O -C-O
++C-C +C-O -C-C
++C-O +C-O -C-O
++C-O -C-C -C-O
+-C-C
+-C-C
+None
+None
+None
+-C-C
++C-C -C-C -C-C -C-C
+-C-C
++C-C
++C-C +C-O -C-C -C-C
+-C-C
+-C-C
++C-C
++C-C -C-C -C-C
+None
+-C-C
+-C-C
++C-O -C-C
+-C-C
+-C-C
++C-O -C-C -C-C
++C-O -C-C
+-C-C
+-C-C
+-C-C
+None
+-C-N -C-N
+-C-C -C-N -C-N
++C-N -C-N -C-N
++N-O -C-N -C-N -C-O
+-C-C -C-N -C-N
+None
++C-O -C-C
+None
+-C-C -C-N -C-N
+-C-N -C-N
+-C-C
+-C-C
+None
++C-O -C-N
+None
+-C-N
+-C-N -C-N
+-C-N
++C-C
++C-N -C-N -C-N
+-C-N
+-C-C -C-N
++C-N -C-O
+None
++C-C -C-N
+-C-C -C-N
+-C-N
+-C-C -C-N
+-C-C -C-N
+-C-C
+-C-C
+-C-N
+-C-N
+-C-C -C-N
++C-C -C-C
+-C-C -C-N
+-C-C
+-C-C
+-C-C
++C-N -C-C -C-N -C-O
+-C-O
++C-O -C-C
++C-N -C-C
+-C-C
++C-C -C-C -C-C -C-O
+-C-C
+-C-O
+-C-C -C-O
+-C-O
++C-O
++C-O -C-C -C-O
+-C-C
++C-C +C-O -C-C -C-O
+None
+-C-C
++C-C -C-C
++C-C -C-C
+-C-C -C-C
++C-C -C-C -C-C
+-C-C
++C-C -C-C -C-C
+-C-C
+-C-O
++C-O -C-C -C-O
++C-C -C-C -C-C
+-C-C
+-C-C -C-C
++C-O -C-C -C-O
+-C-C -C-C
++C-C +C-C -C-C -C-C
+-C-C
++C-C -C-C -C-C
++C-C -C-O
+-C-C
+-C-C
++C-O -C-C -C-O
+-C-C
++C-O
++C-O -C-C
+None
+-C-C
++C-O +C-O -C-C
++C-O
++C-C -C-C
+None
+-C-C
++C-O +C-O
+None
++C-O -C-C -C-C
+None
++C-O -C-C
++C-C +C-O -C-C
+None
++C-O
++C-O +C-O
+-C-C
++C-N -C-C
+None
++C-N +C-N -C-C -C-N
++C-C
++C-C -C-C
+None
+None
+-C-N
++C-C
++C-N -C-C
++C-N -C-C
++N-N -C-C
++C-C -C-C -C-C
++C-N
++N-N -C-N
+-C-N
+-C-C
++C-C -C-N
+-C-N
+-C-C
++C-O -C-N
+None
++C-C +N-O -C-N
++C-C +C-N -C-C -C-N
++C-O -C-C
++C-C -C-C -C-N
++C-C
++C-O -C-N
+-C-N
++C-C -C-C -C-N
+-C-N
++C-N -C-N
+None
+-C-C
+None
++C-C -C-C
+None
+-N-N
++C-N -N-N
++C-C -C-C
++C-C -C-C
++C-C +C-N +C-N -N-N
++C-N -C-C -N-N
+None
+-C-C
++C-C -C-C -C-N
++C-N -N-N
+None
++C-C -C-C
+None
+None
++C-C -C-C
++C-C
++C-C
++C-C
++C-O -C-C
+None
+None
++C-C
+None
++C-O -C-C
++C-O -C-O
+None
++C-C -C-C
+-C-N
+None
+None
++C-C -C-C -C-N
+None
+-C-C
++C-N -C-C
+None
++C-N -C-N
+-C-C -C-C
++C-C -C-C
+-C-O
+None
+-C-O
+-C-C
++C-C -C-C
+-C-O
+-C-C -C-C
+-C-C
+-C-C
+-C-C -C-O
++C-C -C-C -C-C
++C-C -C-C
++C-O -C-C -C-O
+-C-C
+None
+-C-C
+None
++C-C -C-O
++C-C -C-C
+None
+None
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C
++C-O -C-C
+-C-C
+None
+-C-N
++C-C -C-C -C-C
++C-C -C-C -C-C
++N-O -C-N
++C-O -C-C
++C-N -C-C -C-N
+-C-C
+None
+-C-C
++N-O -C-N -C-N
++C-C +C-O -C-C -C-N
++C-C
+None
+-C-C
++C-N
++C-N +C-O -C-N
+-C-C
++C-C -C-C
+None
+-C-O
++C-N -C-C
++C-O -C-C -C-O
++C-C +C-O -C-C -C-O
++C-N -C-C
++C-C -C-C -C-C
+-C-C
++C-C
++C-N -C-N
++C-N -C-C
+-C-C
++C-C -C-C -C-N
+-C-C -C-N
++C-C
+None
+-C-C -C-N
+-C-C
+None
++C-N -C-C
+-C-C
++C-N
++C-C -C-C -C-N
+None
+-C-N
+-C-N
++C-C -C-C -C-C
+-C-C
+-C-O
+-C-C
++C-C -C-C -C-C
+-C-C -C-O
+-C-C -C-C
+-C-C
++C-C -C-C -C-C
++C-O -C-C -C-O
++C-C -C-C
+-C-C -C-C
++C-C -C-C -C-C
+-C-C -C-C
+-C-C
+None
++C-C -C-C -C-C
+-C-C -C-C
+-C-C
+-C-C
+-C-C -C-C
+-C-C
++C-C -C-C -C-C
+None
+None
+None
+None
++C-N -C-C -C-N
+None
++C-C -C-N
++C-C -C-C -C-N
++C-N -C-C
+None
+-C-N
+None
+-C-N
+None
+None
+-C-C
++C-O -C-C -C-O
+-C-C
+None
+-C-C
++C-O
++C-C +C-O -C-C
++C-O
++C-O -C-C
++C-C
+-C-C
++C-C -C-C -C-C
+None
++C-C +C-O -C-O
+None
++C-C -C-N
++C-O -C-C
+-C-C
+None
+-C-N
+-C-C -C-N
+-C-C
+None
+None
++C-O
+-C-C
+None
++C-N
++C-C
++C-O -C-C -C-O
+-C-C
+-C-O
+-C-C
+-C-O
++C-O -C-O
+None
+-C-C
++C-C -C-C -C-C
++C-C -C-C
++C-O -C-O
+-C-C
++C-C -C-C
++C-C -C-C
++C-C -C-C
+-C-C
+-C-C
++C-O -C-C -C-O
++C-O -C-O
++C-C +C-O -C-O
++C-C
++C-C
+-C-O
+-C-C
++C-C -C-C
+-C-C
+-C-C
++C-C -C-C
++C-C -C-C
+None
++C-C -C-C -C-N
++C-C -C-C
+None
+None
++C-C -C-C
+None
++C-C
++C-C -C-C -C-C
++C-C +C-N -C-C -C-N
+None
+None
+None
+None
++C-C -C-N
+None
+None
+None
+-C-N
+None
+None
+None
+None
++C-O -C-C
++C-C -C-C
++C-C
++C-O -C-C
++C-C +C-C -C-C -C-C
+None
+-C-C
+-C-C
++C-C -C-C -C-C
++C-C
+None
++C-O -C-C
+-C-C
+-C-C
++C-C +C-O -C-C
++C-C -C-C
++C-N
++C-O +N-O -C-O
+None
++C-C
+None
++C-N -C-O
++C-N +C-O -C-O
+-C-C -C-O
++C-N -C-C
++N-O
++N-O -C-O
+-C-C
++C-N -C-C
+-C-C
++C-N
+-C-O
+-C-C -C-C
++C-N -C-C -C-C
++C-N -C-C -C-C
+None
++C-C +C-O
+-C-N -C-O
+None
++C-N -C-O
++C-O +C-O -C-O
++C-N -C-C
+None
++C-C -C-C -C-N -C-O
++C-C -C-C -C-O
+None
+-C-C
+-C-C
+-C-N -C-O
++C-C
+-C-O
+None
++C-O +C-O -C-N -C-O
++C-O -C-C -C-O
+-C-C -C-O
+None
++C-O -C-C
++C-O -C-O
++C-N -C-C
++O-O -C-O -C-O
+-C-O
++C-O -C-C -C-O
+None
+-C-C
++C-O -C-C
++N-O
++C-C +C-O -C-C -C-O
++C-O -C-C
+-C-C
++C-O -C-O
++C-O -C-C -C-O
+-C-O
++C-C
++C-C +C-C -C-C -C-C
++C-C -C-C -C-C
+-C-C
+None
++C-C
++C-C -C-C
++C-C +C-C -C-C -C-C
+-C-C
++C-C
+-C-C
+-C-C
++C-C +N-O -C-O
++C-N -C-C
++C-C +C-O -C-C
+-C-C
+None
+-C-C
++C-C -C-C
++C-N +C-O -C-O
+-C-C
+None
++C-N -C-C
++C-N
+-C-C -C-C
++C-C +C-O -C-C -C-C
++C-C -C-C -C-C
+None
++C-O -C-C -C-C
++C-O -C-C
++C-C +N-O -C-C
++C-C +C-N -C-C
++C-N +C-O -C-C
++C-O -C-C -C-C
+-C-C
++C-C +C-N +C-O -C-C
++C-N -C-C
+None
+None
+None
++C-N -C-C
+-C-C
+-C-C
+None
+-C-C -C-C -C-C
++C-C -C-C -C-C
+-C-C -C-C
+None
++C-O -C-C -C-C
+-C-C
++C-C -C-C -C-C
++C-C +C-O -C-C
+None
++C-O -C-C -C-C
+-C-C -C-C
+None
+-C-C
++C-C
+-C-C
+-C-C
++C-O -C-C
+-C-C
+-C-C -C-N
+-C-C
+-C-C
+None
++N-O -C-N
++C-O -C-C
++C-O -C-C
++C-C -C-C
++C-C -C-C -C-C
++C-C -C-N
+None
+None
+-C-C
+None
++C-C -C-C -C-C
+-C-C -C-C
+-C-C -C-O
++C-C -C-C -C-C
+-C-C
++C-O -C-C -C-O
+None
++C-O -C-C -C-O
+-C-C
+-C-C -C-C
+-C-C
++C-O -C-C -C-O
+-C-C -C-C
+None
+-C-O
+None
+-C-C
++C-N -C-C
++C-C -C-C
+-C-C
+None
+-C-C
++C-O
+None
+-C-C
+None
+-C-C -C-C
+None
+-C-C -N-O
++C-C +C-C -C-C
+None
++C-C -C-O
+-C-O
+-C-O
++C-C -C-C
++C-C +C-C -C-C -C-O
++C-C +C-C +C-C -C-C -C-O
+-C-O
++C-C -C-C -C-O
++C-C -C-C
+None
+-C-O
+None
++C-O -C-C
++C-C
+None
++N-O -C-O
++C-N +C-O -C-O
+None
++C-N
++C-N +C-O -C-C
+None
+-C-C
+-C-C
++C-O -C-C
++C-C -C-C -C-C
++C-N -C-C
+-C-C
+-C-C
+-C-C
++C-C
+-C-O
+-C-C -C-O
+-C-C
+None
++C-O -C-C -C-O
+None
+-C-C -C-O
++C-O -C-O
++C-O -C-C -C-O
+-C-C -C-O
++C-C +C-O -C-C
++C-O -C-C
++C-C -C-O
+-C-C
++C-O -C-C
+None
+-C-N
+None
+-C-C
+None
+-C-C
+None
++C-C
++C-N -C-O
++C-N -C-C
+None
++C-O
+-C-C
++C-O
++C-N -C-C -C-N
+-C-C
+-C-C -C-C
+-C-C
+None
+-C-C
++C-N -C-O
++C-C -C-C -C-O
++N-N -N-O
+None
+None
+None
+None
+None
+None
+None
++C-O -C-C -C-C
+-C-C -C-C
+-C-C
+-C-C
++C-O -C-C
+-C-C
++C-C
+-C-C
+None
++C-O -C-C
+-C-C
++C-C +C-O -C-C -C-C
++C-C -C-C -C-C
++C-C -C-C
+None
+None
+-C-C
++C-O +C-O +C-O -C-O
++O-O -C-O -C-O
++C-O -C-C
++C-O +C-O -C-C
+-C-C
++C-C
++C-O +C-O -C-O
+-C-O
+-C-O
+None
++C-C +O-O
+-C-C -C-O
+-C-C -C-O
+-C-C -C-O
++C-O -C-C
+-C-C -C-C
+-C-C -C-C
++C-O -C-O
++C-O -C-O
+-C-O
++C-O -C-C -C-O
++C-C -C-C -C-C -C-O
+-C-C
+-C-O
++C-O -C-C -C-O
+-C-C
+-C-C
+-C-C -C-O
++C-O -C-C -C-O
+None
+-C-C
+None
+None
+None
+None
+None
+-C-C
++C-C -C-C
++C-C -C-C -C-C
+-C-C -C-C
+-C-C
+-C-C
++C-C -C-C -C-C
++C-C +C-C -C-C -C-C
+-C-C -C-C
+None
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C
+-C-O
++C-N -C-C
++C-N -C-C
+-C-C
++C-C -C-O
++C-C
+None
++C-C +N-O -C-O
++C-C +C-N -C-C
++C-C -C-O
++C-O
++C-O -C-C -C-O
++C-N
+-C-C
+None
+None
++C-N -C-C
++C-N -C-C -C-N
+-C-C
++C-C -C-C -C-C
++C-N -C-C
+None
+None
+-C-C
++C-C -C-C -C-O
+-C-O
+-C-C
+-C-C -C-O
++C-C -C-C -C-C
+None
+-C-C -C-C
++C-O -C-C -C-O
++C-C -C-C -C-C
+-C-C
+-C-C
+-C-C -C-C
++C-O -C-C -C-O
+-C-C
+-C-O
++C-O -C-C -C-O
++C-O -C-C -C-O
+-C-O
+-C-C
+-C-C -C-O
+-C-O
++C-C -C-C -C-C
+-C-C
+-C-C
+-C-C -C-C
++C-O -C-C -C-O
+-C-C
+-C-C
+-C-C
++C-C -C-C -C-C
+-C-C
+-C-C
++C-C -C-C -C-C
+-C-O
+-C-C
+-C-O
++C-O -C-C -C-O
++C-C -C-C -C-C
+-C-C -C-O
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C
+None
+-C-C -C-C
+-C-C
+-C-C
+-C-C -C-C
++C-C -C-C
+None
+-C-C
+-C-C -C-O
+-C-O
+-C-C -C-O
+-C-C
+-C-C -C-C
+-C-O
+-C-C -C-O
+-C-C
+-C-O
+-C-O
++C-C -C-C
++C-O -C-C -C-O
+-C-C -C-O
++C-C -C-C
+-C-O
++C-O -C-O
+-C-C
+-C-C
++C-O -C-C -C-O
++C-C -C-C -C-C -C-O
+-C-C -C-O
+-C-C
+-C-C
++C-O -C-O
+-C-O
+-C-C -C-O
+-C-O
+-C-C -C-O
+-C-C -C-C
++C-C -C-C
+-C-N
+-C-N
++C-N -C-N
++N-N
++C-C -C-N
++C-C -C-N
+-C-N
++C-N -C-N
++N-N -C-N -N-N
+None
+-C-O
++C-C -C-C
+None
+None
++C-N -C-O
++C-C +C-C
++C-C
+None
++C-C -C-C
+-C-O
++C-C -C-C
+-C-O
+None
+None
++C-C +C-N -C-C -C-N
+None
++C-C -C-C -C-C
+None
++C-O -C-C -C-O
+None
+-C-C
++C-C -C-C -C-C -C-O
+-C-C
+-C-C
+-C-O
++C-C +C-C -C-C -C-O
+None
++C-O -C-C -C-O
++C-C -C-C
+-C-C -C-O
+-C-C
+-C-O
+-C-N
+-C-C
+-C-C
++C-N +C-O -C-N -C-O
++C-N +C-O -C-N -C-O
++C-C -C-C
+-C-C
++C-C +C-N -C-C -C-N
+-C-N
+None
++C-N +C-O -C-C -C-N
++C-N -C-C -C-N
++C-O -C-C
++C-C +C-N -C-C -C-C
+-C-O
+-C-C -C-C -C-O
+-C-C
+-C-O
+-C-C
+-C-O
+-C-C -C-O
+-C-C -C-C
+-C-C
++C-C -C-C -C-C
++C-C -C-C -C-C
+-C-C
+-C-C
++C-C -C-C
++C-O -C-C -C-O
+-C-C
+-C-O
+-C-C
+-C-C -C-O
+-C-C
+None
+-C-C
+-C-C -C-O
++C-C -C-C
++C-C -C-C
+-C-C
+-C-C
+-C-C
++C-C -C-C
++C-C -C-C -C-C
+-C-O
+-C-C
+-C-C
+None
++C-C -C-C
++C-C -C-C
++C-C +C-C
++C-C -C-C
++C-C +C-C -C-C
+None
++C-C -C-C -C-C
+-C-C
+None
++C-C -C-O
+-C-C
+-C-C -C-C
+-C-C
++C-O -C-C -C-O
+-C-C
+-C-C
+-C-C
++C-C -C-O
+-C-C
+None
+None
+-C-O
+-C-C
++C-C -C-C
+-C-N
++C-O -C-N
+-C-N
++N-O
+None
+None
++C-O -C-N
++C-N -C-N -C-N
+-C-C
+-C-C -C-C
+-C-C
+-C-C
+-C-C -C-O
++C-O -C-C -C-O
++C-C -C-C -C-C
+-C-C
+-C-O
+-C-C
+-C-C
+-C-C
+-C-O
+-C-O
+-C-C
+None
++C-C -C-C
+None
+-C-C
+None
+None
+None
++C-C -C-C
++C-C -C-N
+None
+-C-N
+None
+None
+None
+None
+None
++C-N -C-N
+None
+None
+-C-C -C-N
++C-N -C-C
+None
++C-O -C-C -C-O
+None
+-C-C
++C-O -C-N
+-C-C
+None
+None
+None
+-C-O
+-C-C
++C-C -C-C -C-N
+-C-N
+-C-C
+-C-C -C-C
+-C-C
+-C-C -C-C
+-C-C
+-C-C -C-N
+-C-C
++C-N -C-C -C-N
++C-C -C-C -C-N
++C-C -C-C
+-C-N
++C-N -C-C -C-N
++C-C -C-C -C-C
+-C-C -C-N
++C-C -C-C -C-N
+-C-N
+-C-C -C-C
++C-N -C-C
++C-N
+-C-C
+-C-C -C-C
+-C-C
++C-C
++C-C -C-C -C-C
+-C-C
++C-C -C-C -C-C
++C-C
+-C-O
+-C-O
+-C-C
+-C-C
+-C-O
+-C-C -C-C
++C-O -C-C -C-O
+-C-C -C-O
+-C-O
+-C-C -C-O
++C-O -C-O
++C-O -C-O
++C-C -C-C -C-C
++C-C -C-C -C-O
+-C-C
++C-C -C-C -C-C -C-O
++C-C -C-C
+-C-C -C-O
++C-C -C-C
+-C-C
+-C-C
++C-C -C-C
++C-C -C-C
+-C-C -C-C
+-C-C
+-C-C
++C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-C -C-C
++C-C -C-C -C-C
+-C-C
+-C-C
++C-C -C-C -C-C
+None
+-C-C
+-C-C
+-C-C -C-C
+None
++C-O -C-N -C-O
++C-O -C-O
+None
+-C-N
+None
+-C-C
+None
+None
+None
+-C-N -C-N
+None
+None
+None
+None
++C-C -C-C -C-C
+-C-C
+-C-C -C-C
+-C-O
+-C-C
+-C-C -C-O
+-C-C
+-C-C
+-C-C
++C-C -C-C -C-O
+-C-C
+-C-O
+-C-C -C-C
+-C-C
++C-O -C-C -C-O
+-C-C
+None
+None
++C-N -C-C
+-C-C
++C-C
++C-C
+None
+-C-C
++C-C -C-C
+None
++C-C +C-C +C-N -C-C
++C-C +C-N -C-C
++C-N -C-C
++C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-C
+None
+-C-C -C-O
+-C-C
++C-O -C-O
++C-O -C-C -C-O
++C-O -C-C -C-O
+None
++C-O -C-C -C-O
+-C-C
++C-N -C-C
++C-C -C-C -C-C
+-C-C
+-C-C
+-C-O
+-C-C
+-C-C
++C-N
+None
++C-C -C-C
++C-O -C-C -C-O
+-C-C
++N-O -C-C -C-O
++C-N -C-C
++C-O
++C-C
+-C-C
+None
+-C-C
+-C-O
+None
++C-O -C-O
+None
+None
+-C-O
++C-O -C-O
+-C-O
+-C-C -C-O
++C-O -C-C -C-O
++C-O +C-O -C-O
+None
+-C-C
++C-O -C-C
+-C-O
+-C-C
++C-O
+None
+None
+None
+None
++C-N -C-O
++C-O -C-C
++C-N +C-O -C-C -C-N
+-C-O
++N-O -C-O
++C-O -C-O
+None
+None
+-C-O
++C-O -C-C -C-O
+None
++C-C -C-C -C-O
+-C-C
++C-N -C-C
++C-N -C-C
++C-N -C-C
++C-N
++C-C
++C-C +C-N -C-C
++C-C
++N-N -C-C
+None
++C-C -C-C
+-C-C
+None
+None
+-C-C
++C-O -C-C -C-O
+None
+-C-C
++C-C +C-C -C-C
++C-O
+-C-O
++C-C -C-C
+None
++C-N -C-O
++C-N -C-C
+-C-O
+None
++C-N -C-O
+None
+None
++C-N
+None
++C-N -C-C
++C-N -C-C
+-C-C
++C-C
+-C-C
+-C-C -C-C
+-C-C
++C-N -C-C
++C-C +C-N -C-C
+-C-C
++C-O -C-C
++C-C -C-C
+None
+None
+None
++C-C -C-C
++C-C -C-C
+-C-C
++C-C -C-C
+None
+-C-N
++C-C -C-C -C-N
+None
+None
++C-C -C-C
+None
+None
+None
+None
++C-C -C-C -C-C
+None
+None
+None
++C-C -C-C
++C-N -C-C
+None
++C-C -C-C
+None
+None
++C-C -C-C
++C-C -C-N
+None
+None
+None
++C-C -C-C
++C-C -C-C -C-C
+-C-C
+-C-C
+None
+None
+None
++C-O -C-C
++C-O -C-C
++C-C -C-C
+None
+-C-C
++C-C -C-C -C-C
+-C-C
++N-O -C-C -C-O
++C-C -C-C
+None
+-C-C
++C-N -C-C
++C-N -C-C
++C-O
+-C-C
++C-C -C-C -C-C
++C-O -C-C -C-O
+-C-C
+-C-C
++C-C -C-C -C-C
+-C-C -C-C
+-C-C
+-C-C -C-O
+-C-C
+-C-C -C-C
+-C-O
+-C-C -C-O
+-C-O
++C-C -C-C -C-C
+-C-C
++C-C -C-C -C-C
+None
+-C-N -C-O
+None
++C-O -C-N -C-O
+None
+None
+None
+None
++C-O -C-N
+None
+None
++C-O -C-C
+None
++C-C +C-N -C-N
+-C-C
+None
++C-N -C-C -C-N
+None
++C-C +C-O
+-C-N
+-C-C
++C-C +C-O -C-C
+None
+None
+None
++C-O -C-C -C-O
+-C-C
+-C-C
+-C-C -C-C
+-C-C -C-O
++C-O -C-C -C-O
+-C-C
++C-C
++C-O -C-C -C-O
+-C-C -C-O
+-C-C
+-C-C -C-C
+None
+None
+-C-C -C-C
++C-O -C-C -C-O
++C-C -C-C -C-C
+-C-C -C-C
+-C-O
+-C-C
+-C-O
++C-O -C-C -C-O
++N-N -N-N
+None
++C-N -C-N -C-N
+None
++N-N -C-N
+None
++N-N -N-N
+None
+-C-N -C-N
++C-N
+None
++C-O
++C-N +C-O -C-N -C-O
+None
++C-C
+None
+-C-O
+-C-C
+-C-C
++C-N -C-N
++C-O -C-N
+-C-N
+None
++C-N -C-C -C-N
++C-C -C-C -C-C
+None
++C-N -C-C -C-N
++C-N -C-C
+-C-C
++C-N -C-C
++C-N -C-C
++C-C
++C-O -C-C
++N-O -C-C
+None
+-C-C
++C-C +N-O -C-O
++C-C +C-C -C-C -C-C
++C-O -C-C
++C-O
+-C-C
++C-N -C-C
++C-C -C-C
++C-C +C-N +N-O -C-C -C-N -C-O
++C-N +C-O -C-O
++C-O -C-C
+None
++C-C -C-C
+-C-C
+-C-C
+-C-O
+-C-O
+-C-C
+-C-O
+-C-C
+-C-C -C-O
+-C-C -C-O
+-C-C -C-C
+None
+-C-O
+None
++C-N -C-O
++C-N -C-O
+-C-C
++C-C +C-N
++C-O -C-O
+None
+-C-C -C-N -C-O
++C-C -C-O
++C-N -C-O
++C-N -C-O
+None
+-C-C
+-C-C
+-C-C
+-C-C -C-N
+None
+-C-C
+None
+-C-C -C-N
++C-C -C-N
++C-C -C-C -C-C
+None
+-C-C
+-C-N
+-C-C
+-C-C
+-C-C
+-C-C
+-C-N
++C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C -C-C
++C-C -C-C
+-C-C
++C-O -C-C -C-O
+-C-C
+-C-C
+-C-C -C-O
++C-O -C-O
+-C-O
+-C-C -C-C
+-C-C
+-C-C
+-C-C -C-C
+-C-C
+-C-C
+-C-C
+None
++C-O -C-C -C-O
+-C-C
+-C-O
++C-C -C-C
++C-C
++C-C -C-C
++C-C -C-C
+None
++C-O -C-N
+None
+None
+-C-N
++C-C
++C-C +C-N -C-C -C-N
+-C-N
+None
+-C-C -C-N
+None
++C-N -C-N
+-C-C
+-C-N
++C-C
+-C-N
+-C-C
+-C-C
+-C-C -C-N
++C-O -C-C
++C-O -C-C
++C-N
+None
++N-N -C-N
+-C-C
++C-N -C-C
+None
+-C-C
+None
+-C-C -C-N
+None
+None
+None
++C-C -C-C
+-C-O
+None
+-C-C
+-C-C -C-C
+-C-C
++C-C -C-C -C-C
+-C-C -C-O
++C-O -C-C -C-O
++N-O -C-O
+-C-C
+-C-C -C-O
+-C-C -C-C
++C-N -C-C
+None
+-C-C -C-O
+-C-C -C-C -C-O
+-C-C
+-C-C
++C-C -C-C
++N-O -C-O -N-N
+None
++C-O -C-C -C-O
+None
++C-C -C-C -C-N
+-C-C -C-N
++C-N -C-O
+None
+-C-O
++C-N -N-N
+None
+None
+None
+-C-C
+-C-C -C-O
+None
+-C-C
+-C-C -C-C -C-O
+-C-C
++C-C -C-C -C-C
++C-O -C-C -C-O
+-C-C -C-O
+-C-C -C-O
+-C-C
+-C-C
++C-C
+None
+-C-O
+-C-C
++C-C -C-O
+None
+-C-C
+None
++C-C -C-C
+None
++C-O -C-C -C-O
+-C-O
+-C-C
+-C-O
+None
+-C-C -C-O
+-C-O
++C-C -C-C -C-C
+-C-C -C-O
++C-C +C-O -C-C
+-C-C
+-C-C
+-C-C -C-O
++C-C +C-O -C-C -C-O
+-C-C
+-C-C
++C-C +C-C -C-C
++C-C -C-C
+None
+-C-C
++C-C -C-C
++C-O
++C-C
+-C-C
+-C-C
++C-C -C-C
+None
+-C-C
+-C-C
+-C-C
+-C-C
+None
++C-C -C-C -C-O
+None
+None
++C-C -C-O
++C-C -C-O
+None
+None
++C-C -C-C -C-C
+None
+-C-C -C-O
++C-C -C-C -C-O
++C-C -C-C -C-N
+-C-N
+-C-C -C-C
+-C-C
+-C-C -C-N
++C-C -C-C -C-C
+None
+-C-C -C-N
+-C-C -C-C
+-C-N
++C-C -C-C -C-N
+-C-C
+None
++C-N -C-C
++C-N -C-C -C-N
+None
+None
+None
+-C-C -C-O
++C-N -C-C
++C-C
+None
++C-C -C-C -C-C
++C-C -C-C -C-O
++C-C -C-C -C-O
+None
++C-N -C-O
+None
++C-C -C-O
+None
++C-N -C-C
+None
++C-N -C-C -C-N
+-C-N
++C-N -C-C -C-N
+-C-C
++C-C -C-C -C-C
++C-N -C-C -C-N
+-C-C -C-N
+-C-C -C-C -C-N
++C-C -C-C -C-C
+-C-C -C-O
+-C-C
+-C-C
++C-O -C-C -C-O
+-C-C
++C-C -C-C
+-C-C
+-C-C -C-O
+-C-C
+-C-C -C-C
+-C-C
++C-N -N-N
+None
+None
+-N-N
+-C-N
+None
++C-C -C-N
+None
+None
++C-C -C-C
++C-C +C-C -C-C -N-N
+None
++C-N -N-N
++C-C -C-C
+None
+-C-C -C-N
+None
+-C-N
++C-N -C-N
++C-C +C-N -C-C -C-N
++C-C -C-C
++C-O -C-C
++C-C
++N-O -C-N
+-C-C -C-N
++C-O -C-C
+None
++C-C +C-N -C-C -C-N
+-C-C -C-N
++C-O -C-C
++C-C -C-N
++C-C
+-C-C
+-C-C
+-C-C -C-N
+None
++C-C +C-O -C-C -C-C
+-C-C
++C-N +C-O -C-N -C-O
++C-O -C-C
+None
++C-O -C-C
+-C-C
+-C-N
+None
+None
++N-O
++N-O -C-N
+-C-N
++C-N -C-C
+None
++C-O
+-C-C
++C-N -C-C
++C-N
+-C-C
++C-C +C-C -C-C -C-C
++C-N -C-C
++C-N -C-C
+-C-C -C-O
+-C-C
+-C-O
+-C-O
++C-C -C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-C
++C-N -C-C
+None
++C-N -C-C
++C-O -C-C -C-O
+None
++C-C +C-N -C-C
++C-C +C-N -C-C
++C-N -C-C
+None
++C-N
+-C-O
+None
++C-C -C-C
++C-O -C-C
++C-C +C-O
++C-C
+-C-C
++C-O +C-O
++C-C -C-C
++C-O -C-C
++O-O -C-O
+-C-C
++C-O +C-O
++C-C -C-C
++C-C
+None
+-C-C
+None
+-C-C
++C-O
++C-O -C-C
++C-C -C-C
+None
+-C-N
++C-N -C-C -C-N
++C-N +C-N -C-N
+-C-C
++C-N -C-C
+None
++C-N -C-C
++C-N -C-N
++C-N -C-C
+-C-O
++C-O -C-C -C-O
+-C-C
+-C-C
+-C-O
++C-C -C-C
+-C-O
+-C-C
++C-C -C-C -C-C
+-C-C -C-C
+-C-C
++C-C +C-C -C-C -C-C
++C-O -C-C -C-O
+-C-C
+-C-C
+-C-C
+-C-N
+-C-N
+None
++C-C
+None
++C-C -C-C
++C-N -C-C
++C-C
++C-C -C-N
+None
+None
+None
++C-N -C-N
+-C-N -C-N
+None
++C-C
++C-C -C-N
+-C-C
++C-N -C-C
++C-N +C-O -C-O
++C-N -C-C
+-C-O
+-C-C -C-C
++C-C -C-C -C-C
+-C-C -C-O
++C-O -C-C -C-O
+-C-O
+-C-O
++C-O -C-C -C-O
+-C-C
+-C-C -C-O
++C-O -C-C -C-O
+-C-C
++C-O -C-C -C-O
+None
+-C-C
+-C-C
+-C-C
+None
+None
+-C-C
++C-C -C-C
++C-C -C-C
+-C-C
+-C-C -C-C
+None
+-C-C
+-C-C
++C-C -C-C
++C-C -C-C
+-C-C
+None
+-C-C
+-C-C
++C-C -C-C
+-C-C
+-C-C
+-C-C
+-C-C
+-C-C -C-C
+None
++C-O -C-O
+None
+None
+None
+None
+None
+None
+None
++N-N -C-N
+None
+None
+-C-N
++N-N -C-N
+-C-O
+None
++C-C
+None
+-C-C -C-O
++C-C -C-O
+-C-C
++C-O -C-O
+-C-O
++C-O
+-C-O
+-C-O
+None

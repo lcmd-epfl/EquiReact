@@ -33,7 +33,7 @@ epochs = {'cyclo': 256, 'gdb': 128, 'proparg': 128}
 project = f'nequireact-{dataset}-sweep'
 run_dir = f'sweep_{dataset}'
 if not os.path.exists(run_dir):
-    os.mkdir(run_dir)
+    os.makedirs(run_dir)
 logname = 'sweep.log'
 
 wandb.login()

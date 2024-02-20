@@ -140,7 +140,8 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
           xtb = False,
           semiempirical = False,
           sweep = False,
-          eval_on_test_split=False
+          eval_on_test_split=False,
+          print_repr=False,
           ):
     device = torch.device("cuda:0" if torch.cuda.is_available() and device == 'cuda' else "cpu")
     print(f"Running on device {device}")
@@ -183,7 +184,6 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
         np.random.shuffle(indices)
         len_after = len(indices)
         assert len_before == len_after, "lost data in shuffle"
-
         if subset:
             indices = indices[:subset]
             assert len(indices) == subset, "lost data in subset"
@@ -201,6 +201,7 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
             tr_indices, te_indices, val_indices = get_scaffold_splits(dataset=dataset,
                                                                       shuffle_indices=indices,
                                                                       sizes=(tr_frac, 1-(tr_frac+te_frac), te_frac))
+        print("first few te indices", te_indices[:5])
 
         if reverse:
             tr_indices = np.hstack((tr_indices, tr_indices+data.nreactions))
@@ -268,6 +269,14 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
             if wandb.run is not None:
                 wandb.run.summary["test_score"] = mae_split
 
+            if print_repr:
+                for x_indices, x_loader, x_title in zip((train_data.indices, val_data.indices, test_data.indices),
+                                                        (train_loader, val_loader, test_loader),
+                                                        ('train', 'val', 'test')):
+                    representations = trainer.get_repr(x_loader)
+                    for x in zip(x_indices, representations):
+                        print(f'>>>{x_title}', x[0], *x[1])
+
         seed += 1
         if not sweep:
             wandb.finish()
@@ -290,7 +299,7 @@ if __name__ == '__main__':
         run_dir = os.path.join(args.logdir, args.experiment_name)
     if not os.path.exists(run_dir):
         print(f"creating run dir {run_dir}")
-        os.mkdir(run_dir)
+        os.makedirs(run_dir)
 
     logname = f'{datetime.now().strftime("%y%m%d-%H%M%S.%f")}-{getuser()}'
     logpath = os.path.join(run_dir, f'{logname}.log')
