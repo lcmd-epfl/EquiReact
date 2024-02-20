@@ -62,6 +62,7 @@ def parse_arguments(arglist=sys.argv[1:]):
     g_run.add_argument('--verbose'            , action='store_true', default=False    ,  help='Print dims throughout the training process')
     g_run.add_argument('--process'            , action='store_true', default=False    ,  help='(re-)process data by force (if data is already there, default is to not reprocess)?')
     g_run.add_argument('--eval_on_test_split' , action='store_true', default=False    ,  help='print error per test molecule')
+    g_run.add_argument('--train_frac', type=float, default=0.9, help='training fraction to use (val/te will be equally split over rest)')
 
     g_hyper = p.add_argument_group('hyperparameters')
     g_hyper.add_argument('--subset'               , type=int           , default=None     ,  help='size of a subset to use instead of the full set (tr+te+va)')
@@ -110,7 +111,7 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
           #setup args
           device='cuda', seed=123, eval_on_test=True,
           #dataset args
-          subset=None, tr_frac = 0.9, te_frac = 0.05, process=False, CV=0,
+          subset=None, tr_frac = 0.9, process=False, CV=0,
           dataset='cyclo', splitter='random',
           #sampling / dataloader args
           batch_size=8, num_workers=0, pin_memory=False, # pin memory is not working
@@ -143,6 +144,7 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
           eval_on_test_split=False,
           print_repr=False,
           ):
+    te_frac = (1. - tr_frac) / 2
     device = torch.device("cuda:0" if torch.cuda.is_available() and device == 'cuda' else "cpu")
     print(f"Running on device {device}")
 
@@ -201,7 +203,6 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
             tr_indices, te_indices, val_indices = get_scaffold_splits(dataset=dataset,
                                                                       shuffle_indices=indices,
                                                                       sizes=(tr_frac, 1-(tr_frac+te_frac), te_frac))
-        print("first few te indices", te_indices[:5])
 
         if reverse:
             tr_indices = np.hstack((tr_indices, tr_indices+data.nreactions))
@@ -322,4 +323,5 @@ if __name__ == '__main__':
           noH=args.noH, two_layers_atom_diff=args.two_layers_atom_diff, rxnmapper=args.rxnmapper, reverse=args.reverse,
           xtb=args.xtb, semiempirical=args.semiempirical,
           eval_on_test_split=args.eval_on_test_split,
-          split_complexes=args.split_complexes, lr=args.lr, weight_decay=args.weight_decay, splitter=args.splitter)
+          split_complexes=args.split_complexes, lr=args.lr, weight_decay=args.weight_decay, splitter=args.splitter,
+          tr_frac=args.train_frac)
