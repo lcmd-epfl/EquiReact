@@ -40,5 +40,5 @@ python train.py --device cuda              \
                 --two_layers_atom_diff \
                 --noH \
                 --logdir /scratch/izar/briling/cv  \
-                --lr 5e-4 --weight_decay 0 \
+                --lr 1e-3 --weight_decay 1e-5 \
                 --xtb \
