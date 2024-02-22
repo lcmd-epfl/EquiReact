@@ -221,16 +221,16 @@ cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 4.99757808893
 cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 6.2090149219740365 0.27717075479456604
 
 
-la43e21m cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-truemapping 132 0.3236800635240059
-552mnbz2 cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-truemapping 131 0.2825304190669567
-dwps90j3 cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-truemapping 130 0.25700836712951264
-fbfn1eup cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-truemapping 129 0.5325569804022388
-q7vu9lh4 cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-truemapping 128 0.27664058959310484
-wtamtbs9 cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-truemapping 127 0.28909842378688366
-qh2ihoq9 cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-truemapping 126 0.3297017552638349
-y4olfs0b cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-truemapping 125 0.24969556660026607
-p7wqvkuo cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-truemapping 124 0.2689920519581775
-dia0e1or cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-truemapping 123 0.29843144173738373
+n02c1lye cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-truemapping 130 0.2625332841734973
+t94sm6dy cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-truemapping 131 0.27430125285269213
+u8c7r6zf cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-truemapping 129 0.4484384466407075
+eae4o364 cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-truemapping 127 0.29660785729597267
+0jax4i7r cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-truemapping 125 0.2490785354537772
+gxvciala cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-truemapping 128 0.28608353309705786
+hi9xq184 cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-truemapping 123 0.23170700595843807
+ih837li9 cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-truemapping 124 0.29763759487367336
+knmnz6lx cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-truemapping 126 0.37908120420626895
+uct1pp3a cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-truemapping 132 0.2807148381880924
 kx1rlcgf cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node 132 0.2434907072899037
 r27fraam cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node 131 0.2772248951338068
 cxdihz51 cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node 130 0.2274887825630834
@@ -372,7 +372,7 @@ h9evi4wp cv10-LP-proparg-noH-ns64-nv16-d16-layers3-vector-diff-node-truemapping 
 smk5zakj cv10-LP-proparg-noH-ns64-nv16-d16-layers3-vector-diff-node-truemapping 124 0.2779806211330493
 i1df64th cv10-LP-proparg-noH-ns64-nv16-d16-layers3-vector-diff-node-truemapping 123 0.25250277718515945
 
-cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-truemapping 0.3108335659062365 0.07788741215074756
+cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-truemapping 0.30061835527401776 0.06179625212025924
 cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node 0.2679702648349685 0.031244629812131608
 cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-crossattention 0.2992364687399366 0.04908117246629879
 cv10-LP-proparg-semi-noH-ns64-nv16-d16-layers3-vector-diff-node 0.48423897211022 0.09278886847994297
