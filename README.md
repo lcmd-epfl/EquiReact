@@ -29,6 +29,8 @@ There is an argument in `train.py` to also run evaluation on the test set after 
 
 To optimize hyperparameters, a sweep can be run with `wandb` using `sweep.py`.
 
+Note that these files currently run on the three datasets studied in the paper (Cyclo-23-TS, GDB7-22-TS and Proparg-21-TS) with corresponding dataloaders in `process/dataloader_<dataset>.py`. To run on a different dataset, a dataloader needs to be written and the train code slightly modified to handle the new set.
+
 
 ## Baselines
 To run the baselines CGR and SLATM$_d$, the former on GPU and the latter on CPU, two additional installation files are provided (TODO). 
