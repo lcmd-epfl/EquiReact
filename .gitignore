@@ -2,11 +2,10 @@
 *.pyc
 *.swp
 
-data/rgd1/RGD1_CHNO.h5
-
-wandb/
+wandb/*
 events.out.tfevents.*
 runs/
+*__pycache__*
 
 slatm_baseline/slatm_cyclo.npy
 slatm_baseline/slatm_cyclo_sub.npy
