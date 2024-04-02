@@ -25,7 +25,6 @@ from trainer.react_trainer import ReactTrainer
 from models.equireact import EquiReact
 from process.dataloader_cyclo import Cyclo23TS
 from process.dataloader_gdb import GDB722TS
-from process.dataloader_rgd import RGD1
 from process.dataloader_proparg import Proparg21TS
 from process.collate import CustomCollator
 from process.dataloader_chemprop import get_scaffold_splits
@@ -76,7 +75,7 @@ def parse_arguments(arglist=sys.argv[1:]):
     g_hyper.add_argument('--attention'            , type=str           , default=None     ,  help='use attention')
     g_hyper.add_argument('--sum_mode'             , type=str           , default='node'   ,  help='sum node (node, edge, or both)')
     g_hyper.add_argument('--graph_mode'           , type=str           , default='energy' ,  help='prediction mode, energy, or vector')
-    g_hyper.add_argument('--dataset'              , type=str           , default='cyclo'  ,  help='cyclo / gdb / rgd / proparg')
+    g_hyper.add_argument('--dataset'              , type=str           , default='cyclo'  ,  help='cyclo / gdb / proparg')
     g_hyper.add_argument('--combine_mode'         , type=str           , default='mean'   ,  help='combine mode diff, sum, or mean')
     g_hyper.add_argument('--splitter'             , type=str           , default='random' ,  help='what splits to use, random or scaffold')
     g_hyper.add_argument('--atom_mapping'         , action='store_true', default=False    ,  help='use atom mapping')
@@ -85,7 +84,7 @@ def parse_arguments(arglist=sys.argv[1:]):
     g_hyper.add_argument('--two_layers_atom_diff' , action='store_true', default=False    ,  help='if use two linear layers in non-linear atom diff')
     g_hyper.add_argument('--noH'                  , action='store_true', default=False    ,  help='if remove H')
     g_hyper.add_argument('--reverse'              , action='store_true', default=False    ,  help='if add reverse reactions')
-    g_hyper.add_argument('--split_complexes'      , action='store_true', default=False    ,  help='if split reaction complexes into individual molecules (for rgd)')
+    g_hyper.add_argument('--split_complexes'      , action='store_true', default=False    ,  help='if split reaction complexes into individual molecules (for future datasets)')
     g_hyper.add_argument('--xtb'                  , action='store_true', default=False    ,  help='if use xtb geometries')
     g_hyper.add_argument('--semiempirical'        , action='store_true', default=False    ,  help='if use semiempirical geometries')
     g_hyper.add_argument('--lr'                   , type=float         , default=0.001    ,  help='learning rate for adam')
@@ -152,8 +151,6 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
         data = Cyclo23TS(process=process, atom_mapping=atom_mapping, rxnmapper=rxnmapper, noH=noH, xtb=xtb)
     elif dataset=='gdb':
         data = GDB722TS(process=process, atom_mapping=atom_mapping, rxnmapper=rxnmapper, noH=noH, reverse=reverse, xtb=xtb)
-    elif dataset=='rgd':
-        data = RGD1(process=process, atom_mapping=atom_mapping, split_complexes=split_complexes)
     elif dataset=='proparg':
         data = Proparg21TS(process=process, atom_mapping=atom_mapping, rxnmapper=rxnmapper, noH=noH, xtb=xtb, semiempirical=semiempirical)
     else:
