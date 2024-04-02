@@ -14,6 +14,8 @@ import train
 parser = argparse.ArgumentParser()
 parser.add_argument('--checkpoint',  required=True,             type=str, help='path to the checkpoint log file')
 parser.add_argument('--logdir',      default='logs/evaluation', type=str, help='dir for the new log file')
+parser.add_argument('--dataset',     default=None,              type=str, help='dataset (overwrites the one from the log)')
+parser.add_argument('--seed',        default=None,              type=int, help='seed (overwrites the one from the log)')
 script_args = parser.parse_args()
 
 run_dir = script_args.logdir
@@ -48,6 +50,10 @@ args.checkpoint         = script_args.checkpoint.replace('.log', '.best_checkpoi
 args.eval_on_test_split = True
 if 'semiempirical' not in vars(args):
     args.semiempirical = False
+if script_args.dataset is not None:
+    args.dataset = script_args.dataset
+if script_args.seed is not None:
+    args.seed = script_args.seed
 print(args)
 print()
 
