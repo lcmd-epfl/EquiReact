@@ -17,6 +17,7 @@ parser.add_argument('--logdir',      default='logs/evaluation', type=str,  help=
 parser.add_argument('--dataset',     default=None,              type=str,  help='dataset (overwrites the one from the log)')
 parser.add_argument('--seed',        default=None,              type=int,  help='seed (overwrites the one from the log)')
 parser.add_argument('--xtb',         default=None,              type=int,  help='1 for xtb geometries 0 for dft (overwrites the one from the log)')
+parser.add_argument('--xtb_subset',  action='store_true',                  help='use the xtb subset (for checkpoints older than df87099b0)')
 script_args = parser.parse_args()
 
 run_dir = script_args.logdir
@@ -49,8 +50,10 @@ args.wandb_name         = None
 args.num_epochs         = best_epoch
 args.checkpoint         = script_args.checkpoint.replace('.log', '.best_checkpoint.pt')
 args.eval_on_test_split = True
-if 'semiempirical' not in vars(args):
-    args.semiempirical = False
+if not hasattr(args, 'splitter'):
+    args.splitter = 'random'
+if not hasattr(args, 'xtb_subset'):
+    args.xtb_subset = script_args.xtb_subset
 if script_args.dataset is not None:
     args.dataset = script_args.dataset
 if script_args.seed is not None:
@@ -68,8 +71,8 @@ maes = train.train(run_dir, logname, None, None, {}, seed=args.seed,
                    graph_mode=args.graph_mode, dropout_p=args.dropout_p, random_baseline=args.random_baseline,
                    combine_mode=args.combine_mode, atom_mapping=args.atom_mapping, CV=args.CV, attention=args.attention,
                    noH=args.noH, two_layers_atom_diff=args.two_layers_atom_diff, rxnmapper=args.rxnmapper, reverse=args.reverse,
-                   xtb=args.xtb, semiempirical=args.semiempirical,
-                   splitter=args.splitter if hasattr(args, 'splitter') else 'random',
+                   xtb=args.xtb, xtb_subset=args.xtb_subset,
+                   splitter=args.splitter,
                    split_complexes=args.split_complexes, lr=args.lr, weight_decay=args.weight_decay,
                    eval_on_test_split=args.eval_on_test_split, sweep=True)
 
