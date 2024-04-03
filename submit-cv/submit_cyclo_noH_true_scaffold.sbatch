@@ -4,7 +4,7 @@
 #SBATCH --gpus-per-node=1
 #SBATCH --cpus-per-task=1
 #SBATCH --ntasks=1
-#SBATCH --mem=4GB
+#SBATCH --mem=8GB
 #SBATCH --time=24:00:00
 #SBATCH --job-name=equireact
 #SBATCH --array=0-9
@@ -24,20 +24,21 @@ python train.py --device cuda              \
                 --CV 1                     \
                 --num_epochs 512           \
                 --seed ${SEED}             \
-                --dataset "gdb"            \
-                --combine_mode "diff"      \
+                --dataset "cyclo"          \
+                --combine_mode "mlp"       \
                 --distance_emb_dim 48      \
                 --dropout_p 0.05           \
-                --graph_mode "vector"      \
-                --max_neighbors 50         \
+                --graph_mode "energy"      \
+                --max_neighbors 10         \
                 --n_conv_layers 3          \
                 --n_s 64                   \
-                --n_v 64                   \
+                --n_v 48                   \
                 --radius 2.5               \
-		--splitter='scaffold'     \
-                --sum_mode "node"          \
-                --noH                      \
-                --wandb_name=cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention \
-                --attention cross \
-                --logdir /scratch/izar/vangerwe/cv  \
-                --lr 1e-4 --weight_decay 1e-5 \
+                --sum_mode "both"          \
+                --wandb_name=cv10-LP-cyclo-scaffold-noH-ns64-nv48-d48-layers3-energy-mlp-both-truemapping \
+                --atom_mapping \
+                --two_layers_atom_diff \
+                --noH \
+                --logdir /scratch/izar/briling/cv  \
+                --lr 5e-4 --weight_decay 1e-4 \
+		--splitter='scaffold'      \

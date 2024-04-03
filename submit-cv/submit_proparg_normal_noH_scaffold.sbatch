@@ -1,5 +1,6 @@
 #!/bin/bash -l
 #SBATCH --partition=gpu
+#SBATCH --qos=gpu
 #SBATCH --nodes=1
 #SBATCH --gpus-per-node=1
 #SBATCH --cpus-per-task=1
@@ -8,7 +9,6 @@
 #SBATCH --time=24:00:00
 #SBATCH --job-name=equireact
 #SBATCH --array=0-9
-#SBATCH --exclude=i39
 
 SEED=$(( $SLURM_ARRAY_TASK_ID + 123 ))
 
@@ -22,23 +22,21 @@ wandb enabled
 python train.py --device cuda              \
                 --experiment_name final-cv \
                 --CV 1                     \
-		--splitter 'scaffold'      \
                 --num_epochs 512           \
                 --seed ${SEED}             \
-                --dataset "gdb"            \
+                --dataset "proparg"        \
                 --combine_mode "diff"      \
-                --distance_emb_dim 48      \
-                --dropout_p 0.05           \
+                --distance_emb_dim 16      \
+                --dropout_p 0.1            \
                 --graph_mode "vector"      \
                 --max_neighbors 50         \
                 --n_conv_layers 3          \
                 --n_s 64                   \
-                --n_v 64                   \
-                --radius 2.5               \
+                --n_v 16                   \
+                --radius 5                 \
                 --sum_mode "node"          \
-                --noH                      \
-                --wandb_name=cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping \
-                --atom_mapping \
-                --two_layers_atom_diff \
-                --logdir /scratch/izar/vangerwe/cv  \
+                --wandb_name=cv10-LP-proparg-scaffold-noH-ns64-nv16-d16-layers3-vector-diff-node \
+                --noH \
+                --logdir /scratch/izar/briling/cv  \
                 --lr 1e-3 --weight_decay 1e-5 \
+		--splitter='scaffold'      \

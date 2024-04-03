@@ -29,14 +29,14 @@ python train.py --device cuda              \
                 --distance_emb_dim 48      \
                 --dropout_p 0.05           \
                 --graph_mode "energy"      \
-		--splitter='scaffold'     \
                 --max_neighbors 10         \
                 --n_conv_layers 3          \
                 --n_s 64                   \
                 --n_v 48                   \
-                --radius 2.5                 \
+                --radius 2.5               \
                 --sum_mode "both"          \
-                --wandb_name=cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both-crossattention \
-                --attention cross \
-                --logdir /scratch/izar/vangerwe/cv  \
-                --lr 5e-4 --weight_decay 1e-5 \
+                --wandb_name=cv10-LP-cyclo-scaffold-noH-ns64-nv48-d48-layers3-energy-mlp-both \
+                --noH \
+                --logdir /scratch/izar/briling/cv  \
+                --lr 5e-4 --weight_decay 1e-4 \
+		--splitter='scaffold'      \
