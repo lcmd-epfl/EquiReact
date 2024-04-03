@@ -212,7 +212,6 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
                                                                       shuffle_indices=indices,
                                                                       sizes=(tr_frac, 1-(tr_frac+te_frac), te_frac))
             print('indices returned by get_scaffold_splits()', tr_indices, te_indices, val_indices)
-            print('what would be correct scaffold split indices:', indices[tr_indices], indices[te_indices], indices[val_indices])
 
         print('sum of all targets', sum(data.labels[tr_indices]) + sum(data.labels[te_indices]) + sum(data.labels[val_indices]))
         exit(0)
