@@ -210,7 +210,6 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
             tr_indices, te_indices, val_indices = get_scaffold_splits(dataset=dataset,
                                                                       shuffle_indices=indices,
                                                                       sizes=(tr_frac, 1-(tr_frac+te_frac), te_frac))
-            print('indices returned by get_scaffold_splits()', tr_indices, te_indices, val_indices)
 
         if reverse:
             tr_indices = np.hstack((tr_indices, tr_indices+data.nreactions))
