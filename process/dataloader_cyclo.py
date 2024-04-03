@@ -17,7 +17,7 @@ class Cyclo23TS(Dataset):
     def __init__(self, csv_path='data/cyclo/cyclo.csv',
                  map_dir='data/cyclo/matches/',
                  processed_dir='data/cyclo/processed/', process=True,
-                 xtb=False,
+                 xtb=False, xtb_subset=False,
                  noH=False, rxnmapper=False, atom_mapping=False):
 
         self.version = 6  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
@@ -46,6 +46,8 @@ class Cyclo23TS(Dataset):
             self.files_dir='data/cyclo/xyz/'
 
         dataset_prefix = os.path.splitext(os.path.basename(csv_path))[0]+'.'+self.column
+        if xtb_subset:
+            dataset_prefix += '.xtb-subset'
         if noH:
             dataset_prefix += '.noH'
         if xtb:
@@ -63,7 +65,7 @@ class Cyclo23TS(Dataset):
         print("Loading data into memory...")
 
         self.df = pd.read_csv(csv_path)
-        if xtb:
+        if xtb or xtb_subset:
             bad_idx = np.loadtxt('data/cyclo/bad-xtb.dat', dtype=int)
             for idx in bad_idx:
                 self.df.drop(self.df[self.df['rxn_id']==idx].index, axis=0, inplace=True)
