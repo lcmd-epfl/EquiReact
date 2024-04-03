@@ -86,6 +86,7 @@ def parse_arguments(arglist=sys.argv[1:]):
     g_hyper.add_argument('--reverse'              , action='store_true', default=False    ,  help='if add reverse reactions')
     g_hyper.add_argument('--split_complexes'      , action='store_true', default=False    ,  help='if split reaction complexes into individual molecules (for future datasets)')
     g_hyper.add_argument('--xtb'                  , action='store_true', default=False    ,  help='if use xtb geometries')
+    g_hyper.add_argument('--xtb_subset'           , action='store_true', default=False    ,  help='if use dft geometries but on the xtb subset (for gdb and cyclo)')
     g_hyper.add_argument('--semiempirical'        , action='store_true', default=False    ,  help='if use semiempirical geometries')
     g_hyper.add_argument('--invariant'            , action='store_true', default=False    ,  help='if run "InReact"')
     g_hyper.add_argument('--lr'                   , type=float         , default=0.001    ,  help='learning rate for adam')
@@ -139,6 +140,7 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
           reverse = False,
           split_complexes=False,
           xtb = False,
+          xtb_subset = False,
           semiempirical = False,
           sweep = False,
           eval_on_test_split=False,
@@ -150,9 +152,9 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
     print(f"Running on device {device}")
 
     if dataset=='cyclo':
-        data = Cyclo23TS(process=process, atom_mapping=atom_mapping, rxnmapper=rxnmapper, noH=noH, xtb=xtb)
+        data = Cyclo23TS(process=process, atom_mapping=atom_mapping, rxnmapper=rxnmapper, noH=noH, xtb=xtb, xtb_subset=xtb_subset)
     elif dataset=='gdb':
-        data = GDB722TS(process=process, atom_mapping=atom_mapping, rxnmapper=rxnmapper, noH=noH, reverse=reverse, xtb=xtb)
+        data = GDB722TS(process=process, atom_mapping=atom_mapping, rxnmapper=rxnmapper, noH=noH, reverse=reverse, xtb=xtb, xtb_subset=xtb_subset)
     elif dataset=='proparg':
         data = Proparg21TS(process=process, atom_mapping=atom_mapping, rxnmapper=rxnmapper, noH=noH, xtb=xtb, semiempirical=semiempirical)
     else:
@@ -321,7 +323,8 @@ if __name__ == '__main__':
           graph_mode=args.graph_mode, dropout_p=args.dropout_p, random_baseline=args.random_baseline,
           combine_mode=args.combine_mode, atom_mapping=args.atom_mapping, CV=args.CV, attention=args.attention,
           noH=args.noH, two_layers_atom_diff=args.two_layers_atom_diff, rxnmapper=args.rxnmapper, reverse=args.reverse,
-          xtb=args.xtb, semiempirical=args.semiempirical,
+          xtb=args.xtb, xtb_subset=args.xtb_subset,
+          semiempirical=args.semiempirical,
           eval_on_test_split=args.eval_on_test_split,
           split_complexes=args.split_complexes, lr=args.lr, weight_decay=args.weight_decay, splitter=args.splitter,
           tr_frac=args.train_frac,

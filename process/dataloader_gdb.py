@@ -17,7 +17,8 @@ class GDB722TS(Dataset):
 
     def __init__(self,
                  processed_dir='data/gdb7-22-ts/processed/', process=True,
-                 xtb=False, noH=False, atom_mapping=False, rxnmapper=False, reverse=False):
+                 xtb=False, xtb_subset=False,
+                 noH=False, atom_mapping=False, rxnmapper=False, reverse=False):
 
         if xtb:
             self.bohr = False
@@ -48,6 +49,8 @@ class GDB722TS(Dataset):
         self.noH = noH
 
         dataset_prefix = os.path.splitext(os.path.basename(csv_path))[0]
+        if xtb_subset:
+            dataset_prefix += '.xtb-subset'
         if noH:
             dataset_prefix += '.noH'
         if xtb:
@@ -64,7 +67,7 @@ class GDB722TS(Dataset):
         print("Loading data into memory...")
 
         self.df = pd.read_csv(csv_path)
-        if xtb:
+        if xtb or xtb_subset:
             bad_idx = np.loadtxt('data/gdb7-22-ts/bad-xtb.dat', dtype=int)
             for idx in bad_idx:
                 self.df.drop(self.df[self.df['idx']==idx].index, axis=0, inplace=True)
