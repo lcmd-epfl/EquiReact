@@ -77,7 +77,7 @@ def parse_arguments(arglist=sys.argv[1:]):
     g_hyper.add_argument('--graph_mode'           , type=str           , default='energy' ,  help='prediction mode, energy, or vector')
     g_hyper.add_argument('--dataset'              , type=str           , default='cyclo'  ,  help='cyclo / gdb / proparg')
     g_hyper.add_argument('--combine_mode'         , type=str           , default='mean'   ,  help='combine mode diff, sum, or mean')
-    g_hyper.add_argument('--splitter'             , type=str           , default='random' ,  help='what splits to use, random or scaffold')
+    g_hyper.add_argument('--splitter'             , type=str           , default='random' ,  help='what splits to use: random / scaffold / yasc / ydesc')
     g_hyper.add_argument('--atom_mapping'         , action='store_true', default=False    ,  help='use atom mapping')
     g_hyper.add_argument('--rxnmapper'            , action='store_true', default=False    ,  help='take atom mapping from rxnmapper')
     g_hyper.add_argument('--random_baseline'      , action='store_true', default=False    ,  help='random baseline (no graph conv)')
@@ -192,6 +192,14 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
 
         if splitter == 'random':
             print("Using random splits")
+            tr_indices, te_indices, val_indices = np.split(indices, [tr_size, tr_size+te_size])
+
+        elif splitter in ['yasc', 'ydesc']: # splits based on the target value
+            print(f"Using target-based splits ({'ascending' if splitter=='yasc' else 'descending'} order)")
+            idx4idx = np.argsort(np.array(data.labels[indices]))
+            if splitter == 'ydesc':
+                idx4idx = idx4idx[::-1]
+            indices = indices[idx4idx]
             tr_indices, te_indices, val_indices = np.split(indices, [tr_size, tr_size+te_size])
 
         elif splitter == 'scaffold':
