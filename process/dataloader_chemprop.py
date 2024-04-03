@@ -26,9 +26,6 @@ def get_scaffold_splits(dataset, shuffle_indices=None, sizes=(0.8, 0.1, 0.1)):
         rsmiles = df['rsmi'].to_numpy()
     elif dataset == 'cyclo' or dataset == 'proparg':
         rsmiles = df['rxn_smiles'].apply(get_reactant_from_reaction_smi).to_numpy()
-    else: # TODO what is this needed for?
-        if len(shuffle_indices) != len(df):
-            warnings.warn("Shuffle indices are not the same len as the original df")
 
     rsmiles = np.array([remove_atom_map_number_manual(smiles) for smiles in rsmiles])
 
