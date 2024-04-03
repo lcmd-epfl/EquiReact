@@ -16,7 +16,7 @@ class Proparg21TS(Dataset):
 
     def __init__(self, process=True,
                  processed_dir='data/proparg/processed/',
-                 xtb = False, semiempirical = False,
+                 xtb = False,
                  noH=True, atom_mapping=False, rxnmapper=False):
 
         self.version = 2  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
@@ -37,16 +37,12 @@ class Proparg21TS(Dataset):
             column = 'rxn_smiles_rxnmapper'
         if xtb:
             self.files_dir='data/proparg/xyz-xtb/'
-        elif semiempirical:
-            self.files_dir='data/proparg/xyz-npmmes/'
         else:
             self.files_dir='data/proparg/xyz/'
 
         dataset_prefix = os.path.splitext(os.path.basename(csv_path))[0]
         if xtb:
             dataset_prefix += '.xtb'
-        elif semiempirical:
-            dataset_prefix += '.semi'
         if noH:
             dataset_prefix += '.noH'
         self.paths = SimpleNamespace(
