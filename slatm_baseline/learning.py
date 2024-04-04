@@ -28,7 +28,7 @@ def predict_laplacian_KRR(D_train, D_test,
     K_test = np.exp(-gamma*D_test)
 
     K[np.diag_indices_from(K)] += l2reg
-    alpha = np.dot(np.linalg.inv(K), y_train)
+    alpha = np.linalg.solve(K, y_train)
 
     y_pred = np.dot(K_test, alpha)
     mae = np.mean(np.abs(y_test - y_pred))
@@ -40,10 +40,10 @@ def predict_gaussian_KRR(D_train, D_test,
     """
     Now for gaussian kernel
     """
-    K      = np.exp(-D_train / 2*sigma**2)
-    K_test = np.exp(-D_test / 2*sigma**2)
+    K      = np.exp(-D_train / (2*sigma**2))
+    K_test = np.exp(-D_test  / (2*sigma**2))
     K[np.diag_indices_from(K)] += l2reg
-    alpha = np.dot(np.linalg.inv(K), y_train)
+    alpha = np.linalg.solve(K, y_train)
 
     y_pred = np.dot(K_test, alpha)
     mae = np.mean(np.abs(y_test - y_pred))
