@@ -35,13 +35,10 @@ def predict_laplacian_KRR(D_train, D_test,
     return mae, y_pred
 
 def predict_gaussian_KRR(D_train, D_test,
-                        y_train, y_test,
-                        sigma=100, l2reg=1e-10):
-    """
-    Now for gaussian kernel
-    """
-    K      = np.exp(-D_train / (2*sigma**2))
-    K_test = np.exp(-D_test  / (2*sigma**2))
+                         y_train, y_test,
+                         sigma=100, l2reg=1e-10):
+    K      = np.exp(-0.5*(D_train / sigma)**2)
+    K_test = np.exp(-0.5*(D_test / sigma)**2)
     K[np.diag_indices_from(K)] += l2reg
     alpha = np.linalg.solve(K, y_train)
 
@@ -159,6 +156,8 @@ def predict_CV(X, y, CV=10, seed=1, train_size=0.8, kernel='laplacian',
         y_val   = y[idx_val]
         y_test  = y[idx_test]
 
+
+
         print('train size', len(y_train), 'val size', len(y_val), 'test size', len(y_test))
         if i == 0:
             # hyperparam opt
@@ -177,6 +176,8 @@ def predict_CV(X, y, CV=10, seed=1, train_size=0.8, kernel='laplacian',
                                  y_train, y_test,
                                  l2reg=l2reg, gamma=gamma)
         elif kernel == 'rbf' or kernel == 'gaussian':
+
+
             print(f"Making prediction with optimal params sigma={sigma},l2reg={l2reg}")
             mae, y_pred = predict_KRR(D_train, D_test,
                                  y_train, y_test,
