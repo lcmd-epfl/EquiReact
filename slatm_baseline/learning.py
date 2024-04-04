@@ -117,7 +117,17 @@ def predict_CV(X, y, CV=10, seed=1, train_size=0.8, kernel='laplacian',
         if dataset in HYPERS.keys():
             gamma, l2reg = HYPERS[dataset]
 
-        D_full = pairwise_distances(X, metric='l1')
+        try:  # use qstack C routine if running on ksenia's desktop SORRY
+            import ctypes
+            D_full = np.zeros((len(X), len(X)))
+            array_2d_double = np.ctypeslib.ndpointer(dtype=np.float64, ndim=2, flags='CONTIGUOUS')
+            qstack_manh_path = '/home/xe/GIT/Q-stack/qstack/regression/lib/manh.so'
+            qstack_manh = ctypes.cdll.LoadLibrary(qstack_manh_path).manh
+            qstack_manh.restype = ctypes.c_int
+            qstack_manh.argtypes = [ctypes.c_int, ctypes.c_int, ctypes.c_int, array_2d_double, array_2d_double, array_2d_double]
+            qstack_manh(len(X), len(X), len(X[0]), X, X, D_full)
+        except:
+            D_full = pairwise_distances(X, metric='l1')
 
     elif kernel == 'rbf' or kernel == 'gaussian':
         predict_KRR = predict_gaussian_KRR
