@@ -51,6 +51,10 @@ args.num_epochs         = best_epoch
 args.checkpoint         = script_args.checkpoint.replace('.log', '.best_checkpoint.pt')
 args.eval_on_test_split = False
 return_repr = True
+if not hasattr(args, 'splitter'):
+    args.splitter = 'random'
+if not hasattr(args, 'invariant'):
+    args.invariant = False
 if not hasattr(args, 'xtb_subset'):
     args.xtb_subset = script_args.xtb_subset
 
@@ -66,8 +70,10 @@ maes = train.train(run_dir, logname, None, None, {}, seed=args.seed, print_repr=
                    combine_mode=args.combine_mode, atom_mapping=args.atom_mapping, CV=args.CV, attention=args.attention,
                    noH=args.noH, two_layers_atom_diff=args.two_layers_atom_diff, rxnmapper=args.rxnmapper, reverse=args.reverse,
                    xtb=args.xtb, xtb_subset=args.xtb_subset,
-                   splitter=args.splitter if hasattr(args, 'splitter') else 'random',
+                   splitter=args.splitter,
                    split_complexes=args.split_complexes, lr=args.lr, weight_decay=args.weight_decay,
-                   eval_on_test_split=args.eval_on_test_split, sweep=True)
+                   eval_on_test_split=args.eval_on_test_split,
+                   invariant=args.invariant,
+                   sweep=True)
 
 print(f'delta MAE: {abs(mae_logged-np.mean(maes)):.2e}')

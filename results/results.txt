@@ -177,16 +177,6 @@ cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 4.99757808893
 cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 6.2090149219740365 0.27717075479456604
 
 
-vlzc8ayf cv10-LP-proparg-semi-noH-ns64-nv16-d16-layers3-vector-diff-node 131 0.5879802835468624
-s6jqwb2j cv10-LP-proparg-semi-noH-ns64-nv16-d16-layers3-vector-diff-node 130 0.419713215657046
-wvok0eyp cv10-LP-proparg-semi-noH-ns64-nv16-d16-layers3-vector-diff-node 132 0.3741476900179882
-cc55sb08 cv10-LP-proparg-semi-noH-ns64-nv16-d16-layers3-vector-diff-node 128 0.4353499356160815
-3a6xtg8x cv10-LP-proparg-semi-noH-ns64-nv16-d16-layers3-vector-diff-node 129 0.46877164670795535
-4qee4rts cv10-LP-proparg-semi-noH-ns64-nv16-d16-layers3-vector-diff-node 127 0.3920131650277681
-0s0ov3kw cv10-LP-proparg-semi-noH-ns64-nv16-d16-layers3-vector-diff-node 126 0.4165952790994304
-sw1x1bth cv10-LP-proparg-semi-noH-ns64-nv16-d16-layers3-vector-diff-node 125 0.5581985725624289
-zt2r4fi9 cv10-LP-proparg-semi-noH-ns64-nv16-d16-layers3-vector-diff-node 124 0.6767223006385565
-e8voxtlp cv10-LP-proparg-semi-noH-ns64-nv16-d16-layers3-vector-diff-node 123 0.5128976322280832
 ooxf8c15 cv10-LP-proparg-xtb-noH-ns64-nv16-d16-layers3-vector-diff-node 132 0.379877620395456
 dgy54c09 cv10-LP-proparg-xtb-noH-ns64-nv16-d16-layers3-vector-diff-node 131 0.7456196045788804
 pyk0etcx cv10-LP-proparg-xtb-noH-ns64-nv16-d16-layers3-vector-diff-node 130 0.4238768969174558
@@ -207,17 +197,7 @@ xhjouj3o cv10-LP-proparg-xtb-noH-ns64-nv16-d16-layers3-vector-diff-node-crossatt
 3mmg7uy4 cv10-LP-proparg-xtb-noH-ns64-nv16-d16-layers3-vector-diff-node-crossattention 125 0.307033627886433
 zt8sc5ow cv10-LP-proparg-xtb-noH-ns64-nv16-d16-layers3-vector-diff-node-crossattention 124 0.4829067242297443
 vxc90e13 cv10-LP-proparg-xtb-noH-ns64-nv16-d16-layers3-vector-diff-node-crossattention 123 0.45349922526915987
-zf5r5vxw cv10-LP-proparg-semi-noH-ns64-nv16-d16-layers3-vector-diff-node-crossattention 132 0.4487437838511467
-3pmsdfzp cv10-LP-proparg-semi-noH-ns64-nv16-d16-layers3-vector-diff-node-crossattention 131 0.7456551918480615
-on0s8uws cv10-LP-proparg-semi-noH-ns64-nv16-d16-layers3-vector-diff-node-crossattention 130 0.5254760655575099
-om5bo48p cv10-LP-proparg-semi-noH-ns64-nv16-d16-layers3-vector-diff-node-crossattention 129 0.4642864294682667
-vyy5dtud cv10-LP-proparg-semi-noH-ns64-nv16-d16-layers3-vector-diff-node-crossattention 128 0.4159756006706869
-jl4hrim2 cv10-LP-proparg-semi-noH-ns64-nv16-d16-layers3-vector-diff-node-crossattention 127 0.3788566302178926
-n7s5vudb cv10-LP-proparg-semi-noH-ns64-nv16-d16-layers3-vector-diff-node-crossattention 126 0.5257773132853004
-nkq3y5js cv10-LP-proparg-semi-noH-ns64-nv16-d16-layers3-vector-diff-node-crossattention 125 0.5761774584432806
-6rpoitcr cv10-LP-proparg-semi-noH-ns64-nv16-d16-layers3-vector-diff-node-crossattention 124 0.6903098747152826
 c5u3l5f6 cv10-LP-proparg-noH-ns64-nv16-d16-layers3-vector-diff-node-crossattention 129 0.36522829773904114
-peov8rsg cv10-LP-proparg-semi-noH-ns64-nv16-d16-layers3-vector-diff-node-crossattention 123 0.4559253116625502
 xwjwoyhi cv10-LP-proparg-noH-ns64-nv16-d16-layers3-vector-diff-node-crossattention 131 0.2831094430359456
 ne31wx6b cv10-LP-proparg-noH-ns64-nv16-d16-layers3-vector-diff-node-crossattention 132 0.2232255521211994
 g26cloaz cv10-LP-proparg-noH-ns64-nv16-d16-layers3-vector-diff-node-crossattention 130 0.31210665872183596
@@ -237,16 +217,6 @@ vud952cm cv10-LP-proparg-ns64-nv16-d16-layers3-vector-diff-node-crossattention 1
 dnl81l2l cv10-LP-proparg-ns64-nv16-d16-layers3-vector-diff-node-crossattention 125 0.35313229668239643
 ktzezovk cv10-LP-proparg-ns64-nv16-d16-layers3-vector-diff-node-crossattention 124 0.41756300206019
 cbkgjvre cv10-LP-proparg-ns64-nv16-d16-layers3-vector-diff-node-crossattention 123 0.2551524501144041
-l44b476j cv10-LP-proparg-semiempirical-noH-ns64-nv16-d16-layers3-vector-diff-node-truemapping 132 0.4820723593306408
-annphtwq cv10-LP-proparg-semiempirical-noH-ns64-nv16-d16-layers3-vector-diff-node-truemapping 131 0.6553736843033762
-74r5v6ap cv10-LP-proparg-semiempirical-noH-ns64-nv16-d16-layers3-vector-diff-node-truemapping 130 0.4415972229028992
-or2v219o cv10-LP-proparg-semiempirical-noH-ns64-nv16-d16-layers3-vector-diff-node-truemapping 129 0.43373571709492814
-oy5y6lqe cv10-LP-proparg-semiempirical-noH-ns64-nv16-d16-layers3-vector-diff-node-truemapping 128 0.4775184784104829
-s9ajt8nc cv10-LP-proparg-semiempirical-noH-ns64-nv16-d16-layers3-vector-diff-node-truemapping 127 0.3892889101993205
-v5pk5ldd cv10-LP-proparg-semiempirical-noH-ns64-nv16-d16-layers3-vector-diff-node-truemapping 126 0.4343113304548773
-dwzrztts cv10-LP-proparg-semiempirical-noH-ns64-nv16-d16-layers3-vector-diff-node-truemapping 125 0.5303179188157958
-7g3ogvp9 cv10-LP-proparg-semiempirical-noH-ns64-nv16-d16-layers3-vector-diff-node-truemapping 124 0.6898455966271897
-rm15js3n cv10-LP-proparg-semiempirical-noH-ns64-nv16-d16-layers3-vector-diff-node-truemapping 123 0.4773224918222585
 h9g242th cv10-LP-proparg-xtb-noH-ns64-nv16-d16-layers3-vector-diff-node-truemapping 129 0.4531078042865555
 fiez1jce cv10-LP-proparg-xtb-noH-ns64-nv16-d16-layers3-vector-diff-node-truemapping 128 0.4298830054221719
 c1zu5sk2 cv10-LP-proparg-xtb-noH-ns64-nv16-d16-layers3-vector-diff-node-truemapping 126 0.37617863299262216
@@ -298,13 +268,10 @@ h9evi4wp cv10-LP-proparg-noH-ns64-nv16-d16-layers3-vector-diff-node-truemapping 
 smk5zakj cv10-LP-proparg-noH-ns64-nv16-d16-layers3-vector-diff-node-truemapping 124 0.2779806211330493
 i1df64th cv10-LP-proparg-noH-ns64-nv16-d16-layers3-vector-diff-node-truemapping 123 0.25250277718515945
 
-cv10-LP-proparg-semi-noH-ns64-nv16-d16-layers3-vector-diff-node 0.48423897211022 0.09278886847994297
 cv10-LP-proparg-xtb-noH-ns64-nv16-d16-layers3-vector-diff-node 0.47488718606540364 0.11475480179333845
 cv10-LP-proparg-xtb-noH-ns64-nv16-d16-layers3-vector-diff-node-crossattention 0.4481924696189167 0.09688818186241324
-cv10-LP-proparg-semi-noH-ns64-nv16-d16-layers3-vector-diff-node-crossattention 0.5227183659719978 0.1122945403098199
 cv10-LP-proparg-noH-ns64-nv16-d16-layers3-vector-diff-node-crossattention 0.2746669200016168 0.044104757903815454
 cv10-LP-proparg-ns64-nv16-d16-layers3-vector-diff-node-crossattention 0.357191527228912 0.05671903959573422
-cv10-LP-proparg-semiempirical-noH-ns64-nv16-d16-layers3-vector-diff-node-truemapping 0.5011383709961769 0.09316835536379894
 cv10-LP-proparg-xtb-noH-ns64-nv16-d16-layers3-vector-diff-node-truemapping 0.4370818285944262 0.11309889427668764
 cv10-LP-proparg-ns64-nv16-d16-layers3-vector-diff-node 0.3313229954169514 0.06567303788414176
 cv10-LP-proparg-ns64-nv16-d16-layers3-vector-diff-node-truemapping 0.3308084845796403 0.07624926838254038
