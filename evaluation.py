@@ -54,6 +54,8 @@ if not hasattr(args, 'splitter'):
     args.splitter = 'random'
 if not hasattr(args, 'invariant'):
     args.invariant = False
+if not hasattr(args, 'train_frac'):
+    args.train_frac = 0.9
 if not hasattr(args, 'xtb_subset'):
     args.xtb_subset = script_args.xtb_subset
 if script_args.dataset is not None:
@@ -78,6 +80,7 @@ maes = train.train(run_dir, logname, None, None, {}, seed=args.seed,
                    split_complexes=args.split_complexes, lr=args.lr, weight_decay=args.weight_decay,
                    eval_on_test_split=args.eval_on_test_split,
                    invariant=args.invariant,
+                   tr_frac=args.train_frac,
                    sweep=True)
 
 print(f'delta MAE: {abs(mae_logged-np.mean(maes)):.2e}')
