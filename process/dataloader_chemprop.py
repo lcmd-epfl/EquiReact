@@ -14,6 +14,10 @@ def get_reactant_from_reaction_smi(reaction_smiles):
     return reaction_smiles.split('>>')[0]
 
 
+def get_product_from_reaction_smi(reaction_smiles):
+    return reaction_smiles.split('>>')[1]
+
+
 def get_scaffold_splits(dataset, indices=None, sizes=(0.8, 0.1, 0.1)):
     csv_files = {'gdb': 'data/gdb7-22-ts/ccsdtf12_dz_cleaned.csv',
                  'cyclo': 'data/cyclo/cyclo.csv',
@@ -21,7 +25,9 @@ def get_scaffold_splits(dataset, indices=None, sizes=(0.8, 0.1, 0.1)):
     df = pd.read_csv(csv_files[dataset], index_col=0)
     if dataset == 'gdb':
         rsmiles = df['rsmi'].to_numpy()
-    elif dataset == 'cyclo' or dataset == 'proparg':
+    elif dataset == 'cyclo':
+        rsmiles = df['rxn_smiles'].apply(get_product_from_reaction_smi).to_numpy()
+    elif dataset == 'proparg':
         rsmiles = df['rxn_smiles'].apply(get_reactant_from_reaction_smi).to_numpy()
 
     if indices is None:
