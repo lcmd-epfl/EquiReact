@@ -1,6 +1,6 @@
 from collections import defaultdict
 import logging
-from random import Random
+import random
 from typing import Dict, List, Set, Tuple, Union
 import warnings
 import copy
@@ -58,10 +58,7 @@ def scaffold_split(data: MoleculeDataset,
                    sizes: Tuple[float, float, float] = (0.8, 0.1, 0.1),
                    balanced: bool = False,
                    key_molecule_index: int = 0,
-                   seed: int = 0,
-                   logger: logging.Logger = None) -> Tuple[List,
-                                                           List,
-                                                           List]:
+                   logger: logging.Logger = None) -> Tuple[List, List, List]:
     r"""
     Splits a :class:`~chemprop.data.MoleculeDataset` by scaffold so that no molecules sharing a scaffold are in different splits.
 
@@ -69,7 +66,6 @@ def scaffold_split(data: MoleculeDataset,
     :param sizes: A length-3 tuple with the proportions of data in the train, validation, and test sets.
     :param balanced: Whether to balance the sizes of scaffolds in each set rather than putting the smallest in test set.
     :param key_molecule_index: For data with multiple molecules, this sets which molecule will be considered during splitting.
-    :param seed: Random seed for shuffling when doing balanced splitting.
     :param logger: A logger for recording output.
     :return: A tuple of :class:`~chemprop.data.MoleculeDataset`\ s containing the train,
              validation, and test splits of the data.
@@ -95,7 +91,6 @@ def scaffold_split(data: MoleculeDataset,
                 big_index_sets.append(index_set)
             else:
                 small_index_sets.append(index_set)
-        random.seed(seed)
         random.shuffle(big_index_sets)
         random.shuffle(small_index_sets)
         index_sets = big_index_sets + small_index_sets
@@ -123,11 +118,6 @@ def scaffold_split(data: MoleculeDataset,
 
     if logger is not None and not data.is_atom_bond_targets:
         log_scaffold_stats(data, index_sets, logger=logger)
-
-    # Map from indices to data
-  #  train = [data[i] for i in train]
-  #  val = [data[i] for i in val]
- #   test = [data[i] for i in test]
 
     return train, val, test
 

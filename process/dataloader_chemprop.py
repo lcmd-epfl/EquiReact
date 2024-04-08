@@ -30,5 +30,5 @@ def get_scaffold_splits(dataset, indices=None, sizes=(0.8, 0.1, 0.1)):
     rsmiles = np.array([remove_atom_map_number_manual(smiles) for smiles in rsmiles])
 
     chemprop_dataset = get_data_from_smiles([[x] for x in rsmiles])
-    train_idx, test_idx, val_idx = scaffold_split(chemprop_dataset, sizes=sizes, balanced=False)
+    train_idx, test_idx, val_idx = scaffold_split(chemprop_dataset, sizes=sizes, balanced=True)
     return indices[train_idx], indices[test_idx], indices[val_idx]

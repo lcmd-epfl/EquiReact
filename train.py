@@ -6,6 +6,7 @@ import traceback
 from datetime import datetime
 from getpass import getuser  # os.getlogin() won't work on a cluster
 import copy
+import random
 
 import numpy as np
 import torch
@@ -176,6 +177,7 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
         torch.manual_seed(seed)
         torch.cuda.manual_seed(seed)
         np.random.seed(seed)
+        random.seed(seed)
 
         indices = np.arange(data.nreactions)
         len_before = len(indices)
