@@ -118,7 +118,7 @@ def predict_CV(X, y, CV=10, seed=1, train_size=0.8, kernel='laplacian',
             indices = np.arange(len(y))
             np.random.shuffle(indices)
             idx_train, idx_test, idx_val = get_scaffold_splits(dataset=dataset,
-                                                               shuffle_indices=indices,
+                                                               indices=indices,
                                                                sizes=(train_size, (1-train_size)/2,
                                                                (1-train_size)/2))
 
