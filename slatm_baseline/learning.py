@@ -1,8 +1,10 @@
+import random
 import numpy as np
 from sklearn.metrics import pairwise_distances
 from sklearn.model_selection import train_test_split
 from process.dataloader_chemprop import get_scaffold_splits
 from slatm_baseline.hypers import HYPERS
+from process.splitter import split_dataset
 
 
 def opt_hyperparams(D_train, D_val,
@@ -89,7 +91,7 @@ def compute_euclidean_dist_squared(X):
     return D_full
 
 
-def predict_CV(X, y, CV=10, seed=1, train_size=0.8, kernel='laplacian',
+def predict_CV(X, y, CV=10, seed=123, train_size=0.8, kernel='laplacian',
                save_predictions=None,
                splitter='random', dataset=''):
 
@@ -108,19 +110,13 @@ def predict_CV(X, y, CV=10, seed=1, train_size=0.8, kernel='laplacian',
     maes = np.zeros((CV))
 
     for i in range(CV):
-        print("CV iteration", i)
-        seed += i
+        print(f"CV iter {i+1}/{CV}")
 
-        if splitter == 'random':
-            idx_train, idx_test_val = train_test_split(np.arange(len(y)), random_state=seed, train_size=train_size)
-            idx_test, idx_val = train_test_split(idx_test_val, shuffle=False, test_size=0.5)
-        elif splitter == 'scaffold':
-            indices = np.arange(len(y))
-            np.random.shuffle(indices)
-            idx_train, idx_test, idx_val = get_scaffold_splits(dataset=dataset,
-                                                               indices=indices,
-                                                               sizes=(train_size, (1-train_size)/2,
-                                                               (1-train_size)/2))
+        np.random.seed(seed)
+        random.seed(seed)
+
+        idx_train, idx_test, idx_val, _ = split_dataset(nreactions=len(y), splitter=splitter,
+                                                        tr_frac=train_size, dataset=dataset)
 
         D_train = D_full[np.ix_(idx_train, idx_train)]
         D_val   = D_full[np.ix_(idx_val,   idx_train)]
@@ -145,5 +141,6 @@ def predict_CV(X, y, CV=10, seed=1, train_size=0.8, kernel='laplacian',
             print(*zip(idx_test, y_pred), sep='\n', file=f)
 
         maes[i] = mae
+        seed += 1
 
     return maes

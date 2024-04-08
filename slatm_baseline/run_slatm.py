@@ -64,7 +64,7 @@ if __name__ == "__main__":
         maes_slatm = predict_CV(slatm, barriers, CV=CV, train_size=args.train_size,
                                 save_predictions = slatm_pred,
                                 splitter=splitter, kernel=kernel,
-                                dataset=database)
+                                dataset=database, seed=123)
         np.save(slatm_save, maes_slatm)
     else:
         maes_slatm = np.load(slatm_save)
