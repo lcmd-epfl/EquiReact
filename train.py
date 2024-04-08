@@ -200,7 +200,7 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
             if splitter == 'ydesc':
                 idx4idx = idx4idx[::-1]
             indices = indices[idx4idx]
-            tr_indices, te_indices, val_indices = np.split(indices, [tr_size, tr_size+te_size])
+            tr_indices, val_indices, te_indices = np.split(indices, [tr_size, tr_size+te_size])
             np.random.shuffle(tr_indices)
             np.random.shuffle(te_indices)
             np.random.shuffle(val_indices)
