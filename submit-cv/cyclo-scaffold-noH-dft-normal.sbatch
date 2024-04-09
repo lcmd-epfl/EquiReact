@@ -38,7 +38,7 @@ python train.py \
 --radius 2.5 \
 --sum_mode node \
 --weight_decay 0.00001 \
---splitter scaffold \ 
---noH \ 
+--splitter scaffold \
+--noH \
 --wandb_name cv10-cyclo-scaffold-noH-dft-normal-ns64-nv48-d48-l2-energy-diff-node \
 

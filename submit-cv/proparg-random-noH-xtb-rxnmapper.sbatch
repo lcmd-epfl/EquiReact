@@ -41,8 +41,8 @@ python train.py \
 --two_layers_atom_diff \
 --atom_mapping \
 --rxnmapper \
---splitter random \ 
---noH \ 
---xtb \ 
+--splitter random \
+--noH \
+--xtb \
 --wandb_name cv10-proparg-random-noH-xtb-rxnmapper-ns64-nv64-d64-l3-vector-diff-node \
 

@@ -39,7 +39,7 @@ python train.py \
 --sum_mode both \
 --weight_decay 0.00001 \
 --attention cross \
---splitter random \ 
---noH \ 
+--splitter random \
+--noH \
 --wandb_name cv10-gdb-random-noH-dft-cross-ns64-nv64-d32-l2-vector-diff-both \
 

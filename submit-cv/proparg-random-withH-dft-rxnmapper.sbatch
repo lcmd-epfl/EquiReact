@@ -41,6 +41,6 @@ python train.py \
 --two_layers_atom_diff \
 --atom_mapping \
 --rxnmapper \
---splitter random \ 
+--splitter random \
 --wandb_name cv10-proparg-random-withH-dft-rxnmapper-ns64-nv64-d64-l3-vector-diff-node \
 

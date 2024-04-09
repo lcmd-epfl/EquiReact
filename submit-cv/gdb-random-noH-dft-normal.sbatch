@@ -38,7 +38,7 @@ python train.py \
 --radius 2.5 \
 --sum_mode both \
 --weight_decay 0.00001 \
---splitter random \ 
---noH \ 
+--splitter random \
+--noH \
 --wandb_name cv10-gdb-random-noH-dft-normal-ns64-nv64-d32-l2-vector-diff-both \
 

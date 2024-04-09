@@ -40,8 +40,8 @@ python train.py \
 --weight_decay 0.00001 \
 --two_layers_atom_diff \
 --atom_mapping \
---splitter random \ 
---noH \ 
---xtb \ 
+--splitter random \
+--noH \
+--xtb \
 --wandb_name cv10-gdb-random-noH-xtb-true-ns64-nv64-d32-l2-vector-diff-both \
 

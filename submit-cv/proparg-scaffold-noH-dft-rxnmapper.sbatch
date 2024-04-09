@@ -41,7 +41,7 @@ python train.py \
 --two_layers_atom_diff \
 --atom_mapping \
 --rxnmapper \
---splitter scaffold \ 
---noH \ 
+--splitter scaffold \
+--noH \
 --wandb_name cv10-proparg-scaffold-noH-dft-rxnmapper-ns64-nv64-d64-l3-vector-diff-node \
 

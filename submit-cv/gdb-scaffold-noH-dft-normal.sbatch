@@ -38,7 +38,7 @@ python train.py \
 --radius 2.5 \
 --sum_mode both \
 --weight_decay 0.00001 \
---splitter scaffold \ 
---noH \ 
+--splitter scaffold \
+--noH \
 --wandb_name cv10-gdb-scaffold-noH-dft-normal-ns64-nv64-d32-l2-vector-diff-both \
 

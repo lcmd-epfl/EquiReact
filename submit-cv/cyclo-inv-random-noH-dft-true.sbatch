@@ -40,8 +40,8 @@ python train.py \
 --weight_decay 0.00001 \
 --two_layers_atom_diff \
 --atom_mapping \
---splitter random \ 
---noH \ 
---invariant \ 
+--splitter random \
+--noH \
+--invariant \
 --wandb_name cv10-cyclo-inv-random-noH-dft-true-ns64-nv48-d48-l2-energy-diff-node \
 

@@ -38,6 +38,6 @@ python train.py \
 --radius 2.5 \
 --sum_mode node \
 --weight_decay 0.00001 \
---splitter random \ 
+--splitter random \
 --wandb_name cv10-cyclo-random-withH-dft-normal-ns64-nv48-d48-l2-energy-diff-node \
 

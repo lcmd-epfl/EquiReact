@@ -40,8 +40,8 @@ python train.py \
 --weight_decay 0.00001 \
 --two_layers_atom_diff \
 --atom_mapping \
---splitter scaffold \ 
---noH \ 
---invariant \ 
+--splitter scaffold \
+--noH \
+--invariant \
 --wandb_name cv10-gdb-inv-scaffold-noH-dft-true-ns64-nv64-d32-l2-vector-diff-both \
 

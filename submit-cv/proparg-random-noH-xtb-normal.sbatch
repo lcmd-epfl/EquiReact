@@ -38,8 +38,8 @@ python train.py \
 --radius 5 \
 --sum_mode node \
 --weight_decay 0.00001 \
---splitter random \ 
---noH \ 
---xtb \ 
+--splitter random \
+--noH \
+--xtb \
 --wandb_name cv10-proparg-random-noH-xtb-normal-ns64-nv64-d64-l3-vector-diff-node \
 

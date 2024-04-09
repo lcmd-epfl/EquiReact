@@ -41,7 +41,7 @@ python train.py \
 --two_layers_atom_diff \
 --atom_mapping \
 --rxnmapper \
---splitter random \ 
---noH \ 
+--splitter random \
+--noH \
 --wandb_name cv10-cyclo-random-noH-dft-rxnmapper-ns64-nv48-d48-l2-energy-diff-node \
 

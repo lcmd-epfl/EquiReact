@@ -39,7 +39,7 @@ python train.py \
 --sum_mode node \
 --weight_decay 0.00001 \
 --attention cross \
---splitter random \ 
---noH \ 
+--splitter random \
+--noH \
 --wandb_name cv10-cyclo-random-noH-dft-cross-ns64-nv48-d48-l2-energy-diff-node \
 
