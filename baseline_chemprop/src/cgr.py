@@ -3,7 +3,12 @@
 import sys
 import argparse as ap
 from itertools import compress
+import random
+import numpy as np
+import pandas as pd
 import chemprop
+sys.path.insert(0, '../../../')
+from process.splitter import split_dataset
 
 
 def argparse():
@@ -48,24 +53,47 @@ if __name__ == "__main__":
     dataset = next(compress(('cyclo', 'gdb', 'proparg'), (args.cyclo, args.gdb, args.proparg)))
     config_path = f'../../data/hypers_{dataset}_cgr.json'
 
-    arguments = [
-        "--data_path", data_path,
-        "--dataset_type",  "regression",
-        "--target_columns", target_columns,
-        "--smiles_columns", smiles_columns,
-        "--split_sizes", "0.8", "0.1", "0.1",
-        "--metric", "mae",
-        "--epochs", "300",
-        "--reaction",
-        "--config_path", config_path,
-        "--num_folds",  "10",
-        "--batch_size", "50",
-        "--save_dir", "./"]
-    if args.scaffold:
-        arguments.extend(('--split_type', 'scaffold_balanced'))
-    if args.withH:
-        arguments.append('--explicit_h')
 
-    args_chemprop = chemprop.args.TrainArgs().parse_args(arguments)
-    mean_score, std_score = chemprop.train.cross_validate(args=args_chemprop, train_func=chemprop.train.run_training)
-    print("Mean score", mean_score, "std_score", std_score)
+    CV = 10
+    tr_frac = 0.8
+
+    seed = 123
+    scores = np.zeros(CV)
+    for i in range(CV):
+        print(f"CV iter {i+1}/{CV}")
+
+        np.random.seed(seed)
+        random.seed(seed)
+
+        data = pd.read_csv(data_path, index_col=0)
+
+        tr_indices, te_indices, val_indices, _ = split_dataset(nreactions=len(data),
+                                                               splitter=('scaffold' if args.scaffold else 'random'),
+                                                               tr_frac=tr_frac, dataset=dataset, subset=None)
+        data.iloc[tr_indices].to_csv(f'data_{seed}_train.csv')
+        data.iloc[te_indices].to_csv(f'data_{seed}_test.csv')
+        data.iloc[val_indices].to_csv(f'data_{seed}_val.csv')
+
+        arguments = [
+            "--data_path",           f'data_{seed}_train.csv',
+            "--separate_val_path",   f'data_{seed}_val.csv',
+            "--separate_test_path",  f'data_{seed}_test.csv',
+            "--dataset_type",        "regression",
+            "--target_columns",      target_columns,
+            "--smiles_columns",      smiles_columns,
+            "--metric",              "mae",
+            "--epochs",              "300",
+            "--reaction",
+            "--config_path",         config_path,
+            "--batch_size",          "50",
+            "--save_dir",            f"fold_{i}"]
+        if args.withH:
+            arguments.append('--explicit_h')
+
+        args_chemprop = chemprop.args.TrainArgs().parse_args(arguments)
+        score, _ = chemprop.train.cross_validate(args=args_chemprop, train_func=chemprop.train.run_training)
+        scores[i] = score
+
+        seed += 1
+
+    print("Mean score", scores.mean(), "std_score", scores.std())
