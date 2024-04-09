@@ -1,0 +1,15 @@
+# https://wandb.ai/equireact/nequireact-cyclo-80/runs/dk489773/
+dataset           "cyclo"
+train_frac        0.8
+combine_mode      "diff"
+distance_emb_dim  48
+dropout_p         0.1
+graph_mode        "energy"
+lr                0.001
+max_neighbors     50
+n_conv_layers     2
+n_s               64
+n_v               48
+radius            2.5
+sum_mode          "node"
+weight_decay      0.00001

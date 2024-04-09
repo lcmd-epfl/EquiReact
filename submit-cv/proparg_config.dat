@@ -1,0 +1,15 @@
+# https //wandb.ai/equireact/nequireact-proparg-80/runs/mg070c8u/
+dataset           "proparg"
+train_frac        0.8
+combine_mode      "diff"
+distance_emb_dim  64
+dropout_p         0.05
+graph_mode        "vector"
+lr                0.001
+max_neighbors     10
+n_conv_layers     3
+n_s               64
+n_v               64
+radius            5
+sum_mode          "node"
+weight_decay      0.00001

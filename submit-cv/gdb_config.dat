@@ -1,0 +1,15 @@
+# https//wandb.ai/equireact/nequireact-gdb-80/runs/qnvdxkeq/
+dataset           "gdb"
+train_frac        0.8
+combine_mode      "diff"
+distance_emb_dim  32
+dropout_p         0.05
+graph_mode        "vector"
+lr                0.0005
+max_neighbors     10
+n_conv_layers     2
+n_s               64
+n_v               64
+radius            2.5
+sum_mode          "both"
+weight_decay      0.00001
