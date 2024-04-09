@@ -30,10 +30,10 @@ def opt_hyperparams_w_kernel(X, y, idx_train, idx_val, get_gamma,
         maes_opt[i] = mae
     if maes_opt[1] < maes_opt[0]:
         print(f"Best MAE {maes_opt[1]} for laplacian kernel, gamma={gammas_opt[1]} and l2reg={l2regs_opt[1]}")
-        return 'laplacian', gammas_opt[1], l2regs_opt[1]
+        return 'laplacian', gammas_opt[1], l2regs_opt[1], D_full_laplace
     else:
         print(f"Best MAE {maes_opt[0]} for rbf kernel, gamma={gammas_opt[0]} and l2reg={l2regs_opt[0]}")
-        return 'rbf', gammas_opt[0], l2regs_opt[0]
+        return 'rbf', gammas_opt[0], l2regs_opt[0], D_full_rbf
 
 
 def opt_hyperparams(D_train, D_val,
@@ -105,6 +105,7 @@ def predict_KRR(D_train, D_test,
 
 def compute_manhattan_dist(X):
     try:  # use qstack C routine if running on ksenia's desktop SORRY
+        print('try to use q-stack routine')
         import ctypes
         D_full = np.zeros((len(X), len(X)))
         array_2d_double = np.ctypeslib.ndpointer(dtype=np.float64, ndim=2, flags='CONTIGUOUS')
@@ -114,6 +115,7 @@ def compute_manhattan_dist(X):
         qstack_manh.argtypes = [ctypes.c_int, ctypes.c_int, ctypes.c_int, array_2d_double, array_2d_double, array_2d_double]
         qstack_manh(len(X), len(X), len(X[0]), X, X, D_full)
     except:
+        print('using default routine')
         D_full = pairwise_distances(X, metric='l1')
     return D_full
 
@@ -140,33 +142,29 @@ def predict_CV(X, y, CV=10, seed=123, train_size=0.8, kernel='laplacian',
 
     maes = np.zeros((CV))
 
+    if dataset in HYPERS.keys():
+        print("Reading optimal hypers from file")
+        kernel, gamma, l2reg = HYPERS[dataset]
+        if kernel == 'laplacian':
+            D_full = compute_manhattan_dist(X)
+        elif kernel == 'rbf' or kernel == 'gaussian':
+            D_full = compute_euclidean_dist_squared(X)
+
     for i in range(CV):
         print(f"CV iter {i+1}/{CV}")
 
         np.random.seed(seed)
         random.seed(seed)
-
         idx_train, idx_test, idx_val, _ = split_dataset(nreactions=len(y), splitter=splitter,
                                                         tr_frac=train_size, dataset=dataset)
-
         if i==0:
             print(f'train size {len(idx_train)} val size {len(idx_val)} test size {len(idx_test)}')
-
-            if dataset in HYPERS.keys():
-                print("Reading optimal hypers from file")
-                kernel, gamma, l2reg = HYPERS[dataset]
-                print(f"Making prediction with optimal params {kernel=}, {gamma=}, {l2reg=}")
-
-            else:
+            if dataset not in HYPERS.keys():
                 print("Optimizing hyperparameters")
-                kernel, gamma, l2reg = opt_hyperparams_w_kernel(X, y, idx_train, idx_val, get_gamma,
-                                                        sigmas=sigmas, l2regs=l2regs)
-                print(f"Making prediction with optimal params {kernel=}, {gamma=}, {l2reg=}")
+                kernel, gamma, l2reg, D_full = opt_hyperparams_w_kernel(X, y, idx_train, idx_val, get_gamma,
+                                                                        sigmas=sigmas, l2regs=l2regs)
+        print(f"Making prediction with optimal params {kernel=}, {gamma=}, {l2reg=}")
 
-        if kernel == 'laplacian':
-            D_full = compute_manhattan_dist(X)
-        elif kernel == 'rbf' or kernel == 'gaussian':
-            D_full = compute_euclidean_dist_squared(X)
         D_train = D_full[np.ix_(idx_train, idx_train)]
         D_test  = D_full[np.ix_(idx_test,  idx_train)]
         y_train = y[idx_train]
