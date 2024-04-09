@@ -7,7 +7,7 @@ from slatm_baseline.hypers import HYPERS
 from process.splitter import split_dataset
 
 def opt_hyperparams_w_kernel(X, y, idx_train, idx_val, get_gamma,
-                            sigmas=[1,10,100,1e3], l2regs=[1e-10,1e-7,1e-4]):
+                            sigmas, l2regs=[1e-10,1e-7,1e-4]):
     """Optimize hypers including laplacian/rbf kernel search"""
     D_full_laplace = compute_manhattan_dist(X)
     D_full_rbf = compute_euclidean_dist_squared(X)
@@ -38,7 +38,7 @@ def opt_hyperparams_w_kernel(X, y, idx_train, idx_val, get_gamma,
 
 def opt_hyperparams(D_train, D_val,
                     y_train, y_val, get_gamma,
-                    sigmas=[1,10,100,1e3], l2regs=[1e-10,1e-7,1e-4]):
+                    sigmas=[], l2regs=[1e-10,1e-7,1e-4]):
     """Optimize hyperparameters for KRR
 
     Args:
@@ -46,7 +46,6 @@ def opt_hyperparams(D_train, D_val,
         D_test (np array): Distance matrix between training and out-of-sample
         y_train (np array): Training labels
         y_test (np array): Labels for out-of-sample prediction
-        sigmas (np array): Kernel widths / inverse widths / etc in convenient units
         l2regs (np array): Regularizers
         get_gamma (func x): Function that converts sigma to gamma
                             so that kernel is computed as exp(-gamma * D)
@@ -54,6 +53,9 @@ def opt_hyperparams(D_train, D_val,
     Returns:
         float: Mean Absolute Error of prediction
     """
+
+    if len(sigmas) == 0 or len(l2regs) == 0:
+        raise ValueError("Need to provide a list/array of sigma values")
 
     maes = np.zeros((len(sigmas), len(l2regs)))
 
