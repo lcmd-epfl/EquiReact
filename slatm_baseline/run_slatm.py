@@ -21,8 +21,10 @@ if __name__ == "__main__":
     if xtb:
         print("Using xtb geoms")
         xtb_text = '_xtb'
+        database_label = database + xtb_text
     else:
         xtb_text = ''
+        database_label = database
 
     if xtb_subset:
         print("Using xtb subset")
@@ -64,7 +66,7 @@ if __name__ == "__main__":
         maes_slatm = predict_CV(slatm, barriers, CV=CV, train_size=args.train_size,
                                 save_predictions = slatm_pred,
                                 splitter=splitter, kernel=kernel,
-                                dataset=database, seed=123)
+                                dataset=database_label, seed=123)
         np.save(slatm_save, maes_slatm)
     else:
         maes_slatm = np.load(slatm_save)
