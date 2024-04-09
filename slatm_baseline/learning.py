@@ -38,7 +38,7 @@ def opt_hyperparams_w_kernel(X, y, idx_train, idx_val, get_gamma,
 
 def opt_hyperparams(D_train, D_val,
                     y_train, y_val, get_gamma,
-                    sigmas=[], l2regs=[1e-10,1e-7,1e-4]):
+                    sigmas, l2regs=[1e-10,1e-7,1e-4]):
     """Optimize hyperparameters for KRR
 
     Args:
@@ -46,6 +46,7 @@ def opt_hyperparams(D_train, D_val,
         D_test (np array): Distance matrix between training and out-of-sample
         y_train (np array): Training labels
         y_test (np array): Labels for out-of-sample prediction
+        sigmas (np array): Kernel widths / inverse widths / etc in convenient units
         l2regs (np array): Regularizers
         get_gamma (func x): Function that converts sigma to gamma
                             so that kernel is computed as exp(-gamma * D)
@@ -88,9 +89,9 @@ def predict_KRR(D_train, D_test,
     Returns:
         float: Mean Absolute Error of prediction
     """
-    #IMPORTANT: assuming D_train/D_test are computed appropriately
-    #with l1/l2 according to gaussian or laplacian kernel
-    #AND squared if necessary for rbf
+    # IMPORTANT: assuming D_train/D_test are computed appropriately
+    # with l1/l2 according to gaussian or laplacian kernel
+    # AND squared if necessary for rbf
 
     K      = np.exp(-gamma*D_train)
     K_test = np.exp(-gamma*D_test)
