@@ -1,43 +1,3 @@
-0ux5r2iq cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 132 4.893735968450218
-bds80hhm cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 131 4.595076919635666
-999k3qmr cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 130 4.904967254766693
-gnvf2rnf cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 129 5.058584009410649
-dh3dvjgf cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 128 4.870691825151543
-smkzqo0z cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 127 4.97533378809554
-ynkidxox cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 126 5.181152240917404
-awawyaf2 cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 125 5.272132479117295
-saoprrf3 cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 124 4.98644362075468
-t6l79ooh cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 123 4.77634384307791
-18uu763g cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 132 5.747453570109919
-lj8n9onu cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 131 5.619810543898192
-zr7tfzkr cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 130 6.054074898266939
-jnzoq3ja cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 129 6.412666468310061
-bdrn9to0 cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 128 6.133909745824504
-ud3fbe48 cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 127 5.842812584966687
-ewlgph0w cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 126 6.109755145868273
-1y52218e cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 125 6.734274920762704
-qctiha03 cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 124 5.858404572054027
-pey6amrp cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 123 5.653535828147115
-iednxsdf cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH 132 6.132412975344523
-p84o5rs7 cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH 131 5.85178783340738
-2j41v0sy cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH 130 6.743247876398288
-nfljg0sn cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH 129 6.7249909259601015
-k662wsu3 cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH 128 6.300650233013679
-ehwpbxap cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH 127 5.959078031760233
-uxh3ftwu cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH 126 6.505787005404268
-90pks9tj cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH 125 6.664014140360564
-381r81mm cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH 124 5.8283301725220875
-rt3jhi1d cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH 123 6.228558163383309
-orzm2sdj cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 132 6.479246999619781
-y4rviq6b cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 131 6.5988413502118854
-i5wt0bk1 cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 130 6.809027140586884
-p3wj3o7w cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 129 6.531669966493268
-9ye4vi9k cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 128 6.585139267330234
-9zpoa3i8 cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 127 5.997523798643148
-lzvn72em cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 126 6.753783157669346
-jj0iruib cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 125 6.887979059887153
-nu3qvrqx cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 124 6.212830633156209
-quuioc4o cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 123 6.236492557404677
 98ytqehn cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH 130 6.265265115017994
 6cj8o87c cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH 131 6.328388988820322
 ug3qa07h cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 127 6.098015683098596
@@ -199,10 +159,6 @@ hty5lorr cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH 127 6.0926517559
 cxo1vppp cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH 126 6.404894017193885
 cwc1utd8 cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 129 4.884981661471103
 
-cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 4.95144619493776 0.18399740025272582
-cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 6.016669827820842 0.3335708082620114
-cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH 6.293885735755444 0.3353134117957966
-cv10-LP-gdb-scaffold-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 6.509253393100259 0.27063109474901
 cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH 6.183331161083963 0.39876896641259063
 cv10-LP-gdb-subset4xtb-ns64-nv64-d48-layers3-vector-diff-node-noH-crossattention 6.555103016071651 0.3503606038141704
 cv10-LP-gdb-subset4xtb--ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 4.93725770712535 0.21576020103645857
@@ -221,36 +177,6 @@ cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping 4.99757808893
 cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-rxnmapper 6.2090149219740365 0.27717075479456604
 
 
-n02c1lye cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-truemapping 130 0.2625332841734973
-t94sm6dy cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-truemapping 131 0.27430125285269213
-u8c7r6zf cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-truemapping 129 0.4484384466407075
-eae4o364 cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-truemapping 127 0.29660785729597267
-0jax4i7r cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-truemapping 125 0.2490785354537772
-gxvciala cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-truemapping 128 0.28608353309705786
-hi9xq184 cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-truemapping 123 0.23170700595843807
-ih837li9 cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-truemapping 124 0.29763759487367336
-knmnz6lx cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-truemapping 126 0.37908120420626895
-uct1pp3a cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-truemapping 132 0.2807148381880924
-kx1rlcgf cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node 132 0.2434907072899037
-r27fraam cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node 131 0.2772248951338068
-cxdihz51 cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node 130 0.2274887825630834
-5trf459v cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node 129 0.31898970627106976
-kaksf3fd cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node 128 0.2603696295288253
-utd64al2 cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node 127 0.21549410582871303
-pnrxga1v cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node 126 0.29672599429671387
-adjm9mzl cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node 125 0.25952502793030374
-mgtx77zg cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node 124 0.2818944704089936
-86v899b0 cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node 123 0.2984993290982716
-jxxsnot5 cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-crossattention 132 0.27579656779812006
-0xnst8yt cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-crossattention 131 0.29058313336229724
-s9r2ak2z cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-crossattention 130 0.24809877791540577
-ihybcyow cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-crossattention 129 0.4236122369041648
-nu2k14dg cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-crossattention 128 0.29187762515106247
-0l5er0uv cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-crossattention 127 0.26454253242643894
-fys10i4r cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-crossattention 126 0.27772229185977604
-d5fw9v3z cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-crossattention 125 0.29652239230573335
-371jgori cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-crossattention 124 0.35265152748754613
-uzb8tjdm cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-crossattention 123 0.2709576021888213
 ooxf8c15 cv10-LP-proparg-xtb-noH-ns64-nv16-d16-layers3-vector-diff-node 132 0.379877620395456
 dgy54c09 cv10-LP-proparg-xtb-noH-ns64-nv16-d16-layers3-vector-diff-node 131 0.7456196045788804
 pyk0etcx cv10-LP-proparg-xtb-noH-ns64-nv16-d16-layers3-vector-diff-node 130 0.4238768969174558
@@ -342,9 +268,6 @@ h9evi4wp cv10-LP-proparg-noH-ns64-nv16-d16-layers3-vector-diff-node-truemapping 
 smk5zakj cv10-LP-proparg-noH-ns64-nv16-d16-layers3-vector-diff-node-truemapping 124 0.2779806211330493
 i1df64th cv10-LP-proparg-noH-ns64-nv16-d16-layers3-vector-diff-node-truemapping 123 0.25250277718515945
 
-cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-truemapping 0.30061835527401776 0.06179625212025924
-cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node 0.2679702648349685 0.031244629812131608
-cv10-LP-proparg-scaffold-ns64-nv16-d16-layers3-vector-diff-node-crossattention 0.2992364687399366 0.04908117246629879
 cv10-LP-proparg-xtb-noH-ns64-nv16-d16-layers3-vector-diff-node 0.47488718606540364 0.11475480179333845
 cv10-LP-proparg-xtb-noH-ns64-nv16-d16-layers3-vector-diff-node-crossattention 0.4481924696189167 0.09688818186241324
 cv10-LP-proparg-noH-ns64-nv16-d16-layers3-vector-diff-node-crossattention 0.2746669200016168 0.044104757903815454
@@ -356,46 +279,6 @@ cv10-LP-proparg-noH-ns64-nv16-d16-layers3-vector-diff-node 0.2712933677162441 0.
 cv10-LP-proparg-noH-ns64-nv16-d16-layers3-vector-diff-node-truemapping 0.2924520340787906 0.059234299217346326
 
 
-m7gp6ky7 cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 131 2.433007562830818
-7nicvhk0 cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 130 2.694588293423803
-ovxlcx3v cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 128 2.8496294790762384
-819rigoz cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 127 2.611662964897703
-3bo1fjas cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 126 2.6801200140218597
-k5mr3dhi cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 129 2.526551804425747
-xrjccs86 cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 132 2.9435631710957857
-mp3fd2m1 cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 124 3.112265599496538
-mgznwgm5 cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 125 2.6601014178141877
-j6o4nafa cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 123 2.8201367307578633
-ypxq8gqq cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 125 2.807838696568019
-y5gvor7r cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 130 2.7913822072185224
-79aunjpw cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 129 2.6881747299894134
-6x23oxrn cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 131 2.622490402534006
-02fgq6dh cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 132 2.717710267534947
-xdn4qy6d cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 128 2.831293726227512
-qwa8scbf cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 127 2.661968722165769
-l7o5ez89 cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 132 2.55510885344753
-ww2v8jiw cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both 123 2.748736012170816
-p5392szq cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 131 2.3466895035801976
-kh5m7ghz cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both 124 2.655904626465422
-08pvmi0o cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 130 2.1620134664076978
-rk4fihlr cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 129 2.384018546680241
-g2vj4dey cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 124 3.1756478141421636
-d9rls7pa cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 126 2.792345485414598
-47pmcf5g cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 123 3.1429495674092034
-c5cbcl5i cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both 129 2.402608602560211
-cpne3ovc cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both 130 2.143811672301559
-dooeer4r cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both 131 2.3151624014504435
-6s08968d cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both 132 2.2168543248496024
-ywfch6fv cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both 125 2.118941234704364
-qmf0l6zn cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both 126 2.301441682138629
-zhdf75qn cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both 127 2.1892389624024533
-t475mc14 cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both 128 2.571871477606237
-cq4k3mn4 cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 123 2.5936628782266493
-h853vpd0 cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 126 2.470603301747171
-6paj78lm cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 128 2.732316853059674
-vwivpf1t cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 127 2.358046740482293
-3ih8pq57 cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 125 2.4873101957935675
-eetlh3d4 cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 124 2.5833979937889606
 t0vvllzv cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both 123 2.345817118269172
 6p0df5i1 cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 132 2.4805403590768114
 wgjws273 cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 131 2.251477296265937
@@ -557,10 +440,6 @@ cntik070 cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 130 
 6ecje5bf cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 131 2.300428920850496
 67zngxtv cv10-LP-cyclo-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 127 2.256295723667171
 
-cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both-truemapping 2.7331627037840542 0.19138943957302443
-cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 2.823180161920415 0.1801013240749855
-cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 2.4673168333213984 0.15310806635550578
-cv10-LP-cyclo-scaffold-ns64-nv48-d48-layers3-energy-mlp-both 2.3664570996649736 0.21092641709028848
 cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both 2.298174762296962 0.10842369490454204
 cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-crossattention 2.260585726236871 0.128296394006926
 cv10-LP-cyclo-subset4xtb-noH-ns64-nv48-d48-layers3-energy-mlp-both-rxnmapper 2.3404899467339213 0.11325889513681717

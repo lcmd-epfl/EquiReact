@@ -8,7 +8,7 @@ if __name__ == "__main__":
 
     parser = ap.ArgumentParser()
     parser.add_argument('-d', '--database', default='gdb')
-    parser.add_argument('--train_size', default=0.9)
+    parser.add_argument('--train_size', default=0.8)
     parser.add_argument('-xtb', '--xtb', action='store_true', default=False)
     parser.add_argument('--xtb_subset', action='store_true', default=False, help='Run on the xtb data subset (not necessarily at xtb level')
     parser.add_argument('--splitter', default='random', help='splitter random or scaffold')
@@ -64,7 +64,7 @@ if __name__ == "__main__":
         maes_slatm = predict_CV(slatm, barriers, CV=CV, train_size=args.train_size,
                                 save_predictions = slatm_pred,
                                 splitter=splitter, kernel=kernel,
-                                dataset=database)
+                                dataset=database, seed=123)
         np.save(slatm_save, maes_slatm)
     else:
         maes_slatm = np.load(slatm_save)
