@@ -310,13 +310,13 @@ if __name__ == '__main__':
         print(f"creating run dir {run_dir}")
         os.makedirs(run_dir)
 
-    logname = f'{datetime.now().strftime("%y%m%d-%H%M%S.%f")}-{getuser()}'
+    logname = f'{args.wandb_name}-{datetime.now().strftime("%y%m%d-%H%M%S.%f")}-{getuser()}'
     logpath = os.path.join(run_dir, f'{logname}.log')
     print(f"stdout to {logpath}")
     sys.stdout = Logger(logpath=logpath, syspart=sys.stdout)
     sys.stderr = Logger(logpath=logpath, syspart=sys.stderr)
 
-    project = f'nequireact-{args.dataset}'
+    project = f'nequireact-{args.dataset}-80'
     print(f'wandb name {args.wandb_name}' if args.wandb_name else 'no wandb name specified')
 
     print("\ninput args", args, '\n')
