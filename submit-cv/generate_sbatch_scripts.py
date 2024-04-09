@@ -15,9 +15,9 @@ base_config = {key: val.strip('"') for key, val in base_config}
 normal_base_config = '\n'.join([f'--{key} {val} \\' for key, val in base_config.items()])
 true_base_config = '\n'.join((normal_base_config, '--two_layers_atom_diff \\', '--atom_mapping \\'))
 rxnmapper_base_config = '\n'.join((true_base_config, '--rxnmapper \\'))
-#cross_base_config =  TODO use different lr and weight decay?
+cross_base_config = '\n'.join((normal_base_config, '--attention cross \\')) # TODO use different lr and weight decay?
 
-base_configs = {'normal': normal_base_config, 'true':true_base_config, 'rxnmapper':rxnmapper_base_config}
+base_configs = {'normal': normal_base_config, 'true':true_base_config, 'rxnmapper':rxnmapper_base_config, 'cross':cross_base_config}
 
 base_name = f"ns{base_config['n_s']}-nv{base_config['n_v']}-d{base_config['distance_emb_dim']}-l{base_config['n_conv_layers']}-{base_config['graph_mode']}-{base_config['combine_mode']}-{base_config['sum_mode']}"
 
