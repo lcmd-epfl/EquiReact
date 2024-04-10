@@ -15,9 +15,11 @@ def train_wrapper():
                   n_s=args.n_s, n_v=args.n_v, n_conv_layers=args.n_conv_layers, distance_emb_dim=args.distance_emb_dim,
                   graph_mode=args.graph_mode, dropout_p=args.dropout_p, random_baseline=False,
                   combine_mode=args.combine_mode, atom_mapping=args.atom_mapping, CV=1, attention=args.attention,
-                  noH=False, two_layers_atom_diff=None, rxnmapper=False, reverse=False,
-                  xtb=False, split_complexes=False, sweep=True, lr=args.lr, weight_decay=args.weight_decay)
-        except:
+                  noH=args.noH, two_layers_atom_diff=args.two_layers_atom_diff, rxnmapper=False, reverse=False,
+                  xtb=args.xtb, split_complexes=False, sweep=True, lr=args.lr, weight_decay=args.weight_decay,
+                  tr_frac=args.train_frac)
+        except Exception as e:
+            print(e)
             pass
 
 
@@ -30,7 +32,7 @@ args = parser.parse_args()
 dataset = next(compress(('cyclo', 'gdb', 'proparg'), (args.cyclo, args.gdb, args.proparg)))
 
 epochs = {'cyclo': 256, 'gdb': 128, 'proparg': 128}
-project = f'nequireact-{dataset}-sweep'
+project = f'nequireact-{dataset}-80'
 run_dir = f'sweep_{dataset}'
 if not os.path.exists(run_dir):
     os.makedirs(run_dir)
@@ -85,6 +87,10 @@ parameters_dict.update({ 'attention': { 'value': None} })
 parameters_dict.update({ 'atom_mapping': { 'value': False} })
 parameters_dict.update({ 'dataset': { 'value': dataset} })
 parameters_dict.update({ 'num_epochs': { 'value': epochs[dataset]} })
+parameters_dict.update({ 'train_frac': { 'value': 0.8} })
+parameters_dict.update({ 'noH': { 'value': True} })
+parameters_dict.update({ 'two_layers_atom_diff': { 'value': False} })
+parameters_dict.update({ 'xtb': { 'value': False} })
 
 sweep_config['parameters'] = parameters_dict
 pprint.pprint(sweep_config)
