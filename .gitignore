@@ -7,13 +7,13 @@ events.out.tfevents.*
 runs/
 *__pycache__*
 
-slatm_baseline/slatm_cyclo.npy
-slatm_baseline/slatm_cyclo_sub.npy
-slatm_baseline/slatm_cyclo_xtb.npy
-slatm_baseline/slatm_gdb.npy
-slatm_baseline/slatm_gdb_sub.npy
-slatm_baseline/slatm_gdb_xtb.npy
-slatm_baseline/slatm_proparg.npy
-slatm_baseline/slatm_proparg_xtb.npy
+baseline_slatm/slatm_cyclo.npy
+baseline_slatm/slatm_cyclo_sub.npy
+baseline_slatm/slatm_cyclo_xtb.npy
+baseline_slatm/slatm_gdb.npy
+baseline_slatm/slatm_gdb_sub.npy
+baseline_slatm/slatm_gdb_xtb.npy
+baseline_slatm/slatm_proparg.npy
+baseline_slatm/slatm_proparg_xtb.npy
 
 baseline_chemprop/results/*/*.csv
