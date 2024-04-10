@@ -161,6 +161,7 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
     print()
 
     maes = []
+    rmses = []
 
     for i in range(CV):
         print(f"CV iter {i+1}/{CV}")
@@ -245,9 +246,12 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
                     print('>>>', *x)
 
             mae_split = test_metrics['mae'] * std
+            rmse_split = np.sqrt(test_metrics['MSELoss'])*std
             maes.append(mae_split)
+            rmses.append(rmse_split)
             if wandb.run is not None:
                 wandb.run.summary["test_score"] = mae_split
+                wandb.run.summary["test_rmse"] = rmse_split
 
             if print_repr:
                 for x_indices, x_loader, x_title in zip((train_data.indices, val_data.indices, test_data.indices),
@@ -263,10 +267,9 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
         print()
 
     if eval_on_test:
-        mean_mae_splits = np.mean(maes)
-        std_mae_splits = np.std(maes)
-        print(f"Mean MAE across splits {mean_mae_splits} +- {std_mae_splits}")
-    return maes
+        print(f"Mean MAE across splits {np.mean(maes)} +- {np.std(maes)}")
+        print(f"Mean RMSE across splits {np.mean(rmses)} +- {np.std(rmses)}")
+    return maes, rmses
 
 
 if __name__ == '__main__':

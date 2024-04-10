@@ -67,20 +67,20 @@ if script_args.xtb is not None:
 print(args)
 print()
 
-maes = train.train(run_dir, logname, None, None, {}, seed=args.seed,
-                   device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint,
-                   subset=args.subset, dataset=args.dataset, process=args.process,
-                   verbose=args.verbose, radius=args.radius, max_neighbors=args.max_neighbors, sum_mode=args.sum_mode,
-                   n_s=args.n_s, n_v=args.n_v, n_conv_layers=args.n_conv_layers, distance_emb_dim=args.distance_emb_dim,
-                   graph_mode=args.graph_mode, dropout_p=args.dropout_p, random_baseline=args.random_baseline,
-                   combine_mode=args.combine_mode, atom_mapping=args.atom_mapping, CV=args.CV, attention=args.attention,
-                   noH=args.noH, two_layers_atom_diff=args.two_layers_atom_diff, rxnmapper=args.rxnmapper, reverse=args.reverse,
-                   xtb=args.xtb, xtb_subset=args.xtb_subset,
-                   splitter=args.splitter,
-                   split_complexes=args.split_complexes, lr=args.lr, weight_decay=args.weight_decay,
-                   eval_on_test_split=args.eval_on_test_split,
-                   invariant=args.invariant,
-                   tr_frac=args.train_frac,
-                   sweep=True)
+maes, rmses = train.train(run_dir, logname, None, None, {}, seed=args.seed,
+                          device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint,
+                          subset=args.subset, dataset=args.dataset, process=args.process,
+                          verbose=args.verbose, radius=args.radius, max_neighbors=args.max_neighbors, sum_mode=args.sum_mode,
+                          n_s=args.n_s, n_v=args.n_v, n_conv_layers=args.n_conv_layers, distance_emb_dim=args.distance_emb_dim,
+                          graph_mode=args.graph_mode, dropout_p=args.dropout_p, random_baseline=args.random_baseline,
+                          combine_mode=args.combine_mode, atom_mapping=args.atom_mapping, CV=args.CV, attention=args.attention,
+                          noH=args.noH, two_layers_atom_diff=args.two_layers_atom_diff, rxnmapper=args.rxnmapper, reverse=args.reverse,
+                          xtb=args.xtb, xtb_subset=args.xtb_subset,
+                          splitter=args.splitter,
+                          split_complexes=args.split_complexes, lr=args.lr, weight_decay=args.weight_decay,
+                          eval_on_test_split=args.eval_on_test_split,
+                          invariant=args.invariant,
+                          tr_frac=args.train_frac,
+                          sweep=True)
 
 print(f'delta MAE: {abs(mae_logged-np.mean(maes)):.2e}')
