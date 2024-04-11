@@ -3,6 +3,7 @@ import pandas as pd
 from process.scaffold import scaffold_split
 import numpy as np
 import re
+import os
 
 
 def remove_atom_map_number_manual(smiles):
@@ -22,7 +23,8 @@ def get_scaffold_splits(dataset, indices=None, sizes=(0.8, 0.1, 0.1)):
     csv_files = {'gdb': 'data/gdb7-22-ts/ccsdtf12_dz_cleaned.csv',
                  'cyclo': 'data/cyclo/cyclo.csv',
                  'proparg': 'data/proparg/proparg.csv'}
-    df = pd.read_csv(csv_files[dataset], index_col=0)
+    dirname = os.path.abspath(f'{os.path.dirname(__file__)}/../')
+    df = pd.read_csv(f'{dirname}/{csv_files[dataset]}', index_col=0)
     if dataset == 'gdb':
         rsmiles = df['rsmi'].to_numpy()
     elif dataset == 'cyclo':

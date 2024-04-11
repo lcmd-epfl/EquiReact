@@ -15,3 +15,5 @@ baseline_slatm/slatm_gdb_sub.npy
 baseline_slatm/slatm_gdb_xtb.npy
 baseline_slatm/slatm_proparg.npy
 baseline_slatm/slatm_proparg_xtb.npy
+
+baseline_chemprop/results/*/*.csv

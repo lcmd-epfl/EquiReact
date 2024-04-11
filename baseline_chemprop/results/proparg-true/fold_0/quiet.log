@@ -1,0 +1,80 @@
+Fold 0
+Model 0 best validation mae = 1.959243 on epoch 61
+Model 0 test mae = 1.429487
+Ensemble test mae = 1.429487
+1-fold cross validation
+	Seed 0 ==> test mae = 1.429487
+Overall test mae = 1.429487 +/- 0.000000
+Elapsed time = 0:13:21
+Fold 0
+Model 0 best validation mae = 1.516287 on epoch 33
+Model 0 test mae = 1.620615
+Ensemble test mae = 1.620615
+1-fold cross validation
+	Seed 0 ==> test mae = 1.620615
+Overall test mae = 1.620615 +/- 0.000000
+Elapsed time = 0:13:16
+Fold 0
+Model 0 best validation mae = 1.547378 on epoch 186
+Model 0 test mae = 1.580925
+Ensemble test mae = 1.580925
+1-fold cross validation
+	Seed 0 ==> test mae = 1.580925
+Overall test mae = 1.580925 +/- 0.000000
+Elapsed time = 0:13:19
+Fold 0
+Model 0 best validation mae = 1.439973 on epoch 69
+Model 0 test mae = 1.330713
+Ensemble test mae = 1.330713
+1-fold cross validation
+	Seed 0 ==> test mae = 1.330713
+Overall test mae = 1.330713 +/- 0.000000
+Elapsed time = 0:13:11
+Fold 0
+Model 0 best validation mae = 1.483880 on epoch 23
+Model 0 test mae = 1.555369
+Ensemble test mae = 1.555369
+1-fold cross validation
+	Seed 0 ==> test mae = 1.555369
+Overall test mae = 1.555369 +/- 0.000000
+Elapsed time = 0:13:14
+Fold 0
+Model 0 best validation mae = 1.702834 on epoch 125
+Model 0 test mae = 1.605563
+Ensemble test mae = 1.605563
+1-fold cross validation
+	Seed 0 ==> test mae = 1.605563
+Overall test mae = 1.605563 +/- 0.000000
+Elapsed time = 0:13:16
+Fold 0
+Model 0 best validation mae = 1.578790 on epoch 147
+Model 0 test mae = 1.841498
+Ensemble test mae = 1.841498
+1-fold cross validation
+	Seed 0 ==> test mae = 1.841498
+Overall test mae = 1.841498 +/- 0.000000
+Elapsed time = 0:13:15
+Fold 0
+Model 0 best validation mae = 1.709817 on epoch 16
+Model 0 test mae = 1.694127
+Ensemble test mae = 1.694127
+1-fold cross validation
+	Seed 0 ==> test mae = 1.694127
+Overall test mae = 1.694127 +/- 0.000000
+Elapsed time = 0:13:06
+Fold 0
+Model 0 best validation mae = 1.766420 on epoch 219
+Model 0 test mae = 1.408033
+Ensemble test mae = 1.408033
+1-fold cross validation
+	Seed 0 ==> test mae = 1.408033
+Overall test mae = 1.408033 +/- 0.000000
+Elapsed time = 0:13:09
+Fold 0
+Model 0 best validation mae = 1.441553 on epoch 62
+Model 0 test mae = 1.454660
+Ensemble test mae = 1.454660
+1-fold cross validation
+	Seed 0 ==> test mae = 1.454660
+Overall test mae = 1.454660 +/- 0.000000
+Elapsed time = 0:13:13
