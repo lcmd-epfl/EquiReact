@@ -71,6 +71,7 @@ if __name__ == "__main__":
         "--smiles_columns", smiles_columns,
         "--split_sizes", "0.9", "0.05", "0.05",
         "--metric", "mae",
+        "--extra_metrics", "rmse",
         "--dropout", "0.05",
         "--epochs", "300",
         "--reaction",
