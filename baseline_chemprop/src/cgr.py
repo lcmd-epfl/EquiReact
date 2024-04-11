@@ -82,6 +82,7 @@ if __name__ == "__main__":
             "--target_columns",      target_columns,
             "--smiles_columns",      smiles_columns,
             "--metric",              "mae",
+            "--extra_metrics",       "rmse",
             "--epochs",              "300",
             "--reaction",
             "--config_path",         config_path,
