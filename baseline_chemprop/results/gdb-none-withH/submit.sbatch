@@ -3,7 +3,7 @@
 #SBATCH --nodes=1
 #SBATCH --gpus-per-node=1
 #SBATCH --ntasks=1
-#SBATCH --mem-per-cpu=4GB
+#SBATCH --mem-per-cpu=8GB
 #SBATCH --time=48:00:00
 #SBATCH --job-name=chemprop
 

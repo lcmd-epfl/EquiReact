@@ -1,0 +1,120 @@
+Fold 0
+Model 0 best validation mae = 6.189920 on epoch 200
+Model 0 test mae = 6.477441
+Model 0 test rmse = 10.337750
+Ensemble test mae = 6.477441
+Ensemble test rmse = 10.337750
+1-fold cross validation
+	Seed 0 ==> test mae = 6.477441
+	Seed 0 ==> test rmse = 10.337750
+Overall test mae = 6.477441 +/- 0.000000
+Overall test rmse = 10.337750 +/- 0.000000
+Elapsed time = 0:45:21
+Fold 0
+Model 0 best validation mae = 6.159550 on epoch 242
+Model 0 test mae = 6.288231
+Model 0 test rmse = 10.579549
+Ensemble test mae = 6.288231
+Ensemble test rmse = 10.579549
+1-fold cross validation
+	Seed 0 ==> test mae = 6.288231
+	Seed 0 ==> test rmse = 10.579549
+Overall test mae = 6.288231 +/- 0.000000
+Overall test rmse = 10.579549 +/- 0.000000
+Elapsed time = 0:44:00
+Fold 0
+Model 0 best validation mae = 6.707041 on epoch 171
+Model 0 test mae = 6.273116
+Model 0 test rmse = 10.453947
+Ensemble test mae = 6.273116
+Ensemble test rmse = 10.453947
+1-fold cross validation
+	Seed 0 ==> test mae = 6.273116
+	Seed 0 ==> test rmse = 10.453947
+Overall test mae = 6.273116 +/- 0.000000
+Overall test rmse = 10.453947 +/- 0.000000
+Elapsed time = 0:44:00
+Fold 0
+Model 0 best validation mae = 6.449834 on epoch 209
+Model 0 test mae = 6.458244
+Model 0 test rmse = 10.724414
+Ensemble test mae = 6.458244
+Ensemble test rmse = 10.724414
+1-fold cross validation
+	Seed 0 ==> test mae = 6.458244
+	Seed 0 ==> test rmse = 10.724414
+Overall test mae = 6.458244 +/- 0.000000
+Overall test rmse = 10.724414 +/- 0.000000
+Elapsed time = 0:44:12
+Fold 0
+Model 0 best validation mae = 6.195220 on epoch 237
+Model 0 test mae = 6.426423
+Model 0 test rmse = 10.559444
+Ensemble test mae = 6.426423
+Ensemble test rmse = 10.559444
+1-fold cross validation
+	Seed 0 ==> test mae = 6.426423
+	Seed 0 ==> test rmse = 10.559444
+Overall test mae = 6.426423 +/- 0.000000
+Overall test rmse = 10.559444 +/- 0.000000
+Elapsed time = 0:44:00
+Fold 0
+Model 0 best validation mae = 6.166914 on epoch 235
+Model 0 test mae = 6.407203
+Model 0 test rmse = 10.791561
+Ensemble test mae = 6.407203
+Ensemble test rmse = 10.791561
+1-fold cross validation
+	Seed 0 ==> test mae = 6.407203
+	Seed 0 ==> test rmse = 10.791561
+Overall test mae = 6.407203 +/- 0.000000
+Overall test rmse = 10.791561 +/- 0.000000
+Elapsed time = 0:46:45
+Fold 0
+Model 0 best validation mae = 6.344525 on epoch 206
+Model 0 test mae = 6.223702
+Model 0 test rmse = 10.177662
+Ensemble test mae = 6.223702
+Ensemble test rmse = 10.177662
+1-fold cross validation
+	Seed 0 ==> test mae = 6.223702
+	Seed 0 ==> test rmse = 10.177662
+Overall test mae = 6.223702 +/- 0.000000
+Overall test rmse = 10.177662 +/- 0.000000
+Elapsed time = 0:44:06
+Fold 0
+Model 0 best validation mae = 6.622998 on epoch 207
+Model 0 test mae = 6.233897
+Model 0 test rmse = 10.108559
+Ensemble test mae = 6.233897
+Ensemble test rmse = 10.108559
+1-fold cross validation
+	Seed 0 ==> test mae = 6.233897
+	Seed 0 ==> test rmse = 10.108559
+Overall test mae = 6.233897 +/- 0.000000
+Overall test rmse = 10.108559 +/- 0.000000
+Elapsed time = 0:44:11
+Fold 0
+Model 0 best validation mae = 6.314264 on epoch 254
+Model 0 test mae = 6.438903
+Model 0 test rmse = 10.515096
+Ensemble test mae = 6.438903
+Ensemble test rmse = 10.515096
+1-fold cross validation
+	Seed 0 ==> test mae = 6.438903
+	Seed 0 ==> test rmse = 10.515096
+Overall test mae = 6.438903 +/- 0.000000
+Overall test rmse = 10.515096 +/- 0.000000
+Elapsed time = 0:44:03
+Fold 0
+Model 0 best validation mae = 6.388036 on epoch 246
+Model 0 test mae = 6.338477
+Model 0 test rmse = 10.303309
+Ensemble test mae = 6.338477
+Ensemble test rmse = 10.303309
+1-fold cross validation
+	Seed 0 ==> test mae = 6.338477
+	Seed 0 ==> test rmse = 10.303309
+Overall test mae = 6.338477 +/- 0.000000
+Overall test rmse = 10.303309 +/- 0.000000
+Elapsed time = 0:43:57

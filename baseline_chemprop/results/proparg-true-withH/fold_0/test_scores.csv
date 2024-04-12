@@ -1,2 +1,2 @@
-Task,Mean mae,Standard deviation mae,Fold 0 mae
-Eafw,1.4192925613646146,0.0,1.4192925613646146
+Task,Mean mae,Standard deviation mae,Fold 0 mae,Mean rmse,Standard deviation rmse,Fold 0 rmse
+Eafw,1.4351779833882805,0.0,1.4351779833882805,1.9179353252062084,0.0,1.9179353252062084
