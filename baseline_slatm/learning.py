@@ -1,4 +1,6 @@
+import os
 import random
+import warnings
 import numpy as np
 from sklearn.metrics import pairwise_distances
 from sklearn.model_selection import train_test_split
@@ -106,18 +108,17 @@ def predict_KRR(D_train, D_test,
 
 
 def compute_manhattan_dist(X):
-    try:  # use qstack C routine if running on ksenia's desktop SORRY
-        print('try to use q-stack routine')
+    try:
         import ctypes
         D_full = np.zeros((len(X), len(X)))
         array_2d_double = np.ctypeslib.ndpointer(dtype=np.float64, ndim=2, flags='CONTIGUOUS')
-        qstack_manh_path = '/home/xe/GIT/Q-stack/qstack/regression/lib/manh.so'
+        qstack_manh_path = f'{os.path.dirname(__file__)}/manh.so'
         qstack_manh = ctypes.cdll.LoadLibrary(qstack_manh_path).manh
         qstack_manh.restype = ctypes.c_int
         qstack_manh.argtypes = [ctypes.c_int, ctypes.c_int, ctypes.c_int, array_2d_double, array_2d_double, array_2d_double]
         qstack_manh(len(X), len(X), len(X[0]), X, X, D_full)
     except:
-        print('using default routine')
+        warnings.warn('Using the slow Manhattan distance routine.\nConsider building the fast one with\n`cd baseline_slatm && make manh.so`')
         D_full = pairwise_distances(X, metric='l1')
     return D_full
 
