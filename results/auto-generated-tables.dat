@@ -66,7 +66,7 @@
 \end{tabular}
 
 
-% HYDROGENS vs NO HYDROGENS SI PAPER: DFT, MAE, RANDOM SPLITS
+% HYDROGENS vs NO HYDROGENS SI TABLE: DFT, MAE, RANDOM SPLITS
 \begin{tabular}{@{}cccccccc@{}} \toprule
 \multirow{3}{*}{\makecell{Dataset \\ (property, units)}}&
 \multirow{3}{*}{H mode}&
@@ -85,7 +85,17 @@
 \bottomrule
 \end{tabular}
 
-% DFT vs XTB RESULTS FOR GNUPLOT
+% EQUIREACT_X vs EQUIREACT_S SI TABLE: DFT, MAE, RANDOM, NO H
+\begin{tabular}{@{}cccc@{}} \toprule
+Dataset (property, units)
+& Mapping mode & \textsc{EquiReact}$_X$ & \textsc{EquiReact}$_S$ \\ \midrule
+\gdb ($\Delta E^\ddag$, kcal/mol) & None& $ 6.7 \pm 0.3 $& $ 6.53 \pm 0.28 $ \\[0.002cm]
+\cyclo ($\Delta G^\ddag$, kcal/mol) & None& $ 2.43 \pm 0.09 $& $ 2.31 \pm 0.09 $ \\[0.002cm]
+\proparg ($\Delta E^\ddag$, kcal/mol) & None& $ 0.33 \pm 0.06 $& $ 0.31 \pm 0.06 $ \\[0.002cm]
+\bottomrule
+\end{tabular}
+
+% DFT vs XTB RESULTS FOR GNUPLOT: MAE, RANDOM, NO H
 #gdb
 1.0 	 DFT 	 cv10-gdb-random-noH-sub-true 	 5.030196630315421 0.1727177553900425
 2.0 	 xTB 	 cv10-gdb-random-noH-xtb-true 	 5.151691267513168 0.23309884505880504

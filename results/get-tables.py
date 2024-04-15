@@ -183,6 +183,23 @@ def print_xtb_data(use_H=False, use_rmse=False, splitter='random'):
         print()
 
 
+def print_attn_table(use_H=False, use_rmse=False, splitter='random', geometry='dft'):
+    h_key = "withH" if use_H else "noH"
+    header = r'''\begin{tabular}{@{}cccc@{}} \toprule
+Dataset (property, units)
+& Mapping mode & \textsc{EquiReact}$_X$ & \textsc{EquiReact}$_S$ \\ \midrule'''
+    footer=r'''\bottomrule
+\end{tabular}'''
+    print(header)
+    for dataset, prop in zip(['gdb', 'cyclo', 'proparg'], ['E', 'G', 'E']):
+        print('\\'+dataset, r'($\Delta '+prop+'^\ddag$, kcal/mol) & None', end='')
+        for atom_mapping in ['cross', 'none']:
+            equireact_key = f'cv10-{dataset}-{splitter}-{h_key}-{geometry}-{atom_mapping}'
+            print('&', get_error(equireact[equireact_key], use_rmse), end='')
+        print(r' \\[0.002cm]')
+    print(footer)
+
+
 if __name__=='__main__':
     chemprop = load_chemprop()
     slatm = load_slatm()
@@ -196,9 +213,13 @@ if __name__=='__main__':
     print_main_table(geometry='dft', use_H=False, use_rmse=True)
     print()
 
-    print('% HYDROGENS vs NO HYDROGENS SI PAPER: DFT, MAE, RANDOM SPLITS')
+    print('% HYDROGENS vs NO HYDROGENS SI TABLE: DFT, MAE, RANDOM SPLITS')
     print_hydrogen_table(geometry='dft', use_rmse=False)
     print()
 
-    print('% DFT vs XTB RESULTS FOR GNUPLOT')
+    print('% EQUIREACT_X vs EQUIREACT_S SI TABLE: DFT, MAE, RANDOM, NO H')
+    print_attn_table()
+    print()
+
+    print('% DFT vs XTB RESULTS FOR GNUPLOT: MAE, RANDOM, NO H')
     print_xtb_data()
