@@ -1,9 +1,11 @@
+import os
 import random
+import warnings
 import numpy as np
 from sklearn.metrics import pairwise_distances
 from sklearn.model_selection import train_test_split
 from process.dataloader_chemprop import get_scaffold_splits
-from slatm_baseline.hypers import HYPERS
+from baseline_slatm.hypers import HYPERS
 from process.splitter import split_dataset
 
 def opt_hyperparams_w_kernel(X, y, idx_train, idx_val, get_gamma,
@@ -62,7 +64,7 @@ def opt_hyperparams(D_train, D_val,
 
     for i, sigma in enumerate(sigmas):
         for j, l2reg in enumerate(l2regs):
-            mae, y_pred = predict_KRR(
+            mae, y_pred, _ = predict_KRR(
                 D_train, D_val, y_train, y_val, gamma=get_gamma(sigma), l2reg=l2reg
                 )
             maes[i, j] = mae
@@ -101,22 +103,22 @@ def predict_KRR(D_train, D_test,
 
     y_pred = np.dot(K_test, alpha)
     mae = np.mean(np.abs(y_test - y_pred))
-    return mae, y_pred
+    rmse = np.sqrt(np.mean((y_test-y_pred)**2))
+    return mae, rmse, y_pred
 
 
 def compute_manhattan_dist(X):
-    try:  # use qstack C routine if running on ksenia's desktop SORRY
-        print('try to use q-stack routine')
+    try:
         import ctypes
         D_full = np.zeros((len(X), len(X)))
         array_2d_double = np.ctypeslib.ndpointer(dtype=np.float64, ndim=2, flags='CONTIGUOUS')
-        qstack_manh_path = '/home/xe/GIT/Q-stack/qstack/regression/lib/manh.so'
+        qstack_manh_path = f'{os.path.dirname(__file__)}/manh.so'
         qstack_manh = ctypes.cdll.LoadLibrary(qstack_manh_path).manh
         qstack_manh.restype = ctypes.c_int
         qstack_manh.argtypes = [ctypes.c_int, ctypes.c_int, ctypes.c_int, array_2d_double, array_2d_double, array_2d_double]
         qstack_manh(len(X), len(X), len(X[0]), X, X, D_full)
     except:
-        print('using default routine')
+        warnings.warn('Using the slow Manhattan distance routine.\nConsider building the fast one with\n`cd baseline_slatm && make manh.so`')
         D_full = pairwise_distances(X, metric='l1')
     return D_full
 
@@ -141,7 +143,8 @@ def predict_CV(X, y, CV=10, seed=123, train_size=0.8, kernel='laplacian',
         raise NotImplementedError("Only rbf/gaussian kernel or laplacian kernel are implemented.")
     l2regs = [1e-10, 1e-7, 1e-4]
 
-    maes = np.zeros((CV))
+    maes = np.zeros(CV)
+    rmses = np.zeros(CV)
 
     if dataset in HYPERS.keys():
         print("Reading optimal hypers from file")
@@ -171,12 +174,13 @@ def predict_CV(X, y, CV=10, seed=123, train_size=0.8, kernel='laplacian',
         y_train = y[idx_train]
         y_test  = y[idx_test]
 
-        mae, y_pred = predict_KRR(D_train, D_test, y_train, y_test, l2reg=l2reg, gamma=gamma)
+        mae, rmse, y_pred = predict_KRR(D_train, D_test, y_train, y_test, l2reg=l2reg, gamma=gamma)
 
         with open(save_predictions.format(i=i), 'w') as f:
             print(*zip(idx_test, y_pred), sep='\n', file=f)
 
         maes[i] = mae
+        rmses[i] = rmse
         seed += 1
 
-    return maes
+    return maes, rmses
