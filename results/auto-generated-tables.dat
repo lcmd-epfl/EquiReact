@@ -1,0 +1,119 @@
+% THE MAIN TABLE OF THE MAIN TEXT: DFT, NO HYDROGENS, MAE
+\begin{tabular}{@{}ccccc@{}} \toprule
+\makecell{Dataset \\ (property, units)} & \makecell{Atom-mapping\\ regime}
+            & \CGR & SLATM$_d$+KRR & \textsc{EquiReact} \\ 
+\midrule
+\multicolumn{5}{@{}c@{}}{\emph{Random splits}}\\ \midrule
+\multirow{3}{*}{\makecell{\gdb \\ ($\Delta E^\ddag$, kcal/mol)}}
+& True & $ 4.35 \pm 0.15 $ & --- & $ 4.93 \pm 0.15 $ \\
+& RXNMapper & $ 5.69 \pm 0.17 $ & --- & $ 6.05 \pm 0.25 $ \\
+& None & $ 9.04 \pm 0.21 $ & $ 6.89 \pm 0.20 $ & $ 6.53 \pm 0.28 $ \\
+\\[0.002cm]\multirow{3}{*}{\makecell{\cyclo \\ ($\Delta G^\ddag$, kcal/mol)}}
+& True & $ 2.69 \pm 0.10 $ & --- & $ 2.30 \pm 0.09 $ \\
+& RXNMapper & $ 2.71 \pm 0.07 $ & --- & $ 2.35 \pm 0.12 $ \\
+& None & $ 2.71 \pm 0.12 $ & $ 2.74 \pm 0.09 $ & $ 2.31 \pm 0.09 $ \\
+\\[0.002cm] \multirow{2}{*}{\makecell{\proparg \\ ($\Delta E^\ddag$, kcal/mol)}}
+& True & $ 1.53 \pm 0.14 $ & --- & $ 0.31 \pm 0.05 $ \\
+& None & $ 1.56 \pm 0.16 $ & $ 0.333 \pm 0.029 $ & $ 0.31 \pm 0.06 $ \\
+\midrule
+\multicolumn{5}{@{}c@{}}{\emph{Scaffold splits}}\\ \midrule
+\multirow{3}{*}{\makecell{\gdb \\ ($\Delta E^\ddag$, kcal/mol)}}
+& True & $ 7.1 \pm 0.6 $ & --- & $ 7.8 \pm 0.8 $ \\
+& RXNMapper & $ 8.7 \pm 0.8 $ & --- & $ 9.1 \pm 0.8 $ \\
+& None & $ 12.9 \pm 0.6 $ & $ 11.0 \pm 1.0 $ & $ 10.0 \pm 0.9 $ \\
+\\[0.002cm]\multirow{3}{*}{\makecell{\cyclo \\ ($\Delta G^\ddag$, kcal/mol)}}
+& True & $ 2.92 \pm 0.24 $ & --- & $ 2.72 \pm 0.18 $ \\
+& RXNMapper & $ 2.92 \pm 0.23 $ & --- & $ 2.71 \pm 0.23 $ \\
+& None & $ 3.1 \pm 0.3 $ & $ 3.05 \pm 0.21 $ & $ 2.72 \pm 0.19 $ \\
+\\[0.002cm] \multirow{2}{*}{\makecell{\proparg \\ ($\Delta E^\ddag$, kcal/mol)}}
+& True & $ 1.64 \pm 0.21 $ & --- & $ 0.40 \pm 0.08 $ \\
+& None & $ 1.64 \pm 0.19 $ & $ 0.39 \pm 0.06 $ & $ 0.41 \pm 0.09 $ \\
+\bottomrule
+\end{tabular}
+
+
+% THE MAIN TABLE SI SUPPLEMENT: DFT, NO HYDROGENS, RMSE
+\begin{tabular}{@{}ccccc@{}} \toprule
+\makecell{Dataset \\ (property, units)} & \makecell{Atom-mapping\\ regime}
+            & \CGR & SLATM$_d$+KRR & \textsc{EquiReact} \\ 
+\midrule
+\multicolumn{5}{@{}c@{}}{\emph{Random splits}}\\ \midrule
+\multirow{3}{*}{\makecell{\gdb \\ ($\Delta E^\ddag$, kcal/mol)}}
+& True & $ 7.6 \pm 0.3 $ & --- & $ 8.4 \pm 0.3 $ \\
+& RXNMapper & $ 9.57 \pm 0.28 $ & --- & $ 10.0 \pm 0.4 $ \\
+& None & $ 13.2 \pm 0.5 $ & $ 10.8 \pm 0.4 $ & $ 10.4 \pm 0.5 $ \\
+\\[0.002cm]\multirow{3}{*}{\makecell{\cyclo \\ ($\Delta G^\ddag$, kcal/mol)}}
+& True & $ 3.70 \pm 0.20 $ & --- & $ 3.24 \pm 0.21 $ \\
+& RXNMapper & $ 3.72 \pm 0.16 $ & --- & $ 3.29 \pm 0.26 $ \\
+& None & $ 3.73 \pm 0.23 $ & $ 3.70 \pm 0.20 $ & $ 3.24 \pm 0.23 $ \\
+\\[0.002cm] \multirow{2}{*}{\makecell{\proparg \\ ($\Delta E^\ddag$, kcal/mol)}}
+& True & $ 1.97 \pm 0.16 $ & --- & $ 0.52 \pm 0.14 $ \\
+& None & $ 2.01 \pm 0.19 $ & $ 0.56 \pm 0.07 $ & $ 0.49 \pm 0.09 $ \\
+\midrule
+\multicolumn{5}{@{}c@{}}{\emph{Scaffold splits}}\\ \midrule
+\multirow{3}{*}{\makecell{\gdb \\ ($\Delta E^\ddag$, kcal/mol)}}
+& True & $ 10.6 \pm 0.9 $ & --- & $ 11.5 \pm 1.2 $ \\
+& RXNMapper & $ 12.8 \pm 0.9 $ & --- & $ 13.3 \pm 1.1 $ \\
+& None & $ 17.4 \pm 0.8 $ & $ 15.2 \pm 1.3 $ & $ 14.4 \pm 1.1 $ \\
+\\[0.002cm]\multirow{3}{*}{\makecell{\cyclo \\ ($\Delta G^\ddag$, kcal/mol)}}
+& True & $ 3.9 \pm 0.4 $ & --- & $ 3.7 \pm 0.4 $ \\
+& RXNMapper & $ 3.9 \pm 0.4 $ & --- & $ 3.7 \pm 0.5 $ \\
+& None & $ 4.1 \pm 0.4 $ & $ 4.0 \pm 0.4 $ & $ 3.7 \pm 0.4 $ \\
+\\[0.002cm] \multirow{2}{*}{\makecell{\proparg \\ ($\Delta E^\ddag$, kcal/mol)}}
+& True & $ 2.2 \pm 0.3 $ & --- & $ 0.65 \pm 0.17 $ \\
+& None & $ 2.2 \pm 0.4 $ & $ 0.61 \pm 0.12 $ & $ 0.64 \pm 0.19 $ \\
+\bottomrule
+\end{tabular}
+
+
+% HYDROGENS vs NO HYDROGENS SI PAPER: DFT, MAE, RANDOM SPLITS
+\begin{tabular}{@{}cccccccc@{}} \toprule
+\multirow{3}{*}{\makecell{Dataset \\ (property, units)}}&
+\multirow{3}{*}{H mode}&
+\multicolumn{6}{c}{Atom mapping regime} \\ \cmidrule(lr){3-8}
+&& \multicolumn{2}{@{}c@{}}{True} & \multicolumn{2}{@{}c@{}}{RXNMapper} & \multicolumn{2}{@{}c@{}}{None} \\ \cmidrule(lr){3-4} \cmidrule(lr){5-6}  \cmidrule(lr){7-8}
+&& \CGR & \textsc{EquiReact}$_M$ & \CGR & \textsc{EquiReact}$_M$ & \CGR & \textsc{EquiReact}$_S$ \\
+\midrule \multirow{2}{*}{\makecell{\gdb \\ ($\Delta E^\ddag$, kcal/mol)}}
+& with  & $ 4.12 \pm 0.13 $ & $ 4.93 \pm 0.18 $ & $ 6.36 \pm 0.09 $ & $ 6.30 \pm 0.23 $ & $ 8.87 \pm 0.28 $ & $ 6.46 \pm 0.22 $\\
+& w/o  & $ 4.35 \pm 0.15 $ & $ 4.93 \pm 0.15 $ & $ 5.69 \pm 0.17 $ & $ 6.05 \pm 0.25 $ & $ 9.04 \pm 0.21 $ & $ 6.53 \pm 0.28 $\\
+\\[0.002cm] \multirow{2}{*}{\makecell{\cyclo \\ ($\Delta G^\ddag$, kcal/mol)}}
+& with  & --- & $ 2.30 \pm 0.08 $ & $ 2.79 \pm 0.12 $ & $ 2.35 \pm 0.06 $ & $ 2.76 \pm 0.10 $ & $ 2.32 \pm 0.05 $\\
+& w/o  & $ 2.69 \pm 0.10 $ & $ 2.30 \pm 0.09 $ & $ 2.71 \pm 0.07 $ & $ 2.35 \pm 0.12 $ & $ 2.71 \pm 0.12 $ & $ 2.31 \pm 0.09 $\\
+\\[0.002cm] \multirow{2}{*}{\makecell{\proparg \\ ($\Delta E^\ddag$, kcal/mol)}}
+& with  & $ 1.55 \pm 0.16 $ & $ 0.35 \pm 0.05 $ & --- & --- & $ 1.54 \pm 0.14 $ & $ 0.36 \pm 0.05 $\\
+& w/o  & $ 1.53 \pm 0.14 $ & $ 0.31 \pm 0.05 $ & --- & $ 0.37 \pm 0.08 $ & $ 1.56 \pm 0.16 $ & $ 0.31 \pm 0.06 $\\
+\bottomrule
+\end{tabular}
+
+% DFT vs XTB RESULTS FOR GNUPLOT
+#gdb
+1.0 	 DFT 	 cv10-gdb-random-noH-sub-true 	 5.030196630315421 0.1727177553900425
+2.0 	 xTB 	 cv10-gdb-random-noH-xtb-true 	 5.151691267513168 0.23309884505880504
+3.5 	 DFT 	 cv10-gdb-random-noH-sub-rxnmapper 	 6.180290633972023 0.19864011437500287
+4.5 	 xTB 	 cv10-gdb-random-noH-xtb-rxnmapper 	 6.33279628444294 0.24466180879843488
+6.0 	 DFT 	 cv10-gdb-random-noH-sub-none 	 6.68904180724559 0.20424786475564088
+7.0 	 xTB 	 cv10-gdb-random-noH-xtb-none 	 6.848376635967851 0.2760570613803172
+8.5 	 DFT 	 slatm-gdb-sub-random-none 	 7.013193880845864 0.2177639244538774
+9.5 	 xTB 	 slatm-gdb-xtb-random-none 	 7.641926860929457 0.22631172346440737
+
+
+#cyclo
+1.0 	 DFT 	 cv10-cyclo-random-noH-sub-true 	 2.2843871508289757 0.11295268431667826
+2.0 	 xTB 	 cv10-cyclo-random-noH-xtb-true 	 2.9394930072247165 0.1019951672325365
+3.5 	 DFT 	 cv10-cyclo-random-noH-sub-rxnmapper 	 2.253762280630718 0.09574001579613678
+4.5 	 xTB 	 cv10-cyclo-random-noH-xtb-rxnmapper 	 2.931844854704156 0.17784219461997813
+6.0 	 DFT 	 cv10-cyclo-random-noH-sub-none 	 2.2786192468863993 0.09732975987380185
+7.0 	 xTB 	 cv10-cyclo-random-noH-xtb-none 	 2.9915780445457143 0.16164330062711937
+8.5 	 DFT 	 slatm-cyclo-sub-random-none 	 2.720571534426475 0.06898273879681123
+9.5 	 xTB 	 slatm-cyclo-xtb-random-none 	 3.4279482328225797 0.14452096831229552
+
+
+#proparg
+1.0 	 DFT 	 cv10-proparg-random-noH-dft-true 	 0.3095446452661329 0.050330342434124556
+2.0 	 xTB 	 cv10-proparg-random-noH-xtb-true 	 0.4722281076508869 0.07721858338218089
+3.5 	 DFT 	 cv10-proparg-random-noH-dft-none 	 0.31272457622065025 0.057007902891076566
+4.5 	 xTB 	 cv10-proparg-random-noH-xtb-none 	 0.4883854362507744 0.07740294855518592
+6.0 	 DFT 	 slatm-proparg-dft-random-none 	 0.33330193669496627 0.029324342028075007
+7.0 	 xTB 	 slatm-proparg-xtb-random-none 	 0.7475229963510193 0.06876892789455094
+
+
