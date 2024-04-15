@@ -38,8 +38,12 @@ python train.py \
 --radius 2.5 \
 --sum_mode both \
 --weight_decay 0.00001 \
---splitter scaffold \
+--two_layers_atom_diff \
+--atom_mapping \
+--rxnmapper \
+--splitter random \
 --noH \
---wandb_name cv10-gdb-inv-scaffold-noH-dft-normal-ns64-nv64-d32-l2-vector-diff-both \
+--xtb_subset \
+--wandb_name cv10-gdb-inv-random-noH-sub-rxnmapper-ns64-nv64-d32-l2-vector-diff-both \
 --invariant\
 

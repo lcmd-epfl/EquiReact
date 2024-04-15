@@ -43,71 +43,62 @@ wandb enabled
 python train.py \\"""
 
 
+for invariant in [False, True]:
 # 1) random, dft, noH
-for key, config in base_configs.items():
-    extra_name = f"{base_config['dataset']}-random-noH-dft-{key}"
-    wandb_name = f"cv10-{extra_name}-{base_name}"
-    extra_config=f"--splitter random \\\n--noH \\\n--wandb_name {wandb_name} \\"
-    with open(f'{extra_name}.sbatch', 'w') as f:
-        print("\n".join((header, run_config, config, extra_config)), file=f)
-        print(file=f)
+    for key, config in base_configs.items():
+        extra_name = f"{base_config['dataset']}-{'inv-' if invariant else ''}random-noH-dft-{key}"
+        wandb_name = f"cv10-{extra_name}-{base_name}"
+        extra_config=f"--splitter random \\\n--noH \\\n--wandb_name {wandb_name} \\"
+        if invariant:
+            extra_config += '\n--invariant\\'
+        with open(f'{extra_name}.sbatch', 'w') as f:
+            print("\n".join((header, run_config, config, extra_config)), file=f)
+            print(file=f)
 
 
-# 2) scaffold, dft, noH
-for key, config in base_configs.items():
-    extra_name = f"{base_config['dataset']}-scaffold-noH-dft-{key}"
-    wandb_name = f"cv10-{extra_name}-{base_name}"
-    extra_config=f"--splitter scaffold \\\n--noH \\\n--wandb_name {wandb_name} \\"
-    with open(f'{extra_name}.sbatch', 'w') as f:
-        print("\n".join((header, run_config, config, extra_config)), file=f)
-        print(file=f)
+    # 2) scaffold, dft, noH
+    for key, config in base_configs.items():
+        extra_name = f"{base_config['dataset']}-{'inv-' if invariant else ''}scaffold-noH-dft-{key}"
+        wandb_name = f"cv10-{extra_name}-{base_name}"
+        extra_config=f"--splitter scaffold \\\n--noH \\\n--wandb_name {wandb_name} \\"
+        if invariant:
+            extra_config += '\n--invariant\\'
+        with open(f'{extra_name}.sbatch', 'w') as f:
+            print("\n".join((header, run_config, config, extra_config)), file=f)
+            print(file=f)
 
 
-# 3) random, xtb, noH
-for key, config in base_configs.items():
-    extra_name = f"{base_config['dataset']}-random-noH-xtb-{key}"
-    wandb_name = f"cv10-{extra_name}-{base_name}"
-    extra_config=f"--splitter random \\\n--noH \\\n--xtb \\\n--wandb_name {wandb_name} \\"
-    with open(f'{extra_name}.sbatch', 'w') as f:
-        print("\n".join((header, run_config, config, extra_config)), file=f)
-        print(file=f)
+    # 3) random, xtb, noH
+    for key, config in base_configs.items():
+        extra_name = f"{base_config['dataset']}-{'inv-' if invariant else ''}random-noH-xtb-{key}"
+        wandb_name = f"cv10-{extra_name}-{base_name}"
+        extra_config=f"--splitter random \\\n--noH \\\n--xtb \\\n--wandb_name {wandb_name} \\"
+        if invariant:
+            extra_config += '\n--invariant\\'
+        with open(f'{extra_name}.sbatch', 'w') as f:
+            print("\n".join((header, run_config, config, extra_config)), file=f)
+            print(file=f)
 
 
-# 4) random, xtb subset, noH
-for key, config in base_configs.items():
-    extra_name = f"{base_config['dataset']}-random-noH-sub-{key}"
-    wandb_name = f"cv10-{extra_name}-{base_name}"
-    extra_config=f"--splitter random \\\n--noH \\\n--xtb_subset \\\n--wandb_name {wandb_name} \\"
-    with open(f'{extra_name}.sbatch', 'w') as f:
-        print("\n".join((header, run_config, config, extra_config)), file=f)
-        print(file=f)
+    # 4) random, xtb subset, noH
+    for key, config in base_configs.items():
+        extra_name = f"{base_config['dataset']}-{'inv-' if invariant else ''}random-noH-sub-{key}"
+        wandb_name = f"cv10-{extra_name}-{base_name}"
+        extra_config=f"--splitter random \\\n--noH \\\n--xtb_subset \\\n--wandb_name {wandb_name} \\"
+        if invariant:
+            extra_config += '\n--invariant\\'
+        with open(f'{extra_name}.sbatch', 'w') as f:
+            print("\n".join((header, run_config, config, extra_config)), file=f)
+            print(file=f)
 
 
-# 5) random, dft, withH
-for key, config in base_configs.items():
-    extra_name = f"{base_config['dataset']}-random-withH-dft-{key}"
-    wandb_name = f"cv10-{extra_name}-{base_name}"
-    extra_config=f"--splitter random \\\n--wandb_name {wandb_name} \\"
-    with open(f'{extra_name}.sbatch', 'w') as f:
-        print("\n".join((header, run_config, config, extra_config)), file=f)
-        print(file=f)
-
-
-# 6) random, dft, noH, invariant
-for key, config in base_configs.items():
-    extra_name = f"{base_config['dataset']}-inv-random-noH-dft-{key}"
-    wandb_name = f"cv10-{extra_name}-{base_name}"
-    extra_config=f"--splitter random \\\n--noH \\\n--invariant \\\n--wandb_name {wandb_name} \\"
-    with open(f'{extra_name}.sbatch', 'w') as f:
-        print("\n".join((header, run_config, config, extra_config)), file=f)
-        print(file=f)
-
-
-# 7) scaffold, dft, noH, invariant
-for key, config in base_configs.items():
-    extra_name = f"{base_config['dataset']}-inv-scaffold-noH-dft-{key}"
-    wandb_name = f"cv10-{extra_name}-{base_name}"
-    extra_config=f"--splitter scaffold \\\n--noH \\\n--invariant \\\n--wandb_name {wandb_name} \\"
-    with open(f'{extra_name}.sbatch', 'w') as f:
-        print("\n".join((header, run_config, config, extra_config)), file=f)
-        print(file=f)
+    # 5) random, dft, withH
+    for key, config in base_configs.items():
+        extra_name = f"{base_config['dataset']}-{'inv-' if invariant else ''}random-withH-dft-{key}"
+        wandb_name = f"cv10-{extra_name}-{base_name}"
+        extra_config=f"--splitter random \\\n--wandb_name {wandb_name} \\"
+        if invariant:
+            extra_config += '\n--invariant\\'
+        with open(f'{extra_name}.sbatch', 'w') as f:
+            print("\n".join((header, run_config, config, extra_config)), file=f)
+            print(file=f)

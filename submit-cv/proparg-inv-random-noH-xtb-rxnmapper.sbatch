@@ -24,22 +24,26 @@ python train.py \
 --num_epochs 512 \
 --seed ${SEED} \
 --logdir /scratch/izar/briling/cv \
---dataset gdb \
+--dataset proparg \
 --train_frac 0.8 \
 --combine_mode diff \
---distance_emb_dim 32 \
+--distance_emb_dim 64 \
 --dropout_p 0.05 \
 --graph_mode vector \
---lr 0.0005 \
+--lr 0.001 \
 --max_neighbors 10 \
---n_conv_layers 2 \
+--n_conv_layers 3 \
 --n_s 64 \
 --n_v 64 \
---radius 2.5 \
---sum_mode both \
+--radius 5 \
+--sum_mode node \
 --weight_decay 0.00001 \
---splitter scaffold \
+--two_layers_atom_diff \
+--atom_mapping \
+--rxnmapper \
+--splitter random \
 --noH \
---wandb_name cv10-gdb-inv-scaffold-noH-dft-normal-ns64-nv64-d32-l2-vector-diff-both \
+--xtb \
+--wandb_name cv10-proparg-inv-random-noH-xtb-rxnmapper-ns64-nv64-d64-l3-vector-diff-node \
 --invariant\
 

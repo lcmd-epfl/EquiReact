@@ -4,7 +4,7 @@
 #SBATCH --gpus-per-node=1
 #SBATCH --cpus-per-task=1
 #SBATCH --ntasks=1
-#SBATCH --mem=4GB
+#SBATCH --mem=8GB
 #SBATCH --time=24:00:00
 #SBATCH --job-name=equireact
 #SBATCH --array=0-9
@@ -24,22 +24,25 @@ python train.py \
 --num_epochs 512 \
 --seed ${SEED} \
 --logdir /scratch/izar/briling/cv \
---dataset gdb \
+--dataset cyclo \
 --train_frac 0.8 \
 --combine_mode diff \
---distance_emb_dim 32 \
---dropout_p 0.05 \
---graph_mode vector \
---lr 0.0005 \
---max_neighbors 10 \
+--distance_emb_dim 48 \
+--dropout_p 0.1 \
+--graph_mode energy \
+--lr 0.001 \
+--max_neighbors 50 \
 --n_conv_layers 2 \
 --n_s 64 \
---n_v 64 \
+--n_v 48 \
 --radius 2.5 \
---sum_mode both \
+--sum_mode node \
 --weight_decay 0.00001 \
---splitter scaffold \
+--two_layers_atom_diff \
+--atom_mapping \
+--splitter random \
 --noH \
---wandb_name cv10-gdb-inv-scaffold-noH-dft-normal-ns64-nv64-d32-l2-vector-diff-both \
+--xtb \
+--wandb_name cv10-cyclo-inv-random-noH-xtb-true-ns64-nv48-d48-l2-energy-diff-node \
 --invariant\
 

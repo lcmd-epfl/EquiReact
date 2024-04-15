@@ -43,6 +43,6 @@ python train.py \
 --rxnmapper \
 --splitter random \
 --noH \
---invariant \
 --wandb_name cv10-cyclo-inv-random-noH-dft-rxnmapper-ns64-nv48-d48-l2-energy-diff-node \
+--invariant\
 

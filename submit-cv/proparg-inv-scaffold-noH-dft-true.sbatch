@@ -42,6 +42,6 @@ python train.py \
 --atom_mapping \
 --splitter scaffold \
 --noH \
---invariant \
 --wandb_name cv10-proparg-inv-scaffold-noH-dft-true-ns64-nv64-d64-l3-vector-diff-node \
+--invariant\
 

@@ -43,6 +43,6 @@ python train.py \
 --rxnmapper \
 --splitter random \
 --noH \
---invariant \
 --wandb_name cv10-gdb-inv-random-noH-dft-rxnmapper-ns64-nv64-d32-l2-vector-diff-both \
+--invariant\
 
