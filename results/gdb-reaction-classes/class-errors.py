@@ -1,6 +1,7 @@
 import numpy as np
 
-errors_file = '../../results/by_mol/cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping.123.dat'
+#errors_file = '../by_mol/cv10-gdb-random-noH-dft-true-ns64-nv64-d32-l2-vector-diff-both.123.dat'
+errors_file = '../by_mol/cv10-gdb-random-withH-dft-true-ns64-nv64-d32-l2-vector-diff-both.123.dat'
 sign_file = 'signatures.dat'
 
 idx = np.loadtxt(errors_file, usecols=0, dtype=int)
