@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-for LOG in by_mol/*.log; do
+for LOG in *.log; do
   ARGS=$(grep --max-count=1 wandb_name ${LOG} | tr -d \')
   SEED=${ARGS##*seed=}
   SEED=${SEED%%,*}
