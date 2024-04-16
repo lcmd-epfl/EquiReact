@@ -14,6 +14,8 @@ for dataset in ('proparg', 'cyclo', 'gdb'):
     results = defaultdict(list)
 
     for run in runs:
+        if run.state=='running':
+            continue
         if run.name.startswith('cv10-'):
             test_score = run.summary['test_score']
             test_rmse  = run.summary['test_rmse']
