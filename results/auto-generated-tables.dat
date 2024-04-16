@@ -127,3 +127,37 @@ Dataset (property, units)
 7.0 	 xTB 	 slatm-proparg-xtb-random-none 	 0.7475229963510193 0.06876892789455094
 
 
+% THE MAIN TABLE OF THE MAIN TEXT BUT WITH INVARIANT: DFT, NO HYDROGENS, MAE
+\begin{tabular}{@{}cccccc@{}} \toprule
+\makecell{Dataset \\ (property, units)} & \makecell{Atom-mapping\\ regime}
+            & \CGR & SLATM$_d$+KRR & \textsc{EquiReact} & \textsc{InReact} \\ 
+\midrule
+\multicolumn{6}{@{}c@{}}{\emph{Random splits}}\\ \midrule
+\multirow{3}{*}{\makecell{\gdb \\ ($\Delta E^\ddag$, kcal/mol)}}
+& True & $ 4.35 \pm 0.15 $ & --- & $ 4.93 \pm 0.15 $ & $ 4.93 \pm 0.18 $ \\
+& RXNMapper & $ 5.69 \pm 0.17 $ & --- & $ 6.05 \pm 0.25 $ & $ 6.03 \pm 0.26 $ \\
+& None & $ 9.04 \pm 0.21 $ & $ 6.89 \pm 0.20 $ & $ 6.53 \pm 0.28 $ & $ 6.56 \pm 0.26 $ \\
+\\[0.002cm]\multirow{3}{*}{\makecell{\cyclo \\ ($\Delta G^\ddag$, kcal/mol)}}
+& True & $ 2.69 \pm 0.10 $ & --- & $ 2.30 \pm 0.09 $ & $ 2.39 \pm 0.08 $ \\
+& RXNMapper & $ 2.71 \pm 0.07 $ & --- & $ 2.35 \pm 0.12 $ & $ 2.37 \pm 0.07 $ \\
+& None & $ 2.71 \pm 0.12 $ & $ 2.74 \pm 0.09 $ & $ 2.31 \pm 0.09 $ & $ 2.39 \pm 0.05 $ \\
+\\[0.002cm] \multirow{2}{*}{\makecell{\proparg \\ ($\Delta E^\ddag$, kcal/mol)}}
+& True & $ 1.53 \pm 0.14 $ & --- & $ 0.31 \pm 0.05 $ & $ 0.33 \pm 0.07 $ \\
+& None & $ 1.56 \pm 0.16 $ & $ 0.333 \pm 0.029 $ & $ 0.31 \pm 0.06 $ & $ 0.34 \pm 0.06 $ \\
+\midrule
+\multicolumn{6}{@{}c@{}}{\emph{Scaffold splits}}\\ \midrule
+\multirow{3}{*}{\makecell{\gdb \\ ($\Delta E^\ddag$, kcal/mol)}}
+& True & $ 7.1 \pm 0.6 $ & --- & $ 7.8 \pm 0.8 $ & $ 7.8 \pm 0.7 $ \\
+& RXNMapper & $ 8.7 \pm 0.8 $ & --- & $ 9.1 \pm 0.8 $ & $ 9.2 \pm 0.8 $ \\
+& None & $ 12.9 \pm 0.6 $ & $ 11.0 \pm 1.0 $ & $ 10.0 \pm 0.9 $ & $ 10.1 \pm 0.9 $ \\
+\\[0.002cm]\multirow{3}{*}{\makecell{\cyclo \\ ($\Delta G^\ddag$, kcal/mol)}}
+& True & $ 2.92 \pm 0.24 $ & --- & $ 2.72 \pm 0.18 $ & $ 2.79 \pm 0.18 $ \\
+& RXNMapper & $ 2.92 \pm 0.23 $ & --- & $ 2.71 \pm 0.23 $ & $ 2.77 \pm 0.22 $ \\
+& None & $ 3.1 \pm 0.3 $ & $ 3.05 \pm 0.21 $ & $ 2.72 \pm 0.19 $ & $ 2.76 \pm 0.22 $ \\
+\\[0.002cm] \multirow{2}{*}{\makecell{\proparg \\ ($\Delta E^\ddag$, kcal/mol)}}
+& True & $ 1.64 \pm 0.21 $ & --- & $ 0.40 \pm 0.08 $ & $ 0.44 \pm 0.11 $ \\
+& None & $ 1.64 \pm 0.19 $ & $ 0.39 \pm 0.06 $ & $ 0.41 \pm 0.09 $ & $ 0.45 \pm 0.10 $ \\
+\bottomrule
+\end{tabular}
+
+

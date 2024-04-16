@@ -124,6 +124,55 @@ def print_main_table(geometry='dft', use_H=False, use_rmse=False):
     print(footer)
 
 
+def print_main_table_with_inv(geometry='dft', use_H=False, use_rmse=False):
+    header=r'''\begin{tabular}{@{}cccccc@{}} \toprule
+\makecell{Dataset \\ (property, units)} & \makecell{Atom-mapping\\ regime}
+            & \CGR & SLATM$_d$+KRR & \textsc{EquiReact} & \textsc{InReact} \\ '''
+
+    splitter_header = {
+        'random': r'\multicolumn{6}{@{}c@{}}{\emph{Random splits}}\\ \midrule',
+        'scaffold': r'\multicolumn{6}{@{}c@{}}{\emph{Scaffold splits}}\\ \midrule',
+        }
+
+    dataset_header = {
+        'gdb': r'\multirow{3}{*}{\makecell{\gdb \\ ($\Delta E^\ddag$, kcal/mol)}}',
+        'cyclo': r'\\[0.002cm]\multirow{3}{*}{\makecell{\cyclo \\ ($\Delta G^\ddag$, kcal/mol)}}',
+        'proparg': r'\\[0.002cm] \multirow{2}{*}{\makecell{\proparg \\ ($\Delta E^\ddag$, kcal/mol)}}'
+        }
+
+    footer=r'''\bottomrule
+\end{tabular}
+'''
+    h_key = "withH" if use_H else "noH"
+    print(header)
+    for splitter in ['random', 'scaffold']:
+        print('\midrule')
+        print(splitter_header[splitter])
+        for dataset in ['gdb', 'cyclo', 'proparg']:
+            print(dataset_header[dataset])
+            for atom_mapping in ['True', 'RXNMapper', 'None']:
+                if dataset=='proparg' and atom_mapping=='RXNMapper':
+                    continue
+
+                print(f'& {atom_mapping} & ', end='')
+
+                chemprop_key  = f'{dataset}-{splitter}-{atom_mapping.lower()}-{h_key}'
+                slatm_key     = f'{dataset}-{geometry}-{splitter}-{atom_mapping.lower()}'
+                equireact_key = f'cv10-{dataset}-{splitter}-{h_key}-{geometry}-{atom_mapping.lower()}'
+                inreact_key   = f'cv10-{dataset}-inv-{splitter}-{h_key}-{geometry}-{atom_mapping.lower()}'
+
+                print(get_error(chemprop[chemprop_key], use_rmse), end='')
+                print(' & ', end='')
+                print(get_error(slatm[slatm_key], use_rmse), end='')
+                print(' & ', end='')
+                print(get_error(equireact[equireact_key], use_rmse), end='')
+                print(' & ', end='')
+                print(get_error(equireact[inreact_key], use_rmse), end='')
+
+                print(r' \\')
+    print(footer)
+
+
 def print_hydrogen_table(geometry='dft', use_H=False, use_rmse=False, splitter='random'):
     pass
     header=r'''\begin{tabular}{@{}cccccccc@{}} \toprule
@@ -223,3 +272,7 @@ if __name__=='__main__':
 
     print('% DFT vs XTB RESULTS FOR GNUPLOT: MAE, RANDOM, NO H')
     print_xtb_data()
+
+    print('% THE MAIN TABLE OF THE MAIN TEXT BUT WITH INVARIANT: DFT, NO HYDROGENS, MAE')
+    print_main_table_with_inv(geometry='dft', use_H=False, use_rmse=False)
+    print()
