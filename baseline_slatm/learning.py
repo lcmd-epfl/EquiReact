@@ -4,7 +4,6 @@ import warnings
 import numpy as np
 from sklearn.metrics import pairwise_distances
 from sklearn.model_selection import train_test_split
-from process.dataloader_chemprop import get_scaffold_splits
 from baseline_slatm.hypers import HYPERS
 from process.splitter import split_dataset
 
