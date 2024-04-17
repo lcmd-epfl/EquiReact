@@ -54,16 +54,13 @@ def get_y_splits(df, dataset, splitter, indices, tr_size, te_size):
 def get_n_atoms(smiles):
     """helper function for get_size_splits:
     get number of heavy atoms from smiles string using rdkit"""
-    # MolFromSmiles will by default not count Hs (implicit)
+    # MolFromSmiles will by default
+    # does not count *most* of the Hs (implicit)
     # which is desired behaviour for following count
     mol = Chem.MolFromSmiles(smiles)
     if mol is None:
         raise ValueError('mol is none, cannot count nats')
-    count = 0
-    for atom in mol.GetAtoms():
-        count += 1
-
-    return count
+    return mol.GetNumAtoms()
 
 
 def get_size_splits(df, dataset, splitter, indices, tr_size, te_size):
@@ -76,38 +73,31 @@ def get_size_splits(df, dataset, splitter, indices, tr_size, te_size):
         df: pandas df with info
         dataset: one of 'cyclo', 'gdb', 'proparg'
         indices: for subset of data (shuffling here is redundant)
-        tr_frac: float
-        te_frac: float
+        tr_size: float
+        te_size: float
 
     Returns:
         tr_indices, te_indices, val_indices: tuple of list/arr of indices
         """
 
-    df = df.reset_index(drop=True) # needed for indexing, in some dfs indices are not continous from 0
-    df = df.loc[indices]
-
     if dataset == 'gdb':
-        rsmiles = df['rsmi']
+        rsmiles = df['rsmi'].to_numpy()
     elif dataset == 'cyclo':
-        rsmiles = df['rxn_smiles'].apply(get_product_from_reaction_smi)
-        df['rsmi'] = rsmiles
+        rsmiles = df['rxn_smiles'].apply(get_product_from_reaction_smi).to_numpy()
     elif dataset == 'proparg':
-        rsmiles = df['rxn_smiles'].apply(get_reactant_from_reaction_smi)
-        df['rsmi'] = rsmiles
+        rsmiles = df['rxn_smiles'].apply(get_reactant_from_reaction_smi).to_numpy()
 
-    df['counts'] = rsmiles.apply(get_n_atoms)
+    mol_sizes = np.array([*map(get_n_atoms, rsmiles)])
 
-    # sort by molecular size of rsmiles
-    df = df.sort_values('counts') # increasing
-
-
-    indices = df.index.to_numpy()
+    idx4idx = np.argsort(mol_sizes[indices])
+    if splitter == 'sizedesc':
+        idx4idx = idx4idx[::-1]
+    indices = indices[idx4idx]
 
     tr_indices, val_indices, te_indices = np.split(indices, [tr_size, tr_size+te_size])
     np.random.shuffle(tr_indices)
     np.random.shuffle(te_indices)
     np.random.shuffle(val_indices)
-
     return tr_indices, te_indices, val_indices
 
 
