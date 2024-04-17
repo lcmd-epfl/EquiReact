@@ -21,7 +21,10 @@ def argparse():
     g2.add_argument('-c', '--cyclo',   action='store_true', help='use curated Cyclo-23-TS dataset')
     g2.add_argument('-p', '--proparg', action='store_true', help='use Proparg-21-TS dataset with fragment-based SMILES')
     g2.add_argument('-g', '--gdb',     action='store_true', help='use curated GDB7-22-TS dataset')
-    parser.add_argument('--scaffold',  action='store_true', help='use scaffold splits (random otherwise)')
+    g3 = parser.add_mutually_exclusive_group(required=True)
+    g3.add_argument('--scaffold',      action='store_true', help='use scaffold splits (random otherwise)')
+    g3.add_argument('--yasc',          action='store_true', help='use yasc splits (random otherwise)')
+    g3.add_argument('--ydesc',         action='store_true', help='use ydesc splits (random otherwise)')
     parser.add_argument('--withH',     action='store_true', help='use explicit H')
     args = parser.parse_args()
     return parser, args
@@ -57,6 +60,15 @@ if __name__ == "__main__":
     CV = 10
     tr_frac = 0.8
 
+    if args.scaffold:
+        splitter = 'scaffold'
+    elif args.yasc:
+        splitter = 'yasc'
+    elif args.ydesc:
+        splitter = 'ydesc'
+    else:
+        splitter = 'random'
+
     seed = 123
     scores = np.zeros(CV)
     for i in range(CV):
@@ -67,8 +79,7 @@ if __name__ == "__main__":
 
         data = pd.read_csv(data_path, index_col=0)
 
-        tr_indices, te_indices, val_indices, _ = split_dataset(nreactions=len(data),
-                                                               splitter=('scaffold' if args.scaffold else 'random'),
+        tr_indices, te_indices, val_indices, _ = split_dataset(nreactions=len(data), splitter=splitter,
                                                                tr_frac=tr_frac, dataset=dataset, subset=None)
         data.iloc[tr_indices].to_csv(f'data_{seed}_train.csv')
         data.iloc[te_indices].to_csv(f'data_{seed}_test.csv')
