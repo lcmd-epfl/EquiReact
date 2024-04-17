@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 from chemprop.data.utils import get_data_from_smiles
 from process.scaffold import scaffold_split
-
+from rdkit import Chem
 
 def remove_atom_map_number_manual(smiles):
     smi = re.sub(':[0-9]+', '', smiles)
@@ -51,6 +51,77 @@ def get_y_splits(df, dataset, splitter, indices, tr_size, te_size):
     return tr_indices, te_indices, val_indices
 
 
+def get_n_atoms(smiles):
+    """helper function for get_size_splits:
+    get number of heavy atoms from smiles string using rdkit"""
+    # MolFromSmiles will by default not count Hs (implicit)
+    # which is desired behaviour for following count
+    mol = Chem.MolFromSmiles(smiles)
+    if mol is None:
+        raise ValueError('mol is none, cannot count nats')
+    count = 0
+    for atom in mol.GetAtoms():
+        count += 1
+
+    return count
+
+def get_size_splits(df, dataset, indices, tr_frac, te_frac):
+    """train-test split based on molecule size:
+    train on smaller molecules and test on larger molecules
+    (based on reactant/product depending on whether there is 1
+    reactant or 1 product)
+
+    Args:
+        df: pandas df with info
+        dataset: one of 'cyclo', 'gdb', 'proparg'
+        indices: for subset of data (shuffling here is redundant)
+        tr_frac: float
+        te_frac: float
+
+    Returns:
+        tr_indices, te_indices, val_indices: tuple of list/arr of indices
+        """
+
+    df = df.reset_index(drop=True) # needed for indexing, in some dfs indices are not continous from 0
+    df = df.loc[indices]
+
+    val_frac = 1 - tr_frac - te_frac
+    assert val_frac >= 0, f'val size not valid with {tr_frac=} {te_frac=}'
+    if dataset == 'gdb':
+        rsmiles = df['rsmi']
+    elif dataset == 'cyclo':
+        rsmiles = df['rxn_smiles'].apply(get_product_from_reaction_smi)
+        df['rsmi'] = rsmiles
+    elif dataset == 'proparg':
+        rsmiles = df['rxn_smiles'].apply(get_reactant_from_reaction_smi)
+        df['rsmi'] = rsmiles
+
+    df['counts'] = rsmiles.apply(get_n_atoms)
+
+    # sort by molecular size of rsmiles
+    df = df.sort_values('counts') # increasing
+
+    tr_size = int(len(df) * tr_frac)
+    val_size = int(len(df) * val_frac)
+    te_size = int(len(df) * te_frac)
+
+    # now tr / te / val (te should be largest molecules)
+    df_train_val = df[:tr_size+val_size]
+    train_val_indices = df_train_val.index.to_numpy()
+    df_test = df[tr_size+val_size:]
+    te_indices = df_test.index.to_numpy()
+
+    # shuffle for validation (otherwise only validate on larger mols)
+    sh_indices = np.arange(len(train_val_indices))
+    np.random.shuffle(sh_indices)
+    train_val_indices = train_val_indices[sh_indices]
+    tr_indices = train_val_indices[:tr_size]
+    val_indices = train_val_indices[tr_size:]
+
+    assert len(tr_indices) + len(val_indices) + len(te_indices) == len(df), 'data loss!'
+
+    return tr_indices, te_indices, val_indices
+
 def split_dataset(nreactions, splitter, tr_frac, dataset, subset=None):
     # 1) seed `np.random` and `random` before calling this fn
     # 2) use the output indices with np.arrays, lists, df.iloc[]
@@ -68,7 +139,7 @@ def split_dataset(nreactions, splitter, tr_frac, dataset, subset=None):
     te_size = round(te_frac * len(indices))
     va_size = len(indices) - tr_size - te_size
 
-    if splitter in ['scaffold', 'yasc', 'ydesc']:
+    if splitter in ['scaffold', 'yasc', 'ydesc', 'msize']:
         csv_files = {'gdb': 'data/gdb7-22-ts/ccsdtf12_dz_cleaned.csv',
                      'cyclo': 'data/cyclo/cyclo.csv',
                      'proparg': 'data/proparg/proparg.csv'}
@@ -88,4 +159,9 @@ def split_dataset(nreactions, splitter, tr_frac, dataset, subset=None):
         tr_indices, te_indices, val_indices = get_scaffold_splits(df, dataset=dataset,
                                                                   indices=indices,
                                                                   sizes=(tr_frac, 1-(tr_frac+te_frac), te_frac))
+
+    elif splitter == 'msize':
+        print("Splitting based on molecular size")
+        tr_indices, te_indices, val_indices = get_size_splits(df, dataset, indices, tr_frac, te_frac)
+
     return tr_indices, te_indices, val_indices, indices
