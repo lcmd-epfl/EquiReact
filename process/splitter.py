@@ -65,7 +65,8 @@ def get_n_atoms(smiles):
 
     return count
 
-def get_size_splits(df, dataset, indices, tr_frac, te_frac):
+
+def get_size_splits(df, dataset, splitter, indices, tr_size, te_size):
     """train-test split based on molecule size:
     train on smaller molecules and test on larger molecules
     (based on reactant/product depending on whether there is 1
@@ -85,8 +86,6 @@ def get_size_splits(df, dataset, indices, tr_frac, te_frac):
     df = df.reset_index(drop=True) # needed for indexing, in some dfs indices are not continous from 0
     df = df.loc[indices]
 
-    val_frac = 1 - tr_frac - te_frac
-    assert val_frac >= 0, f'val size not valid with {tr_frac=} {te_frac=}'
     if dataset == 'gdb':
         rsmiles = df['rsmi']
     elif dataset == 'cyclo':
@@ -101,26 +100,16 @@ def get_size_splits(df, dataset, indices, tr_frac, te_frac):
     # sort by molecular size of rsmiles
     df = df.sort_values('counts') # increasing
 
-    tr_size = int(len(df) * tr_frac)
-    val_size = int(len(df) * val_frac)
-    te_size = int(len(df) * te_frac)
 
-    # now tr / te / val (te should be largest molecules)
-    df_train_val = df[:tr_size+val_size]
-    train_val_indices = df_train_val.index.to_numpy()
-    df_test = df[tr_size+val_size:]
-    te_indices = df_test.index.to_numpy()
+    indices = df.index.to_numpy()
 
-    # shuffle for validation (otherwise only validate on larger mols)
-    sh_indices = np.arange(len(train_val_indices))
-    np.random.shuffle(sh_indices)
-    train_val_indices = train_val_indices[sh_indices]
-    tr_indices = train_val_indices[:tr_size]
-    val_indices = train_val_indices[tr_size:]
-
-    assert len(tr_indices) + len(val_indices) + len(te_indices) == len(df), 'data loss!'
+    tr_indices, val_indices, te_indices = np.split(indices, [tr_size, tr_size+te_size])
+    np.random.shuffle(tr_indices)
+    np.random.shuffle(te_indices)
+    np.random.shuffle(val_indices)
 
     return tr_indices, te_indices, val_indices
+
 
 def split_dataset(nreactions, splitter, tr_frac, dataset, subset=None):
     # 1) seed `np.random` and `random` before calling this fn
@@ -139,7 +128,7 @@ def split_dataset(nreactions, splitter, tr_frac, dataset, subset=None):
     te_size = round(te_frac * len(indices))
     va_size = len(indices) - tr_size - te_size
 
-    if splitter in ['scaffold', 'yasc', 'ydesc', 'msize']:
+    if splitter in ['scaffold', 'yasc', 'ydesc', 'sizeasc', 'sizedesc']:
         csv_files = {'gdb': 'data/gdb7-22-ts/ccsdtf12_dz_cleaned.csv',
                      'cyclo': 'data/cyclo/cyclo.csv',
                      'proparg': 'data/proparg/proparg.csv'}
@@ -160,8 +149,11 @@ def split_dataset(nreactions, splitter, tr_frac, dataset, subset=None):
                                                                   indices=indices,
                                                                   sizes=(tr_frac, 1-(tr_frac+te_frac), te_frac))
 
-    elif splitter == 'msize':
+    elif splitter in ['sizeasc', 'sizedesc']:
         print("Splitting based on molecular size")
-        tr_indices, te_indices, val_indices = get_size_splits(df, dataset, indices, tr_frac, te_frac)
+        tr_indices, te_indices, val_indices = get_size_splits(df, dataset, splitter, indices, tr_size, te_size)
+
+    else:
+        raise RuntimeError
 
     return tr_indices, te_indices, val_indices, indices
