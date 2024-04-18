@@ -102,6 +102,8 @@ def parse_arguments(arglist=sys.argv[1:]):
 
     if args.atom_mapping and args.attention:
         raise RuntimeError
+    if args.CV > 1 and args.learning_curve:
+        raise RuntimeError
 
     return args, arg_groups
 
@@ -110,7 +112,7 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
           #setup args
           device='cuda', seed=123, eval_on_test=True,
           #dataset args
-          subset=None, tr_frac = 0.9, process=False, CV=0,
+          subset=None, training_fractions = [0.8], process=False, CV=0,
           dataset='cyclo', splitter='random',
           #sampling / dataloader args
           batch_size=8, num_workers=0, pin_memory=False, # pin memory is not working
@@ -161,114 +163,120 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
     print(f"Data stdev {std:.4f}")
     print()
 
-    maes = []
-    rmses = []
+    for tr_frac in training_fractions:
+        maes = []
+        rmses = []
 
-    for i in range(CV):
-        print(f"CV iter {i+1}/{CV}")
+        for i in range(CV):
+            print(f"CV iter {i+1}/{CV}")
 
-        hyper_dict['CV iter'] = i
-        hyper_dict['seed'] = seed
-        if not sweep:
-            wandb.init(project=project,
-                       name = wandb_name if CV==1 else f'{wandb_name}.cv{i}',
-                       config = hyper_dict,
-                       group = None if CV==1 else wandb_name)
+            hyper_dict['CV iter'] = i
+            hyper_dict['seed'] = seed
+            if not sweep:
+                if CV==1:
+                    wandb.init(project=project, config=hyper_dict, name=wandb_name, group=None)
+                elif len(training_fractions)>1:
+                    hyper_dict['train_frac'] = f'{tr_frac}/{max(training_fractions)}'
+                    wandb.init(project=project, config=hyper_dict, name=f'{wandb_name}.tr{tr_frac}', group=None)
+                else:
+                    wandb.init(project=project, config=hyper_dict, name=f'{wandb_name}.cv{i}', group=wandb_name)
 
-        torch.manual_seed(seed)
-        torch.cuda.manual_seed(seed)
-        np.random.seed(seed)
-        random.seed(seed)
+            torch.manual_seed(seed)
+            torch.cuda.manual_seed(seed)
+            np.random.seed(seed)
+            random.seed(seed)
 
-        tr_indices, te_indices, val_indices, indices = split_dataset(nreactions=data.nreactions, splitter=splitter,
-                                                                     tr_frac=tr_frac, dataset=dataset, subset=subset)
+            tr_indices, te_indices, val_indices, indices = split_dataset(nreactions=data.nreactions, splitter=splitter,
+                                                                         tr_frac=max(training_fractions),
+                                                                         dataset=dataset, subset=subset)
+            tr_indices = tr_indices[:int(tr_frac*len(indices))]
 
-        if reverse:
-            tr_indices = np.hstack((tr_indices, tr_indices+data.nreactions))
-            te_indices = np.hstack((te_indices, te_indices+data.nreactions))
-            val_indices = np.hstack((val_indices, val_indices+data.nreactions))
+            if reverse:
+                tr_indices = np.hstack((tr_indices, tr_indices+data.nreactions))
+                te_indices = np.hstack((te_indices, te_indices+data.nreactions))
+                val_indices = np.hstack((val_indices, val_indices+data.nreactions))
 
-        print(f'total / train / test / val: {len(indices)} {len(tr_indices)} {len(te_indices)} {len(val_indices)}')
-        train_data = Subset(data, tr_indices)
-        val_data = Subset(data, val_indices)
-        test_data = Subset(data, te_indices)
+            print(f'total / train / test / val: {len(indices)} {len(tr_indices)} {len(te_indices)} {len(val_indices)}')
+            train_data = Subset(data, tr_indices)
+            val_data = Subset(data, val_indices)
+            test_data = Subset(data, te_indices)
 
-        # train sample
-        label, idx, r0graph = train_data[0][:3]
-        input_node_feats_dim = r0graph.x.shape[1]
-        input_edge_feats_dim = 1
-        if verbose:
-            print(f"{r0graph=}")
-            print(f"{input_node_feats_dim=}")
-            print(f"{input_edge_feats_dim=}")
+            # train sample
+            label, idx, r0graph = train_data[0][:3]
+            input_node_feats_dim = r0graph.x.shape[1]
+            input_edge_feats_dim = 1
+            if verbose:
+                print(f"{r0graph=}")
+                print(f"{input_node_feats_dim=}")
+                print(f"{input_edge_feats_dim=}")
 
-        model = EquiReact(node_fdim=input_node_feats_dim, edge_fdim=1, verbose=verbose, device=device,
-                          max_radius=radius, max_neighbors=max_neighbors, sum_mode=sum_mode, n_s=n_s, n_v=n_v, n_conv_layers=n_conv_layers,
-                          distance_emb_dim=distance_emb_dim, graph_mode=graph_mode, dropout_p=dropout_p, random_baseline=random_baseline,
-                          combine_mode=combine_mode, atom_mapping=atom_mapping, attention=attention, two_layers_atom_diff=two_layers_atom_diff,
-                          invariant=invariant)
-        print('trainable params in model: ', sum(p.numel() for p in model.parameters() if p.requires_grad))
+            model = EquiReact(node_fdim=input_node_feats_dim, edge_fdim=1, verbose=verbose, device=device,
+                              max_radius=radius, max_neighbors=max_neighbors, sum_mode=sum_mode, n_s=n_s, n_v=n_v, n_conv_layers=n_conv_layers,
+                              distance_emb_dim=distance_emb_dim, graph_mode=graph_mode, dropout_p=dropout_p, random_baseline=random_baseline,
+                              combine_mode=combine_mode, atom_mapping=atom_mapping, attention=attention, two_layers_atom_diff=two_layers_atom_diff,
+                              invariant=invariant)
+            print('trainable params in model: ', sum(p.numel() for p in model.parameters() if p.requires_grad))
 
-        sampler = None
-        custom_collate = CustomCollator(device=device, nreact=data.max_number_of_reactants,
-                                        nprod=data.max_number_of_products, atom_mapping=atom_mapping)
-        train_loader = DataLoader(train_data, batch_size=batch_size, shuffle=True, collate_fn=custom_collate,
-                                  pin_memory=pin_memory, num_workers=num_workers)
+            sampler = None
+            custom_collate = CustomCollator(device=device, nreact=data.max_number_of_reactants,
+                                            nprod=data.max_number_of_products, atom_mapping=atom_mapping)
+            train_loader = DataLoader(train_data, batch_size=batch_size, shuffle=True, collate_fn=custom_collate,
+                                      pin_memory=pin_memory, num_workers=num_workers)
 
-        val_loader = DataLoader(val_data, batch_size=batch_size, collate_fn=custom_collate, pin_memory=pin_memory,
-                                num_workers=num_workers)
+            val_loader = DataLoader(val_data, batch_size=batch_size, collate_fn=custom_collate, pin_memory=pin_memory,
+                                    num_workers=num_workers)
 
-        trainer = ReactTrainer(model=model, std=std, device=device, metrics={'mae':MAE()},
-                               run_dir=run_dir, run_name=run_name,
-                               sampler=sampler, val_per_batch=val_per_batch,
-                               checkpoint=checkpoint, num_epochs=num_epochs,
-                               eval_per_epochs=eval_per_epochs, patience=patience,
-                               minimum_epochs=minimum_epochs, models_to_save=models_to_save,
-                               clip_grad=clip_grad, log_iterations=log_iterations,
-                               scheduler_step_per_batch = False, # CHANGED THIS
-                               lr=lr, weight_decay=weight_decay,
-                               lr_scheduler=lr_scheduler, factor=factor, min_lr=min_lr, mode=mode,
-                               lr_scheduler_patience=lr_scheduler_patience, lr_verbose=lr_verbose)
+            trainer = ReactTrainer(model=model, std=std, device=device, metrics={'mae':MAE()},
+                                   run_dir=run_dir, run_name=run_name,
+                                   sampler=sampler, val_per_batch=val_per_batch,
+                                   checkpoint=checkpoint, num_epochs=num_epochs,
+                                   eval_per_epochs=eval_per_epochs, patience=patience,
+                                   minimum_epochs=minimum_epochs, models_to_save=models_to_save,
+                                   clip_grad=clip_grad, log_iterations=log_iterations,
+                                   scheduler_step_per_batch = False, # CHANGED THIS
+                                   lr=lr, weight_decay=weight_decay,
+                                   lr_scheduler=lr_scheduler, factor=factor, min_lr=min_lr, mode=mode,
+                                   lr_scheduler_patience=lr_scheduler_patience, lr_verbose=lr_verbose)
 
-        val_metrics, _, _ = trainer.train(train_loader, val_loader)
+            val_metrics, _, _ = trainer.train(train_loader, val_loader)
+
+            if eval_on_test:
+                test_loader = DataLoader(test_data, batch_size=batch_size, collate_fn=custom_collate,
+                                         pin_memory=pin_memory, num_workers=num_workers)
+                print('Evaluating on test, with test size: ', len(test_data))
+
+                # file dump for each split
+                data_split_string = 'test_split_' + str(CV)
+                test_metrics, pred, targ = trainer.evaluation(test_loader, data_split=data_split_string, return_pred=True)
+                if eval_on_test_split:
+                    for x in zip(test_data.indices, np.squeeze(torch.vstack(targ).cpu().numpy()),
+                                                    np.squeeze(torch.vstack(pred).cpu().numpy())):
+                        print('>>>', *x)
+
+                mae_split = test_metrics['mae'] * std
+                rmse_split = np.sqrt(test_metrics['MSELoss'])*std
+                maes.append(mae_split)
+                rmses.append(rmse_split)
+                if wandb.run is not None:
+                    wandb.run.summary["test_score"] = mae_split
+                    wandb.run.summary["test_rmse"] = rmse_split
+
+                if print_repr:
+                    for x_indices, x_loader, x_title in zip((train_data.indices, val_data.indices, test_data.indices),
+                                                            (train_loader, val_loader, test_loader),
+                                                            ('train', 'val', 'test')):
+                        representations = trainer.get_repr(x_loader)
+                        for x in zip(x_indices, representations):
+                            print(f'>>>{x_title}', x[0], *x[1])
+
+            seed += 1
+            if not sweep:
+                wandb.finish()
+            print()
 
         if eval_on_test:
-            test_loader = DataLoader(test_data, batch_size=batch_size, collate_fn=custom_collate,
-                                     pin_memory=pin_memory, num_workers=num_workers)
-            print('Evaluating on test, with test size: ', len(test_data))
-
-            # file dump for each split
-            data_split_string = 'test_split_' + str(CV)
-            test_metrics, pred, targ = trainer.evaluation(test_loader, data_split=data_split_string, return_pred=True)
-            if eval_on_test_split:
-                for x in zip(test_data.indices, np.squeeze(torch.vstack(targ).cpu().numpy()),
-                                                np.squeeze(torch.vstack(pred).cpu().numpy())):
-                    print('>>>', *x)
-
-            mae_split = test_metrics['mae'] * std
-            rmse_split = np.sqrt(test_metrics['MSELoss'])*std
-            maes.append(mae_split)
-            rmses.append(rmse_split)
-            if wandb.run is not None:
-                wandb.run.summary["test_score"] = mae_split
-                wandb.run.summary["test_rmse"] = rmse_split
-
-            if print_repr:
-                for x_indices, x_loader, x_title in zip((train_data.indices, val_data.indices, test_data.indices),
-                                                        (train_loader, val_loader, test_loader),
-                                                        ('train', 'val', 'test')):
-                    representations = trainer.get_repr(x_loader)
-                    for x in zip(x_indices, representations):
-                        print(f'>>>{x_title}', x[0], *x[1])
-
-        seed += 1
-        if not sweep:
-            wandb.finish()
-        print()
-
-    if eval_on_test:
-        print(f"Mean MAE across splits {np.mean(maes)} +- {np.std(maes)}")
-        print(f"Mean RMSE across splits {np.mean(rmses)} +- {np.std(rmses)}")
+            print(f"Mean MAE across splits {np.mean(maes)} +- {np.std(maes)}")
+            print(f"Mean RMSE across splits {np.mean(rmses)} +- {np.std(rmses)}")
     return maes, rmses
 
 
@@ -295,39 +303,22 @@ if __name__ == '__main__':
 
     print("\ninput args", args, '\n')
 
-    if not args.learning_curve:
-        train(run_dir, logname, project, args.wandb_name, vars(arg_groups['hyperparameters']), seed=args.seed,
-              device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint,
-              subset=args.subset, dataset=args.dataset, process=args.process,
-              verbose=args.verbose, radius=args.radius, max_neighbors=args.max_neighbors, sum_mode=args.sum_mode,
-              n_s=args.n_s, n_v=args.n_v, n_conv_layers=args.n_conv_layers, distance_emb_dim=args.distance_emb_dim,
-              graph_mode=args.graph_mode, dropout_p=args.dropout_p, random_baseline=args.random_baseline,
-              combine_mode=args.combine_mode, atom_mapping=args.atom_mapping, CV=args.CV, attention=args.attention,
-              noH=args.noH, two_layers_atom_diff=args.two_layers_atom_diff, rxnmapper=args.rxnmapper, reverse=args.reverse,
-              xtb=args.xtb, xtb_subset=args.xtb_subset,
-              eval_on_test_split=args.eval_on_test_split,
-              split_complexes=args.split_complexes, lr=args.lr, weight_decay=args.weight_decay, splitter=args.splitter,
-              tr_frac=args.train_frac,
-              invariant=args.invariant)
-
+    if args.learning_curve:
+        train_frac = args.train_frac * np.logspace(-4, 0, 5, endpoint=True, base=2)
     else:
-        train_fractions = 0.8*np.logspace(-4, 0, 5, endpoint=True, base=2)
+        train_frac = [args.train_frac]
+    print(train_frac)
 
-        for tr_frac in train_fractions:
-            print(f'running for tr frac {tr_frac}')
-            wandb_name = args.wandb_name + f'tr_{tr_frac}'
-
-            train(run_dir, logname, project, wandb_name, vars(arg_groups['hyperparameters']), seed=args.seed,
-                  device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint,
-                  subset=args.subset, dataset=args.dataset, process=args.process,
-                  verbose=args.verbose, radius=args.radius, max_neighbors=args.max_neighbors, sum_mode=args.sum_mode,
-                  n_s=args.n_s, n_v=args.n_v, n_conv_layers=args.n_conv_layers, distance_emb_dim=args.distance_emb_dim,
-                  graph_mode=args.graph_mode, dropout_p=args.dropout_p, random_baseline=args.random_baseline,
-                  combine_mode=args.combine_mode, atom_mapping=args.atom_mapping, CV=args.CV, attention=args.attention,
-                  noH=args.noH, two_layers_atom_diff=args.two_layers_atom_diff, rxnmapper=args.rxnmapper, reverse=args.reverse,
-                  xtb=args.xtb, xtb_subset=args.xtb_subset,
-                  eval_on_test_split=args.eval_on_test_split,
-                  split_complexes=args.split_complexes, lr=args.lr, weight_decay=args.weight_decay, splitter=args.splitter,
-                  tr_frac=tr_frac,
-                  invariant=args.invariant)
-
+    train(run_dir, logname, project, args.wandb_name, vars(arg_groups['hyperparameters']), seed=args.seed,
+          device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint,
+          subset=args.subset, dataset=args.dataset, process=args.process,
+          verbose=args.verbose, radius=args.radius, max_neighbors=args.max_neighbors, sum_mode=args.sum_mode,
+          n_s=args.n_s, n_v=args.n_v, n_conv_layers=args.n_conv_layers, distance_emb_dim=args.distance_emb_dim,
+          graph_mode=args.graph_mode, dropout_p=args.dropout_p, random_baseline=args.random_baseline,
+          combine_mode=args.combine_mode, atom_mapping=args.atom_mapping, CV=args.CV, attention=args.attention,
+          noH=args.noH, two_layers_atom_diff=args.two_layers_atom_diff, rxnmapper=args.rxnmapper, reverse=args.reverse,
+          xtb=args.xtb, xtb_subset=args.xtb_subset,
+          eval_on_test_split=args.eval_on_test_split,
+          split_complexes=args.split_complexes, lr=args.lr, weight_decay=args.weight_decay, splitter=args.splitter,
+          training_fractions=train_frac,
+          invariant=args.invariant)
