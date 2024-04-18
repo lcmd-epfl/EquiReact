@@ -8,7 +8,7 @@ def train_wrapper():
     with wandb.init(config=None):
         args = wandb.config
         try:
-            train(run_dir, logname, project, wandb_name, args, seed=123,
+            train(run_dir, logname, project, wandb_name, args, seed0=123,
                   device='cuda', num_epochs=args.num_epochs, checkpoint=None,
                   subset=args.subset, dataset=args.dataset, process=False,
                   radius=args.radius, max_neighbors=args.max_neighbors, sum_mode=args.sum_mode,
@@ -17,7 +17,7 @@ def train_wrapper():
                   combine_mode=args.combine_mode, atom_mapping=args.atom_mapping, CV=1, attention=args.attention,
                   noH=args.noH, two_layers_atom_diff=args.two_layers_atom_diff, rxnmapper=False, reverse=False,
                   xtb=args.xtb, split_complexes=False, sweep=True, lr=args.lr, weight_decay=args.weight_decay,
-                  tr_frac=args.train_frac)
+                  training_fractions=[args.train_frac])
         except Exception as e:
             print(e)
             pass

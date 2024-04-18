@@ -110,7 +110,7 @@ def parse_arguments(arglist=sys.argv[1:]):
 
 def train(run_dir, run_name, project, wandb_name, hyper_dict,
           #setup args
-          device='cuda', seed=123, eval_on_test=True,
+          device='cuda', seed0=123, eval_on_test=True,
           #dataset args
           subset=None, training_fractions = [0.8], process=False, CV=0,
           dataset='cyclo', splitter='random',
@@ -166,6 +166,7 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
     for tr_frac in training_fractions:
         maes = []
         rmses = []
+        seed = seed0
 
         for i in range(CV):
             print(f"CV iter {i+1}/{CV}")
@@ -173,13 +174,14 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
             hyper_dict['CV iter'] = i
             hyper_dict['seed'] = seed
             if not sweep:
-                if CV==1:
-                    wandb.init(project=project, config=hyper_dict, name=wandb_name, group=None)
+                if CV>1:
+                    wandb.init(project=project, config=hyper_dict, name=f'{wandb_name}.cv{i}', group=wandb_name)
                 elif len(training_fractions)>1:
                     hyper_dict['train_frac'] = f'{tr_frac}/{max(training_fractions)}'
+                    print(f'{wandb_name}.tr{tr_frac}')
                     wandb.init(project=project, config=hyper_dict, name=f'{wandb_name}.tr{tr_frac}', group=None)
                 else:
-                    wandb.init(project=project, config=hyper_dict, name=f'{wandb_name}.cv{i}', group=wandb_name)
+                    wandb.init(project=project, config=hyper_dict, name=wandb_name, group=None)
 
             torch.manual_seed(seed)
             torch.cuda.manual_seed(seed)
@@ -309,7 +311,7 @@ if __name__ == '__main__':
         train_frac = [args.train_frac]
     print(train_frac)
 
-    train(run_dir, logname, project, args.wandb_name, vars(arg_groups['hyperparameters']), seed=args.seed,
+    train(run_dir, logname, project, args.wandb_name, vars(arg_groups['hyperparameters']), seed0=args.seed,
           device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint,
           subset=args.subset, dataset=args.dataset, process=args.process,
           verbose=args.verbose, radius=args.radius, max_neighbors=args.max_neighbors, sum_mode=args.sum_mode,
