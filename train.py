@@ -182,7 +182,6 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
         tr_indices, te_indices, val_indices, indices = split_dataset(nreactions=data.nreactions, splitter=splitter,
                                                                      tr_frac=tr_frac, dataset=dataset, subset=subset)
 
-
         if reverse:
             tr_indices = np.hstack((tr_indices, tr_indices+data.nreactions))
             te_indices = np.hstack((te_indices, te_indices+data.nreactions))
