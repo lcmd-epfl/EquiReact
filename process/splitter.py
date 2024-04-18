@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 from chemprop.data.utils import get_data_from_smiles
 from process.scaffold import scaffold_split
-
+from rdkit import Chem
 
 def remove_atom_map_number_manual(smiles):
     smi = re.sub(':[0-9]+', '', smiles)
@@ -51,6 +51,56 @@ def get_y_splits(df, dataset, splitter, indices, tr_size, te_size):
     return tr_indices, te_indices, val_indices
 
 
+def get_n_atoms(smiles):
+    """helper function for get_size_splits:
+    get number of heavy atoms from smiles string using rdkit"""
+    # MolFromSmiles will by default
+    # does not count *most* of the Hs (implicit)
+    # which is desired behaviour for following count
+    mol = Chem.MolFromSmiles(smiles)
+    if mol is None:
+        raise ValueError('mol is none, cannot count nats')
+    return mol.GetNumAtoms()
+
+
+def get_size_splits(df, dataset, splitter, indices, tr_size, te_size):
+    """train-test split based on molecule size:
+    train on smaller molecules and test on larger molecules
+    (based on reactant/product depending on whether there is 1
+    reactant or 1 product)
+
+    Args:
+        df: pandas df with info
+        dataset: one of 'cyclo', 'gdb', 'proparg'
+        indices: for subset of data (shuffling here is redundant)
+        tr_size: float
+        te_size: float
+
+    Returns:
+        tr_indices, te_indices, val_indices: tuple of list/arr of indices
+        """
+
+    if dataset == 'gdb':
+        rsmiles = df['rsmi'].to_numpy()
+    elif dataset == 'cyclo':
+        rsmiles = df['rxn_smiles'].apply(get_product_from_reaction_smi).to_numpy()
+    elif dataset == 'proparg':
+        rsmiles = df['rxn_smiles'].apply(get_reactant_from_reaction_smi).to_numpy()
+
+    mol_sizes = np.array([*map(get_n_atoms, rsmiles)])
+
+    idx4idx = np.argsort(mol_sizes[indices])
+    if splitter == 'sizedesc':
+        idx4idx = idx4idx[::-1]
+    indices = indices[idx4idx]
+
+    tr_indices, val_indices, te_indices = np.split(indices, [tr_size, tr_size+te_size])
+    np.random.shuffle(tr_indices)
+    np.random.shuffle(te_indices)
+    np.random.shuffle(val_indices)
+    return tr_indices, te_indices, val_indices
+
+
 def split_dataset(nreactions, splitter, tr_frac, dataset, subset=None):
     # 1) seed `np.random` and `random` before calling this fn
     # 2) use the output indices with np.arrays, lists, df.iloc[]
@@ -68,7 +118,7 @@ def split_dataset(nreactions, splitter, tr_frac, dataset, subset=None):
     te_size = round(te_frac * len(indices))
     va_size = len(indices) - tr_size - te_size
 
-    if splitter in ['scaffold', 'yasc', 'ydesc']:
+    if splitter in ['scaffold', 'yasc', 'ydesc', 'sizeasc', 'sizedesc']:
         csv_files = {'gdb': 'data/gdb7-22-ts/ccsdtf12_dz_cleaned.csv',
                      'cyclo': 'data/cyclo/cyclo.csv',
                      'proparg': 'data/proparg/proparg.csv'}
@@ -88,4 +138,12 @@ def split_dataset(nreactions, splitter, tr_frac, dataset, subset=None):
         tr_indices, te_indices, val_indices = get_scaffold_splits(df, dataset=dataset,
                                                                   indices=indices,
                                                                   sizes=(tr_frac, 1-(tr_frac+te_frac), te_frac))
+
+    elif splitter in ['sizeasc', 'sizedesc']:
+        print("Splitting based on molecular size")
+        tr_indices, te_indices, val_indices = get_size_splits(df, dataset, splitter, indices, tr_size, te_size)
+
+    else:
+        raise RuntimeError
+
     return tr_indices, te_indices, val_indices, indices
