@@ -311,8 +311,7 @@ if __name__ == '__main__':
               invariant=args.invariant)
 
     else:
-        train_fractions = np.logspace(-1, 0, 5, endpoint=True)
-        train_fractions = np.clip(train_fractions, None, 0.8)
+        train_fractions = 0.8*np.logspace(-4, 0, 5, endpoint=True, base=2)
 
         for tr_frac in train_fractions:
             print(f'running for tr frac {tr_frac}')
