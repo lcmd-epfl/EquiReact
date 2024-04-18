@@ -62,6 +62,7 @@ def parse_arguments(arglist=sys.argv[1:]):
     g_run.add_argument('--verbose'            , action='store_true', default=False    ,  help='Print dims throughout the training process')
     g_run.add_argument('--process'            , action='store_true', default=False    ,  help='(re-)process data by force (if data is already there, default is to not reprocess)?')
     g_run.add_argument('--eval_on_test_split' , action='store_true', default=False    ,  help='print error per test molecule')
+    g_run.add_argument('--learning_curve'     , action='store_true', default=False    ,  help='run learning curve (5 tr set sizes)')
 
     g_hyper = p.add_argument_group('hyperparameters')
     g_hyper.add_argument('--subset'               , type=int           , default=None     ,  help='size of a subset to use instead of the full set (tr+te+va)')
@@ -294,16 +295,41 @@ if __name__ == '__main__':
 
     print("\ninput args", args, '\n')
 
-    train(run_dir, logname, project, args.wandb_name, vars(arg_groups['hyperparameters']), seed=args.seed,
-          device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint,
-          subset=args.subset, dataset=args.dataset, process=args.process,
-          verbose=args.verbose, radius=args.radius, max_neighbors=args.max_neighbors, sum_mode=args.sum_mode,
-          n_s=args.n_s, n_v=args.n_v, n_conv_layers=args.n_conv_layers, distance_emb_dim=args.distance_emb_dim,
-          graph_mode=args.graph_mode, dropout_p=args.dropout_p, random_baseline=args.random_baseline,
-          combine_mode=args.combine_mode, atom_mapping=args.atom_mapping, CV=args.CV, attention=args.attention,
-          noH=args.noH, two_layers_atom_diff=args.two_layers_atom_diff, rxnmapper=args.rxnmapper, reverse=args.reverse,
-          xtb=args.xtb, xtb_subset=args.xtb_subset,
-          eval_on_test_split=args.eval_on_test_split,
-          split_complexes=args.split_complexes, lr=args.lr, weight_decay=args.weight_decay, splitter=args.splitter,
-          tr_frac=args.train_frac,
-          invariant=args.invariant)
+    if not args.learning_curve:
+        train(run_dir, logname, project, args.wandb_name, vars(arg_groups['hyperparameters']), seed=args.seed,
+              device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint,
+              subset=args.subset, dataset=args.dataset, process=args.process,
+              verbose=args.verbose, radius=args.radius, max_neighbors=args.max_neighbors, sum_mode=args.sum_mode,
+              n_s=args.n_s, n_v=args.n_v, n_conv_layers=args.n_conv_layers, distance_emb_dim=args.distance_emb_dim,
+              graph_mode=args.graph_mode, dropout_p=args.dropout_p, random_baseline=args.random_baseline,
+              combine_mode=args.combine_mode, atom_mapping=args.atom_mapping, CV=args.CV, attention=args.attention,
+              noH=args.noH, two_layers_atom_diff=args.two_layers_atom_diff, rxnmapper=args.rxnmapper, reverse=args.reverse,
+              xtb=args.xtb, xtb_subset=args.xtb_subset,
+              eval_on_test_split=args.eval_on_test_split,
+              split_complexes=args.split_complexes, lr=args.lr, weight_decay=args.weight_decay, splitter=args.splitter,
+              tr_frac=args.train_frac,
+              invariant=args.invariant)
+
+    else:
+        project = f'nequireact-{args.dataset}-lc'
+        train_fractions = np.logspace(-1, 0, 5, endpoint=True)
+        train_fractions = np.clip(train_fractions, None, 0.8)
+
+        for tr_frac in train_fractions:
+            print(f'running for tr frac {tr_frac}')
+            wandb_name = args.wandb_name + f'tr_{tr_frac}'
+
+            train(run_dir, logname, project, wandb_name, vars(arg_groups['hyperparameters']), seed=args.seed,
+                  device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint,
+                  subset=args.subset, dataset=args.dataset, process=args.process,
+                  verbose=args.verbose, radius=args.radius, max_neighbors=args.max_neighbors, sum_mode=args.sum_mode,
+                  n_s=args.n_s, n_v=args.n_v, n_conv_layers=args.n_conv_layers, distance_emb_dim=args.distance_emb_dim,
+                  graph_mode=args.graph_mode, dropout_p=args.dropout_p, random_baseline=args.random_baseline,
+                  combine_mode=args.combine_mode, atom_mapping=args.atom_mapping, CV=args.CV, attention=args.attention,
+                  noH=args.noH, two_layers_atom_diff=args.two_layers_atom_diff, rxnmapper=args.rxnmapper, reverse=args.reverse,
+                  xtb=args.xtb, xtb_subset=args.xtb_subset,
+                  eval_on_test_split=args.eval_on_test_split,
+                  split_complexes=args.split_complexes, lr=args.lr, weight_decay=args.weight_decay, splitter=args.splitter,
+                  tr_frac=tr_frac,
+                  invariant=args.invariant)
+
