@@ -311,7 +311,6 @@ if __name__ == '__main__':
               invariant=args.invariant)
 
     else:
-        project = f'nequireact-{args.dataset}-lc'
         train_fractions = np.logspace(-1, 0, 5, endpoint=True)
         train_fractions = np.clip(train_fractions, None, 0.8)
 
