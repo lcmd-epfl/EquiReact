@@ -176,12 +176,15 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
             if not sweep:
                 if CV>1:
                     wandb.init(project=project, config=hyper_dict, name=f'{wandb_name}.cv{i}', group=wandb_name)
+                    run_name_chk = f'{run_name}.cv{i}'
                 elif len(training_fractions)>1:
                     hyper_dict['train_frac'] = f'{tr_frac}/{max(training_fractions)}'
                     print(f'{wandb_name}.tr{tr_frac}')
                     wandb.init(project=project, config=hyper_dict, name=f'{wandb_name}.tr{tr_frac}', group=None)
+                    run_name_chk = f'{run_name}.tr{tr_frac}'
                 else:
                     wandb.init(project=project, config=hyper_dict, name=wandb_name, group=None)
+                    run_name_chk = run_name
 
             torch.manual_seed(seed)
             torch.cuda.manual_seed(seed)
@@ -229,7 +232,7 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
                                     num_workers=num_workers)
 
             trainer = ReactTrainer(model=model, std=std, device=device, metrics={'mae':MAE()},
-                                   run_dir=run_dir, run_name=run_name,
+                                   run_dir=run_dir, run_name=run_name_chk,
                                    sampler=sampler, val_per_batch=val_per_batch,
                                    checkpoint=checkpoint, num_epochs=num_epochs,
                                    eval_per_epochs=eval_per_epochs, patience=patience,
