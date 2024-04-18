@@ -67,7 +67,7 @@ if script_args.xtb is not None:
 print(args)
 print()
 
-maes, rmses = train.train(run_dir, logname, None, None, {}, seed=args.seed,
+maes, rmses = train.train(run_dir, logname, None, None, {}, seed0=args.seed,
                           device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint,
                           subset=args.subset, dataset=args.dataset, process=args.process,
                           verbose=args.verbose, radius=args.radius, max_neighbors=args.max_neighbors, sum_mode=args.sum_mode,
@@ -80,7 +80,7 @@ maes, rmses = train.train(run_dir, logname, None, None, {}, seed=args.seed,
                           split_complexes=args.split_complexes, lr=args.lr, weight_decay=args.weight_decay,
                           eval_on_test_split=args.eval_on_test_split,
                           invariant=args.invariant,
-                          tr_frac=args.train_frac,
+                          training_fractions=[args.train_frac],
                           sweep=True)
 
 print(f'delta MAE: {abs(mae_logged-np.mean(maes)):.2e}')
