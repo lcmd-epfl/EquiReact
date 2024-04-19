@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 
+import io
 import glob
 from collections import defaultdict
 import numpy as np
 
 
 def round_with_std(mae, std):
-    if std > 1:
+    if std<1e-9:
+        return f'$ {mae:.2f} $'
+    elif std > 1:
         std_round = str(round(std, 1))
     else:
         # works only is std < 1
@@ -54,11 +57,21 @@ def load_slatm():
 
 
 def load_chemprop():
-    chemprop = arr2dict(np.loadtxt('baseline_chemprop/res-short.txt', dtype=str, skiprows=1))
+    chemprop = defaultdict(lambda: [])
+    for f in glob.glob('baseline_chemprop/results/*/fold_?/test_scores.csv'):
+        key = f.split('/')[2]
+        val = np.loadtxt(f, skiprows=1, delimiter=',', usecols=[1,4])
+        chemprop[key].append(val)
+    for key, val in chemprop.items():
+        val = np.array(val)
+        val_mean = val.mean(axis=0)
+        val_std  = val.std(axis=0)
+        chemprop[key] = [val_mean[0], val_std[0], val_mean[1], val_std[1]]
+
     d = defaultdict(lambda: None)
     for key, val in chemprop.items():
         k = key.split('-')
-        if k[1]!='scaffold':
+        if k[1] not in ['scaffold', 'yasc', 'ydesc', 'sizeasc', 'sizedesc']:
             key = '-'.join([k[0], 'random', *k[1:]])
         if k[-1]!='withH':
             key = key + '-noH'
@@ -68,8 +81,10 @@ def load_chemprop():
 
 def load_equireact():
     equireact = {}
-    for dataset in ['gdb', 'cyclo', 'proparg']:
-        equireact.update(arr2dict(np.loadtxt(f'results/results-{dataset}.txt', dtype=str)))
+    with open('results/results.txt') as f:
+        lines = f.readlines()
+    f = io.StringIO(''.join([*filter(lambda x: x.startswith('cv10'), lines)]))
+    equireact = arr2dict(np.loadtxt(f, dtype=str))
     equireact = {key[:key.find('-ns')].replace('normal', 'none'): val for key, val in equireact.items()}
     return defaultdict(lambda: None, equireact)
 
@@ -124,14 +139,18 @@ def print_main_table(geometry='dft', use_H=False, use_rmse=False):
     print(footer)
 
 
-def print_main_table_with_inv(geometry='dft', use_H=False, use_rmse=False):
+def print_main_table_with_inv(geometry='dft', use_H=False, use_rmse=False, splitters=None):
     header=r'''\begin{tabular}{@{}cccccc@{}} \toprule
 \makecell{Dataset \\ (property, units)} & \makecell{Atom-mapping\\ regime}
             & \CGR & SLATM$_d$+KRR & \textsc{EquiReact} & \textsc{InReact} \\ '''
 
     splitter_header = {
-        'random': r'\multicolumn{6}{@{}c@{}}{\emph{Random splits}}\\ \midrule',
+        'random':   r'\multicolumn{6}{@{}c@{}}{\emph{Random splits}}\\ \midrule',
         'scaffold': r'\multicolumn{6}{@{}c@{}}{\emph{Scaffold splits}}\\ \midrule',
+        'yasc':     r'\multicolumn{6}{@{}c@{}}{\emph{Property-based splits (ascending)}}\\ \midrule',
+        'ydesc':    r'\multicolumn{6}{@{}c@{}}{\emph{Property-based splits (descending)}}\\ \midrule',
+        'sizeasc':  r'\multicolumn{6}{@{}c@{}}{\emph{Size-based splits (ascending)}}\\ \midrule',
+        'sizedesc': r'\multicolumn{6}{@{}c@{}}{\emph{Size-based splits (descending)}}\\ \midrule',
         }
 
     dataset_header = {
@@ -145,7 +164,7 @@ def print_main_table_with_inv(geometry='dft', use_H=False, use_rmse=False):
 '''
     h_key = "withH" if use_H else "noH"
     print(header)
-    for splitter in ['random', 'scaffold']:
+    for splitter in splitters:
         print('\midrule')
         print(splitter_header[splitter])
         for dataset in ['gdb', 'cyclo', 'proparg']:
@@ -273,6 +292,10 @@ if __name__=='__main__':
     print('% DFT vs XTB RESULTS FOR GNUPLOT: MAE, RANDOM, NO H')
     print_xtb_data()
 
-    print('% THE MAIN TABLE OF THE MAIN TEXT BUT WITH INVARIANT: DFT, NO HYDROGENS, MAE')
-    print_main_table_with_inv(geometry='dft', use_H=False, use_rmse=False)
+    print('% THE MAIN TABLE OF THE MAIN TEXT BUT WITH INVARIANT: NO HYDROGENS, MAE')
+    print_main_table_with_inv(geometry='dft', use_H=False, use_rmse=False, splitters=['random', 'scaffold'])
+    print()
+
+    print('% SAME WITH OTHER SPLITS ')
+    print_main_table_with_inv(geometry='dft', use_H=False, use_rmse=False, splitters=['yasc', 'ydesc', 'sizeasc', 'sizedesc'])
     print()
