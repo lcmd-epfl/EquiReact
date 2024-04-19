@@ -25,6 +25,8 @@ def argparse():
     g3.add_argument('--scaffold',      action='store_true', help='use scaffold splits (random otherwise)')
     g3.add_argument('--yasc',          action='store_true', help='use yasc splits (random otherwise)')
     g3.add_argument('--ydesc',         action='store_true', help='use ydesc splits (random otherwise)')
+    g3.add_argument('--sizeasc',       action='store_true', help='use sizeasc splits (random otherwise)')
+    g3.add_argument('--sizedesc',      action='store_true', help='use sizedesc splits (random otherwise)')
     parser.add_argument('--withH',     action='store_true', help='use explicit H')
     args = parser.parse_args()
     return parser, args
@@ -66,6 +68,10 @@ if __name__ == "__main__":
         splitter = 'yasc'
     elif args.ydesc:
         splitter = 'ydesc'
+    elif args.sizeasc:
+        splitter = 'sizeasc'
+    elif args.sizedesc:
+        splitter = 'sizedesc'
     else:
         splitter = 'random'
 
