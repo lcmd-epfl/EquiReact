@@ -40,5 +40,5 @@ python train.py \
 --weight_decay 0.00001 \
 --splitter random \
 --wandb_name cv10-cyclo-inv-random-withH-dft-normal-ns64-nv48-d48-l2-energy-diff-node \
---invariant\
+--invariant \
 

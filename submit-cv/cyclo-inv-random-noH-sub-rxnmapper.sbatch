@@ -45,5 +45,5 @@ python train.py \
 --noH \
 --xtb_subset \
 --wandb_name cv10-cyclo-inv-random-noH-sub-rxnmapper-ns64-nv48-d48-l2-energy-diff-node \
---invariant\
+--invariant \
 

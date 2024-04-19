@@ -43,5 +43,5 @@ python train.py \
 --splitter sizeasc \
 --noH \
 --wandb_name cv10-cyclo-inv-sizeasc-noH-dft-true-ns64-nv48-d48-l2-energy-diff-node \
---invariant\
+--invariant \
 

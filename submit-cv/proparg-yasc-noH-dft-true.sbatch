@@ -7,7 +7,7 @@
 #SBATCH --mem=4GB
 #SBATCH --time=24:00:00
 #SBATCH --job-name=equireact
-#SBATCH --array=0
+#SBATCH --array=0-9
 #SBATCH --exclude=i39
 
 SEED=$(( $SLURM_ARRAY_TASK_ID + 123 ))

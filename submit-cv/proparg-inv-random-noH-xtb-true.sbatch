@@ -44,5 +44,5 @@ python train.py \
 --noH \
 --xtb \
 --wandb_name cv10-proparg-inv-random-noH-xtb-true-ns64-nv64-d64-l3-vector-diff-node \
---invariant\
+--invariant \
 
