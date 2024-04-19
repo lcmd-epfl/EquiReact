@@ -43,5 +43,5 @@ python train.py \
 --rxnmapper \
 --splitter random \
 --wandb_name cv10-gdb-inv-random-withH-dft-rxnmapper-ns64-nv64-d32-l2-vector-diff-both \
---invariant\
+--invariant \
 

@@ -43,5 +43,5 @@ python train.py \
 --splitter sizeasc \
 --noH \
 --wandb_name cv10-gdb-inv-sizeasc-noH-dft-true-ns64-nv64-d32-l2-vector-diff-both \
---invariant\
+--invariant \
 

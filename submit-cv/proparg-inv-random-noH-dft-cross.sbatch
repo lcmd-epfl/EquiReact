@@ -42,5 +42,5 @@ python train.py \
 --splitter random \
 --noH \
 --wandb_name cv10-proparg-inv-random-noH-dft-cross-ns64-nv64-d64-l3-vector-diff-node \
---invariant\
+--invariant \
 

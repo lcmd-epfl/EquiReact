@@ -42,5 +42,5 @@ python train.py \
 --atom_mapping \
 --splitter random \
 --wandb_name cv10-proparg-inv-random-withH-dft-true-ns64-nv64-d64-l3-vector-diff-node \
---invariant\
+--invariant \
 

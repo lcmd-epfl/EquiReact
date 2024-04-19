@@ -44,5 +44,5 @@ python train.py \
 --splitter scaffold \
 --noH \
 --wandb_name cv10-gdb-inv-scaffold-noH-dft-rxnmapper-ns64-nv64-d32-l2-vector-diff-both \
---invariant\
+--invariant \
 
