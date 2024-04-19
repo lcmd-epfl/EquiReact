@@ -42,6 +42,6 @@ python train.py \
 --atom_mapping \
 --splitter random \
 --noH \
---wandb_name cv10-gdb-random-noH-dft-true-ns64-nv64-d32-l2-vector-diff-both \
+--wandb_name lc-cv10-gdb-random-noH-dft-true-ns64-nv64-d32-l2-vector-diff-both \
 --learning_curve \
 

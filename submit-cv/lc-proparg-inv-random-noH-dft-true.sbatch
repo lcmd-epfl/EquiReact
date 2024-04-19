@@ -42,7 +42,7 @@ python train.py \
 --atom_mapping \
 --splitter random \
 --noH \
---wandb_name cv10-proparg-inv-random-noH-dft-true-ns64-nv64-d64-l3-vector-diff-node \
---invariant\
+--wandb_name lc-cv10-proparg-inv-random-noH-dft-true-ns64-nv64-d64-l3-vector-diff-node \
+--invariant \
 --learning_curve \
 
