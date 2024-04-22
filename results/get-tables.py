@@ -93,10 +93,10 @@ def arr2dict(arr):
     return {x[0]: [*map(float, x[1:])] for x in arr}
 
 
-def print_main_table(geometry='dft', use_H=False, use_rmse=False):
+def print_main_table(geometry='dft', use_H=False, use_rmse=False, invariant=True):
     header=r'''\begin{tabular}{@{}ccccc@{}} \toprule
 \makecell{Dataset \\ (property, units)} & \makecell{Atom-mapping\\ regime}
-            & \CGR & SLATM$_d$+KRR & \textsc{EquiReact} \\ '''
+            & \CGR & SLATM$_d$+KRR & \textsc{3DReact} \\ '''
 
     splitter_header = {
         'random': r'\multicolumn{5}{@{}c@{}}{\emph{Random splits}}\\ \midrule',
@@ -127,7 +127,7 @@ def print_main_table(geometry='dft', use_H=False, use_rmse=False):
 
                 chemprop_key  = f'{dataset}-{splitter}-{atom_mapping.lower()}-{h_key}'
                 slatm_key     = f'{dataset}-{geometry}-{splitter}-{atom_mapping.lower()}'
-                equireact_key = f'cv10-{dataset}-{splitter}-{h_key}-{geometry}-{atom_mapping.lower()}'
+                equireact_key = f'cv10-{dataset}{"-inv-" if invariant else "-"}{splitter}-{h_key}-{geometry}-{atom_mapping.lower()}'
 
                 print(get_error(chemprop[chemprop_key], use_rmse), end='')
                 print(' & ', end='')
@@ -139,10 +139,10 @@ def print_main_table(geometry='dft', use_H=False, use_rmse=False):
     print(footer)
 
 
-def print_main_table_with_inv(geometry='dft', use_H=False, use_rmse=False, splitters=None):
+def print_main_table_both(geometry='dft', use_H=False, use_rmse=False, splitters=None):
     header=r'''\begin{tabular}{@{}cccccc@{}} \toprule
 \makecell{Dataset \\ (property, units)} & \makecell{Atom-mapping\\ regime}
-            & \CGR & SLATM$_d$+KRR & \textsc{EquiReact} & \textsc{InReact} \\ '''
+            & \CGR & SLATM$_d$+KRR & \textsc{InReact} & \textsc{EquiReact} \\ '''
 
     splitter_header = {
         'random':   r'\multicolumn{6}{@{}c@{}}{\emph{Random splits}}\\ \midrule',
@@ -177,22 +177,22 @@ def print_main_table_with_inv(geometry='dft', use_H=False, use_rmse=False, split
 
                 chemprop_key  = f'{dataset}-{splitter}-{atom_mapping.lower()}-{h_key}'
                 slatm_key     = f'{dataset}-{geometry}-{splitter}-{atom_mapping.lower()}'
-                equireact_key = f'cv10-{dataset}-{splitter}-{h_key}-{geometry}-{atom_mapping.lower()}'
                 inreact_key   = f'cv10-{dataset}-inv-{splitter}-{h_key}-{geometry}-{atom_mapping.lower()}'
+                equireact_key = f'cv10-{dataset}-{splitter}-{h_key}-{geometry}-{atom_mapping.lower()}'
 
                 print(get_error(chemprop[chemprop_key], use_rmse), end='')
                 print(' & ', end='')
                 print(get_error(slatm[slatm_key], use_rmse), end='')
                 print(' & ', end='')
-                print(get_error(equireact[equireact_key], use_rmse), end='')
-                print(' & ', end='')
                 print(get_error(equireact[inreact_key], use_rmse), end='')
+                print(' & ', end='')
+                print(get_error(equireact[equireact_key], use_rmse), end='')
 
                 print(r' \\')
     print(footer)
 
 
-def print_hydrogen_table(geometry='dft', use_H=False, use_rmse=False, splitter='random'):
+def print_hydrogen_table(geometry='dft', use_H=False, use_rmse=False, splitter='random', invariant=True):
     pass
     header=r'''\begin{tabular}{@{}cccccccc@{}} \toprule
 \multirow{3}{*}{\makecell{Dataset \\ (property, units)}}&
@@ -220,7 +220,7 @@ def print_hydrogen_table(geometry='dft', use_H=False, use_rmse=False, splitter='
             print(f'& {h_label} ', end='')
             for atom_mapping in ['True', 'RXNMapper', 'None']:
                 chemprop_key  = f'{dataset}-{splitter}-{atom_mapping.lower()}-{h_key}'
-                equireact_key = f'cv10-{dataset}-{splitter}-{h_key}-{geometry}-{atom_mapping.lower()}'
+                equireact_key = f'cv10-{dataset}{"-inv-" if invariant else "-"}{splitter}-{h_key}-{geometry}-{atom_mapping.lower()}'
                 print(' & ', end='')
                 print(get_error(chemprop[chemprop_key], use_rmse), end='')
                 print(' & ', end='')
@@ -229,7 +229,7 @@ def print_hydrogen_table(geometry='dft', use_H=False, use_rmse=False, splitter='
     print(footer)
 
 
-def print_xtb_data(use_H=False, use_rmse=False, splitter='random'):
+def print_xtb_data(use_H=False, use_rmse=False, splitter='random', invariant=True):
     h_key = "withH" if use_H else "noH"
     for dataset in ['gdb', 'cyclo', 'proparg']:
         print(f'#{dataset}')
@@ -239,7 +239,7 @@ def print_xtb_data(use_H=False, use_rmse=False, splitter='random'):
             if dataset=='proparg' and atom_mapping=='RXNMapper':
                 continue
             for geom_label, geometry in zip(['DFT', 'xTB'], geometries):
-                equireact_key = f'cv10-{dataset}-{splitter}-{h_key}-{geometry}-{atom_mapping.lower()}'
+                equireact_key = f'cv10-{dataset}{"-inv-" if invariant else "-"}{splitter}-{h_key}-{geometry}-{atom_mapping.lower()}'
                 print(i, '\t', geom_label, '\t', equireact_key, '\t', *get_error(equireact[equireact_key], use_rmse=use_rmse, latex=False))
                 i+=1.0
             i+=0.5
@@ -251,7 +251,7 @@ def print_xtb_data(use_H=False, use_rmse=False, splitter='random'):
         print()
 
 
-def print_attn_table(use_H=False, use_rmse=False, splitter='random', geometry='dft'):
+def print_attn_table(use_H=False, use_rmse=False, splitter='random', geometry='dft', invariant=True):
     h_key = "withH" if use_H else "noH"
     header = r'''\begin{tabular}{@{}cccc@{}} \toprule
 Dataset (property, units)
@@ -262,7 +262,7 @@ Dataset (property, units)
     for dataset, prop in zip(['gdb', 'cyclo', 'proparg'], ['E', 'G', 'E']):
         print('\\'+dataset, r'($\Delta '+prop+'^\ddag$, kcal/mol) & None', end='')
         for atom_mapping in ['cross', 'none']:
-            equireact_key = f'cv10-{dataset}-{splitter}-{h_key}-{geometry}-{atom_mapping}'
+            equireact_key = f'cv10-{dataset}{"-inv-" if invariant else "-"}{splitter}-{h_key}-{geometry}-{atom_mapping}'
             print('&', get_error(equireact[equireact_key], use_rmse), end='')
         print(r' \\[0.002cm]')
     print(footer)
@@ -273,29 +273,29 @@ if __name__=='__main__':
     slatm = load_slatm()
     equireact = load_equireact()
 
-    print('% THE MAIN TABLE OF THE MAIN TEXT: DFT, NO HYDROGENS, MAE')
-    print_main_table(geometry='dft', use_H=False, use_rmse=False)
+    print('% THE MAIN TABLE OF THE MAIN TEXT: INVARIANT, DFT, NO HYDROGENS, MAE')
+    print_main_table(geometry='dft', use_H=False, use_rmse=False, invariant=True)
     print()
 
-    print('% THE MAIN TABLE SI SUPPLEMENT: DFT, NO HYDROGENS, RMSE')
-    print_main_table(geometry='dft', use_H=False, use_rmse=True)
+    print('% THE MAIN TABLE SI SUPPLEMENT: INVARIANT, DFT, NO HYDROGENS, RMSE')
+    print_main_table(geometry='dft', use_H=False, use_rmse=True, invariant=True)
     print()
 
     print('% HYDROGENS vs NO HYDROGENS SI TABLE: DFT, MAE, RANDOM SPLITS')
-    print_hydrogen_table(geometry='dft', use_rmse=False)
+    print_hydrogen_table(geometry='dft', use_rmse=False, invariant=True)
     print()
 
     print('% EQUIREACT_X vs EQUIREACT_S SI TABLE: DFT, MAE, RANDOM, NO H')
-    print_attn_table()
+    print_attn_table(use_H=False, use_rmse=False, splitter='random', geometry='dft', invariant=False)
     print()
 
     print('% DFT vs XTB RESULTS FOR GNUPLOT: MAE, RANDOM, NO H')
-    print_xtb_data()
+    print_xtb_data(use_H=False, use_rmse=False, splitter='random', invariant=True)
 
     print('% THE MAIN TABLE OF THE MAIN TEXT BUT WITH INVARIANT: NO HYDROGENS, MAE')
-    print_main_table_with_inv(geometry='dft', use_H=False, use_rmse=False, splitters=['random', 'scaffold'])
+    print_main_table_both(geometry='dft', use_H=False, use_rmse=False, splitters=['random', 'scaffold'])
     print()
 
     print('% SAME WITH OTHER SPLITS ')
-    print_main_table_with_inv(geometry='dft', use_H=False, use_rmse=False, splitters=['yasc', 'ydesc', 'sizeasc', 'sizedesc'])
+    print_main_table_both(geometry='dft', use_H=False, use_rmse=False, splitters=['yasc', 'ydesc', 'sizeasc', 'sizedesc'])
     print()
