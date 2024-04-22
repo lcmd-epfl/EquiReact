@@ -185,6 +185,8 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
                 else:
                     wandb.init(project=project, config=hyper_dict, name=wandb_name, group=None)
                     run_name_chk = run_name
+            else:
+                run_name_chk = run_name
 
             torch.manual_seed(seed)
             torch.cuda.manual_seed(seed)
