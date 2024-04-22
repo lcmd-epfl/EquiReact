@@ -66,13 +66,13 @@
 \end{tabular}
 
 
-% HYDROGENS vs NO HYDROGENS SI TABLE: DFT, MAE, RANDOM SPLITS
+% HYDROGENS vs NO HYDROGENS SI TABLE: INVARIANT, DFT, MAE, RANDOM SPLITS
 \begin{tabular}{@{}cccccccc@{}} \toprule
 \multirow{3}{*}{\makecell{Dataset \\ (property, units)}}&
 \multirow{3}{*}{H mode}&
 \multicolumn{6}{c}{Atom mapping regime} \\ \cmidrule(lr){3-8}
 && \multicolumn{2}{@{}c@{}}{True} & \multicolumn{2}{@{}c@{}}{RXNMapper} & \multicolumn{2}{@{}c@{}}{None} \\ \cmidrule(lr){3-4} \cmidrule(lr){5-6}  \cmidrule(lr){7-8}
-&& \CGR & \textsc{EquiReact}$_M$ & \CGR & \textsc{EquiReact}$_M$ & \CGR & \textsc{EquiReact}$_S$ \\
+&& \CGR & \textsc{3DReact}$_M$ & \CGR & \textsc{3DReact}$_M$ & \CGR & \textsc{3DReact}$_S$ \\
 \midrule \multirow{2}{*}{\makecell{\gdb \\ ($\Delta E^\ddag$, kcal/mol)}}
 & with  & $ 4.12 \pm 0.13 $ & $ 4.90 \pm 0.16 $ & $ 6.36 \pm 0.09 $ & $ 6.24 \pm 0.21 $ & $ 8.87 \pm 0.28 $ & $ 6.54 \pm 0.25 $\\
 & w/o  & $ 4.35 \pm 0.15 $ & $ 4.93 \pm 0.18 $ & $ 5.69 \pm 0.17 $ & $ 6.03 \pm 0.26 $ & $ 9.04 \pm 0.21 $ & $ 6.56 \pm 0.26 $\\
@@ -86,12 +86,14 @@
 \end{tabular}
 
 % EQUIREACT_X vs EQUIREACT_S SI TABLE: DFT, MAE, RANDOM, NO H
-\begin{tabular}{@{}cccc@{}} \toprule
+\begin{tabular}{@{}ccccc@{}} \toprule
 Dataset (property, units)
-& Mapping mode & \textsc{EquiReact}$_X$ & \textsc{EquiReact}$_S$ \\ \midrule
-\gdb ($\Delta E^\ddag$, kcal/mol) & None& $ 6.7 \pm 0.3 $& $ 6.53 \pm 0.28 $ \\[0.002cm]
-\cyclo ($\Delta G^\ddag$, kcal/mol) & None& $ 2.43 \pm 0.09 $& $ 2.31 \pm 0.09 $ \\[0.002cm]
-\proparg ($\Delta E^\ddag$, kcal/mol) & None& $ 0.33 \pm 0.06 $& $ 0.31 \pm 0.06 $ \\[0.002cm]
+& \textsc{InReact}$_X$ & \textsc{InReact}$_S$
+& \textsc{EquiReact}$_X$ & \textsc{EquiReact}$_S$
+\\ \midrule
+\gdb ($\Delta E^\ddag$, kcal/mol)& $ 6.68 \pm 0.27 $& $ 6.56 \pm 0.26 $& $ 6.7 \pm 0.3 $& $ 6.53 \pm 0.28 $ \\[0.002cm]
+\cyclo ($\Delta G^\ddag$, kcal/mol)& $ 2.53 \pm 0.09 $& $ 2.39 \pm 0.05 $& $ 2.43 \pm 0.09 $& $ 2.31 \pm 0.09 $ \\[0.002cm]
+\proparg ($\Delta E^\ddag$, kcal/mol)& $ 0.34 \pm 0.05 $& $ 0.34 \pm 0.06 $& $ 0.33 \pm 0.06 $& $ 0.31 \pm 0.06 $ \\[0.002cm]
 \bottomrule
 \end{tabular}
 

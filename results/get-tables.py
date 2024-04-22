@@ -212,7 +212,7 @@ def print_hydrogen_table(geometry='dft', use_H=False, use_rmse=False, splitter='
     print(r'\\ \cmidrule(lr){3-4} \cmidrule(lr){5-6}  \cmidrule(lr){7-8}')
     print('&', end='')
     for mode in ['M', 'M', 'S']:
-        print(r'& \CGR & \textsc{EquiReact}$_'+mode+'$ ', end='')
+        print(r'& \CGR & \textsc{3DReact}$_'+mode+'$ ', end='')
     print(r'\\')
     for dataset in ['gdb', 'cyclo', 'proparg']:
         print(dataset_header[dataset])
@@ -251,19 +251,22 @@ def print_xtb_data(use_H=False, use_rmse=False, splitter='random', invariant=Tru
         print()
 
 
-def print_attn_table(use_H=False, use_rmse=False, splitter='random', geometry='dft', invariant=True):
+def print_attn_table(use_H=False, use_rmse=False, splitter='random', geometry='dft'):
     h_key = "withH" if use_H else "noH"
-    header = r'''\begin{tabular}{@{}cccc@{}} \toprule
+    header = r'''\begin{tabular}{@{}ccccc@{}} \toprule
 Dataset (property, units)
-& Mapping mode & \textsc{EquiReact}$_X$ & \textsc{EquiReact}$_S$ \\ \midrule'''
+& \textsc{InReact}$_X$ & \textsc{InReact}$_S$
+& \textsc{EquiReact}$_X$ & \textsc{EquiReact}$_S$
+\\ \midrule'''
     footer=r'''\bottomrule
 \end{tabular}'''
     print(header)
     for dataset, prop in zip(['gdb', 'cyclo', 'proparg'], ['E', 'G', 'E']):
-        print('\\'+dataset, r'($\Delta '+prop+'^\ddag$, kcal/mol) & None', end='')
-        for atom_mapping in ['cross', 'none']:
-            equireact_key = f'cv10-{dataset}{"-inv-" if invariant else "-"}{splitter}-{h_key}-{geometry}-{atom_mapping}'
-            print('&', get_error(equireact[equireact_key], use_rmse), end='')
+        print('\\'+dataset, r'($\Delta '+prop+'^\ddag$, kcal/mol)', end='')
+        for invariant in [True, False]:
+            for atom_mapping in ['cross', 'none']:
+                equireact_key = f'cv10-{dataset}{"-inv-" if invariant else "-"}{splitter}-{h_key}-{geometry}-{atom_mapping}'
+                print('&', get_error(equireact[equireact_key], use_rmse), end='')
         print(r' \\[0.002cm]')
     print(footer)
 
@@ -281,12 +284,12 @@ if __name__=='__main__':
     print_main_table(geometry='dft', use_H=False, use_rmse=True, invariant=True)
     print()
 
-    print('% HYDROGENS vs NO HYDROGENS SI TABLE: DFT, MAE, RANDOM SPLITS')
+    print('% HYDROGENS vs NO HYDROGENS SI TABLE: INVARIANT, DFT, MAE, RANDOM SPLITS')
     print_hydrogen_table(geometry='dft', use_rmse=False, invariant=True)
     print()
 
     print('% EQUIREACT_X vs EQUIREACT_S SI TABLE: DFT, MAE, RANDOM, NO H')
-    print_attn_table(use_H=False, use_rmse=False, splitter='random', geometry='dft', invariant=False)
+    print_attn_table(use_H=False, use_rmse=False, splitter='random', geometry='dft')
     print()
 
     print('% DFT vs XTB RESULTS FOR GNUPLOT: MAE, RANDOM, NO H')
