@@ -1,0 +1,10 @@
+--- /home/xe/SOFT/miniconda3/envs/rxnmapper/lib/python3.10/site-packages/rxnmapper/smiles_utils.py.orig	2024-04-23 21:56:29.938887569 +0200
++++ /home/xe/SOFT/miniconda3/envs/rxnmapper/lib/python3.10/site-packages/rxnmapper/smiles_utils.py	2024-04-23 23:21:31.660082042 +0200
+@@ -448,7 +448,6 @@
+     except InvalidSmiles:
+         return ReactionEquation([], [], [])
+ 
+-    reaction = sort_compounds(reaction)
+     return reaction
+ 
+ 
