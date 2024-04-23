@@ -192,6 +192,49 @@ def print_main_table_both(geometry='dft', use_H=False, use_rmse=False, splitters
     print(footer)
 
 
+def print_main_table_3dreact(geometry='dft', use_H=False, use_rmse=False, splitters=None):
+    header=r'''\begin{tabular}{@{}cccc@{}} \toprule
+\makecell{Dataset \\ (property, units)} & \makecell{Atom-mapping\\ regime}
+            & \textsc{InReact} & \textsc{EquiReact} \\ '''
+
+    splitter_header = {
+        'random':   r'\multicolumn{4}{@{}c@{}}{\emph{Random splits}}\\ \midrule',
+        'scaffold': r'\multicolumn{4}{@{}c@{}}{\emph{Scaffold splits}}\\ \midrule',
+        'yasc':     r'\multicolumn{4}{@{}c@{}}{\emph{Property-based splits (ascending)}}\\ \midrule',
+        'ydesc':    r'\multicolumn{4}{@{}c@{}}{\emph{Property-based splits (descending)}}\\ \midrule',
+        'sizeasc':  r'\multicolumn{4}{@{}c@{}}{\emph{Size-based splits (ascending)}}\\ \midrule',
+        'sizedesc': r'\multicolumn{4}{@{}c@{}}{\emph{Size-based splits (descending)}}\\ \midrule',
+        }
+
+    dataset_header = {
+        'gdb': r'\multirow{3}{*}{\makecell{\gdb \\ ($\Delta E^\ddag$, kcal/mol)}}',
+        'cyclo': r'\\[0.002cm]\multirow{3}{*}{\makecell{\cyclo \\ ($\Delta G^\ddag$, kcal/mol)}}',
+        'proparg': r'\\[0.002cm] \multirow{2}{*}{\makecell{\proparg \\ ($\Delta E^\ddag$, kcal/mol)}}'
+        }
+
+    footer=r'''\bottomrule
+\end{tabular}
+'''
+    h_key = "withH" if use_H else "noH"
+    print(header)
+    for splitter in splitters:
+        print('\midrule')
+        print(splitter_header[splitter])
+        for dataset in ['gdb', 'cyclo', 'proparg']:
+            print(dataset_header[dataset])
+            for atom_mapping in ['True', 'RXNMapper', 'None']:
+                if dataset=='proparg' and atom_mapping=='RXNMapper':
+                    continue
+                print(f'& {atom_mapping} & ', end='')
+                inreact_key   = f'cv10-{dataset}-inv-{splitter}-{h_key}-{geometry}-{atom_mapping.lower()}'
+                equireact_key = f'cv10-{dataset}-{splitter}-{h_key}-{geometry}-{atom_mapping.lower()}'
+                print(get_error(equireact[inreact_key], use_rmse), end='')
+                print(' & ', end='')
+                print(get_error(equireact[equireact_key], use_rmse), end='')
+                print(r' \\')
+    print(footer)
+
+
 def print_hydrogen_table(geometry='dft', use_H=False, use_rmse=False, splitter='random', invariant=True):
     pass
     header=r'''\begin{tabular}{@{}cccccccc@{}} \toprule
@@ -276,29 +319,35 @@ if __name__=='__main__':
     slatm = load_slatm()
     equireact = load_equireact()
 
-    print('% THE MAIN TABLE OF THE MAIN TEXT: INVARIANT, DFT, NO HYDROGENS, MAE')
+    print('% Table 1 (invariant, dft, no hydrogens, mae)')
     print_main_table(geometry='dft', use_H=False, use_rmse=False, invariant=True)
     print()
-
-    print('% THE MAIN TABLE SI SUPPLEMENT: INVARIANT, DFT, NO HYDROGENS, RMSE')
-    print_main_table(geometry='dft', use_H=False, use_rmse=True, invariant=True)
     print()
 
-    print('% HYDROGENS vs NO HYDROGENS SI TABLE: INVARIANT, DFT, MAE, RANDOM SPLITS')
-    print_hydrogen_table(geometry='dft', use_rmse=False, invariant=True)
+    print('% Table S2 (dft, no hydrogens, mae)')
+    print_main_table_3dreact(geometry='dft', use_H=False, use_rmse=False, splitters=['random', 'scaffold'])
+    print()
     print()
 
-    print('% EQUIREACT_X vs EQUIREACT_S SI TABLE: DFT, MAE, RANDOM, NO H')
-    print_attn_table(use_H=False, use_rmse=False, splitter='random', geometry='dft')
-    print()
-
-    print('% DFT vs XTB RESULTS FOR GNUPLOT: MAE, RANDOM, NO H')
-    print_xtb_data(use_H=False, use_rmse=False, splitter='random', invariant=True)
-
-    print('% THE MAIN TABLE OF THE MAIN TEXT BUT WITH INVARIANT: NO HYDROGENS, MAE')
-    print_main_table_both(geometry='dft', use_H=False, use_rmse=False, splitters=['random', 'scaffold'])
-    print()
-
-    print('% SAME WITH OTHER SPLITS ')
+    print('% Table S3 (dft, no hydrogens, mae)')
     print_main_table_both(geometry='dft', use_H=False, use_rmse=False, splitters=['yasc', 'ydesc', 'sizeasc', 'sizedesc'])
     print()
+    print()
+
+    print('% Table S4 (invariant, dft, no hydrogens, rmse')
+    print_main_table_both(geometry='dft', use_H=False, use_rmse=True, splitters=['random', 'scaffold'])
+    print()
+    print()
+
+    print('% Table S5 (invariant, dft, mae, random splits')
+    print_hydrogen_table(geometry='dft', use_rmse=False, invariant=True)
+    print()
+    print()
+
+    print('% Table S6 (dft, mae, random splits, no hydrogens)')
+    print_attn_table(use_H=False, use_rmse=False, splitter='random', geometry='dft')
+    print()
+    print()
+
+    print('% Figure 6 data for gnuplot (mae, random, no h')
+    print_xtb_data(use_H=False, use_rmse=False, splitter='random', invariant=True)
