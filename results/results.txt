@@ -1,3 +1,5 @@
+byusa1a7 cv10-proparg-inv-random-withH-dft-true-ns64-nv64-d64-l3-vector-diff-node 125 0.3884531729361033 0.6591005154810139
+4f3j61jg cv10-proparg-inv-random-withH-dft-true-ns64-nv64-d64-l3-vector-diff-node 123 0.36166547727802256 0.5596220151515658
 e0uelgu6 cv10-proparg-ydesc-noH-dft-true-ns64-nv64-d64-l3-vector-diff-node 132 1.5500469960769596 1.6178839854055829
 e85e0af1 cv10-proparg-ydesc-noH-dft-true-ns64-nv64-d64-l3-vector-diff-node 131 1.3277425114089545 1.3763428100415025
 xeq9kc8a cv10-proparg-ydesc-noH-dft-true-ns64-nv64-d64-l3-vector-diff-node 130 1.6091204596957631 1.7853789133348876
@@ -249,8 +251,6 @@ acj8p1wl cv10-proparg-inv-random-withH-dft-true-ns64-nv64-d64-l3-vector-diff-nod
 v79dg0ik cv10-proparg-inv-random-withH-dft-true-ns64-nv64-d64-l3-vector-diff-node 128 0.3549145494145435 0.5406301911489796
 yae4167s cv10-proparg-inv-random-withH-dft-true-ns64-nv64-d64-l3-vector-diff-node 126 0.2674600770258203 0.4451848681498651
 wsov2nqp cv10-proparg-inv-random-withH-dft-true-ns64-nv64-d64-l3-vector-diff-node 124 0.4658520110804127 0.6961792040198611
-ubtzt3rb cv10-proparg-inv-random-withH-dft-true-ns64-nv64-d64-l3-vector-diff-node 125 0.16281793376664677 0.3004101586961737
-6g1u128c cv10-proparg-inv-random-withH-dft-true-ns64-nv64-d64-l3-vector-diff-node 123 0.303698989350925 0.483179865629046
 w9f5cuac cv10-proparg-inv-random-noH-xtb-rxnmapper-ns64-nv64-d64-l3-vector-diff-node 131 0.4814043087211154 0.6604640767018486
 owtcyl5t cv10-proparg-inv-random-noH-xtb-true-ns64-nv64-d64-l3-vector-diff-node 132 0.33944085169531274 0.6011963753423114
 m3nup63z cv10-proparg-inv-random-noH-xtb-true-ns64-nv64-d64-l3-vector-diff-node 123 0.6115183224900604 0.9555833459279082
@@ -479,6 +479,7 @@ m6t4xjb4 cv10-proparg-inv-random-noH-dft-normal-ns64-nv64-d64-l3-vector-diff-nod
 1dpin0fe cv10-proparg-inv-random-noH-dft-normal-ns64-nv64-d64-l3-vector-diff-node 125 0.31084035318063563 0.575627785520505
 4nynwhr0 cv10-proparg-inv-random-noH-dft-normal-ns64-nv64-d64-l3-vector-diff-node 123 0.3641498745293468 0.6361339450156224
 
+cv10-proparg-inv-random-withH-dft-true-ns64-nv64-d64-l3-vector-diff-node 0.38032017850710875 0.0698247268380082 0.6480805297122909 0.16044951684258002
 cv10-proparg-ydesc-noH-dft-true-ns64-nv64-d64-l3-vector-diff-node 1.6855787694516973 0.19616940526878907 1.7845151573313323 0.23176403640884272
 cv10-proparg-ydesc-noH-dft-rxnmapper-ns64-nv64-d64-l3-vector-diff-node 1.6385131416713992 0.18735615722811133 1.7903159908814683 0.2184087632723858
 cv10-proparg-ydesc-noH-dft-normal-ns64-nv64-d64-l3-vector-diff-node 2.1307950480743334 0.26895754617433193 2.3976584142544306 0.3487329595166513
@@ -504,7 +505,6 @@ cv10-proparg-sizeasc-noH-dft-true-ns64-nv64-d64-l3-vector-diff-node 0.4825069579
 cv10-proparg-inv-sizedesc-noH-dft-true-ns64-nv64-d64-l3-vector-diff-node 0.27813998200284484 0.021116334141370135 0.42906284608819256 0.03899109795995608
 cv10-proparg-inv-sizeasc-noH-dft-true-ns64-nv64-d64-l3-vector-diff-node 0.522961488963662 0.06883777784450526 0.781877338327983 0.1162595931117805
 cv10-proparg-inv-random-withH-dft-normal-ns64-nv64-d64-l3-vector-diff-node 0.37306005576833945 0.05433957410715885 0.6295080930971378 0.14236341548111728
-cv10-proparg-inv-random-withH-dft-true-ns64-nv64-d64-l3-vector-diff-node 0.35196000579745335 0.09668289426642583 0.6045672790815549 0.19458340416350728
 cv10-proparg-inv-random-noH-xtb-rxnmapper-ns64-nv64-d64-l3-vector-diff-node 0.500919990673817 0.09746574147226071 0.8125234381658452 0.18448728514291982
 cv10-proparg-inv-random-noH-xtb-true-ns64-nv64-d64-l3-vector-diff-node 0.4921019767996591 0.08106747788359406 0.7714516252547235 0.12031240736980801
 cv10-proparg-inv-random-noH-dft-cross-ns64-nv64-d64-l3-vector-diff-node 0.34015922389230135 0.053908228626808434 0.6057766141569576 0.13630011391029379
