@@ -27,6 +27,7 @@ from models.equireact import EquiReact
 from process.dataloader_cyclo import Cyclo23TS
 from process.dataloader_gdb import GDB722TS
 from process.dataloader_proparg import Proparg21TS
+from process.dataloader_homometric import HomometricHe
 from process.collate import CustomCollator
 from process.splitter import split_dataset
 
@@ -155,6 +156,8 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
         data = GDB722TS(process=process, atom_mapping=atom_mapping, rxnmapper=rxnmapper, noH=noH, reverse=reverse, xtb=xtb, xtb_subset=xtb_subset)
     elif dataset=='proparg':
         data = Proparg21TS(process=process, atom_mapping=atom_mapping, rxnmapper=rxnmapper, noH=noH, xtb=xtb)
+    elif dataset=='homometric':
+        data = HomometricHe(atom_mapping=atom_mapping)
     else:
         raise NotImplementedError(f'Cannot load the {dataset} dataset.')
 
@@ -196,7 +199,8 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
             tr_indices, te_indices, val_indices, indices = split_dataset(nreactions=data.nreactions, splitter=splitter,
                                                                          tr_frac=max(training_fractions),
                                                                          dataset=dataset, subset=subset)
-            tr_indices = tr_indices[:int(tr_frac*len(indices))]
+            if len(training_fractions)>1:
+                tr_indices = tr_indices[:int(tr_frac*len(indices))]
 
             if reverse:
                 tr_indices = np.hstack((tr_indices, tr_indices+data.nreactions))
