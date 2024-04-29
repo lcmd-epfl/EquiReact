@@ -25,8 +25,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--repr_path',  help='path to representation', default='gdb.noH.true.123.dat')
     parser.add_argument('--csv_path',   help='path to dataset csv', default='../../data/gdb7-22-ts/ccsdtf12_dz_cleaned.csv')
-    parser.add_argument('--error_path', help='path to error per mol', default='../by_mol/cv10-LP-gdb-ns64-nv64-d48-layers3-vector-diff-node-noH-truemapping.123.dat')
-    parser.add_argument('--class_path', help='file with bond-based classes', default='../../data-curation/gdb-reaction-classes/class_indices.dat')
+    parser.add_argument('--error_path', help='path to error per mol', default='../by_mol/cv10-gdb-inv-random-noH-dft-true-ns64-nv64-d32-l2-vector-diff-both.123.dat')
+    parser.add_argument('--class_path', help='file with bond-based classes', default='../gdb-reaction-classes/class_indices.dat')
 
     parser.add_argument('--cache_dir', help='path to cache', default='./data')
 

@@ -12,11 +12,12 @@ from chemprop.features.featurization import set_reaction
 parser = ap.ArgumentParser()
 parser.add_argument('--column', default='rxn_smiles_mapped', help='csv file column to use, should be the same as used for training')
 parser.add_argument('--reaction_mode', default='reac_diff', help='should be the same as used for training, do not change')
-parser.add_argument('--checkpoint', default='fold_0/model_0/model.pt', help='path to the checkpoint')
+parser.add_argument('--checkpoint', default='fold_0/fold_0/model_0/model.pt', help='path to the checkpoint')
 parser.add_argument('--prediction', action='store_true', help='predict targets')
 parser.add_argument('--representation', action='store_true', help='save representations')
 parser.add_argument('--mpn_path', default='MPN.npy', help='path to save the output of the MPNN portion of the model')
 parser.add_argument('--last_ffn_path', default='last_FFN', help='path to save the the input to the final readout layer')
+parser.add_argument('--data_path', default='../../csv/gdb.csv', help='full dataset csv path')
 args = parser.parse_args()
 
 arguments = [
@@ -31,7 +32,7 @@ set_reaction(True, args.reaction_mode)  # because if first creates the model and
 model_objects = chemprop.train.load_model(args=chemprop_args)
 tr_args, pred_args, models, scalers, tasks, names = model_objects
 
-df = pd.read_csv(tr_args.data_path, index_col=0)
+df = pd.read_csv(args.data_path, index_col=0)
 smiles = df[args.column].to_numpy()
 
 if args.representation:
