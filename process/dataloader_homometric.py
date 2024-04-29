@@ -41,3 +41,19 @@ class HomometricHe(Dataset):
         self.product_graphs  = [get_graph(mol, atoms, pcoords, 0)]
         self.reactants_maps  = [torch.arange(len(atoms))]
 
+
+    def process_chirality_test(self):
+        atoms = ['C', 'H', 'F', 'Cl', 'Br']
+        mol = Chem.MolFromSmiles('.'.join([f'[{a}]' for a in atoms]))
+        import io
+        f_handler = io.StringIO(""" 0.05928331  -0.12694591  -0.06683713
+ 0.10695432  -0.39791163  -1.12442036
+ 0.21441193  -1.20602809   0.72154781
+ 1.36247485   1.07091085   0.25382473
+-1.74312440   0.65997478   0.21588495""")
+        rcoords = np.loadtxt(f_handler)
+        pcoords = -rcoords
+        f_handler.close()
+        self.reactant_graphs = [get_graph(mol, atoms, rcoords, 0)]
+        self.product_graphs  = [get_graph(mol, atoms, pcoords, 0)]
+        self.reactants_maps  = [torch.arange(len(atoms))]

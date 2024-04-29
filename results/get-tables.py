@@ -86,6 +86,7 @@ def load_equireact():
     f = io.StringIO(''.join([*filter(lambda x: x.startswith('cv10'), lines)]))
     equireact = arr2dict(np.loadtxt(f, dtype=str))
     equireact = {key[:key.find('-ns')].replace('normal', 'none'): val for key, val in equireact.items()}
+    f.close()
     return defaultdict(lambda: None, equireact)
 
 
