@@ -40,15 +40,10 @@ if __name__ == "__main__":
 
     if database == 'gdb':
         qml.get_GDB7_ccsd_data(xtb=xtb, xtb_subset=xtb_subset)
-        kernel = 'laplacian'
-
     elif database == 'cyclo':
         qml.get_cyclo_data(xtb=xtb, xtb_subset=xtb_subset)
-        kernel = 'laplacian'
-
     elif database == 'proparg':
         qml.get_proparg_data(xtb=xtb)
-        kernel = 'gaussian'
 
     slatm_save = f'repr/slatm_{database}{xtb_text}{s_text}.npy'
     barriers = qml.barriers
@@ -66,8 +61,8 @@ if __name__ == "__main__":
 
     if not os.path.exists(slatm_save):
         maes_slatm, rmses_slatm = predict_CV(slatm, barriers, CV=CV, train_size=args.train_size,
-                                             save_predictions = slatm_pred,
-                                             splitter=splitter, kernel=kernel,
+                                             save_predictions=slatm_pred,
+                                             splitter=splitter,
                                              dataset=database_label, seed=123)
         np.save(slatm_save, (maes_slatm, rmses_slatm))
     else:
