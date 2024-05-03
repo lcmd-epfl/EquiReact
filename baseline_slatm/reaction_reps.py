@@ -1,34 +1,11 @@
+import os
+from glob import glob
+from tqdm import tqdm
+from itertools import chain
 import numpy as np
 import pandas as pd
 import qml
-from glob import glob
-from periodictable import elements
-import os
-from tqdm import tqdm
 
-pt = {}
-for el in elements:
-    pt[el.symbol] = el.number
-
-def convert_symbol_to_ncharge(symbol):
-    return pt[symbol]
-
-def create_mol_obj(atomtypes, ncharges, coords):
-    if len(atomtypes) == 0:
-        return None
-    mol = qml.Compound()
-    mol.atomtypes = atomtypes
-    mol.nuclear_charges = ncharges
-    mol.coordinates = coords
-    return mol
-
-def pad_indices(idx):
-    idx = str(idx)
-    if len(idx) < 6:
-        pad_len = 6 - len(idx)
-        pad = '0'*pad_len
-        idx = pad + idx
-    return idx
 
 def check_alt_files(list_files):
     files = []
@@ -45,184 +22,102 @@ def check_alt_files(list_files):
             files.append(file)
     return files
 
-def reader(xyz):
-    if not os.path.exists(xyz):
-        return [], [], []
-    with open(xyz, 'r') as f:
-        lines = f.readlines()
-    lines = [line.strip() for line in lines]
 
-    try:
-        nat = int(lines[0])
-    except:
-        print('file', xyz, 'is empty')
-        return [], [], []
-    start_idx = 2
-    end_idx = start_idx + nat
+def read_xyz(xyz, bohr=False):
+    mol0 = qml.Compound(xyz)
+    mol = qml.Compound()
+    mol.atomtypes       = np.copy(mol0.atomtypes)
+    mol.nuclear_charges = np.copy(mol0.nuclear_charges)
+    mol.coordinates     = mol0.coordinates * 0.529177 if bohr else np.copy(mol0.coordinates)
+    return mol
 
-    atomtypes = []
-    coords = []
-
-    for line_idx in range(start_idx, end_idx):
-        line = lines[line_idx]
-        atomtype, x, y, z = line.split()
-        atomtypes.append(str(atomtype))
-        coords.append([float(x), float(y), float(z)])
-
-    ncharges = [convert_symbol_to_ncharge(x) for x in atomtypes]
-
-    assert len(atomtypes) == nat
-    assert len(coords) == nat
-    assert len(ncharges) == nat
-    return np.array(atomtypes), np.array(ncharges), np.array(coords)
 
 class QML:
     def __init__(self):
-        self.ncharges = []
-        self.unique_ncharges = []
-        self.max_natoms = 0
-        self.mols_products = []
-        self.mols_reactants = [[]]
-        return
 
-    def get_GDB7_ccsd_data(self, xtb=False, xtb_subset=False):
-        df = pd.read_csv("../data/gdb7-22-ts/ccsdtf12_dz_cleaned.csv")
-        if xtb or xtb_subset:
-            bad_idx = np.loadtxt('../data/gdb7-22-ts/bad-xtb.dat', dtype=int)
-            for idx in bad_idx:
-                df.drop(df[df['idx']==idx].index, axis=0, inplace=True)
-        self.barriers = df['dE0'].values
-
-        if not xtb:
-            indices = df['idx'].apply(pad_indices).tolist()
-        else:
-            indices = [str(x) for x in df['idx'].tolist()]
-        print(f'{len(indices)} dataset size')
-
-        r_mols = []
-        p_mols = []
-        for idx in indices:
+        def get_cyclo_reactants_xyz(idx, xtb):
             if xtb:
-                filedir = '../data/gdb7-22-ts/xyz-xtb/' + idx
-                rfile = filedir + f'/Reactant_{idx}_0_opt.xyz'
+                return [f'../data/cyclo/xyz-xtb/Reactant_{idx}_{reactant_id}.xyz' for reactant_id in (0, 1)]
             else:
-                filedir = '../data/gdb7-22-ts/xyz/' + idx
-                rfile = filedir + '/r' + idx + '.xyz'
-            r_atomtypes, r_ncharges, r_coords = reader(rfile)
-            if not xtb:
-                r_coords = r_coords * 0.529177 # bohr to angstrom
-            r_mol = create_mol_obj(r_atomtypes, r_ncharges, r_coords)
-            r_mols.append([r_mol])
-
-            # multiple p files
-            if xtb:
-                pfiles = sorted(glob(filedir+f'/Product_{idx}_*_opt.xyz'))
-            else:
-                pfiles = sorted(glob(filedir+'/p*.xyz'))
-            sub_pmols = []
-            for pfile in pfiles:
-                p_atomtypes, p_ncharges, p_coords = reader(pfile)
-                if not xtb:
-                    p_coords = p_coords * 0.529177
-                p_mol = create_mol_obj(p_atomtypes, p_ncharges, p_coords)
-                sub_pmols.append(p_mol)
-            p_mols.append(sub_pmols)
-        self.mols_reactants = r_mols
-        self.mols_products = p_mols
-        all_r_mols = np.concatenate(r_mols)
-        self.ncharges = [x.nuclear_charges for x in all_r_mols]
-        self.unique_ncharges = np.unique(np.concatenate(self.ncharges))
-        return
-
-    def get_cyclo_data(self, xtb=False, xtb_subset=False):
-        df = pd.read_csv("../data/cyclo/cyclo.csv", index_col=0)
-        if xtb or xtb_subset:
-            bad_idx = np.loadtxt('../data/cyclo/bad-xtb.dat', dtype=int)
-            for idx in bad_idx:
-                df.drop(df[df['rxn_id']==idx].index, axis=0, inplace=True)
-        self.barriers = df['G_act'].to_numpy()
-        indices = df['rxn_id'].to_list()
-
-        print(f"{len(df['rxn_id'])} dataset size")
-        if xtb:
-            datadir = '../data/cyclo/xyz-xtb'
-            products_files = [[datadir+'/Product_'+str(idx)+'.xyz'] for idx in indices]
-         #   print(products_files)
-            reactants_files = []
-            for idx in indices:
-                reactant_file = [datadir+'/Reactant_'+str(idx)+'_'+reactant_id+'.xyz' for reactant_id in ['0', '1']]
-                reactants_files.append(reactant_file)
-       #     print(reactants_files)
-
-        else:
-            datadir = '../data/cyclo/xyz/'
-            rxns = [datadir + str(i) for i in indices]
-            reactants_files = []
-            products_files = []
-            for rxn_dir in rxns:
-                reactants = glob(rxn_dir + "/r*.xyz")
+                reactants = glob(f'../data/cyclo/xyz/{idx}/r*.xyz')
                 reactants = check_alt_files(reactants)
-                assert len(reactants) == 2, f"Inconsistent length of {len(reactants)}"
-                reactants_files.append(reactants)
-                products = glob(rxn_dir + "/p*.xyz")
-                products_files.append(products)
+                assert len(reactants)==2
+                return reactants
 
-        assert len(reactants_files) == len(indices), 'missing reactants'
-        assert len(products_files) == len(indices), 'missing products'
+        def get_cyclo_products_xyz(idx, xtb):
+            if xtb:
+                return [f'../data/cyclo/xyz-xtb/Product_{idx}.xyz']
+            else:
+                products = glob(f'../data/cyclo/xyz/{idx}/p*.xyz')
+                assert len(products)==1
+                return products
 
-        mols_reactants = []
-        mols_products = []
-        ncharges_products = []
 
-        for i in range(len(indices)):
-            mols_r = []
-            mols_p = []
-            ncharges_p = []
-            for reactant in reactants_files[i]:
-                mol = qml.Compound(reactant)
-                mols_r.append(mol)
-            for product in products_files[i]:
-                mol = qml.Compound(product)
-                mols_p.append(mol)
-                ncharges_p.append(mol.nuclear_charges)
-            ncharges_p = np.concatenate(ncharges_p)
-            ncharges_products.append(ncharges_p)
-            mols_reactants.append(mols_r)
-            mols_products.append(mols_p)
-        self.ncharges = ncharges_products
-        self.unique_ncharges = np.unique(np.concatenate(self.ncharges, axis=0))
-        self.mols_reactants = mols_reactants
-        self.mols_products = mols_products
-        return
+        self.get_cyclo_data = self.get_data_template(csv_path="../data/cyclo/cyclo.csv",
+                                                     bad_idx_path=('../data/cyclo/bad-xtb.dat', 'rxn_id'),
+                                                     target_column='G_act',
+                                                     bohr=lambda _: False,
+                                                     get_indices=lambda df: df['rxn_id'].to_list(),
+                                                     get_reactants_xyz = get_cyclo_reactants_xyz,
+                                                     get_products_xyz = get_cyclo_products_xyz)
 
-    def get_proparg_data(self, xtb=False):
-        df = pd.read_csv("../data/proparg/data.csv", index_col=0)
-        if xtb:
-            data_dir = '../data/proparg/xyz-xtb/'
-        else:
-            data_dir = '../data/proparg/xyz/'
-        indices = [''.join(x) for x in zip(df['mol'].to_list(), df['enan'].to_list())]
 
-        reactants_files = []
-        products_files = []
-        for idx in indices:
-            r_xyz, p_xyz = [f'{data_dir}{idx}.{x}.xyz' for x in ('r', 'p')]
-            reactants_files.append(r_xyz)
-            products_files.append(p_xyz)
+        self.get_proparg_data = self.get_data_template(csv_path="../data/proparg/data.csv",
+                                                       target_column='Eafw',
+                                                       bohr=lambda _: False,
+                                                       get_indices=lambda df: [''.join(x) for x in zip(df['mol'].to_list(), df['enan'].to_list())],
+                                                       get_reactants_xyz=lambda idx, xtb: [f'../data/proparg/{"xyz-xtb" if xtb else "xyz"}/{idx}.r.xyz'],
+                                                       get_products_xyz =lambda idx, xtb: [f'../data/proparg/{"xyz-xtb" if xtb else "xyz"}/{idx}.p.xyz'])
 
-        all_mols = [qml.Compound(x) for x in reactants_files + products_files]
-        self.barriers = df.Eafw.to_numpy()
-        self.ncharges = [mol.nuclear_charges for mol in all_mols]
-        self.unique_ncharges = np.unique(np.concatenate(self.ncharges))
 
-        self.mols_reactants = [[qml.Compound(x)] for x in reactants_files]
-        self.mols_products = [[qml.Compound(x)] for x in products_files]
+        def get_gdb_reactants_xyz(idx, xtb):
+            if xtb:
+                return [f'../data/gdb7-22-ts/xyz-xtb/{idx}/Reactant_{idx}_0_opt.xyz']
+            else:
+                return [f'../data/gdb7-22-ts/xyz/{idx:06}/r{idx:06}.xyz']
+
+        def get_gdb_products_xyz(idx, xtb):
+            if xtb:
+                return sorted(glob(f'../data/gdb7-22-ts/xyz-xtb/{idx}/Product_{idx}_*_opt.xyz'))
+            else:
+                return sorted(glob(f'../data/gdb7-22-ts/xyz/{idx:06}/p*.xyz'))
+
+        self.get_GDB7_ccsd_data = self.get_data_template(csv_path="../data/gdb7-22-ts/ccsdtf12_dz_cleaned.csv",
+                                                         bad_idx_path=('../data/gdb7-22-ts/bad-xtb.dat', 'idx'),
+                                                         target_column='dE0',
+                                                         bohr=lambda xtb: not xtb,
+                                                         get_indices=lambda df: df['idx'].tolist(),
+                                                         get_reactants_xyz = get_gdb_reactants_xyz,
+                                                         get_products_xyz = get_gdb_products_xyz)
 
         return
+
+
+
+
+    def get_data_template(self, csv_path, target_column, get_indices, get_reactants_xyz, get_products_xyz, bohr, bad_idx_path=None):
+        def get_data(xtb=False, xtb_subset=False):
+            df = pd.read_csv(csv_path, index_col=0)
+            if (xtb or xtb_subset) and bad_idx_path:
+                bad_idx = np.loadtxt(bad_idx_path[0], dtype=int)
+                for idx in bad_idx:
+                    df.drop(df[df[bad_idx_path[1]]==idx].index, axis=0, inplace=True)
+
+            self.barriers = df[target_column].to_numpy()
+            indices = get_indices(df)
+            print(f'{len(indices)} dataset size')
+
+            reactants_files = [get_reactants_xyz(idx, xtb) for idx in indices]
+            products_files  = [get_products_xyz(idx, xtb)  for idx in indices]
+            self.mols_reactants = [[read_xyz(x, bohr=bohr(xtb)) for x in y] for y in reactants_files]
+            self.mols_products  = [[read_xyz(x, bohr=bohr(xtb)) for x in y] for y in products_files]
+            self.ncharges = [mol.nuclear_charges for mol in chain.from_iterable(self.mols_reactants+self.mols_products)]
+            return
+        return get_data
+
 
     def get_SLATM(self):
         mbtypes = qml.representations.get_slatm_mbtypes(self.ncharges)
-
 
         slatm_reactants = [
             np.array(
