@@ -1,10 +1,12 @@
+import sys
 import os
 import random
 import warnings
 import numpy as np
 from sklearn.metrics import pairwise_distances
 from sklearn.model_selection import train_test_split
-from baseline_slatm.hypers import HYPERS
+from hypers import HYPERS
+sys.path.insert(0, '../')
 from process.splitter import split_dataset
 
 def opt_hyperparams_w_kernel(X, y, idx_train, idx_val, get_gamma,

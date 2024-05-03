@@ -86,9 +86,9 @@ class QML:
         return
 
     def get_GDB7_ccsd_data(self, xtb=False, xtb_subset=False):
-        df = pd.read_csv("data/gdb7-22-ts/ccsdtf12_dz_cleaned.csv")
+        df = pd.read_csv("../data/gdb7-22-ts/ccsdtf12_dz_cleaned.csv")
         if xtb or xtb_subset:
-            bad_idx = np.loadtxt('data/gdb7-22-ts/bad-xtb.dat', dtype=int)
+            bad_idx = np.loadtxt('../data/gdb7-22-ts/bad-xtb.dat', dtype=int)
             for idx in bad_idx:
                 df.drop(df[df['idx']==idx].index, axis=0, inplace=True)
         self.barriers = df['dE0'].values
@@ -103,10 +103,10 @@ class QML:
         p_mols = []
         for idx in indices:
             if xtb:
-                filedir = 'data/gdb7-22-ts/xyz-xtb/' + idx
+                filedir = '../data/gdb7-22-ts/xyz-xtb/' + idx
                 rfile = filedir + f'/Reactant_{idx}_0_opt.xyz'
             else:
-                filedir = 'data/gdb7-22-ts/xyz/' + idx
+                filedir = '../data/gdb7-22-ts/xyz/' + idx
                 rfile = filedir + '/r' + idx + '.xyz'
             r_atomtypes, r_ncharges, r_coords = reader(rfile)
             if not xtb:
@@ -135,9 +135,9 @@ class QML:
         return
 
     def get_cyclo_data(self, xtb=False, xtb_subset=False):
-        df = pd.read_csv("data/cyclo/cyclo.csv", index_col=0)
+        df = pd.read_csv("../data/cyclo/cyclo.csv", index_col=0)
         if xtb or xtb_subset:
-            bad_idx = np.loadtxt('data/cyclo/bad-xtb.dat', dtype=int)
+            bad_idx = np.loadtxt('../data/cyclo/bad-xtb.dat', dtype=int)
             for idx in bad_idx:
                 df.drop(df[df['rxn_id']==idx].index, axis=0, inplace=True)
         self.barriers = df['G_act'].to_numpy()
@@ -145,7 +145,7 @@ class QML:
 
         print(f"{len(df['rxn_id'])} dataset size")
         if xtb:
-            datadir = 'data/cyclo/xyz-xtb'
+            datadir = '../data/cyclo/xyz-xtb'
             products_files = [[datadir+'/Product_'+str(idx)+'.xyz'] for idx in indices]
          #   print(products_files)
             reactants_files = []
@@ -155,7 +155,7 @@ class QML:
        #     print(reactants_files)
 
         else:
-            datadir = 'data/cyclo/xyz/'
+            datadir = '../data/cyclo/xyz/'
             rxns = [datadir + str(i) for i in indices]
             reactants_files = []
             products_files = []
@@ -196,11 +196,11 @@ class QML:
         return
 
     def get_proparg_data(self, xtb=False):
-        df = pd.read_csv("data/proparg/data.csv", index_col=0)
+        df = pd.read_csv("../data/proparg/data.csv", index_col=0)
         if xtb:
-            data_dir = 'data/proparg/xyz-xtb/'
+            data_dir = '../data/proparg/xyz-xtb/'
         else:
-            data_dir = 'data/proparg/xyz/'
+            data_dir = '../data/proparg/xyz/'
         indices = [''.join(x) for x in zip(df['mol'].to_list(), df['enan'].to_list())]
 
         reactants_files = []

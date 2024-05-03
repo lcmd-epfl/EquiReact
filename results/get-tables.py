@@ -42,8 +42,8 @@ def get_error(val, use_rmse, latex=True):
 
 def load_slatm():
     d = defaultdict(lambda: None)
-    for f in glob.glob('baseline_slatm/slatm_10_fold_*.npy'):
-        key = f.replace('baseline_slatm/slatm_10_fold_', '').replace('.npy', '').replace('_split', '')
+    for f in glob.glob('baseline_slatm/results/slatm_10_fold_*.npy'):
+        key = f.replace('baseline_slatm/results/slatm_10_fold_', '').replace('.npy', '').replace('_split', '')
         k = key.split('_')
         if len(k)==2:
             key = '-'.join([k[0], 'dft', k[1]])

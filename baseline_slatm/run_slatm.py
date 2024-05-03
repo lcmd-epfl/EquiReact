@@ -1,8 +1,10 @@
-import argparse as ap
-from baseline_slatm.reaction_reps import QML
-from baseline_slatm.learning import predict_CV
-import numpy as np
+#!/usr/bin/env python3
+
 import os
+import argparse as ap
+import numpy as np
+from reaction_reps import QML
+from learning import predict_CV
 
 if __name__ == "__main__":
 
@@ -48,7 +50,7 @@ if __name__ == "__main__":
         qml.get_proparg_data(xtb=xtb)
         kernel = 'gaussian'
 
-    slatm_save = f'baseline_slatm/slatm_{database}{xtb_text}{s_text}.npy'
+    slatm_save = f'repr/slatm_{database}{xtb_text}{s_text}.npy'
     barriers = qml.barriers
 
     CV = 10
@@ -59,8 +61,8 @@ if __name__ == "__main__":
     else:
         slatm = np.load(slatm_save)
 
-    slatm_save = f'baseline_slatm/slatm_{CV}_fold_{database}{xtb_text}{s_text}_split_{splitter}.npy'
-    slatm_pred = f'baseline_slatm/slatm_{CV}_fold_{database}{xtb_text}{s_text}_split_{splitter}.predictions.'+'{i}'+'.txt'
+    slatm_save = f'results/slatm_{CV}_fold_{database}{xtb_text}{s_text}_split_{splitter}.npy'
+    slatm_pred = f'by_mol/slatm_{CV}_fold_{database}{xtb_text}{s_text}_split_{splitter}.predictions.'+'{i}'+'.txt'
 
     if not os.path.exists(slatm_save):
         maes_slatm, rmses_slatm = predict_CV(slatm, barriers, CV=CV, train_size=args.train_size,
