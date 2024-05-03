@@ -115,7 +115,7 @@ def print_main_table(geometry='dft', use_H=False, use_rmse=False, invariant=True
 '''
     h_key = "withH" if use_H else "noH"
     print(header)
-    for splitter in ['random', 'scaffold']:
+    for splitter in ['random']:
         print('\midrule')
         print(splitter_header[splitter])
         for dataset in ['gdb', 'cyclo', 'proparg']:
@@ -350,7 +350,7 @@ if __name__=='__main__':
     print()
 
     print('% Table S3 (dft, no hydrogens, mae)')
-    print_main_table_both(geometry='dft', use_H=False, use_rmse=False, splitters=['yasc', 'ydesc', 'sizeasc', 'sizedesc'])
+    print_main_table_both(geometry='dft', use_H=False, use_rmse=False, splitters=['scaffold', 'yasc', 'ydesc', 'sizeasc', 'sizedesc'])
     print()
     print()
 

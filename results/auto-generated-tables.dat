@@ -11,23 +11,10 @@
 \\[0.002cm]\multirow{3}{*}{\makecell{\cyclo \\ ($\Delta G^\ddag$, kcal/mol)}}
 & True & $ 2.69 \pm 0.10 $ & --- & $ 2.39 \pm 0.08 $ \\
 & RXNMapper & $ 2.71 \pm 0.07 $ & --- & $ 2.37 \pm 0.07 $ \\
-& None & $ 2.71 \pm 0.12 $ & $ 2.74 \pm 0.09 $ & $ 2.39 \pm 0.05 $ \\
+& None & $ 2.71 \pm 0.12 $ & $ 2.65 \pm 0.08 $ & $ 2.39 \pm 0.05 $ \\
 \\[0.002cm] \multirow{2}{*}{\makecell{\proparg \\ ($\Delta E^\ddag$, kcal/mol)}}
 & True & $ 1.53 \pm 0.14 $ & --- & $ 0.33 \pm 0.07 $ \\
-& None & $ 1.56 \pm 0.16 $ & $ 0.333 \pm 0.029 $ & $ 0.34 \pm 0.06 $ \\
-\midrule
-\multicolumn{5}{@{}c@{}}{\emph{Scaffold splits}}\\ \midrule
-\multirow{3}{*}{\makecell{\gdb \\ ($\Delta E^\ddag$, kcal/mol)}}
-& True & $ 7.1 \pm 0.6 $ & --- & $ 7.8 \pm 0.7 $ \\
-& RXNMapper & $ 8.7 \pm 0.8 $ & --- & $ 9.2 \pm 0.8 $ \\
-& None & $ 12.9 \pm 0.6 $ & $ 11.0 \pm 1.0 $ & $ 10.1 \pm 0.9 $ \\
-\\[0.002cm]\multirow{3}{*}{\makecell{\cyclo \\ ($\Delta G^\ddag$, kcal/mol)}}
-& True & $ 2.92 \pm 0.24 $ & --- & $ 2.79 \pm 0.18 $ \\
-& RXNMapper & $ 2.92 \pm 0.23 $ & --- & $ 2.77 \pm 0.22 $ \\
-& None & $ 3.1 \pm 0.3 $ & $ 3.05 \pm 0.21 $ & $ 2.76 \pm 0.22 $ \\
-\\[0.002cm] \multirow{2}{*}{\makecell{\proparg \\ ($\Delta E^\ddag$, kcal/mol)}}
-& True & $ 1.64 \pm 0.21 $ & --- & $ 0.44 \pm 0.11 $ \\
-& None & $ 1.64 \pm 0.19 $ & $ 0.39 \pm 0.06 $ & $ 0.45 \pm 0.10 $ \\
+& None & $ 1.56 \pm 0.16 $ & $ 0.33 \pm 0.04 $ & $ 0.34 \pm 0.06 $ \\
 \bottomrule
 \end{tabular}
 
@@ -73,6 +60,19 @@
 \makecell{Dataset \\ (property, units)} & \makecell{Atom-mapping\\ regime}
             & \CGR & SLATM$_d$+KRR & \textsc{InReact} & \textsc{EquiReact} \\ 
 \midrule
+\multicolumn{6}{@{}c@{}}{\emph{Scaffold splits}}\\ \midrule
+\multirow{3}{*}{\makecell{\gdb \\ ($\Delta E^\ddag$, kcal/mol)}}
+& True & $ 7.1 \pm 0.6 $ & --- & $ 7.8 \pm 0.7 $ & $ 7.8 \pm 0.8 $ \\
+& RXNMapper & $ 8.7 \pm 0.8 $ & --- & $ 9.2 \pm 0.8 $ & $ 9.1 \pm 0.8 $ \\
+& None & $ 12.9 \pm 0.6 $ & $ 11.0 \pm 1.0 $ & $ 10.1 \pm 0.9 $ & $ 10.0 \pm 0.9 $ \\
+\\[0.002cm]\multirow{3}{*}{\makecell{\cyclo \\ ($\Delta G^\ddag$, kcal/mol)}}
+& True & $ 2.92 \pm 0.24 $ & --- & $ 2.79 \pm 0.18 $ & $ 2.72 \pm 0.18 $ \\
+& RXNMapper & $ 2.92 \pm 0.23 $ & --- & $ 2.77 \pm 0.22 $ & $ 2.71 \pm 0.23 $ \\
+& None & $ 3.1 \pm 0.3 $ & $ 2.97 \pm 0.22 $ & $ 2.76 \pm 0.22 $ & $ 2.72 \pm 0.19 $ \\
+\\[0.002cm] \multirow{2}{*}{\makecell{\proparg \\ ($\Delta E^\ddag$, kcal/mol)}}
+& True & $ 1.64 \pm 0.21 $ & --- & $ 0.44 \pm 0.11 $ & $ 0.40 \pm 0.08 $ \\
+& None & $ 1.64 \pm 0.19 $ & $ 0.36 \pm 0.05 $ & $ 0.45 \pm 0.10 $ & $ 0.41 \pm 0.09 $ \\
+\midrule
 \multicolumn{6}{@{}c@{}}{\emph{Property-based splits (ascending)}}\\ \midrule
 \multirow{3}{*}{\makecell{\gdb \\ ($\Delta E^\ddag$, kcal/mol)}}
 & True & $ 29.0 \pm 0.9 $ & --- & $ 30.9 \pm 0.6 $ & $ 30.9 \pm 0.5 $ \\
@@ -81,10 +81,10 @@
 \\[0.002cm]\multirow{3}{*}{\makecell{\cyclo \\ ($\Delta G^\ddag$, kcal/mol)}}
 & True & $ 11.7 \pm 0.3 $ & --- & $ 9.0 \pm 0.6 $ & $ 9.3 \pm 0.4 $ \\
 & RXNMapper & $ 12.1 \pm 0.3 $ & --- & $ 8.8 \pm 0.7 $ & $ 8.8 \pm 0.6 $ \\
-& None & $ 11.9 \pm 0.3 $ & $ 10.78 $ & $ 9.5 \pm 0.3 $ & $ 9.6 \pm 0.4 $ \\
+& None & $ 11.9 \pm 0.3 $ & $ 12.14 $ & $ 9.5 \pm 0.3 $ & $ 9.6 \pm 0.4 $ \\
 \\[0.002cm] \multirow{2}{*}{\makecell{\proparg \\ ($\Delta E^\ddag$, kcal/mol)}}
 & True & $ 5.10 \pm 0.12 $ & --- & $ 4.31 \pm 0.15 $ & $ 4.08 \pm 0.11 $ \\
-& None & $ 5.09 \pm 0.13 $ & $ 5.06 $ & $ 4.53 \pm 0.16 $ & $ 4.33 \pm 0.14 $ \\
+& None & $ 5.09 \pm 0.13 $ & $ 5.83 $ & $ 4.53 \pm 0.16 $ & $ 4.33 \pm 0.14 $ \\
 \midrule
 \multicolumn{6}{@{}c@{}}{\emph{Property-based splits (descending)}}\\ \midrule
 \multirow{3}{*}{\makecell{\gdb \\ ($\Delta E^\ddag$, kcal/mol)}}
@@ -94,10 +94,10 @@
 \\[0.002cm]\multirow{3}{*}{\makecell{\cyclo \\ ($\Delta G^\ddag$, kcal/mol)}}
 & True & $ 6.1 \pm 0.4 $ & --- & $ 5.03 \pm 0.28 $ & $ 4.8 \pm 0.5 $ \\
 & RXNMapper & $ 5.9 \pm 0.8 $ & --- & $ 5.2 \pm 0.4 $ & $ 4.6 \pm 0.5 $ \\
-& None & $ 6.22 \pm 0.30 $ & $ 5.92 $ & $ 5.18 \pm 0.17 $ & $ 5.07 \pm 0.28 $ \\
+& None & $ 6.22 \pm 0.30 $ & $ 6.46 $ & $ 5.18 \pm 0.17 $ & $ 5.07 \pm 0.28 $ \\
 \\[0.002cm] \multirow{2}{*}{\makecell{\proparg \\ ($\Delta E^\ddag$, kcal/mol)}}
 & True & $ 3.33 \pm 0.20 $ & --- & $ 1.58 \pm 0.12 $ & $ 1.69 \pm 0.20 $ \\
-& None & $ 3.28 \pm 0.23 $ & $ 2.33 $ & $ 1.70 \pm 0.11 $ & $ 2.13 \pm 0.27 $ \\
+& None & $ 3.28 \pm 0.23 $ & $ 2.02 $ & $ 1.70 \pm 0.11 $ & $ 2.13 \pm 0.27 $ \\
 \midrule
 \multicolumn{6}{@{}c@{}}{\emph{Size-based splits (ascending)}}\\ \midrule
 \multirow{3}{*}{\makecell{\gdb \\ ($\Delta E^\ddag$, kcal/mol)}}
@@ -107,10 +107,10 @@
 \\[0.002cm]\multirow{3}{*}{\makecell{\cyclo \\ ($\Delta G^\ddag$, kcal/mol)}}
 & True & $ 4.57 \pm 0.15 $ & --- & $ 3.86 \pm 0.13 $ & $ 3.86 \pm 0.11 $ \\
 & RXNMapper & $ 4.68 \pm 0.13 $ & --- & $ 3.91 \pm 0.13 $ & $ 3.89 \pm 0.21 $ \\
-& None & $ 4.57 \pm 0.11 $ & $ 4.49 \pm 0.04 $ & $ 3.96 \pm 0.13 $ & $ 3.96 \pm 0.16 $ \\
+& None & $ 4.57 \pm 0.11 $ & $ 4.79 \pm 0.03 $ & $ 3.96 \pm 0.13 $ & $ 3.96 \pm 0.16 $ \\
 \\[0.002cm] \multirow{2}{*}{\makecell{\proparg \\ ($\Delta E^\ddag$, kcal/mol)}}
 & True & $ 1.537 \pm 0.023 $ & --- & $ 0.52 \pm 0.07 $ & $ 0.48 \pm 0.05 $ \\
-& None & $ 1.538 \pm 0.026 $ & $ 0.669 \pm 0.017 $ & $ 0.63 \pm 0.06 $ & $ 0.55 \pm 0.05 $ \\
+& None & $ 1.538 \pm 0.026 $ & $ 0.504 \pm 0.021 $ & $ 0.63 \pm 0.06 $ & $ 0.55 \pm 0.05 $ \\
 \midrule
 \multicolumn{6}{@{}c@{}}{\emph{Size-based splits (descending)}}\\ \midrule
 \multirow{3}{*}{\makecell{\gdb \\ ($\Delta E^\ddag$, kcal/mol)}}
@@ -120,10 +120,10 @@
 \\[0.002cm]\multirow{3}{*}{\makecell{\cyclo \\ ($\Delta G^\ddag$, kcal/mol)}}
 & True & $ 2.85 \pm 0.08 $ & --- & $ 2.74 \pm 0.10 $ & $ 2.72 \pm 0.06 $ \\
 & RXNMapper & $ 2.88 \pm 0.06 $ & --- & $ 2.77 \pm 0.09 $ & $ 2.72 \pm 0.07 $ \\
-& None & $ 2.85 \pm 0.07 $ & $ 2.92 \pm 0.04 $ & $ 2.85 \pm 0.07 $ & $ 2.76 \pm 0.09 $ \\
+& None & $ 2.85 \pm 0.07 $ & $ 2.80 \pm 0.03 $ & $ 2.85 \pm 0.07 $ & $ 2.76 \pm 0.09 $ \\
 \\[0.002cm] \multirow{2}{*}{\makecell{\proparg \\ ($\Delta E^\ddag$, kcal/mol)}}
 & True & $ 1.30 \pm 0.04 $ & --- & $ 0.278 \pm 0.021 $ & $ 0.263 \pm 0.023 $ \\
-& None & $ 1.30 \pm 0.04 $ & $ 0.243 \pm 0.004 $ & $ 0.236 \pm 0.029 $ & $ 0.226 \pm 0.028 $ \\
+& None & $ 1.30 \pm 0.04 $ & $ 0.307 \pm 0.011 $ & $ 0.236 \pm 0.029 $ & $ 0.226 \pm 0.028 $ \\
 \bottomrule
 \end{tabular}
 
@@ -142,10 +142,10 @@
 \\[0.002cm]\multirow{3}{*}{\makecell{\cyclo \\ ($\Delta G^\ddag$, kcal/mol)}}
 & True & $ 3.70 \pm 0.20 $ & --- & $ 3.33 \pm 0.18 $ & $ 3.24 \pm 0.21 $ \\
 & RXNMapper & $ 3.72 \pm 0.16 $ & --- & $ 3.31 \pm 0.21 $ & $ 3.29 \pm 0.26 $ \\
-& None & $ 3.73 \pm 0.23 $ & $ 3.70 \pm 0.20 $ & $ 3.34 \pm 0.18 $ & $ 3.24 \pm 0.23 $ \\
+& None & $ 3.73 \pm 0.23 $ & $ 3.65 \pm 0.22 $ & $ 3.34 \pm 0.18 $ & $ 3.24 \pm 0.23 $ \\
 \\[0.002cm] \multirow{2}{*}{\makecell{\proparg \\ ($\Delta E^\ddag$, kcal/mol)}}
 & True & $ 1.97 \pm 0.16 $ & --- & $ 0.58 \pm 0.16 $ & $ 0.52 \pm 0.14 $ \\
-& None & $ 2.01 \pm 0.19 $ & $ 0.56 \pm 0.07 $ & $ 0.60 \pm 0.16 $ & $ 0.49 \pm 0.09 $ \\
+& None & $ 2.01 \pm 0.19 $ & $ 0.52 \pm 0.09 $ & $ 0.60 \pm 0.16 $ & $ 0.49 \pm 0.09 $ \\
 \midrule
 \multicolumn{6}{@{}c@{}}{\emph{Scaffold splits}}\\ \midrule
 \multirow{3}{*}{\makecell{\gdb \\ ($\Delta E^\ddag$, kcal/mol)}}
@@ -158,7 +158,7 @@
 & None & $ 4.1 \pm 0.4 $ & $ 4.0 \pm 0.4 $ & $ 3.7 \pm 0.4 $ & $ 3.7 \pm 0.4 $ \\
 \\[0.002cm] \multirow{2}{*}{\makecell{\proparg \\ ($\Delta E^\ddag$, kcal/mol)}}
 & True & $ 2.2 \pm 0.3 $ & --- & $ 0.71 \pm 0.22 $ & $ 0.65 \pm 0.17 $ \\
-& None & $ 2.2 \pm 0.4 $ & $ 0.61 \pm 0.12 $ & $ 0.68 \pm 0.18 $ & $ 0.64 \pm 0.19 $ \\
+& None & $ 2.2 \pm 0.4 $ & $ 0.62 \pm 0.16 $ & $ 0.68 \pm 0.18 $ & $ 0.64 \pm 0.19 $ \\
 \bottomrule
 \end{tabular}
 
@@ -197,7 +197,7 @@ Dataset (property, units)
 \end{tabular}
 
 
-% Figure 6 data for gnuplot (mae, random, no h
+% Figure 6 data for gnuplot (invariant, mae, random, no h
 #gdb
 1.0 	 DFT 	 cv10-gdb-inv-random-noH-sub-true 	 5.014173495282309 0.15861068234940312
 2.0 	 xTB 	 cv10-gdb-inv-random-noH-xtb-true 	 5.109198092413676 0.19230431107444837
@@ -216,7 +216,7 @@ Dataset (property, units)
 4.5 	 xTB 	 cv10-cyclo-inv-random-noH-xtb-rxnmapper 	 2.9250951701685435 0.11917446454786862
 6.0 	 DFT 	 cv10-cyclo-inv-random-noH-sub-none 	 2.32423339198258 0.09206901018204391
 7.0 	 xTB 	 cv10-cyclo-inv-random-noH-xtb-none 	 2.9692803577742977 0.13546788746851318
-8.5 	 DFT 	 slatm-cyclo-sub-random-none 	 2.720571534426475 0.06898273879681123
+8.5 	 DFT 	 slatm-cyclo-sub-random-none 	 2.628948888202972 0.07935245972893791
 9.5 	 xTB 	 slatm-cyclo-xtb-random-none 	 3.4279482328225797 0.14452096831229552
 
 
@@ -225,7 +225,9 @@ Dataset (property, units)
 2.0 	 xTB 	 cv10-proparg-inv-random-noH-xtb-true 	 0.4921019767996591 0.08106747788359406
 3.5 	 DFT 	 cv10-proparg-inv-random-noH-dft-none 	 0.33915456505070285 0.06463822289726959
 4.5 	 xTB 	 cv10-proparg-inv-random-noH-xtb-none 	 0.5098668908139498 0.07728249790896544
-6.0 	 DFT 	 slatm-proparg-dft-random-none 	 0.33330193669496627 0.029324342028075007
+6.0 	 DFT 	 slatm-proparg-dft-random-none 	 0.3265619121332394 0.03778470644522156
 7.0 	 xTB 	 slatm-proparg-xtb-random-none 	 0.7475229963510193 0.06876892789455094
 
+
+% Dumping Figure 5 data for gnuplot to {dataset}.{splitter}.dat files (invariant, mae, dft, no h
 
