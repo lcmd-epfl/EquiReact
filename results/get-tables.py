@@ -314,11 +314,30 @@ Dataset (property, units)
         print(r' \\[0.002cm]')
     print(footer)
 
+def dump_extrapolation_data(geometry='dft', use_H=False, use_rmse=False, invariant=True):
+    h_key = "withH" if use_H else "noH"
+    for dataset in ['gdb', 'cyclo', 'proparg']:
+        for splitter in ['scaffold', 'yasc', 'sizeasc']:
+            chemprop_r  = lambda atom_mapping : chemprop [f'{dataset}-{splitter}-{atom_mapping.lower()}-{h_key}']
+            slatm_r     = lambda atom_mapping : slatm    [f'{dataset}-{geometry}-{splitter}-{atom_mapping.lower()}']
+            equireact_r = lambda atom_mapping : equireact[f'cv10-{dataset}{"-inv-" if invariant else "-"}{splitter}-{h_key}-{geometry}-{atom_mapping.lower()}']
+            mappings = ['True', 'RXNMapper', 'None'][::-1]
+            with open(f'{dataset}.{splitter}.dat', 'w') as f:
+                print('model', *[' '.join(x) for x in zip(mappings,mappings)], file=f)
+                for model, model_name in zip([equireact_r, chemprop_r, slatm_r],
+                                             ['3dreact',   'chemprop', 'slatm']):
+                    print(model_name, end='\t', file=f)
+                    for atom_mapping in mappings:
+                        print(*get_error(model(atom_mapping), use_rmse=use_rmse, latex=False), end='\t', file=f)
+                    print(file=f)
 
 if __name__=='__main__':
     chemprop = load_chemprop()
     slatm = load_slatm()
     equireact = load_equireact()
+
+
+
 
     print('% Table 1 (invariant, dft, no hydrogens, mae)')
     print_main_table(geometry='dft', use_H=False, use_rmse=False, invariant=True)
@@ -350,5 +369,9 @@ if __name__=='__main__':
     print()
     print()
 
-    print('% Figure 6 data for gnuplot (mae, random, no h')
+    print('% Figure 6 data for gnuplot (invariant, mae, random, no h')
     print_xtb_data(use_H=False, use_rmse=False, splitter='random', invariant=True)
+
+    print('% Dumping Figure 5 data for gnuplot to {dataset}.{splitter}.dat files (invariant, mae, dft, no h')
+    dump_extrapolation_data(geometry='dft', use_H=False, use_rmse=False, invariant=True)
+    print()
