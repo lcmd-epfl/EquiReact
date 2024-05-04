@@ -93,8 +93,6 @@ class QML:
         return
 
 
-
-
     def get_data_template(self, csv_path, target_column, get_indices, get_reactants_xyz, get_products_xyz, bohr, bad_idx_path=None):
         def get_data(xtb=False, xtb_subset=False):
             df = pd.read_csv(csv_path, index_col=0)
@@ -116,35 +114,27 @@ class QML:
         return get_data
 
 
-    def get_SLATM(self):
+    def get_SLATM(self, no_h_atoms=False, no_h_total=False):
+        def get_slatm_for_nestd_list(reaction_components, desc):
+            xs_sum = []
+            for mols in tqdm(reaction_components, desc=desc):
+                xs = []
+                for mol in mols:
+                    h_mask = (mol.nuclear_charges==1)
+                    if no_h_atoms:
+                        x = np.array(qml.representations.generate_slatm(mol.coordinates, mol.nuclear_charges, mbtypes, local=True))
+                        x = x[~h_mask].sum(axis=0)
+                    elif no_h_total:
+                        x = qml.representations.generate_slatm(mol.coordinates[~h_mask], mol.nuclear_charges[~h_mask], mbtypes, local=False)
+                    else:
+                        x = qml.representations.generate_slatm(mol.coordinates, mol.nuclear_charges, mbtypes, local=False)
+                    xs.append(x)
+
+                xs_sum.append(sum(np.array(xs)))
+            return np.array(xs_sum)
+
         mbtypes = qml.representations.get_slatm_mbtypes(self.ncharges)
-
-        slatm_reactants = [
-            np.array(
-                [
-                    qml.representations.generate_slatm(
-                        x.coordinates, x.nuclear_charges, mbtypes, local=False
-                    )
-                    for x in reactants
-                ]
-            )
-            for reactants in tqdm(self.mols_reactants, desc="reactants")
-        ]
-
-        slatm_reactants_sum = np.array([sum(x) for x in slatm_reactants])
-        slatm_products = [
-            np.array(
-                [
-                    qml.representations.generate_slatm(
-                        x.coordinates, x.nuclear_charges, mbtypes, local=False
-                    )
-                    for x in products
-                ]
-            )
-            for products in tqdm(self.mols_products, desc="products")
-        ]
-        slatm_products = np.array([sum(x) for x in slatm_products])
-        slatm_diff = slatm_products - slatm_reactants_sum
-
+        slatm_reactants = get_slatm_for_nestd_list(self.mols_reactants, 'reactants')
+        slatm_products  = get_slatm_for_nestd_list(self.mols_products, 'products')
+        slatm_diff = slatm_products - slatm_reactants
         return slatm_diff
-
