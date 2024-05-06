@@ -1,8 +1,18 @@
 from glob import glob
+import subprocess
 import numpy as np
 import pandas as pd
-import ase
 import ase.io
+import rmsd   # https://github.com/charnley/rmsd
+
+def call_rmsd(args):
+    filename = f'{rmsd.__path__[0]}/calculate_rmsd.py'
+    cmd = ["python", f"{filename}", *args]
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    stdout, stderr = proc.communicate()
+    if stderr is not None:
+        print(stderr.decode())
+    return float(stdout.decode().strip().split("\n")[0])
 
 data_dir = '../data/cyclo'
 
@@ -11,8 +21,9 @@ bad_idx = np.loadtxt(f'{data_dir}/bad-xtb.dat', dtype=int)
 for idx in bad_idx:
     df.drop(df[df['rxn_id']==idx].index, axis=0, inplace=True)
 
-for idx, switch in zip(df['rxn_id'], df['switch_reactants']):
 
+print('# n_atoms n_atoms_heavy rmsd rmsd/2/n_atoms')
+for idx, switch in zip(df['rxn_id'], df['switch_reactants']):
     pfile_dft  = glob(f'{data_dir}/xyz/{idx}/p*.xyz')[0]
     r0file_dft = sorted(glob(f'{data_dir}/xyz/{idx}/r1*.xyz'))[-1]
     r1file_dft = sorted(glob(f'{data_dir}/xyz/{idx}/r0*.xyz'))[-1]
@@ -27,12 +38,9 @@ for idx, switch in zip(df['rxn_id'], df['switch_reactants']):
 
     diff = 0.0
     for dft, xtb in zip(dft_files, xtb_files):
-        mol_dft = ase.io.read(dft)
-        mol_xtb = ase.io.read(xtb)
-        r_dft = mol_dft.positions-mol_dft.get_center_of_mass()
-        r_xtb = mol_xtb.positions-mol_xtb.get_center_of_mass()
-        diff += np.linalg.norm(r_dft-r_xtb)**2
+        RMSD = call_rmsd(['--reorder', dft, xtb])
+        diff += RMSD**2
     m = ase.io.read(pfile_dft)
     N = m.get_global_number_of_atoms()
     n = np.count_nonzero(m.get_atomic_numbers()>1)
-    print(N, n, np.sqrt(diff)/(2*N))
+    print(N, n, np.sqrt(diff), np.sqrt(diff)/(2*N))
