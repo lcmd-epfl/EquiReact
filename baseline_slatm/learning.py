@@ -142,7 +142,7 @@ def predict_CV(X, y, CV=10, seed=123, train_size=0.8,
         np.random.seed(seed)
         random.seed(seed)
         idx_train, idx_test, idx_val, _ = split_dataset(nreactions=len(y), splitter=splitter,
-                                                        tr_frac=train_size, dataset=dataset)
+                                                        tr_frac=train_size, dataset=dataset.split('_')[0])
         if i==0:
             print(f'train size {len(idx_train)} val size {len(idx_val)} test size {len(idx_test)}')
             if dataset not in HYPERS.keys():

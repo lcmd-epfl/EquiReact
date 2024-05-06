@@ -75,6 +75,6 @@ if __name__ == "__main__":
         print(f'reading from {slatm_save}')
         maes_slatm, rmses_slatm, hyperparameters = np.load(slatm_save, allow_pickle=True)
     print()
-    print(f"'{database_label}' = {hyperparameters}")
+    print(f'"{database_label}" : {hyperparameters}')
     print(f'slatm mae {np.mean(maes_slatm)} +- {np.std(maes_slatm)}')
     print(f'slatm rmse {np.mean(rmses_slatm)} +- {np.std(rmses_slatm)}')
