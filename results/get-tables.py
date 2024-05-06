@@ -50,7 +50,7 @@ def load_slatm():
         else:
             key = key.replace('_', '-')
         key = key + '-none'
-        val = np.load(f, allow_pickle=True)[:2]
+        val = np.stack(np.load(f, allow_pickle=True)[:2])
         val = np.hstack((val.mean(axis=1), val.std(axis=1)))[[0,2,1,3]]
         d[key] = val
     return d
