@@ -11,12 +11,8 @@ from chemprop.features.featurization import set_reaction
 
 parser = ap.ArgumentParser()
 parser.add_argument('--column', default='rxn_smiles_mapped', help='csv file column to use, should be the same as used for training')
-parser.add_argument('--reaction_mode', default='reac_diff', help='should be the same as used for training, do not change')
 parser.add_argument('--checkpoint', default='fold_0/fold_0/model_0/model.pt', help='path to the checkpoint')
-parser.add_argument('--prediction', action='store_true', help='predict targets')
-parser.add_argument('--representation', action='store_true', help='save representations')
-parser.add_argument('--mpn_path', default='MPN.npy', help='path to save the output of the MPNN portion of the model')
-parser.add_argument('--last_ffn_path', default='last_FFN', help='path to save the the input to the final readout layer')
+parser.add_argument('--fingerprint_type', default='MPN', help='MPN / last_FFN')
 parser.add_argument('--data_path', default='../../csv/gdb.csv', help='full dataset csv path')
 args = parser.parse_args()
 
@@ -24,32 +20,25 @@ arguments = [
     '--test_path', '/dev/null',
     '--preds_path', '/dev/null',
     '--checkpoint_path', args.checkpoint,
+    '--fingerprint_type', args.fingerprint_type,
 ]
 
-chemprop_args = chemprop.args.PredictArgs().parse_args(arguments)
-
-set_reaction(True, args.reaction_mode)  # because if first creates the model and then reads its parameters
-model_objects = chemprop.train.load_model(args=chemprop_args)
-tr_args, pred_args, models, scalers, tasks, names = model_objects
+chemprop_args = chemprop.args.FingerprintArgs().parse_args(arguments)
 
 df = pd.read_csv(args.data_path, index_col=0)
 smiles = df[args.column].to_numpy()
 
-if args.representation:
-    x = []
-    y = []
-    tr_args, pred_args, models, scalers, tasks, names = model_objects
-    model = models[0]
-    for smi in tqdm.tqdm(smiles):
-        x.append(model.fingerprint([[smi]], fingerprint_type='MPN').detach().numpy().squeeze())
-        y.append(model.fingerprint([[smi]], fingerprint_type='last_FFN').detach().numpy().squeeze())
-    x = np.vstack(x)
-    y = np.vstack(y)
-    print(x.shape, y.shape)
-    np.save('MPN.npy', x)
-    np.save('last_FFN.npy', y)
+#x = []
+#for smi in tqdm.tqdm(smiles):
+#    print()
+#    x.append(chemprop.train.molecule_fingerprint.molecule_fingerprint(args=chemprop_args, smiles=[[smi]]).squeeze())
+#    print()
+#x = np.vstack(x)
 
-if args.prediction:
-    for smi in tqdm.tqdm(smiles):
-        p = chemprop.train.make_predictions(args=chemprop_args, smiles=[[smi]], model_objects=model_objects)
-        print(p)
+
+smiles = [[smi] for smi in smiles]
+x = chemprop.train.molecule_fingerprint.molecule_fingerprint(args=chemprop_args, smiles=smiles).squeeze().astype(np.float32)
+
+
+print(x.shape)
+np.save(f'{args.fingerprint_type}.npy', x)

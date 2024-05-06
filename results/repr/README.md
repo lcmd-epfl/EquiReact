@@ -27,7 +27,7 @@ sed -n -e "/>>>/s/>>>//p" `ls logs/evaluation/*.log -rt | tail -n1` > results/re
 ### ChemProp representation:
 `MPN.npy` is obtained with
 ```bash
-python ../../baseline_chemprop/src/cgr-repr.py --representation \
+python ../../baseline_chemprop/src/cgr-repr.py --fingerprint_type MPN \
        --checkpoint ../../baseline_chemprop/results/gdb-true/fold_0/fold_0/model_0/model.pt \
        --data_path ../../baseline_chemprop/csv/gdb.csv
 ```
