@@ -116,22 +116,22 @@ class QML:
 
     def get_SLATM(self, no_h_atoms=False, no_h_total=False):
         def get_slatm_for_nestd_list(reaction_components, desc):
-            xs_sum = []
+            x_comps_list = []
             for mols in tqdm(reaction_components, desc=desc):
-                xs = []
+                x_mols = []
                 for mol in mols:
                     h_mask = (mol.nuclear_charges==1)
                     if no_h_atoms:
-                        x = np.array(qml.representations.generate_slatm(mol.coordinates, mol.nuclear_charges, mbtypes, local=True))
-                        x = x[~h_mask].sum(axis=0)
+                        x_mol = np.array(qml.representations.generate_slatm(mol.coordinates, mol.nuclear_charges, mbtypes, local=True))
+                        x_mol = x_mol[~h_mask].sum(axis=0)
                     elif no_h_total:
-                        x = qml.representations.generate_slatm(mol.coordinates[~h_mask], mol.nuclear_charges[~h_mask], mbtypes, local=False)
+                        x_mol = qml.representations.generate_slatm(mol.coordinates[~h_mask], mol.nuclear_charges[~h_mask], mbtypes, local=False)
                     else:
-                        x = qml.representations.generate_slatm(mol.coordinates, mol.nuclear_charges, mbtypes, local=False)
-                    xs.append(x)
+                        x_mol = qml.representations.generate_slatm(mol.coordinates, mol.nuclear_charges, mbtypes, local=False)
+                    x_mols.append(x_mol)
 
-                xs_sum.append(sum(np.array(xs)))
-            return np.array(xs_sum)
+                x_comps_list.append(sum(np.array(x_mols)))
+            return np.array(x_comps_list)
 
         mbtypes = qml.representations.get_slatm_mbtypes(self.ncharges)
         slatm_reactants = get_slatm_for_nestd_list(self.mols_reactants, 'reactants')
