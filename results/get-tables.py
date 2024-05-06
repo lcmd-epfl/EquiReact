@@ -42,15 +42,15 @@ def get_error(val, use_rmse, latex=True):
 
 def load_slatm():
     d = defaultdict(lambda: None)
-    for f in glob.glob('baseline_slatm/slatm_10_fold_*.npy'):
-        key = f.replace('baseline_slatm/slatm_10_fold_', '').replace('.npy', '').replace('_split', '')
+    for f in glob.glob('baseline_slatm/results/slatm_10_fold_*.npy'):
+        key = f.replace('baseline_slatm/results/slatm_10_fold_', '').replace('.npy', '').replace('_split', '')
         k = key.split('_')
         if len(k)==2:
             key = '-'.join([k[0], 'dft', k[1]])
         else:
             key = key.replace('_', '-')
         key = key + '-none'
-        val = np.load(f)
+        val = np.stack(np.load(f, allow_pickle=True)[:2])
         val = np.hstack((val.mean(axis=1), val.std(axis=1)))[[0,2,1,3]]
         d[key] = val
     return d
@@ -115,7 +115,7 @@ def print_main_table(geometry='dft', use_H=False, use_rmse=False, invariant=True
 '''
     h_key = "withH" if use_H else "noH"
     print(header)
-    for splitter in ['random', 'scaffold']:
+    for splitter in ['random']:
         print('\midrule')
         print(splitter_header[splitter])
         for dataset in ['gdb', 'cyclo', 'proparg']:
@@ -350,7 +350,7 @@ if __name__=='__main__':
     print()
 
     print('% Table S3 (dft, no hydrogens, mae)')
-    print_main_table_both(geometry='dft', use_H=False, use_rmse=False, splitters=['yasc', 'ydesc', 'sizeasc', 'sizedesc'])
+    print_main_table_both(geometry='dft', use_H=False, use_rmse=False, splitters=['scaffold', 'yasc', 'ydesc', 'sizeasc', 'sizedesc'])
     print()
     print()
 
