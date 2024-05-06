@@ -22,10 +22,8 @@ if __name__ == "__main__":
     if args.xtb:
         print("Using xtb geoms")
         xtb_text = '_xtb'
-        database_label = args.database + xtb_text
     else:
         xtb_text = ''
-        database_label = args.database
 
     if args.xtb_subset:
         print("Using xtb subset")
@@ -38,6 +36,8 @@ if __name__ == "__main__":
         h_text = '_no_h_atoms'
     else:
         h_text = ''
+
+    database_label = args.database + xtb_text + h_text
 
     print(f"Using {args.splitter} splits")
 
@@ -64,13 +64,17 @@ if __name__ == "__main__":
     slatm_save = f'results/slatm_{CV}_fold_{args.database}{xtb_text}{s_text}{h_text}_split_{args.splitter}.npy'
     slatm_pred = f'by_mol/slatm_{CV}_fold_{args.database}{xtb_text}{s_text}{h_text}_split_{args.splitter}.predictions.'+'{i}'+'.txt'
 
+    print(f'{database_label=}')
     if not os.path.exists(slatm_save):
-        maes_slatm, rmses_slatm = predict_CV(slatm, barriers, CV=CV, train_size=args.train_size,
-                                             save_predictions=slatm_pred,
-                                             splitter=args.splitter,
-                                             dataset=database_label, seed=123)
-        np.save(slatm_save, (maes_slatm, rmses_slatm))
+        maes_slatm, rmses_slatm, hyperparameters = predict_CV(slatm, barriers, CV=CV, train_size=args.train_size,
+                                                   save_predictions=slatm_pred,
+                                                   splitter=args.splitter,
+                                                   dataset=database_label, seed=123)
+        np.save(slatm_save, np.array((maes_slatm, rmses_slatm, hyperparameters), dtype=object))
     else:
-        maes_slatm, rmses_slatm = np.load(slatm_save)
+        print(f'reading from {slatm_save}')
+        maes_slatm, rmses_slatm, hyperparameters = np.load(slatm_save, allow_pickle=True)
+    print()
+    print(f"'{database_label}' = {hyperparameters}")
     print(f'slatm mae {np.mean(maes_slatm)} +- {np.std(maes_slatm)}')
     print(f'slatm rmse {np.mean(rmses_slatm)} +- {np.std(rmses_slatm)}')

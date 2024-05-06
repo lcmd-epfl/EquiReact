@@ -164,4 +164,4 @@ def predict_CV(X, y, CV=10, seed=123, train_size=0.8,
         rmses[i] = rmse
         seed += 1
 
-    return maes, rmses
+    return maes, rmses, [kernel, gamma, l2reg]
