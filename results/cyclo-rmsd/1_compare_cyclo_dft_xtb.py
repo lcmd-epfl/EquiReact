@@ -14,15 +14,13 @@ def call_rmsd(args):
         print(stderr.decode())
     return float(stdout.decode().strip().split("\n")[0])
 
-data_dir = '../data/cyclo'
-
+data_dir = '../../data/cyclo'
 df = pd.read_csv(f'{data_dir}/cyclo.csv', index_col=0)
 bad_idx = np.loadtxt(f'{data_dir}/bad-xtb.dat', dtype=int)
 for idx in bad_idx:
     df.drop(df[df['rxn_id']==idx].index, axis=0, inplace=True)
 
-
-print('# n_atoms n_atoms_heavy rmsd rmsd/2/n_atoms')
+print('#n_atoms n_atoms_heavy rmsd')
 for idx, switch in zip(df['rxn_id'], df['switch_reactants']):
     pfile_dft  = glob(f'{data_dir}/xyz/{idx}/p*.xyz')[0]
     r0file_dft = sorted(glob(f'{data_dir}/xyz/{idx}/r1*.xyz'))[-1]
@@ -43,4 +41,4 @@ for idx, switch in zip(df['rxn_id'], df['switch_reactants']):
     m = ase.io.read(pfile_dft)
     N = m.get_global_number_of_atoms()
     n = np.count_nonzero(m.get_atomic_numbers()>1)
-    print(N, n, np.sqrt(diff), np.sqrt(diff)/(2*N))
+    print(N, n, np.sqrt(diff))
