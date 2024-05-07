@@ -184,7 +184,21 @@
 \end{tabular}
 
 
-% Table S6 (dft, mae, random splits, no hydrogens)
+% Table S6 (dft, mae, random splits
+\begin{tabular}{@{}cccc@{}} \toprule
+H mode
+& \makecell{\gdb \\ ($\Delta E^\ddag$, kcal/mol)}
+& \makecell{\cyclo \\ ($\Delta G^\ddag$, kcal/mol)}
+& \makecell{\proparg \\ ($\Delta E^\ddag$, kcal/mol)}
+\\ \midrule
+with & $ 6.89 \pm 0.20 $ & $ 2.65 \pm 0.08 $ & $ 0.33 \pm 0.04 $\\
+w/o after & $ 7.11 \pm 0.20 $ & $ 2.69 \pm 0.08 $ & $ 0.33 \pm 0.04 $\\
+w/o before & $ 8.04 \pm 0.22 $ & $ 2.82 \pm 0.09 $ & $ 0.34 \pm 0.04 $\\
+\bottomrule
+\end{tabular}
+
+
+% Table S7 (dft, mae, random splits, no hydrogens)
 \begin{tabular}{@{}ccccc@{}} \toprule
 Dataset (property, units)
 & \textsc{InReact}$_X$ & \textsc{InReact}$_S$

@@ -45,8 +45,8 @@ def load_slatm():
     for f in glob.glob('baseline_slatm/results/slatm_10_fold_*.npy'):
         key = f.replace('baseline_slatm/results/slatm_10_fold_', '').replace('.npy', '').replace('_split', '')
         k = key.split('_')
-        if len(k)==2:
-            key = '-'.join([k[0], 'dft', k[1]])
+        if not 'xtb' in k and not 'sub' in k:
+            key = '-'.join([k[0], 'dft', *k[1:]])
         else:
             key = key.replace('_', '-')
         key = key + '-none'
@@ -237,7 +237,6 @@ def print_main_table_3dreact(geometry='dft', use_H=False, use_rmse=False, splitt
 
 
 def print_hydrogen_table(geometry='dft', use_H=False, use_rmse=False, splitter='random', invariant=True):
-    pass
     header=r'''\begin{tabular}{@{}cccccccc@{}} \toprule
 \multirow{3}{*}{\makecell{Dataset \\ (property, units)}}&
 \multirow{3}{*}{H mode}&
@@ -270,6 +269,26 @@ def print_hydrogen_table(geometry='dft', use_H=False, use_rmse=False, splitter='
                 print(' & ', end='')
                 print(get_error(equireact[equireact_key], use_rmse), end='')
             print(r'\\')
+    print(footer)
+
+
+def print_hydrogen_table_slatm(geometry='dft', splitter='random', use_rmse=False):
+    header = r'''\begin{tabular}{@{}cccc@{}} \toprule'''
+    footer = r'''\bottomrule
+\end{tabular}'''
+    print(header)
+    print('H mode')
+    for dataset, prop in zip([r'\gdb', r'\cyclo', r'\proparg'], ['E', 'G', 'E']):
+        print('& \makecell{'+dataset, r'\\ ($\Delta '+prop+'^\ddag$, kcal/mol)}')
+    print(r'\\ \midrule')
+    for h_label, h_key in zip(['with', 'w/o after', 'w/o before'], ['-', '-no-h-atoms-', '-no-h-total-']):
+        print(h_label, end='')
+        for dataset in ['gdb', 'cyclo', 'proparg']:
+            print(' & ', end='')
+            slatm_key = f'{dataset}-{geometry}{h_key}{splitter}-none'
+            print(get_error(slatm[slatm_key], use_rmse), end='')
+        print(r'\\')
+
     print(footer)
 
 
@@ -336,9 +355,6 @@ if __name__=='__main__':
     slatm = load_slatm()
     equireact = load_equireact()
 
-
-
-
     print('% Table 1 (invariant, dft, no hydrogens, mae)')
     print_main_table(geometry='dft', use_H=False, use_rmse=False, invariant=True)
     print()
@@ -364,7 +380,12 @@ if __name__=='__main__':
     print()
     print()
 
-    print('% Table S6 (dft, mae, random splits, no hydrogens)')
+    print('% Table S6 (dft, mae, random splits')
+    print_hydrogen_table_slatm(geometry='dft', splitter='random', use_rmse=False)
+    print()
+    print()
+
+    print('% Table S7 (dft, mae, random splits, no hydrogens)')
     print_attn_table(use_H=False, use_rmse=False, splitter='random', geometry='dft')
     print()
     print()
