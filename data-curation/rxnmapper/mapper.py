@@ -63,7 +63,7 @@ def main():
     print('''warning: RXNMapper sorts the participating molecules. This behavior corrupts the input.')
         Run
           $ patch < rxnmapper.patch
-        to apply the patch that discable sorting, and
+        to apply the patch that disables sorting, and
           $ patch -R < rxnmapper.patch
         to revert.
     ''')

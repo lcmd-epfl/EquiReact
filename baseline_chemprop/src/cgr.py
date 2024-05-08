@@ -21,7 +21,7 @@ def argparse():
     g2.add_argument('-c', '--cyclo',   action='store_true', help='use curated Cyclo-23-TS dataset')
     g2.add_argument('-p', '--proparg', action='store_true', help='use Proparg-21-TS dataset with fragment-based SMILES')
     g2.add_argument('-g', '--gdb',     action='store_true', help='use curated GDB7-22-TS dataset')
-    g3 = parser.add_mutually_exclusive_group(required=True)
+    g3 = parser.add_mutually_exclusive_group(required=False)
     g3.add_argument('--scaffold',      action='store_true', help='use scaffold splits (random otherwise)')
     g3.add_argument('--yasc',          action='store_true', help='use yasc splits (random otherwise)')
     g3.add_argument('--ydesc',         action='store_true', help='use ydesc splits (random otherwise)')
@@ -33,8 +33,18 @@ def argparse():
 
 
 if __name__ == "__main__":
-
     parser, args = argparse()
+
+    if args.proparg:
+        assert chemprop.__version__ == '1.5.0'
+        print('''warning: rdkit does not like hypervalent Si. The script may fail for the proparg dataset.')
+            Run
+              $ patch < ../../src/chemprop.patch
+            to apply the patch that disables the valence check, and
+              $ patch -R < ../../src/chemprop.patch
+            to revert.
+        ''')
+
     if args.cyclo:
         data_path = '../../../data/cyclo/cyclo.csv'
         target_columns = 'G_act'
