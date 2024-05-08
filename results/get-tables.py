@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
+import os
 import io
 import glob
 from collections import defaultdict
 import numpy as np
 
+resdir = os.path.dirname(__file__)
 
 def round_with_std(mae, std):
     if std<1e-9:
@@ -42,8 +44,8 @@ def get_error(val, use_rmse, latex=True):
 
 def load_slatm():
     d = defaultdict(lambda: None)
-    for f in glob.glob('baseline_slatm/results/slatm_10_fold_*.npy'):
-        key = f.replace('baseline_slatm/results/slatm_10_fold_', '').replace('.npy', '').replace('_split', '')
+    for f in glob.glob(f'{resdir}/../baseline_slatm/results/slatm_10_fold_*.npy'):
+        key = os.path.basename(f).replace('slatm_10_fold_', '').replace('.npy', '').replace('_split', '')
         k = key.split('_')
         if not 'xtb' in k and not 'sub' in k:
             key = '-'.join([k[0], 'dft', *k[1:]])
@@ -58,8 +60,8 @@ def load_slatm():
 
 def load_chemprop():
     chemprop = defaultdict(lambda: [])
-    for f in glob.glob('baseline_chemprop/results/*/fold_?/test_scores.csv'):
-        key = f.split('/')[2]
+    for f in glob.glob(f'{resdir}/../baseline_chemprop/results/*/fold_?/test_scores.csv'):
+        key = f.split('/')[-3]
         val = np.loadtxt(f, skiprows=1, delimiter=',', usecols=[1,4])
         chemprop[key].append(val)
     for key, val in chemprop.items():
@@ -81,7 +83,7 @@ def load_chemprop():
 
 def load_equireact():
     equireact = {}
-    with open('results/results.txt') as f:
+    with open(f'{resdir}/results.txt') as f:
         lines = f.readlines()
     f = io.StringIO(''.join([*filter(lambda x: x.startswith('cv10'), lines)]))
     equireact = arr2dict(np.loadtxt(f, dtype=str))
@@ -336,12 +338,15 @@ Dataset (property, units)
 def dump_extrapolation_data(geometry='dft', use_H=False, use_rmse=False, invariant=True):
     h_key = "withH" if use_H else "noH"
     for dataset in ['gdb', 'cyclo', 'proparg']:
-        for splitter in ['scaffold', 'yasc', 'sizeasc']:
+        for splitter in ['scaffold', 'yasc', 'sizeasc', 'ydesc', 'sizedesc']:
             chemprop_r  = lambda atom_mapping : chemprop [f'{dataset}-{splitter}-{atom_mapping.lower()}-{h_key}']
             slatm_r     = lambda atom_mapping : slatm    [f'{dataset}-{geometry}-{splitter}-{atom_mapping.lower()}']
             equireact_r = lambda atom_mapping : equireact[f'cv10-{dataset}{"-inv-" if invariant else "-"}{splitter}-{h_key}-{geometry}-{atom_mapping.lower()}']
             mappings = ['True', 'RXNMapper', 'None'][::-1]
-            with open(f'{dataset}.{splitter}.dat', 'w') as f:
+            outdir = f'{resdir}/auto-generated-data-for-extrapolation-plot'
+            if not os.path.exists(outdir):
+                os.makedirs(outdir)
+            with open(f'{outdir}/{dataset}.{splitter}.dat', 'w') as f:
                 print('model', *[' '.join(x) for x in zip(mappings,mappings)], file=f)
                 for model, model_name in zip([equireact_r, chemprop_r, slatm_r],
                                              ['3dreact',   'chemprop', 'slatm']):
