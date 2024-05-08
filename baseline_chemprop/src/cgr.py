@@ -39,7 +39,7 @@ if __name__ == "__main__":
         data_path = '../../../data/cyclo/cyclo.csv'
         target_columns = 'G_act'
     elif args.gdb:
-        data_path = '../../csv/gdb.csv'
+        data_path = '../../../data/gdb7-22-ts/gdb.csv'
         target_columns = 'dE0'
     elif args.proparg:
         data_path = '../../csv/proparg-fixarom.csv'
