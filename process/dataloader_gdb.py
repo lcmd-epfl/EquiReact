@@ -69,7 +69,7 @@ class GDB722TS(Dataset):
 
         self.df = pd.read_csv(csv_path)
         if xtb or xtb_subset:
-            self.df = self.df[self.df.bad_xtb==0].reset_index()
+            self.df = self.df[self.df.bad_xtb==0].reset_index(drop=True)
 
         self.nreactions = len(self.df)
         self.labels = torch.tensor(self.df['dE0'].values)

@@ -15,8 +15,8 @@ def call_rmsd(args):
     return float(stdout.decode().strip().split("\n")[0])
 
 data_dir = '../../data/cyclo'
-df = pd.read_csv(f'{data_dir}/cyclo.csv', index_col=0)
-df = df[df.bad_xtb==0].reset_index()
+df = pd.read_csv(f'{data_dir}/cyclo.csv')
+df = df[df.bad_xtb==0].reset_index(drop=True)
 
 print('#n_atoms n_atoms_heavy rmsd')
 for idx, switch in zip(df['rxn_id'], df['switch_reactants']):

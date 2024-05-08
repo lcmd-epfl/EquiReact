@@ -123,7 +123,7 @@ def split_dataset(nreactions, splitter, tr_frac, dataset, subset=None):
                      'cyclo': 'data/cyclo/cyclo.csv',
                      'proparg': 'data/proparg/proparg-weird-smiles.csv'}
         dirname = os.path.abspath(f'{os.path.dirname(__file__)}/../')
-        df = pd.read_csv(f'{dirname}/{csv_files[dataset]}', index_col=0)
+        df = pd.read_csv(f'{dirname}/{csv_files[dataset]}')
 
     if splitter == 'random':
         print("Using random splits")

@@ -99,7 +99,7 @@ class QML:
         def get_data(xtb=False, xtb_subset=False):
             df = pd.read_csv(csv_path)
             if (xtb or xtb_subset) and bad_xtb_column:
-                df = df[df[bad_xtb_column]==0].reset_index()
+                df = df[df[bad_xtb_column]==0].reset_index(drop=True)
 
             self.barriers = df[target_column].to_numpy()
             indices = get_indices(df)

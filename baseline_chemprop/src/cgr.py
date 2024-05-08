@@ -95,7 +95,7 @@ if __name__ == "__main__":
         np.random.seed(seed)
         random.seed(seed)
 
-        data = pd.read_csv(data_path, index_col=0)
+        data = pd.read_csv(data_path)
 
         tr_indices, te_indices, val_indices, _ = split_dataset(nreactions=len(data), splitter=splitter,
                                                                tr_frac=tr_frac, dataset=dataset, subset=None)

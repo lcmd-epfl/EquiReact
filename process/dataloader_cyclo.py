@@ -66,7 +66,7 @@ class Cyclo23TS(Dataset):
 
         self.df = pd.read_csv(csv_path)
         if xtb or xtb_subset:
-            self.df = self.df[self.df.bad_xtb==0].reset_index()
+            self.df = self.df[self.df.bad_xtb==0].reset_index(drop=True)
         self.labels = torch.tensor(self.df['G_act'].values)
         indices = self.df['rxn_id'].to_list()
         self.indices = indices

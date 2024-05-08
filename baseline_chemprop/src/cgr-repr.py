@@ -21,7 +21,7 @@ arguments = [
 ]
 
 chemprop_args = chemprop.args.FingerprintArgs().parse_args(arguments)
-df = pd.read_csv(args.data_path, index_col=0)
+df = pd.read_csv(args.data_path)
 smiles = df[args.column].to_numpy()
 smiles = [[smi] for smi in smiles]
 x = chemprop.train.molecule_fingerprint.molecule_fingerprint(args=chemprop_args, smiles=smiles).squeeze().astype(np.float32)
