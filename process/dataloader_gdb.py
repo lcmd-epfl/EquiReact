@@ -16,9 +16,18 @@ from process.create_graph import reader, get_graph, get_empty_graph
 class GDB722TS(Dataset):
 
     def __init__(self,
-                 processed_dir='data/gdb7-22-ts/processed/', process=True,
-                 xtb=False, xtb_subset=False,
+                 processed_dir='data/gdb7-22-ts/processed/',
+                 csv_path='data/gdb7-22-ts/gdb.csv',
+                 process=True, xtb=False, xtb_subset=False,
                  noH=False, atom_mapping=False, rxnmapper=False, reverse=False):
+
+        self.version = 12  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
+        self.max_number_of_reactants = 1
+        self.max_number_of_products = 3
+
+        self.processed_dir = processed_dir + '/'
+        self.atom_mapping = atom_mapping
+        self.noH = noH
 
         if xtb:
             self.bohr = False
@@ -33,22 +42,14 @@ class GDB722TS(Dataset):
 
         if rxnmapper is True:
             if noH:
-                csv_path = 'data/gdb7-22-ts/rxnmapper-noH.csv'
+                self.column = 'rxn_smiles_rxnmapper'
             else:
-                csv_path = 'data/gdb7-22-ts/rxnmapper.csv'
+                self.column = 'rxn_smiles_rxnmapper_full'
         else:
-            csv_path = 'data/gdb7-22-ts/ccsdtf12_dz_cleaned.csv'
+            self.column = 'rxn_smiles_mapped'
         print(f'{csv_path=}')
 
-        self.version = 11  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
-        self.max_number_of_reactants = 1
-        self.max_number_of_products = 3
-
-        self.processed_dir = processed_dir + '/'
-        self.atom_mapping = atom_mapping
-        self.noH = noH
-
-        dataset_prefix = os.path.splitext(os.path.basename(csv_path))[0]
+        dataset_prefix = os.path.splitext(os.path.basename(csv_path))[0]+'.'+self.column
         if xtb_subset:
             dataset_prefix += '.xtb-subset'
         if noH:
@@ -148,7 +149,7 @@ class GDB722TS(Dataset):
         self.reactants_graphs = []
         self.p2r_maps = []
         for i, idx in enumerate(tqdm(self.indices, desc="making graphs")):
-            rxnsmi = self.df[self.df['idx'] == idx]['rxn_smiles'].item()
+            rxnsmi = self.df[self.df['idx'] == idx][self.column].item()
             rsmi, psmis = rxnsmi.split('>>')
 
             # reactant

@@ -5,9 +5,8 @@ import numpy as np
 import pandas as pd
 from rdkit import Chem
 
-df = pd.read_csv('../../data/gdb7-22-ts/ccsdtf12_dz_cleaned.csv')
-
-reactions = df['rxn_smiles'].values
+df = pd.read_csv('../../data/gdb7-22-ts/gdb.csv')
+reactions = df['rxn_smiles_mapped'].values
 
 for skip_H2 in [True, False]:
     sign_file = 'signatures-skip-H2.dat' if skip_H2 else 'signatures.dat'

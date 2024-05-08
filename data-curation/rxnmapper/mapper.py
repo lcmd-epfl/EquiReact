@@ -33,7 +33,7 @@ def map_reactions(reactions, canonicalize_rxns=False):
 
 
 def map_cyclo():
-    data = pd.read_csv('../../data/cyclo/cyclo.csv', index_col=0)
+    data = pd.read_csv('../../data/cyclo/cyclo.csv')
     reactions = data['rxn_smiles_mapped'].to_list()
     reactions = [*map(reset_smiles_mapping, reactions)]
     reactions_h = [add_h_to_smiles(r) for r in reactions]
@@ -43,21 +43,19 @@ def map_cyclo():
         print(confidence.mean())
         print()
         data[output_column] = mapped_rxns
-    data.to_csv('cyclo.csv')
+    data.to_csv('cyclo.csv', index=False)
 
 
 def map_gdb():
-    data = pd.read_csv('../../data/gdb7-22-ts/ccsdtf12_dz_cleaned_nomap.csv', index_col=0)
-    data.drop(axis=1, inplace=True, labels=set(data.columns.values)-{'Unnamed: 0', 'idx', 'dE0', 'rxn_smiles'})
+    data = pd.read_csv('../../data/gdb7-22-ts/gdb.csv')
     reactions = data['rxn_smiles'].to_list()
-    output_column = 'rxn_smiles'
-    for output_file, canonicalize_rxns in (('rxnmapper.csv',     False),
-                                           ('rxnmapper-noH.csv', True)):
+    for output_column, canonicalize_rxns in (('rxn_smiles_rxnmapper',      True),
+                                             ('rxn_smiles_rxnmapper_full', False)):
         mapped_rxns, confidence = map_reactions(reactions, canonicalize_rxns=canonicalize_rxns)
         print(confidence.mean())
         print()
         data[output_column] = mapped_rxns
-        data.to_csv(output_file)
+    data.to_csv('gdb.csv', index=False)
 
 
 def main():

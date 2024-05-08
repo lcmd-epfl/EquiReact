@@ -119,7 +119,7 @@ def split_dataset(nreactions, splitter, tr_frac, dataset, subset=None):
     va_size = len(indices) - tr_size - te_size
 
     if splitter in ['scaffold', 'yasc', 'ydesc', 'sizeasc', 'sizedesc']:
-        csv_files = {'gdb': 'data/gdb7-22-ts/ccsdtf12_dz_cleaned.csv',
+        csv_files = {'gdb': 'data/gdb7-22-ts/gdb.csv',
                      'cyclo': 'data/cyclo/cyclo.csv',
                      'proparg': 'data/proparg/proparg.csv'}
         dirname = os.path.abspath(f'{os.path.dirname(__file__)}/../')

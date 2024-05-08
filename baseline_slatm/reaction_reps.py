@@ -82,7 +82,7 @@ class QML:
             else:
                 return sorted(glob(f'../data/gdb7-22-ts/xyz/{idx:06}/p*.xyz'))
 
-        self.get_GDB7_ccsd_data = self.get_data_template(csv_path="../data/gdb7-22-ts/ccsdtf12_dz_cleaned.csv",
+        self.get_GDB7_ccsd_data = self.get_data_template(csv_path="../data/gdb7-22-ts/gdb.csv",
                                                          bad_xtb_column='bad_xtb',
                                                          target_column='dE0',
                                                          bohr=lambda xtb: not xtb,
