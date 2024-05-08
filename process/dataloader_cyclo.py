@@ -20,7 +20,7 @@ class Cyclo23TS(Dataset):
                  xtb=False, xtb_subset=False,
                  noH=False, rxnmapper=False, atom_mapping=False):
 
-        self.version = 6  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
+        self.version = 7  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
         self.max_number_of_reactants = 2
         self.max_number_of_products = 1
 
@@ -66,9 +66,7 @@ class Cyclo23TS(Dataset):
 
         self.df = pd.read_csv(csv_path)
         if xtb or xtb_subset:
-            bad_idx = np.loadtxt('data/cyclo/bad-xtb.dat', dtype=int)
-            for idx in bad_idx:
-                self.df.drop(self.df[self.df['rxn_id']==idx].index, axis=0, inplace=True)
+            self.df = self.df[self.df.bad_xtb==0].reset_index()
         self.labels = torch.tensor(self.df['G_act'].values)
         indices = self.df['rxn_id'].to_list()
         self.indices = indices
