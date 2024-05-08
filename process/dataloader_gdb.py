@@ -40,7 +40,7 @@ class GDB722TS(Dataset):
             csv_path = 'data/gdb7-22-ts/ccsdtf12_dz_cleaned.csv'
         print(f'{csv_path=}')
 
-        self.version = 10  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
+        self.version = 11  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
         self.max_number_of_reactants = 1
         self.max_number_of_products = 3
 
@@ -68,9 +68,8 @@ class GDB722TS(Dataset):
 
         self.df = pd.read_csv(csv_path)
         if xtb or xtb_subset:
-            bad_idx = np.loadtxt('data/gdb7-22-ts/bad-xtb.dat', dtype=int)
-            for idx in bad_idx:
-                self.df.drop(self.df[self.df['idx']==idx].index, axis=0, inplace=True)
+            self.df = self.df[self.df.bad_xtb==0].reset_index()
+
         self.nreactions = len(self.df)
         self.labels = torch.tensor(self.df['dE0'].values)
         self.indices = self.df['idx'].to_list()
