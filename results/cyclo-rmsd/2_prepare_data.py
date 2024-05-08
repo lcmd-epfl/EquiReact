@@ -11,10 +11,8 @@ def plot_plot(indices, pred1, pred2, outfile):
     np.savetxt(f'{outfile}_forplot.dat', xy)
 
 data_dir = '../../data/cyclo'
-df = pd.read_csv(f'{data_dir}/cyclo.csv', index_col=0)
-bad_idx = np.loadtxt(f'{data_dir}/bad-xtb.dat', dtype=int)
-for idx in bad_idx:
-    df.drop(df[df['rxn_id']==idx].index, axis=0, inplace=True)
+df = pd.read_csv(f'{data_dir}/cyclo.csv')
+df = df[df.bad_xtb==0].reset_index(drop=True)
 targets_all = df['G_act'].values
 
 dat1 = '../by_mol/cv10-cyclo-inv-random-noH-sub-true-ns64-nv48-d48-l2-energy-diff-node.123.dat'

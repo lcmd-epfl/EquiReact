@@ -1,0 +1,26 @@
+--- /home/xe/SOFT/miniconda3/envs/nequireact-gpu/lib/python3.10/site-packages/chemprop/rdkit.py.orig	2023-10-30 19:01:29.714796644 +0100
++++ /home/xe/SOFT/miniconda3/envs/nequireact-gpu/lib/python3.10/site-packages/chemprop/rdkit.py	2023-10-21 09:22:37.000000000 +0200
+@@ -3,16 +3,21 @@ from rdkit import Chem
+ def make_mol(s: str, keep_h: bool, add_h: bool):
+     """
+     Builds an RDKit molecule from a SMILES string.
+-    
++
+     :param s: SMILES string.
+     :param keep_h: Boolean whether to keep hydrogens in the input smiles. This does not add hydrogens, it only keeps them if they are specified.
+     :return: RDKit molecule.
+     """
+     if keep_h:
+         mol = Chem.MolFromSmiles(s, sanitize = False)
+-        Chem.SanitizeMol(mol, sanitizeOps = Chem.SanitizeFlags.SANITIZE_ALL^Chem.SanitizeFlags.SANITIZE_ADJUSTHS)
++        Chem.SanitizeMol(mol, sanitizeOps = Chem.SanitizeFlags.SANITIZE_ALL^Chem.SanitizeFlags.SANITIZE_ADJUSTHS^ Chem.SanitizeFlags.SANITIZE_PROPERTIES)
+     else:
+         mol = Chem.MolFromSmiles(s)
++        if mol is None:
++            mol = Chem.MolFromSmiles(s, sanitize = False)
++            Chem.SanitizeMol(mol, Chem.SanitizeFlags.SANITIZE_ALL ^ Chem.SanitizeFlags.SANITIZE_PROPERTIES)
++            mol = Chem.RemoveHs(mol, sanitize = False)
++            Chem.SanitizeMol(mol, sanitizeOps=Chem.SanitizeFlags.SANITIZE_ALL ^ Chem.SanitizeFlags.SANITIZE_PROPERTIES)
+     if add_h:
+         mol = Chem.AddHs(mol)
+     return mol

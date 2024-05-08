@@ -54,7 +54,7 @@ class QML:
 
 
         self.get_cyclo_data = self.get_data_template(csv_path="../data/cyclo/cyclo.csv",
-                                                     bad_idx_path=('../data/cyclo/bad-xtb.dat', 'rxn_id'),
+                                                     bad_xtb_column='bad_xtb',
                                                      target_column='G_act',
                                                      bohr=lambda _: False,
                                                      get_indices=lambda df: df['rxn_id'].to_list(),
@@ -62,7 +62,7 @@ class QML:
                                                      get_products_xyz = get_cyclo_products_xyz)
 
 
-        self.get_proparg_data = self.get_data_template(csv_path="../data/proparg/data.csv",
+        self.get_proparg_data = self.get_data_template(csv_path="../data/proparg/proparg.csv",
                                                        target_column='Eafw',
                                                        bohr=lambda _: False,
                                                        get_indices=lambda df: [''.join(x) for x in zip(df['mol'].to_list(), df['enan'].to_list())],
@@ -82,8 +82,8 @@ class QML:
             else:
                 return sorted(glob(f'../data/gdb7-22-ts/xyz/{idx:06}/p*.xyz'))
 
-        self.get_GDB7_ccsd_data = self.get_data_template(csv_path="../data/gdb7-22-ts/ccsdtf12_dz_cleaned.csv",
-                                                         bad_idx_path=('../data/gdb7-22-ts/bad-xtb.dat', 'idx'),
+        self.get_GDB7_ccsd_data = self.get_data_template(csv_path="../data/gdb7-22-ts/gdb.csv",
+                                                         bad_xtb_column='bad_xtb',
                                                          target_column='dE0',
                                                          bohr=lambda xtb: not xtb,
                                                          get_indices=lambda df: df['idx'].tolist(),
@@ -93,13 +93,13 @@ class QML:
         return
 
 
-    def get_data_template(self, csv_path, target_column, get_indices, get_reactants_xyz, get_products_xyz, bohr, bad_idx_path=None):
+    def get_data_template(self, csv_path, target_column,
+                          get_indices, get_reactants_xyz, get_products_xyz,
+                          bohr, bad_xtb_column=None):
         def get_data(xtb=False, xtb_subset=False):
-            df = pd.read_csv(csv_path, index_col=0)
-            if (xtb or xtb_subset) and bad_idx_path:
-                bad_idx = np.loadtxt(bad_idx_path[0], dtype=int)
-                for idx in bad_idx:
-                    df.drop(df[df[bad_idx_path[1]]==idx].index, axis=0, inplace=True)
+            df = pd.read_csv(csv_path)
+            if (xtb or xtb_subset) and bad_xtb_column:
+                df = df[df[bad_xtb_column]==0].reset_index(drop=True)
 
             self.barriers = df[target_column].to_numpy()
             indices = get_indices(df)
