@@ -121,7 +121,7 @@ def split_dataset(nreactions, splitter, tr_frac, dataset, subset=None):
     if splitter in ['scaffold', 'yasc', 'ydesc', 'sizeasc', 'sizedesc']:
         csv_files = {'gdb': 'data/gdb7-22-ts/gdb.csv',
                      'cyclo': 'data/cyclo/cyclo.csv',
-                     'proparg': 'data/proparg/proparg.csv'}
+                     'proparg': 'data/proparg/proparg-weird-smiles.csv'}
         dirname = os.path.abspath(f'{os.path.dirname(__file__)}/../')
         df = pd.read_csv(f'{dirname}/{csv_files[dataset]}', index_col=0)
 

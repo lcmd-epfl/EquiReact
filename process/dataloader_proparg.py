@@ -19,7 +19,7 @@ class Proparg21TS(Dataset):
                  xtb = False,
                  noH=True, atom_mapping=False, rxnmapper=False):
 
-        self.version = 2  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
+        self.version = 3  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
         self.max_number_of_reactants = 1
         self.max_number_of_products = 1
         self.processed_dir = processed_dir + '/'
@@ -28,12 +28,12 @@ class Proparg21TS(Dataset):
         self.rxnmapper = rxnmapper
 
         if not rxnmapper:
-            csv_path='data/proparg/data_fixarom_smiles.csv'
+            csv_path='data/proparg/proparg.csv'
             column = 'rxn_smiles_mapped'
         else:
             if not noH:
-                raise RuntimeError
-            csv_path='data/proparg/proparg.csv'
+                raise RuntimeError('no rxnmapper for proparg with H')
+            csv_path='data/proparg/proparg-weird-smiles.csv'
             column = 'rxn_smiles_rxnmapper'
         if xtb:
             self.files_dir='data/proparg/xyz-xtb/'

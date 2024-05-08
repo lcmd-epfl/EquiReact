@@ -62,7 +62,7 @@ class QML:
                                                      get_products_xyz = get_cyclo_products_xyz)
 
 
-        self.get_proparg_data = self.get_data_template(csv_path="../data/proparg/data.csv",
+        self.get_proparg_data = self.get_data_template(csv_path="../data/proparg/proparg.csv",
                                                        target_column='Eafw',
                                                        bohr=lambda _: False,
                                                        get_indices=lambda df: [''.join(x) for x in zip(df['mol'].to_list(), df['enan'].to_list())],

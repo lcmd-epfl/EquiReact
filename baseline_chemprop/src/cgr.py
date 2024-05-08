@@ -52,10 +52,12 @@ if __name__ == "__main__":
         data_path = '../../../data/gdb7-22-ts/gdb.csv'
         target_columns = 'dE0'
     elif args.proparg:
-        data_path = '../../csv/proparg-fixarom.csv'
+        data_path = '../../../data/proparg/proparg.csv'
         target_columns = "Eafw"
 
     if args.rxnmapper:
+        if args.proparg:
+            raise RuntimeError('no rxnmapper for proparg')
         if args.withH:
             smiles_columns  ='rxn_smiles_rxnmapper_full'
         else:
@@ -66,7 +68,7 @@ if __name__ == "__main__":
         smiles_columns = 'rxn_smiles'
 
     dataset = next(compress(('cyclo', 'gdb', 'proparg'), (args.cyclo, args.gdb, args.proparg)))
-    config_path = f'../../data/hypers_{dataset}_cgr.json'
+    config_path = f'../../config/hypers_{dataset}_cgr.json'
 
 
     CV = 10
