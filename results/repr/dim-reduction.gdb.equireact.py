@@ -49,8 +49,6 @@ def main():
     if not os.path.exists(args.cache_dir):
         os.makedirs(args.cache_dir)
 
-
-
     df, data = load_data(args)
     if args.loop:
         if args.method=='umap':
@@ -163,6 +161,7 @@ def write_plot(n, d, mix, gamma, perp, ex, data, df, args):
         dump_path= f'{os.path.basename(args.repr_path)}.{args.method}.{args.how_to_color}.dat'
 
     if os.path.isfile(emb_path):
+        print(f'loading precomputed embedding from {emb_path}')
         embedding = np.load(emb_path)
     else:
         if args.method=='umap':
