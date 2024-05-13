@@ -4,13 +4,12 @@ This repo provides the code for the EquiReact model, as well as the raw and pre-
 
 ## Installation 
 For a direct copy of the environment used to run the results: 
-`conda create -n <env_name> --file requirements.txt`
-But this will depend on the version of CUDA you have available.
+```conda create -n <env_name> --file environment.yml```
+However, this may be incompatible with the version of CUDA you have available.
 
 Otherwise the key packages to install are as follows, assuming running on a cluster where modules need to be loaded:
 ```
-module load gcc/<version>-cuda cuda/<version>
-conda install python=3.10.10
+conda create --name <env_name> python=3.10.10
 pip install scipy numpy
 conda config --add channels pyg
 conda config --add channels nvidia
@@ -21,6 +20,7 @@ pip install e3nn
 conda install -c conda-forge rdkit=2023.03.1
 pip install pyaml wandb
 conda install pyg
+pip install chemprop==1.5.0
 ```
 
 ## Running EquiReact 
@@ -36,4 +36,5 @@ Note that these files currently run on the three datasets studied in the paper (
 If desired, the learned representation can be extracted using `representation.py`, which may be interesting for model interpretation or other downstream applications.
 
 ## Baselines
-To run the baselines CGR and SLATM_d, the former on GPU and the latter on CPU, two additional installation files are provided: `environment_chemprop.yml` and `requirements_fingerprints.txt` (assuming these will be run in separate environments) 
+To run the baselines ChemProp and SLATM$_d$, the former on GPU and the latter on CPU. See [baseline_chemprop](baseline_chemprop)
+and [baseline_slatm](baseline_slatm).
