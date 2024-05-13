@@ -36,5 +36,5 @@ Note that these files currently run on the three datasets studied in the paper (
 If desired, the learned representation can be extracted using `representation.py`, which may be interesting for model interpretation or other downstream applications.
 
 ## Baselines
-To run the baselines ChemProp and SLATM$_d$, the former on GPU and the latter on CPU. See [baseline_chemprop](baseline_chemprop)
+To run the baselines ChemProp and $\mathrm{SLATM}_d$, the former on GPU and the latter on CPU. See [baseline_chemprop](baseline_chemprop)
 and [baseline_slatm](baseline_slatm).
