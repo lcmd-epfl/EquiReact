@@ -10,7 +10,7 @@ done
 ```
 
 ## How to get the representations:
-### SLATM$_d$ representation
+### $\mathrm{SLATM}_d$ representation
 `../../baseline_slatm/slatm_gdb.npy`
 is computed with the tools of [`/baseline_slatm/`](../../baseline_slatm/) (not in the repo because it's too big)
 
