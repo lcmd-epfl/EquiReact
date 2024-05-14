@@ -12,4 +12,5 @@
 ![class errors box plots](class-errors.png)
 
 * [`class-indices.py`](class-indices.py) prints class index instead of class signature.
-  * [`class_indices.dat`](class_indices.dat)
+  * [`class_indices.dat`](class_indices.dat) is used by
+    [`../repr/dim-reduction.gdb.equireact.py`](../repr/dim-reduction.gdb.equireact.py)
