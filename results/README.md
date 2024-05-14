@@ -1,6 +1,6 @@
 # Results
 
-* [`get-results-from-wandb.py`](get-results-from-wandb.py):
+* [`get-results-from-wandb.py`](./get-results-from-wandb.py):
   downloads the results from [W&B](https://wandb.ai/equireact/projects), the output is saved in [`results.txt`](results.txt).
   * [`results.txt`](results.txt) contains 3DReact's results per run (run id, run name, seed, MAE, RMSE)
   and averaged across 10 folds (run name, mean MAE, MAE stdev, mean RMSE, RMSE stdev).
