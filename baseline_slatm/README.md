@@ -10,4 +10,4 @@
 #### Produced results:
 * `repr/` — computed representations (not in the repo because of the size)
 * [`results/`](results/) — saved MAE/RMSD
-* [`by_mol/`](by_mol/) — predictions for each test molecule
+* [`by_reaction/`](by_reaction/) — predictions for each test reaction: reaction index (in the dataset), prediction

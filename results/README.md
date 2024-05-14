@@ -17,7 +17,7 @@
     to compute the errors by reaction and learned representation, respectively.
   * [`log2dat.bash`](log2dat.bash): script to extract the errors by reaction from the output of `evaluation.py`. A similar script could be used
     to extract the learned representation fro the output of `representation.py`.
-  * [`by_mol/`](by_mol/): the predictions by reaction: reaction index (in the dataset), target, prediction (in the dataset stdev units).
+  * [`by_reaction/`](by_reaction/): predictions for each text reaction: reaction index (in the dataset), target, prediction (in the dataset stdev units).
 
 Scripts used to generate data for some of the Figures for the paper (see the READMEs inside): 
 * [`repr/`](repr) — for the t-SNE maps.

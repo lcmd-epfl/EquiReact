@@ -13,7 +13,7 @@ belongs_to_biggest_classes = np.where(belongs_to_biggest_classes_mask==0)
 classes[belongs_to_biggest_classes] = '-'
 
 for hlabel in ['noH', 'withH']:
-    errors_file = f'../by_mol/cv10-gdb-inv-random-{hlabel}-dft-true-ns64-nv64-d32-l2-vector-diff-both.123.dat'
+    errors_file = f'../by_reaction/cv10-gdb-inv-random-{hlabel}-dft-true-ns64-nv64-d32-l2-vector-diff-both.123.dat'
 
     idx = np.loadtxt(errors_file, usecols=0, dtype=int)
     err = np.loadtxt(errors_file, usecols=(1,2)).T
