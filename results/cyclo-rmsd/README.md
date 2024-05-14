@@ -9,3 +9,5 @@ using the [`rmsd`](https://github.com/charnley/rmsd) package.
   * [`cyclo_slatm_forplot.dat`](cyclo_slatm_forplot.dat)
 * [`rmsd.gp`](rmsd.gp): the Gnuplot script.
   * [`rmsd.png`](rmsd.png): the plot.
+
+![rmsd plot](rmsd.png)
