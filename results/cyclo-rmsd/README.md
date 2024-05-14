@@ -4,7 +4,8 @@
 for the "xtb" subset of the Cyclo-23-TS dataset
 using the [`rmsd`](https://github.com/charnley/rmsd) package.
   * [`rmsd.dat`](rmsd.dat) the computed RMSD.
-* [`2_prepare_data.py`](2_prepare_data.py) prepares the data files for the Gnuplot script
+* [`2_prepare_data.py`](2_prepare_data.py) prepares the data files for the Gnuplot script.
   * [`cyclo_3dreact_forplot.dat`](cyclo_3dreact_forplot.dat)
   * [`cyclo_slatm_forplot.dat`](cyclo_slatm_forplot.dat)
-* [`rmsd.gp`](rmsd.gp): the Gnuplot script (run with `gnuplot rmsd.gp -`)
+* [`rmsd.gp`](rmsd.gp): the Gnuplot script.
+  * [`rmsd.png`](rmsd.png): the plot.

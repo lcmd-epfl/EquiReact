@@ -1,7 +1,10 @@
+set term png
+set output 'rmsd.png'
+
 set lt 1 lc rgb 0x11a8ca
 set lt 2 lc rgb 0xff9c00
 set lt 3 lc rgb 0x48b62d
-PS=2
+PS=1
 
 set size square
 set xtics scale 0.5 1 offset 0,0.25
