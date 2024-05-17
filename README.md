@@ -4,13 +4,12 @@ This repo provides the code for the EquiReact model, as well as the raw and pre-
 
 ## Installation 
 For a direct copy of the environment used to run the results: 
-`conda create -n <env_name> --file requirements.txt`
-But this will depend on the version of CUDA you have available.
+```conda create -n <env_name> --file environment.yml```
+However, this may be incompatible with the version of CUDA you have available.
 
 Otherwise the key packages to install are as follows, assuming running on a cluster where modules need to be loaded:
 ```
-module load gcc/<version>-cuda cuda/<version>
-conda install python=3.10.10
+conda create --name <env_name> python=3.10.10
 pip install scipy numpy
 conda config --add channels pyg
 conda config --add channels nvidia
@@ -21,6 +20,7 @@ pip install e3nn
 conda install -c conda-forge rdkit=2023.03.1
 pip install pyaml wandb
 conda install pyg
+pip install chemprop==1.5.0
 ```
 
 ## Running EquiReact 
@@ -31,9 +31,21 @@ To optimize hyperparameters, a sweep can be run with `wandb` using `sweep.py`.
 
 Note that these files currently run on the three datasets studied in the paper (Cyclo-23-TS, GDB7-22-TS and Proparg-21-TS) with corresponding dataloaders in `process/dataloader_<dataset>.py`. To run on a different dataset, a dataloader needs to be written and the train code slightly modified to handle the new set.
 
-
 ## Analyzing representations
 If desired, the learned representation can be extracted using `representation.py`, which may be interesting for model interpretation or other downstream applications.
 
 ## Baselines
-To run the baselines CGR and SLATM_d, the former on GPU and the latter on CPU, two additional installation files are provided: `environment_chemprop.yml` and `requirements_fingerprints.txt` (assuming these will be run in separate environments) 
+To run the baselines ChemProp and $\mathrm{SLATM}_d$, the former on GPU and the latter on CPU. See [baseline_chemprop](baseline_chemprop)
+and [baseline_slatm](baseline_slatm).
+
+## See also the README files in the subdirectories
+* [data/](data/)
+* [baseline_chemprop/](baseline_chemprop)
+* [baseline_slatm/](baseline_slatm)
+* [results/](results)
+* [results/repr/](results/repr/)
+* [results/gdb-reaction-classes/](results/gdb-reaction-classes/)
+* [results/cyclo-rmsd/](results/cyclo-rmsd/)
+* [data-curation/cyclo-atom-mapping/](data-curation/cyclo-atom-mapping/)
+
+

@@ -62,7 +62,7 @@ if __name__ == "__main__":
         slatm = np.load(slatm_save)
 
     slatm_save = f'results/slatm_{CV}_fold_{args.database}{xtb_text}{s_text}{h_text}_split_{args.splitter}.npy'
-    slatm_pred = f'by_mol/slatm_{CV}_fold_{args.database}{xtb_text}{s_text}{h_text}_split_{args.splitter}.predictions.'+'{i}'+'.txt'
+    slatm_pred = f'by_reaction/slatm_{CV}_fold_{args.database}{xtb_text}{s_text}{h_text}_split_{args.splitter}.predictions.'+'{i}'+'.txt'
 
     print(f'{database_label=}')
     if not os.path.exists(slatm_save):

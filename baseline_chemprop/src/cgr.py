@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os
 import sys
 import argparse as ap
 from itertools import compress
@@ -7,7 +8,10 @@ import random
 import numpy as np
 import pandas as pd
 import chemprop
-sys.path.insert(0, '../../../')
+
+chempropdir = os.path.abspath(f'{os.path.dirname(__file__)}/../')
+rootdir = os.path.abspath(f'{chempropdir}/../')
+sys.path.insert(0, rootdir)
 from process.splitter import split_dataset
 
 
@@ -37,22 +41,22 @@ if __name__ == "__main__":
 
     if args.proparg:
         assert chemprop.__version__ == '1.5.0'
-        print('''warning: rdkit does not like hypervalent Si. The script may fail for the proparg dataset.')
+        print(f'''warning: rdkit does not like hypervalent Si. The script may fail for the proparg dataset.')
             Run
-              $ patch < ../../src/chemprop.patch
+              $ patch < {chempropdir}/src/chemprop.patch
             to apply the patch that disables the valence check, and
-              $ patch -R < ../../src/chemprop.patch
+              $ patch -R < {chempropdir}/src/chemprop.patch
             to revert.
         ''')
 
     if args.cyclo:
-        data_path = '../../../data/cyclo/cyclo.csv'
+        data_path = 'data/cyclo/cyclo.csv'
         target_columns = 'G_act'
     elif args.gdb:
-        data_path = '../../../data/gdb7-22-ts/gdb.csv'
+        data_path = 'data/gdb7-22-ts/gdb.csv'
         target_columns = 'dE0'
     elif args.proparg:
-        data_path = '../../../data/proparg/proparg.csv'
+        data_path = 'data/proparg/proparg.csv'
         target_columns = "Eafw"
 
     if args.rxnmapper:
@@ -68,7 +72,7 @@ if __name__ == "__main__":
         smiles_columns = 'rxn_smiles'
 
     dataset = next(compress(('cyclo', 'gdb', 'proparg'), (args.cyclo, args.gdb, args.proparg)))
-    config_path = f'../../config/hypers_{dataset}_cgr.json'
+    config_path = f'{chempropdir}/config/hypers_{dataset}_cgr.json'
 
 
     CV = 10
@@ -95,7 +99,7 @@ if __name__ == "__main__":
         np.random.seed(seed)
         random.seed(seed)
 
-        data = pd.read_csv(data_path)
+        data = pd.read_csv(f'{rootdir}/{data_path}')
 
         tr_indices, te_indices, val_indices, _ = split_dataset(nreactions=len(data), splitter=splitter,
                                                                tr_frac=tr_frac, dataset=dataset, subset=None)

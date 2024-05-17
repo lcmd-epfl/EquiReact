@@ -9,8 +9,16 @@ for REPR in MPN.npy slatm_gdb.npy 3dreact-gdb-inv-random-noH-dft-true-ns64-nv64-
 done
 ```
 
+![tsne plots](tsne.png)
+
+The plots are produced with [`tsne.gp`](tsne.gp).
+
+Depending on arguments, `./dim-reduction.gdb.equireact.py` can also 
+use other dimensionality reduction methods or produce interactive html maps.
+
 ## How to get the representations:
-### SLATM$_d$ representation
+
+### $\mathrm{SLATM}_d$ representation
 `../../baseline_slatm/slatm_gdb.npy`
 is computed with the tools of [`/baseline_slatm/`](../../baseline_slatm/) (not in the repo because it's too big)
 
@@ -31,5 +39,4 @@ python ../../baseline_chemprop/src/cgr-repr.py --fingerprint_type MPN \
        --checkpoint ../../baseline_chemprop/results/gdb-true/fold_0/fold_0/model_0/model.pt \
        --data_path ../../data/gdb7-22-ts/gdb.csv
 ```
-
 
