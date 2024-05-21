@@ -16,7 +16,7 @@ for dataset in ('proparg', 'cyclo', 'gdb'):
     for run in runs:
         if run.state=='running':
             continue
-        if run.name.startswith('cv10-'):
+        if run.name.startswith('lc-cv10-') or run.name.startswith('cv10-'):
             test_score = run.summary['test_score']
             test_rmse  = run.summary['test_rmse']
             print(run.id, run.name, run.config['seed'], test_score, test_rmse)

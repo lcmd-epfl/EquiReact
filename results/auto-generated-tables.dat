@@ -211,37 +211,9 @@ Dataset (property, units)
 \end{tabular}
 
 
-% Figure 6 data for gnuplot (invariant, mae, random, no h
-#gdb
-1.0 	 DFT 	 cv10-gdb-inv-random-noH-sub-true 	 5.014173495282309 0.15861068234940312
-2.0 	 xTB 	 cv10-gdb-inv-random-noH-xtb-true 	 5.109198092413676 0.19230431107444837
-3.5 	 DFT 	 cv10-gdb-inv-random-noH-sub-rxnmapper 	 6.117002769674256 0.16702124472859545
-4.5 	 xTB 	 cv10-gdb-inv-random-noH-xtb-rxnmapper 	 6.204080897792707 0.24756542334794773
-6.0 	 DFT 	 cv10-gdb-inv-random-noH-sub-none 	 6.738428546360891 0.20801211153757773
-7.0 	 xTB 	 cv10-gdb-inv-random-noH-xtb-none 	 6.811375593747876 0.26394832661630296
-8.5 	 DFT 	 slatm-gdb-sub-random-none 	 7.013193880845864 0.2177639244538774
-9.5 	 xTB 	 slatm-gdb-xtb-random-none 	 7.641926860929457 0.22631172346440737
+% Dumping Figure 6 data for gnuplot to "auto-generated-data-for-gnuplot/xtb.dat" (invariant, mae, random, no h)
 
+% Dumping Figure 5 data for gnuplot to "auto-generated-data-for-gnuplot/{dataset}.{splitter}.dat" (invariant, mae, dft, no h)
 
-#cyclo
-1.0 	 DFT 	 cv10-cyclo-inv-random-noH-sub-true 	 2.317753545269904 0.09358355332048418
-2.0 	 xTB 	 cv10-cyclo-inv-random-noH-xtb-true 	 2.8991594940237198 0.13485775886381446
-3.5 	 DFT 	 cv10-cyclo-inv-random-noH-sub-rxnmapper 	 2.33173838912379 0.09357230024964631
-4.5 	 xTB 	 cv10-cyclo-inv-random-noH-xtb-rxnmapper 	 2.9250951701685435 0.11917446454786862
-6.0 	 DFT 	 cv10-cyclo-inv-random-noH-sub-none 	 2.32423339198258 0.09206901018204391
-7.0 	 xTB 	 cv10-cyclo-inv-random-noH-xtb-none 	 2.9692803577742977 0.13546788746851318
-8.5 	 DFT 	 slatm-cyclo-sub-random-none 	 2.628948888202972 0.07935245972893791
-9.5 	 xTB 	 slatm-cyclo-xtb-random-none 	 3.4279482328225797 0.14452096831229552
-
-
-#proparg
-1.0 	 DFT 	 cv10-proparg-inv-random-noH-dft-true 	 0.3270345129881466 0.06930368336874573
-2.0 	 xTB 	 cv10-proparg-inv-random-noH-xtb-true 	 0.4921019767996591 0.08106747788359406
-3.5 	 DFT 	 cv10-proparg-inv-random-noH-dft-none 	 0.33915456505070285 0.06463822289726959
-4.5 	 xTB 	 cv10-proparg-inv-random-noH-xtb-none 	 0.5098668908139498 0.07728249790896544
-6.0 	 DFT 	 slatm-proparg-dft-random-none 	 0.3265619121332394 0.03778470644522156
-7.0 	 xTB 	 slatm-proparg-xtb-random-none 	 0.7475229963510193 0.06876892789455094
-
-
-% Dumping Figure 5 data for gnuplot to {dataset}.{splitter}.dat files (invariant, mae, dft, no h
+% Dumping LC Figure data for gnuplot to "auto-generated-data-for-gnuplot/lc.dat" (true, mae, random, no h, dft)
 

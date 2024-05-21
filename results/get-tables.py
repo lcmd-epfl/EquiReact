@@ -82,13 +82,19 @@ def load_chemprop():
 
 
 def load_equireact():
-    equireact = {}
     with open(f'{resdir}/results.txt') as f:
         lines = f.readlines()
     f = io.StringIO(''.join([*filter(lambda x: x.startswith('cv10'), lines)]))
     equireact = arr2dict(np.loadtxt(f, dtype=str))
     equireact = {key[:key.find('-ns')].replace('normal', 'none'): val for key, val in equireact.items()}
     f.close()
+
+    f1 = io.StringIO(''.join([*filter(lambda x: x.startswith('lc-cv10'), lines)]))
+    equireact1 = arr2dict(np.loadtxt(f1, dtype=str))
+    equireact1 = {key[:key.find('-ns')].replace('normal', 'none')+'-0.'+key.split('.')[-1]: val for key, val in equireact1.items()}
+    f1.close()
+    equireact.update(equireact1)
+
     return defaultdict(lambda: None, equireact)
 
 
@@ -294,26 +300,27 @@ def print_hydrogen_table_slatm(geometry='dft', splitter='random', use_rmse=False
     print(footer)
 
 
-def print_xtb_data(use_H=False, use_rmse=False, splitter='random', invariant=True):
+def dump_xtb_data(use_H=False, use_rmse=False, splitter='random', invariant=True):
     h_key = "withH" if use_H else "noH"
-    for dataset in ['gdb', 'cyclo', 'proparg']:
-        print(f'#{dataset}')
-        geometries = ['dft', 'xtb'] if dataset=='proparg' else ['sub', 'xtb']
-        i=1.0
-        for atom_mapping in ['True', 'RXNMapper', 'None']:
-            if dataset=='proparg' and atom_mapping=='RXNMapper':
-                continue
+    with open(f'{outdir}/xtb.dat', 'w') as f:
+        for dataset in ['gdb', 'cyclo', 'proparg']:
+            print(f'#{dataset}', file=f)
+            geometries = ['dft', 'xtb'] if dataset=='proparg' else ['sub', 'xtb']
+            i=1.0
+            for atom_mapping in ['True', 'RXNMapper', 'None']:
+                if dataset=='proparg' and atom_mapping=='RXNMapper':
+                    continue
+                for geom_label, geometry in zip(['DFT', 'xTB'], geometries):
+                    equireact_key = f'cv10-{dataset}{"-inv-" if invariant else "-"}{splitter}-{h_key}-{geometry}-{atom_mapping.lower()}'
+                    print(i, '\t', geom_label, '\t', equireact_key, '\t', *get_error(equireact[equireact_key], use_rmse=use_rmse, latex=False), file=f)
+                    i+=1.0
+                i+=0.5
             for geom_label, geometry in zip(['DFT', 'xTB'], geometries):
-                equireact_key = f'cv10-{dataset}{"-inv-" if invariant else "-"}{splitter}-{h_key}-{geometry}-{atom_mapping.lower()}'
-                print(i, '\t', geom_label, '\t', equireact_key, '\t', *get_error(equireact[equireact_key], use_rmse=use_rmse, latex=False))
+                slatm_key = f'{dataset}-{geometry}-{splitter}-{atom_mapping.lower()}'
+                print(i, '\t', geom_label, '\t', 'slatm-'+slatm_key, '\t', *get_error(slatm[slatm_key], use_rmse=use_rmse, latex=False), file=f)
                 i+=1.0
-            i+=0.5
-        for geom_label, geometry in zip(['DFT', 'xTB'], geometries):
-            slatm_key = f'{dataset}-{geometry}-{splitter}-{atom_mapping.lower()}'
-            print(i, '\t', geom_label, '\t', 'slatm-'+slatm_key, '\t', *get_error(slatm[slatm_key], use_rmse=use_rmse, latex=False))
-            i+=1.0
-        print()
-        print()
+            print(file=f)
+            print(file=f)
 
 
 def print_attn_table(use_H=False, use_rmse=False, splitter='random', geometry='dft'):
@@ -343,9 +350,6 @@ def dump_extrapolation_data(geometry='dft', use_H=False, use_rmse=False, invaria
             slatm_r     = lambda atom_mapping : slatm    [f'{dataset}-{geometry}-{splitter}-{atom_mapping.lower()}']
             equireact_r = lambda atom_mapping : equireact[f'cv10-{dataset}{"-inv-" if invariant else "-"}{splitter}-{h_key}-{geometry}-{atom_mapping.lower()}']
             mappings = ['True', 'RXNMapper', 'None'][::-1]
-            outdir = f'{resdir}/auto-generated-data-for-extrapolation-plot'
-            if not os.path.exists(outdir):
-                os.makedirs(outdir)
             with open(f'{outdir}/{dataset}.{splitter}.dat', 'w') as f:
                 print('model', *[' '.join(x) for x in zip(mappings,mappings)], file=f)
                 for model, model_name in zip([equireact_r, chemprop_r, slatm_r],
@@ -354,6 +358,23 @@ def dump_extrapolation_data(geometry='dft', use_H=False, use_rmse=False, invaria
                     for atom_mapping in mappings:
                         print(*get_error(model(atom_mapping), use_rmse=use_rmse, latex=False), end='\t', file=f)
                     print(file=f)
+
+
+def dump_lc_data(geometry='dft', use_H=False, use_rmse=False, splitter='random', atom_mapping='true'):
+    h_key = "withH" if use_H else "noH"
+    with open(f'{outdir}/lc.dat', 'w') as f:
+        for dataset in ['gdb', 'proparg']:
+            print(f'#{dataset}', file=f)
+            print('#training_size inreact_mean inreact_std equireact_mean equireact_std', file=f)
+            for training_size in [0.1, 0.2, 0.4, 0.8]:
+                print(training_size, end='\t', file=f)
+                for invariant in (True, False):
+                    key = f'lc-cv10-{dataset}{"-inv-" if invariant else "-"}{splitter}-{h_key}-{geometry}-{atom_mapping}-{training_size}'
+                    print(*get_error(equireact[key], use_rmse=use_rmse, latex=False), end='\t', file=f)
+                print(file=f)
+            print(file=f)
+            print(file=f)
+
 
 if __name__=='__main__':
     chemprop = load_chemprop()
@@ -395,9 +416,18 @@ if __name__=='__main__':
     print()
     print()
 
-    print('% Figure 6 data for gnuplot (invariant, mae, random, no h')
-    print_xtb_data(use_H=False, use_rmse=False, splitter='random', invariant=True)
+    outdir = f'{resdir}/auto-generated-data-for-gnuplot'
+    if not os.path.exists(outdir):
+        os.makedirs(outdir)
 
-    print('% Dumping Figure 5 data for gnuplot to {dataset}.{splitter}.dat files (invariant, mae, dft, no h')
+    print(f'% Dumping Figure 6 data for gnuplot to "{os.path.relpath(outdir)}/xtb.dat" (invariant, mae, random, no h)')
+    dump_xtb_data(use_H=False, use_rmse=False, splitter='random', invariant=True)
+    print()
+
+    print(f'% Dumping Figure 5 data for gnuplot to "{os.path.relpath(outdir)}/{{dataset}}.{{splitter}}.dat" (invariant, mae, dft, no h)')
     dump_extrapolation_data(geometry='dft', use_H=False, use_rmse=False, invariant=True)
+    print()
+
+    print(f'% Dumping LC Figure data for gnuplot to "{os.path.relpath(outdir)}/lc.dat" (true, mae, random, no h, dft)')
+    dump_lc_data()
     print()
