@@ -363,7 +363,7 @@ def dump_extrapolation_data(geometry='dft', use_H=False, use_rmse=False, invaria
 def dump_lc_data(geometry='dft', use_H=False, use_rmse=False, splitter='random', atom_mapping='true'):
     h_key = "withH" if use_H else "noH"
     with open(f'{outdir}/lc.dat', 'w') as f:
-        for dataset in ['gdb', 'proparg']:
+        for dataset in ['gdb', 'cyclo', 'proparg']:
             print(f'#{dataset}', file=f)
             print('#training_size inreact_mean inreact_std equireact_mean equireact_std', file=f)
             for training_size in [0.1, 0.2, 0.4, 0.8]:
