@@ -175,13 +175,13 @@ class EquiReact(nn.Module):
 
         # this can also be messed with
         self.score_predictor_nodes = nn.Sequential(
-            nn.Linear(self.n_s_full, 2 * self.n_s),
+            nn.Linear(2 * self.n_s_full, 4 * self.n_s),
             nn.ReLU(),
             nn.Dropout(dropout_p),
-            nn.Linear(2 * self.n_s, self.n_s),
+            nn.Linear(4 * self.n_s, 2 * self.n_s),
             nn.ReLU(),
             nn.Dropout(dropout_p),
-            nn.Linear(self.n_s, 1)
+            nn.Linear(2 * self.n_s, 1)
         )
 
         self.score_predictor_nodes_with_edges = nn.Sequential(
@@ -274,9 +274,16 @@ class EquiReact(nn.Module):
             x_update = self.conv_layers[i](x, edge_index, edge_attr_, edge_sh)
             x = F.pad(x, (0, x_update.shape[-1] - x.shape[-1]))
             x = x + x_update
-            x = x + initial_x
 
         x = torch.cat([x[:, :self.n_s], x[:, -self.n_s:]], dim=1) if self.n_conv_layers >= 3 else x[:, :self.n_s]
+        if self.verbose:
+            print(f'x shape before skip {x.shape}')
+            print(f'initial x shape {initial_x.shape}')
+        x = torch.cat([x, initial_x], dim=-1) # add skip connection
+
+        if self.verbose:
+            print(f'x shape after skip {x.shape}')
+
         return x, edge_index, edge_attr
 
 
@@ -317,6 +324,7 @@ class EquiReact(nn.Module):
             return torch.zeros((data.num_graphs, 1), device=self.device)
 
         x, (src, dst), edge_attr = self.forward_repr_mol(data)
+        # now x.shape[1] has doubled due to skip conn
         data.batch = data.batch.to(self.device)
 
         if self.random_baseline:
@@ -337,6 +345,7 @@ class EquiReact(nn.Module):
             score = score_node + score_edge
         elif self.sum_mode == 'node':
             score_inputs_nodes = x
+            print(f'{score_inputs_nodes.shape=}')
             scores_nodes = self.score_predictor_nodes(score_inputs_nodes)
             score = scatter_add(scores_nodes, index=data.batch, dim=0)
         elif self.sum_mode == 'edge':
@@ -356,7 +365,7 @@ class EquiReact(nn.Module):
     def forward_vector_mode(self, reactants_data, products_data, batch_size):
 
         if self.sum_mode=='node':
-            x_size = self.n_s_full
+            x_size = self.n_s_full * 2 # for skip conn
         elif self.sum_mode == 'both':
             x_size = self.n_s_full + self.distance_emb_dim
         else:
