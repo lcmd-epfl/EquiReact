@@ -206,6 +206,7 @@ class EquiReact(nn.Module):
             )
 
         n_s_full_with_edges = self.n_s_full + distance_emb_dim  if self.sum_mode=='both' else self.n_s_full
+
         if two_layers_atom_diff:
             self.atom_diff_nonlin = nn.Sequential(
                 nn.Linear(n_s_full_with_edges, n_s_full_with_edges),
@@ -223,14 +224,17 @@ class EquiReact(nn.Module):
         combine_diff = lambda r, p: p-r
         combine_sum  = lambda r, p: r+p
         combine_mean = lambda r, p: (r+p)*0.5
+
         if self.atom_mapping is True or self.attention is not None or self.graph_mode=='vector':
             combine_mlp  = lambda r, p: self.nodes_mlp(torch.cat((r, p), 1))
         else:
             combine_mlp  = lambda r, p: self.energy_mlp(torch.cat((r, p), 1))
+
         combine_dict = {'diff': combine_diff, 'difference': combine_diff,
                         'sum' : combine_sum,
                         'mean': combine_mean, 'average': combine_mean, 'avg' : combine_mean,
                         'mlp' : combine_mlp}
+
         if not self.combine_mode in combine_dict:
             raise NotImplementedError(f'combine mode "{self.combine_mode}" not defined')
         self.combine = combine_dict[self.combine_mode]
@@ -264,11 +268,13 @@ class EquiReact(nn.Module):
             print('dim of radius_graph (edges) after embedding', edge_attr_emb.shape)
 
         src, dst = edge_index
+        initial_x = x.clone() # store initial x for skip connections
         for i in range(self.n_conv_layers):
             edge_attr_ = torch.cat([edge_attr_emb, x[dst, :self.n_s], x[src, :self.n_s]], dim=-1)
             x_update = self.conv_layers[i](x, edge_index, edge_attr_, edge_sh)
             x = F.pad(x, (0, x_update.shape[-1] - x.shape[-1]))
             x = x + x_update
+            x = x + initial_x
 
         x = torch.cat([x[:, :self.n_s], x[:, -self.n_s:]], dim=1) if self.n_conv_layers >= 3 else x[:, :self.n_s]
         return x, edge_index, edge_attr
