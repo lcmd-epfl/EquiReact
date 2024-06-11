@@ -185,13 +185,13 @@ class EquiReact(nn.Module):
         )
 
         self.score_predictor_nodes_with_edges = nn.Sequential(
-            nn.Linear(self.n_s_full + distance_emb_dim, 2 * self.n_s),
+            nn.Linear(2 * self.n_s_full + distance_emb_dim, 4 * self.n_s),
             nn.ReLU(),
             nn.Dropout(dropout_p),
-            nn.Linear(2 * self.n_s, self.n_s),
+            nn.Linear(4 * self.n_s, 2 * self.n_s),
             nn.ReLU(),
             nn.Dropout(dropout_p),
-            nn.Linear(self.n_s, 1)
+            nn.Linear(2 * self.n_s, 1)
         )
 
         self.energy_mlp = nn.Linear(2, 1)
@@ -333,7 +333,9 @@ class EquiReact(nn.Module):
 
         if self.sum_mode == 'both':
             score_inputs_nodes = x
+            #print(f'{score_inputs_nodes.shape=}')
             score_inputs_edges = torch.cat([edge_attr, x[src], x[dst]], dim=-1)
+            #print(f'{score_inputs_edges.shape=}')
 
             edge_batch = data.batch[src]
             scores_nodes = self.score_predictor_nodes(score_inputs_nodes)
@@ -345,7 +347,7 @@ class EquiReact(nn.Module):
             score = score_node + score_edge
         elif self.sum_mode == 'node':
             score_inputs_nodes = x
-            print(f'{score_inputs_nodes.shape=}')
+            #print(f'{score_inputs_nodes.shape=}')
             scores_nodes = self.score_predictor_nodes(score_inputs_nodes)
             score = scatter_add(scores_nodes, index=data.batch, dim=0)
         elif self.sum_mode == 'edge':
@@ -367,7 +369,7 @@ class EquiReact(nn.Module):
         if self.sum_mode=='node':
             x_size = self.n_s_full * 2 # for skip conn
         elif self.sum_mode == 'both':
-            x_size = self.n_s_full + self.distance_emb_dim
+            x_size = self.n_s_full * 2 + self.distance_emb_dim
         else:
             raise NotImplementedError(f'sum mode "{self.sum_mode}" is not compatible with vector mode')
         X_r = torch.zeros((batch_size, x_size), device=self.device)
