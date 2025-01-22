@@ -110,26 +110,16 @@ class Juliette(Dataset):
             assert len(r_coords) == len(r_atomtypes), f'{idx}'
             assert len(p_coords) == len(p_atomtypes), f'{idx}'
 
-        #    rsmi, psmi = self.smiles[i].split('>>')
-        #    rgraph, ratoms, rmap = self.make_graph(rsmi, r_atomtypes, r_coords,  f'r{idx}', i)
-        #    pgraph, patoms, pmap = self.make_graph(psmi, p_atomtypes, p_coords,  f'p{idx}', i)
-        #    self.reactants_graphs.append(rgraph)
-        #    self.products_graphs.append(pgraph)
             rgraph = get_graph(None, r_atomtypes, r_coords, i, features='torchchem_v1')
             pgraph = get_graph(None, p_atomtypes, p_coords, i, features='torchchem_v1')
-
-            print()
-            print()
-            print(i)
-            print(idx)
-            print(r_atomtypes)
-            print(p_atomtypes)
-            print(r_atomtypes==p_atomtypes)
-            assert np.all(r_atomtypes == p_atomtypes)
 
             rmap = np.arange(rgraph.num_nodes)
             pmap = np.arange(pgraph.num_nodes)
 
+            self.reactants_graphs.append(rgraph)
+            self.products_graphs.append(pgraph)
+
+            assert np.all(r_atomtypes == p_atomtypes)
             assert np.all(sorted(rmap)==np.arange(len(rmap))), f'atoms missing from mapping {idx}'
             assert np.all(sorted(rmap)==sorted(pmap)), f'atoms missing from mapping {idx}'
             p2rmap = np.hstack([np.where(pmap==j)[0] for j in rmap])
