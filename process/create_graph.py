@@ -108,7 +108,7 @@ def atom_featurizer(mol):
     return torch.tensor(atom_features_list)
 
 
-def get_graph(mol, atomtypes, coords, y, features='smiles', device='cpu'):
+def get_graph(mol, atoms, coords, y, features='smiles', device='cpu'):
     """
     Builds graph object
 
@@ -120,13 +120,15 @@ def get_graph(mol, atomtypes, coords, y, features='smiles', device='cpu'):
     """
     assert coords.shape[0] == len(atoms), "different number of atoms"
     assert coords.shape[1] == 3, "wrong dimensionality of coordinates"
-    if features=='smiles'
-        atoms = np.array([at.GetSymbol() for at in mol.GetAtoms()])
-        assert np.all(atoms == atomtypes), "atoms from xyz and smiles don't match"
+    if features=='smiles':
+        atoms1 = np.array([at.GetSymbol() for at in mol.GetAtoms()])
+        assert np.all(atoms1 == atoms), "atoms from xyz and smiles don't match"
         x = atom_featurizer(mol)
     elif features=='torchchem_v1':
+        from ase.data import atomic_numbers
         from process.feature import atom_geom
-        x = atom_geom(atoms, torch.tensor(coords), bin=True)
+        atoms1 = [atomic_numbers[a] for a in atoms]
+        x = atom_geom(atoms1, torch.tensor(coords), bin=True)
         x = x.type(torch.Tensor)
     else:
         raise NotImplementedError
