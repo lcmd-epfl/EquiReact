@@ -18,7 +18,7 @@ class Juliette(Dataset):
                  processed_dir='data/juliette/processed/',
                  noH=True, atom_mapping=False):
 
-        self.version = 1  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
+        self.version = 2  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
         self.max_number_of_reactants = 1
         self.max_number_of_products = 1
         self.processed_dir = processed_dir + '/'
@@ -110,21 +110,18 @@ class Juliette(Dataset):
             assert len(r_coords) == len(r_atomtypes), f'{idx}'
             assert len(p_coords) == len(p_atomtypes), f'{idx}'
 
-            rgraph = get_graph(None, r_atomtypes, r_coords, i, features='torchchem_v1')
-            pgraph = get_graph(None, p_atomtypes, p_coords, i, features='torchchem_v1')
-
-            rmap = np.arange(rgraph.num_nodes)
-            pmap = np.arange(pgraph.num_nodes)
+            rgraph, ratoms, rmap = self.make_graph(r_atomtypes, r_coords, i)
+            pgraph, patoms, pmap = self.make_graph(p_atomtypes, p_coords, i)
 
             self.reactants_graphs.append(rgraph)
             self.products_graphs.append(pgraph)
 
-            assert np.all(r_atomtypes == p_atomtypes)
+            assert np.all(ratoms == patoms)
             assert np.all(sorted(rmap)==np.arange(len(rmap))), f'atoms missing from mapping {idx}'
             assert np.all(sorted(rmap)==sorted(pmap)), f'atoms missing from mapping {idx}'
             p2rmap = np.hstack([np.where(pmap==j)[0] for j in rmap])
             assert np.all(rmap == pmap[p2rmap])
-            assert np.all(r_atomtypes == p_atomtypes[p2rmap])
+            assert np.all(ratoms == patoms[p2rmap])
             self.p2r_maps.append(p2rmap)
 
         torch.save(self.reactants_graphs, self.paths.rg)
@@ -133,14 +130,9 @@ class Juliette(Dataset):
         print(f"Saved graphs to {self.paths.rg} and {self.paths.pg}")
 
 
-    def make_graph(self, smi, atoms, coords, ireact, idx, smi2=None):
-        mol = Chem.MolFromSmiles(smi, sanitize=False)
-        assert mol is not None, f"mol obj {ireact} is None from smi {smi}"
-        Chem.SanitizeMol(mol)
+    def make_graph(self, atoms, coords, ireact):
 
         if self.noH:
-            mol = Chem.RemoveAllHs(mol, sanitize=False)
-            Chem.SanitizeMol(mol)
             noH_idx = np.where(atoms!='H')
             new_atoms = atoms[noH_idx]
             new_coords = coords[noH_idx]
@@ -148,15 +140,8 @@ class Juliette(Dataset):
             new_atoms = atoms
             new_coords = coords
 
-        atom_map = np.array([at.GetAtomMapNum() for at in mol.GetAtoms()])
-        assert np.all(atom_map>0), f"mol {ireact} is not atom-mapped"
-        assert len(atom_map)==len(new_atoms), f"mol {ireact} has a wrong number of atoms"
-        atom_map = atom_map.argsort().argsort()  # elements rank
-
-        new_atoms = new_atoms[atom_map]
-        new_coords = new_coords[atom_map]
-        graph = get_graph(mol, new_atoms, new_coords, idx)
-
+        graph = get_graph(None, new_atoms, new_coords, ireact, features='torchchem_v1')
+        atom_map = np.arange(graph.num_nodes)
         return graph, new_atoms, atom_map
 
 
