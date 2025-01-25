@@ -281,7 +281,7 @@ class EquiReact(nn.Module):
             if graph.x.shape[0]==0:
                 continue
             # split into molecules
-            sections = [np.count_nonzero(graph.batch==i) for i in range(batch_size)]
+            sections = [torch.count_nonzero(graph.batch==i) for i in range(batch_size)]
             X.append(torch.split(x, sections))
         # regroup so mols from the same reaction are back-to-back
         X_out = [torch.vstack(x) for x in zip(*X)]
@@ -409,7 +409,7 @@ class EquiReact(nn.Module):
         # mapping overrides attention
         if self.atom_mapping is True:
             x_react_mapped = x_react
-            x_prod_mapped = [xp[mp] for xp, mp in zip(x_prod, mapping)]
+            x_prod_mapped = [xp[torch.as_tensor(mp, dtype=torch.int64)] for xp, mp in zip(x_prod, mapping)]
 
         elif self.attention is not None:
             if self.attention == 'self':
