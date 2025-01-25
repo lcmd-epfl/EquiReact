@@ -1,5 +1,7 @@
 import os, sys
 import traceback
+from datetime import datetime
+from getpass import getuser
 import argparse
 from itertools import compress
 import pprint
@@ -27,14 +29,17 @@ def train_wrapper():
             pass
 
 
-dataset = 'juliette'
+parser = argparse.ArgumentParser()
+parser.add_argument('-d', '--dataset', default='sub', help='sub / int')
+args = parser.parse_args()
+dataset = f'juliette_{args.dataset}'
 
-epochs = {'juliette': 128}
-project = f'nequireact-{dataset}-80'
+epochs = {'juliette_sub': 128, 'juliette_int': 128}
+project = f'nequireact-{dataset.split("_")[0]}-80'
 run_dir = f'sweep_{dataset}'
 if not os.path.exists(run_dir):
     os.makedirs(run_dir)
-logname = 'sweep.log'
+logname = f'sweep-{datetime.now().strftime("%y%m%d-%H%M%S.%f")}-{getuser()}'
 
 wandb.login()
 
