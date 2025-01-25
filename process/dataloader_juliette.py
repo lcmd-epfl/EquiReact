@@ -16,7 +16,8 @@ class Juliette(Dataset):
 
     def __init__(self, process=True,
                  processed_dir='data/juliette/processed/',
-                 noH=True, atom_mapping=False):
+                 noH=True, atom_mapping=False,
+                 geometry = 'substrate'):
 
         self.version = 2  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
         self.max_number_of_reactants = 1
@@ -25,24 +26,23 @@ class Juliette(Dataset):
         self.atom_mapping = atom_mapping
         self.noH = noH
         target_column = 'fw_td_kcalmol'
-        geometry = 'intermediate' # 'substrate'
+        self.geometry = geometry
 
-        #if not noH:
-        #    raise NotImplementedError
+        if self.geometry == 'substrate' and not noH:
+            raise NotImplementedError
 
         csv_path='data/juliette/tscmd_all_INT.csv'
-        #column = 'rxn_smiles_mapped'
-        if geometry == 'intermediate':
+
+        if self.geometry == 'intermediate':
             self.files_dir_r = 'data/juliette/Int1/'
             self.files_dir_p = 'data/juliette/Int2/'
-        elif geometry == 'substrate':
+        elif self.geometry == 'substrate':
             self.files_dir_r = 'data/juliette/substrate/'
             self.files_dir_p = 'data/juliette/substrate_minusH/'
 
         dataset_prefix = os.path.splitext(os.path.basename(csv_path))[0]
         dataset_prefix += f'.{geometry}'
-        #if xtb:
-        #    dataset_prefix += '.xtb'
+
         if noH:
             dataset_prefix += '.noH'
         self.paths = SimpleNamespace(
@@ -106,7 +106,9 @@ class Juliette(Dataset):
 
             r_atomtypes, r_coords = reader(f'{self.files_dir_r}/{idx[0]}.xyz')
             p_atomtypes, p_coords = reader(f'{self.files_dir_p}/{idx[1]}.xyz')
-            assert len(r_atomtypes) == len(p_atomtypes), f'{idx}'
+
+            if self.geometry != 'substrate':
+                assert len(r_atomtypes) == len(p_atomtypes), f'{idx}'
             assert len(r_coords) == len(r_atomtypes), f'{idx}'
             assert len(p_coords) == len(p_atomtypes), f'{idx}'
 

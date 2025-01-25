@@ -157,8 +157,10 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
         data = GDB722TS(process=process, atom_mapping=atom_mapping, rxnmapper=rxnmapper, noH=noH, reverse=reverse, xtb=xtb, xtb_subset=xtb_subset)
     elif dataset=='proparg':
         data = Proparg21TS(process=process, atom_mapping=atom_mapping, rxnmapper=rxnmapper, noH=noH, xtb=xtb)
-    elif dataset=='juliette':
-        data = Juliette(process=process, atom_mapping=atom_mapping, noH=noH)
+    elif dataset=='juliette_sub':
+        data = Juliette(process=process, atom_mapping=atom_mapping, noH=noH, geometry='substrate')
+    elif dataset=='juliette_int':
+        data = Juliette(process=process, atom_mapping=atom_mapping, noH=noH, geometry='intermediate')
     elif dataset=='homometric':
         data = HomometricHe(atom_mapping=atom_mapping)
     else:
