@@ -500,7 +500,7 @@ try:
 
     def get_dm(z, coordinates):
         n = len(z)
-        dm = scipy.spatial.distance.pdist(coordinates)
+        dm = scipy.spatial.distance.pdist(coordinates.numpy())
         return dm
 
     def get_am(z, coordinates, radii, dm, scale_factor=1.15):
@@ -545,7 +545,7 @@ try:
             print("Some atoms are incredibly close to each other!")
 
         # a_volume, a_surface = atomic_vs(coords, vdw_radii)
-        sasa = SASA(z, coords, vdw_radii, probe_radius=0.0, density=0.01)
+        sasa = SASA(z, coords.numpy(), vdw_radii, probe_radius=0.0, density=0.01)
         sa_volume = np.fromiter(sasa.atom_volumes.values(), dtype=float)
         sa_surface = np.fromiter(sasa.atom_areas.values(), dtype=float)
         ve, en = get_other_features(z)
