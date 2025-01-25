@@ -23,6 +23,24 @@ conda install pyg
 pip install chemprop==1.5.0
 ```
 
+Installation on `kuma` EPFL cluster (have to install `torch` with `pip`)
+```
+conda create -n equireact-kuma python=3.10.14
+conda activate equireact-kuma
+conda install numpy==1.24.3
+conda install tqdm
+pip install torch torchvision torchaudio
+pip install pyaml==21.10.1 wandb==0.15.0 ase==3.22.1
+pip install e3nn==0.5.1
+pip install rdkit==2023.03.1
+pip install chemprop==1.6.1
+pip install morfeus-ml==0.7.2
+pip install git+https://github.com/lcmd-epfl/cell2mol
+pip install scipy==1.10.1
+pip install pyg_lib torch_scatter torch_sparse torch_cluster torch_spline_conv torch_geometric -f https://data.pyg.org/whl/torch-2.5.1+cu
+conda install networkx==2.8.4 h5py==3.7 pandas==2.0.2
+```
+
 ## Running EquiReact 
 Example files for running 10-fold CV runs with 80/10/10 splits for either random or scaffold splits are provided in `submit-cv/`. In essence, `train.py` is run with the optimized hyperparameters, split arguments, and informaton on where to save models and results. 
 There is an argument in `train.py` to also run evaluation on the test set after training (`eval_on_test_split`) but to run evaluation after training, specifying a saved model, one can use `evaluate.py`

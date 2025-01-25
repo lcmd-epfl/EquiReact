@@ -1,9 +1,11 @@
+import os, sys
+import traceback
 import argparse
 from itertools import compress
 import pprint
 import wandb
-from train import train
-import os
+from train import train, Logger
+
 def train_wrapper():
     with wandb.init(config=None):
         args = wandb.config
@@ -19,6 +21,8 @@ def train_wrapper():
                   xtb=args.xtb, split_complexes=False, sweep=True, lr=args.lr, weight_decay=args.weight_decay,
                   training_fractions=[args.train_frac])
         except Exception as e:
+            exc_info = sys.exc_info()
+            traceback.print_exception(*exc_info)
             print(e)
             pass
 
@@ -88,6 +92,13 @@ parameters_dict.update({ 'xtb': { 'value': False} })
 
 sweep_config['parameters'] = parameters_dict
 pprint.pprint(sweep_config)
+
+
+logpath = os.path.join(run_dir, f'{logname}.log')
+print(f"stdout to {logpath}")
+sys.stdout = Logger(logpath=logpath, syspart=sys.stdout)
+sys.stderr = Logger(logpath=logpath, syspart=sys.stderr)
+
 
 wandb_name = 'test'
 sweep_id = wandb.sweep(sweep_config, project=project)

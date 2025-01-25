@@ -150,7 +150,7 @@ class Trainer():
 
                 # val loss is MSE, shouldn't be affected by data normalisation
                 val_loss = metrics[type(self.loss_func).__name__]
-                if np.isfinite(self.best_val_score.cpu()):
+                if torch.isfinite(self.best_val_score.cpu()):
                     wandb.log({"val_loss": val_loss, "val_score": val_score, "epoch": self.epoch, "val_score_best": self.best_val_score})
                 else:
                     wandb.log({"val_loss": val_loss, "val_score": val_score, "epoch": self.epoch})
