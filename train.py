@@ -291,8 +291,12 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
             print()
 
         if eval_on_test:
-            maes_  = torch.std_mean(torch.hstack(maes),  correction=0)
-            rmses_ = torch.std_mean(torch.hstack(rmses), correction=0)
+            if torch.__version__.split('.')[0]=='2':
+                maes_  = torch.std_mean(torch.hstack(maes),  correction=0)
+                rmses_ = torch.std_mean(torch.hstack(rmses), correction=0)
+            else:
+                maes_  = torch.std_mean(torch.hstack(maes), unbiased=False)
+                rmses_ = torch.std_mean(torch.hstack(rmses), unbiased=False)
             print(f"Mean MAE across splits {maes_[1]} +- {maes_[0]}")
             print(f"Mean RMSE across splits {rmses_[1]} +- {rmses_[0]}")
 
