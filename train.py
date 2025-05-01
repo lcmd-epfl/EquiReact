@@ -157,10 +157,9 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
         data = GDB722TS(process=process, atom_mapping=atom_mapping, rxnmapper=rxnmapper, noH=noH, reverse=reverse, xtb=xtb, xtb_subset=xtb_subset)
     elif dataset=='proparg':
         data = Proparg21TS(process=process, atom_mapping=atom_mapping, rxnmapper=rxnmapper, noH=noH, xtb=xtb)
-    elif dataset=='juliette_sub':
-        data = Juliette(process=process, atom_mapping=atom_mapping, noH=noH, geometry='substrate')
-    elif dataset=='juliette_int':
-        data = Juliette(process=process, atom_mapping=atom_mapping, noH=noH, geometry='intermediate')
+    elif dataset.startswith('juliette:'): # eg "juliette:cmd:int_keep_Pd_sub"
+        _, react, geom = dataset.split(':')
+        data = Juliette(process=process, atom_mapping=atom_mapping, noH=noH, geometry=geom, reaction=react)
     elif dataset=='homometric':
         data = HomometricHe(atom_mapping=atom_mapping)
     else:
@@ -321,7 +320,7 @@ if __name__ == '__main__':
     sys.stdout = Logger(logpath=logpath, syspart=sys.stdout)
     sys.stderr = Logger(logpath=logpath, syspart=sys.stderr)
 
-    project = f'nequireact-{args.dataset.split("_")[0]}-80'
+    project = f'nequireact-{args.dataset.split(":")[0]}-80'
     print(f'wandb name {args.wandb_name}' if args.wandb_name else 'no wandb name specified')
 
     print("\ninput args", args, '\n')

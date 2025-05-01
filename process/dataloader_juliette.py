@@ -6,9 +6,6 @@ import torch
 from torch.utils.data import Dataset
 import pandas as pd
 from tqdm import tqdm
-from rdkit import Chem
-import networkx
-import networkx.algorithms.isomorphism as iso
 from process.create_graph import get_graph, reader
 
 
@@ -17,28 +14,46 @@ class Juliette(Dataset):
     def __init__(self, process=True,
                  processed_dir='data/juliette/processed/',
                  noH=True, atom_mapping=False,
-                 geometry = 'substrate'):
+                 geometry='sub', reaction='cmd'):
 
-        self.version = 2  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
+        self.version = 3  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
         self.max_number_of_reactants = 1
         self.max_number_of_products = 1
         self.processed_dir = processed_dir + '/'
         self.atom_mapping = atom_mapping
         self.noH = noH
         target_column = 'fw_td_kcalmol'
+
+        geometries = ['sub', 'int', 'int_keep_Pd_sub', 'int_changePdtoHe', 'int_changePdtoKr']
+        if geometry not in geometries:
+            raise NotImplementedError
         self.geometry = geometry
 
-        if self.geometry == 'substrate' and not noH:
+        if self.geometry == 'sub' and not noH:
             raise NotImplementedError
 
-        csv_path='data/juliette/tscmd_all_INT.csv'
+        if reaction.lower() == 'cmd':
+            csv_path='data/juliette/tscmd_pibond_INT.csv'
+            reaction = 'CMD'
+        elif reaction.lower() == 'irb':
+            csv_path='data/juliette/pibond_ICB_wE.csv'
+            reaction = 'IrB'
 
-        if self.geometry == 'intermediate':
-            self.files_dir_r = 'data/juliette/Int1/'
-            self.files_dir_p = 'data/juliette/Int2/'
-        elif self.geometry == 'substrate':
-            self.files_dir_r = 'data/juliette/substrate/'
-            self.files_dir_p = 'data/juliette/substrate_minusH/'
+        if self.geometry == 'int':
+            self.files_dir_r = f'data/juliette/TS{reaction}/Int1/'
+            self.files_dir_p = f'data/juliette/TS{reaction}/Int2/'
+        elif self.geometry == 'sub':
+            self.files_dir_r = f'data/juliette/TS{reaction}/substrate/'
+            self.files_dir_p = f'data/juliette/TS{reaction}/substrate_minusH/'
+        elif self.geometry == 'int_keep_Pd_sub':
+            self.files_dir_r = f'data/juliette/TS{reaction}/Int1_keep_Pd_substrate/'
+            self.files_dir_p = f'data/juliette/TS{reaction}/Int2_keep_Pd_substrate/'
+        elif self.geometry == 'int_changePdtoHe':
+            self.files_dir_r = f'data/juliette/TS{reaction}/Int1_changePdtoHe/'
+            self.files_dir_p = f'data/juliette/TS{reaction}/Int2_changePdtoHe/'
+        elif self.geometry == 'int_changePdtoKr':
+            self.files_dir_r = f'data/juliette/TS{reaction}/Int1_changePdtoKr/'
+            self.files_dir_p = f'data/juliette/TS{reaction}/Int2_changePdtoKr/'
 
         dataset_prefix = os.path.splitext(os.path.basename(csv_path))[0]
         dataset_prefix += f'.{geometry}'
@@ -107,8 +122,10 @@ class Juliette(Dataset):
             r_atomtypes, r_coords = reader(f'{self.files_dir_r}/{idx[0]}.xyz')
             p_atomtypes, p_coords = reader(f'{self.files_dir_p}/{idx[1]}.xyz')
 
-            if self.geometry != 'substrate':
+            if self.geometry == 'int':
                 assert len(r_atomtypes) == len(p_atomtypes), f'{idx}'
+            else:
+                assert len(r_atomtypes) == len(p_atomtypes)+1, f'{idx}'
             assert len(r_coords) == len(r_atomtypes), f'{idx}'
             assert len(p_coords) == len(p_atomtypes), f'{idx}'
 
