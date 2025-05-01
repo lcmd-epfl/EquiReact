@@ -495,7 +495,7 @@ try:
         ed = ElementData()
         sym = [ed.elementsym[zi] for zi in z]
         ve = [ed.valenceelectrons[symi] for symi in sym]
-        en = [ed.ElectroNegativityPauling[symi] for symi in sym]
+        en = [ed.ElectroNegativityPauling[symi] if symi in ed.ElectroNegativityPauling else 0.0 for symi in sym]
         return ve, en
 
     def get_dm(z, coordinates):
