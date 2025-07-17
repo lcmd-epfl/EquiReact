@@ -1,10 +1,11 @@
 import numpy as np
 import torch
-from torch_geometric.data import Data
+from torch_geometric import data as tgdata
 import rdkit
 from rdkit import Chem
 from rdkit.Chem.rdPartialCharges import ComputeGasteigerCharges
 
+torch.serialization.add_safe_globals([tgdata.data.DataEdgeAttr])
 
 BOHR_TO_ANG = 0.529177210903
 
@@ -133,13 +134,13 @@ def get_graph(mol, atoms, coords, y, features='smiles', device='cpu'):
     else:
         raise NotImplementedError
 
-    data = Data(x=x, y=torch.tensor(y), pos=torch.tensor(coords, dtype=torch.float32))
+    data = tgdata.Data(x=x, y=torch.tensor(y), pos=torch.tensor(coords, dtype=torch.float32))
     return data.to(device)
 
 
 def get_empty_graph():
     num_node_feat = atom_featurizer(Chem.MolFromSmiles('C')).shape[-1]
-    return Data(x=torch.zeros((0, num_node_feat)), y=torch.tensor(-1), pos=torch.zeros((0,3)))
+    return tgdata.Data(x=torch.zeros((0, num_node_feat)), y=torch.tensor(-1), pos=torch.zeros((0,3)))
 
 
 def sanitize_mol_no_valence_check(mol):

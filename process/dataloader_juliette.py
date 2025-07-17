@@ -22,9 +22,12 @@ class Juliette(Dataset):
         self.processed_dir = processed_dir + '/'
         self.atom_mapping = atom_mapping
         self.noH = noH
-        target_column = 'fw_td_kcalmol'
+        if reaction.lower() != 'bde':
+            target_column = 'fw_td_kcalmol'#BDE_kcalmol
+        elif reaction.lower() == 'bde':
+            target_column = 'BDE_kcalmol'
 
-        geometries = ['sub', 'int', 'int_keep_Pd_sub', 'int_changePdtoHe', 'int_changePdtoKr']
+        geometries = ['sub', 'int', 'int_keep_Pd_sub', 'int_changePdtoHe', 'int_changePdtoKr', 'sub_opt', "sub_Xebond00", "sub_Xebond10", "sub_Xebond20", "sub_Xebond30", "sub_Xe00", "sub_Xe10", "sub_Xe20", "sub_H00", "sub_He00", "sub_C00", "sub_Kr00"]
         if geometry not in geometries:
             raise NotImplementedError
         self.geometry = geometry
@@ -38,22 +41,65 @@ class Juliette(Dataset):
         elif reaction.lower() == 'irb':
             csv_path='data/juliette/pibond_ICB_wE.csv'
             reaction = 'IrB'
+        elif reaction.lower() == 'bde':
+            csv_path = 'data/juliette/DFT-BDEs_sp2_sample2000_cleaned.csv'
+            if self.geometry == "sub":
+                self.files_dir_r = f'data/juliette/DFT-BDE/substrate/'
+                self.files_dir_p = f'data/juliette/DFT-BDE/substrate_minusH/'
+            elif self.geometry == "sub_Xebond00":
+                self.files_dir_r = f'data/juliette/DFT-BDE/structures_tagged_atomXe_bond_dist0.0/'
+                self.files_dir_p = f'data/juliette/DFT-BDE/substrate_minusH/'  
+            elif self.geometry == "sub_Xebond10":
+                self.files_dir_r = f'data/juliette/DFT-BDE/structures_tagged_atomXe_bond_dist1.0/'
+                self.files_dir_p = f'data/juliette/DFT-BDE/substrate_minusH/'
+            elif self.geometry == "sub_Xebond20":
+                self.files_dir_r = f'data/juliette/DFT-BDE/structures_tagged_atomXe_bond_dist2.0/'
+                self.files_dir_p = f'data/juliette/DFT-BDE/substrate_minusH/'
+            elif self.geometry == "sub_Xebond30":
+                self.files_dir_r = f'data/juliette/DFT-BDE/structures_tagged_atomXe_bond_dist3.0/'
+                self.files_dir_p = f'data/juliette/DFT-BDE/substrate_minusH/'
+            elif self.geometry == "sub_Xe00":
+                self.files_dir_r = f'data/juliette/DFT-BDE/structures_tagged_atomXe_dist0.0/'
+                self.files_dir_p = f'data/juliette/DFT-BDE/substrate_minusH/'
+            elif self.geometry == "sub_Xe10":
+                self.files_dir_r = f'data/juliette/DFT-BDE/structures_tagged_atomXe_dist1.0/'
+                self.files_dir_p = f'data/juliette/DFT-BDE/substrate_minusH/'
+            elif self.geometry == "sub_Xe20":
+                self.files_dir_r = f'data/juliette/DFT-BDE/structures_tagged_atomXe_dist2.0/'
+                self.files_dir_p = f'data/juliette/DFT-BDE/substrate_minusH/'     
+            elif self.geometry == "sub_H00":
+                self.files_dir_r = f'data/juliette/DFT-BDE/structures_tagged_atomH_dist0.0/'
+                self.files_dir_p = f'data/juliette/DFT-BDE/substrate_minusH/'
+            elif self.geometry == "sub_He00":
+                self.files_dir_r = f'data/juliette/DFT-BDE/structures_tagged_atomHe_dist0.0/'
+                self.files_dir_p = f'data/juliette/DFT-BDE/substrate_minusH/'
+            elif self.geometry == "sub_C00":
+                self.files_dir_r = f'data/juliette/DFT-BDE/structures_tagged_atomC_dist0.0/'
+                self.files_dir_p = f'data/juliette/DFT-BDE/substrate_minusH/'
+            elif self.geometry == "sub_Kr00":
+                self.files_dir_r = f'data/juliette/DFT-BDE/structures_tagged_atomKr_dist0.0/'
+                self.files_dir_p = f'data/juliette/DFT-BDE/substrate_minusH/'
+        
 
-        if self.geometry == 'int':
-            self.files_dir_r = f'data/juliette/TS{reaction}/Int1/'
-            self.files_dir_p = f'data/juliette/TS{reaction}/Int2/'
-        elif self.geometry == 'sub':
-            self.files_dir_r = f'data/juliette/TS{reaction}/substrate/'
-            self.files_dir_p = f'data/juliette/TS{reaction}/substrate_minusH/'
-        elif self.geometry == 'int_keep_Pd_sub':
-            self.files_dir_r = f'data/juliette/TS{reaction}/Int1_keep_Pd_substrate/'
-            self.files_dir_p = f'data/juliette/TS{reaction}/Int2_keep_Pd_substrate/'
-        elif self.geometry == 'int_changePdtoHe':
-            self.files_dir_r = f'data/juliette/TS{reaction}/Int1_changePdtoHe/'
-            self.files_dir_p = f'data/juliette/TS{reaction}/Int2_changePdtoHe/'
-        elif self.geometry == 'int_changePdtoKr':
-            self.files_dir_r = f'data/juliette/TS{reaction}/Int1_changePdtoKr/'
-            self.files_dir_p = f'data/juliette/TS{reaction}/Int2_changePdtoKr/'
+        if reaction.lower() != 'bde':
+            if self.geometry == 'int':
+                self.files_dir_r = f'data/juliette/TS{reaction}/Int1/'
+                self.files_dir_p = f'data/juliette/TS{reaction}/Int2/'
+            elif self.geometry == 'sub':
+                self.files_dir_r = f'data/juliette/TS{reaction}/substrate/'
+                self.files_dir_p = f'data/juliette/TS{reaction}/substrate_minusH/'
+            elif self.geometry == 'int_keep_Pd_sub':
+                self.files_dir_r = f'data/juliette/TS{reaction}/Int1_keep_Pd_substrate/'
+                self.files_dir_p = f'data/juliette/TS{reaction}/Int2_keep_Pd_substrate/'
+            elif self.geometry == 'int_changePdtoHe':
+                self.files_dir_r = f'data/juliette/TS{reaction}/Int1_changePdtoHe/'
+                self.files_dir_p = f'data/juliette/TS{reaction}/Int2_changePdtoHe/'
+            elif self.geometry == 'int_changePdtoKr':
+                self.files_dir_r = f'data/juliette/TS{reaction}/Int1_changePdtoKr/'
+                self.files_dir_p = f'data/juliette/TS{reaction}/Int2_changePdtoKr/'
+            elif self.geometry == 'sub_opt':
+                self.files_dir_r = f'data/juliette/TS{reaction}/substrate_opt/'
+                self.files_dir_p = f'data/juliette/TS{reaction}/substrate_opt_minusH/'
 
         dataset_prefix = os.path.splitext(os.path.basename(csv_path))[0]
         dataset_prefix += f'.{geometry}'
@@ -71,7 +117,10 @@ class Juliette(Dataset):
 
         self.df = pd.read_csv(csv_path)
         self.nreactions = len(self.df)
-        self.indices = self.df[['Int1_Name', 'Int2_Name']].to_numpy()
+        if reaction.lower() == 'bde' and self.geometry != 'sub':
+            self.indices = self.df[['Int2_Name', 'Int2_Name']].to_numpy() 
+        else:
+            self.indices = self.df[['Int1_Name', 'Int2_Name']].to_numpy()
 
         self.labels = torch.tensor(self.df[target_column].values)
         #self.smiles = self.df[column]
@@ -81,9 +130,9 @@ class Juliette(Dataset):
             self.process()
         else:
             if exists(self.paths.rg) and exists(self.paths.pg) and exists(self.paths.mp):
-                self.reactants_graphs = torch.load(self.paths.rg)
-                self.products_graphs = torch.load(self.paths.pg)
-                self.p2r_maps        = torch.load(self.paths.mp)
+                self.reactants_graphs = torch.load(self.paths.rg, weights_only=False)
+                self.products_graphs = torch.load(self.paths.pg, weights_only=False)
+                self.p2r_maps        = torch.load(self.paths.mp, weights_only=False)
                 print(f"Coords and graphs successfully read from {self.processed_dir}")
             else:
                 print("Processed data not found, processing data...")
