@@ -85,7 +85,7 @@ class Trainer():
 
         self.val_loss_for_wandb = None
         self.val_score_for_wandb = None
-        self.val_score_best_for_wandb = 1e16
+        self.val_score_best_for_wandb = -1e16 if self.main_metric_goal == 'max' else 1e16
 
         if lr_scheduler:  # Needs "from torch.optim.lr_scheduler import *" to work
             self.lr_scheduler = lr_scheduler(self.optim, mode=mode, factor=factor, patience=lr_scheduler_patience,
@@ -148,6 +148,14 @@ class Trainer():
                 if self.eval_per_epochs > 0 and epoch % self.eval_per_epochs == 0:
                     self.run_per_epoch_evaluations(val_loader)
 
+                # check if improve
+                if val_score >= self.best_val_score and self.main_metric_goal == 'max' or val_score <= self.best_val_score and self.main_metric_goal == 'min':
+                    epochs_no_improve = 0
+                    self.best_val_score = val_score
+                    self.save_checkpoint(epoch, checkpoint_name=f'{self.run_name}.best_checkpoint.pt')
+                else:
+                    epochs_no_improve += 1
+
                 # val loss is MSE, shouldn't be affected by data normalisation
                 val_loss = metrics[type(self.loss_func).__name__]
                 if torch.isfinite(self.best_val_score.cpu()):
@@ -158,13 +166,7 @@ class Trainer():
                 self.val_loss_for_wandb = val_loss
                 self.val_score_for_wandb = val_score
 
-                # save the model with the best main_metric depending on wether we want to maximize or minimize the main metric
-                if val_score >= self.best_val_score and self.main_metric_goal == 'max' or val_score <= self.best_val_score and self.main_metric_goal == 'min':
-                    epochs_no_improve = 0
-                    self.best_val_score = val_score
-                    self.save_checkpoint(epoch, checkpoint_name=f'{self.run_name}.best_checkpoint.pt')
-                else:
-                    epochs_no_improve += 1
+                # save the model with the best main_metric
                 self.save_checkpoint(epoch, checkpoint_name=f'{self.run_name}.last_checkpoint.pt')
                 print(f'Epochs with no improvement: [ {epochs_no_improve} ] and the best {self.main_metric} was in {epoch - epochs_no_improve}')
                 if epochs_no_improve >= self.patience and epoch >= self.minimum_epochs:  # stopping criterion
@@ -221,7 +223,7 @@ class Trainer():
                     else:
                         wandb.log({"train loss": loss.item(), "epoch": self.epoch, "val_loss": self.val_loss_for_wandb, "val_score": self.val_score_for_wandb, "val_score_best": self.best_val_score})
                     print(f'[Epoch {self.epoch}; Iter {i+1:5d}/{len(data_loader):5d}] train: loss: {loss.item():.7f}')
-                if optim == None and self.val_per_batch:  # during validation or testing when we want to average metrics over all the data in that dataloader
+                if self.val_per_batch:  # during validation or testing when we want to average metrics over all the data in that dataloader
                     metrics = self.evaluate_metrics(predictions, targets, val=True)
                     metrics[type(self.loss_func).__name__] = loss.item()
                     for key, value in metrics.items():
@@ -242,6 +244,8 @@ class Trainer():
                 return total_metrics, list_detach(epoch_predictions), list_detach(epoch_targets)
             else:
                 return total_metrics, None, None
+        else:
+            print(f'[Epoch {self.epoch}] training_{self.main_metric}:', total_metrics[self.main_metric] / len(data_loader) )
 
     def after_batch(self, predictions, targets, batch_indices):
         pass
