@@ -27,9 +27,9 @@ Installation on `kuma` EPFL cluster (have to install `torch` with `pip`)
 ```
 TORCH="2.7.0"
 CUDA="126"
-conda create -n equireact-kuma python=3.13.5
+conda create -n equireact-kuma python=3.12.11
 conda activate equireact-kuma
-conda install numpy==2.3.1
+conda install numpy==1.26.4
 conda install tqdm
 conda install networkx==3.5 h5py==3.14.0 pandas==2.3.1
 pip install torch==${TORCH} torchvision torchaudio
@@ -40,7 +40,6 @@ pip install rdkit==2025.3.3
 pip install chemprop==1.6.1
 pip install morfeus-ml==0.7.2
 pip install git+https://github.com/lcmd-epfl/cell2mol
-pip install scipy==1.16.0
 ```
 
 ## Running EquiReact 
