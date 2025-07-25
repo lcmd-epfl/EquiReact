@@ -5,7 +5,7 @@ import rdkit
 from rdkit import Chem
 from rdkit.Chem.rdPartialCharges import ComputeGasteigerCharges
 
-torch.serialization.add_safe_globals([tgdata.data.DataEdgeAttr])
+torch.serialization.add_safe_globals([tgdata.data.DataEdgeAttr, tgdata.data.DataTensorAttr, tgdata.storage.GlobalStorage])
 
 BOHR_TO_ANG = 0.529177210903
 

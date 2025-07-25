@@ -130,7 +130,6 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
           lr_scheduler=ReduceLROnPlateau, factor=0.6, min_lr=8.0e-6, mode='max', lr_scheduler_patience=60,
           # factor 0.6 okay ?
           # min_lr = lr / 100
-          lr_verbose=True,
           verbose=False,
           random_baseline=False,
           combine_mode='diff',
@@ -251,7 +250,7 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
                                    scheduler_step_per_batch = False, # CHANGED THIS
                                    lr=lr, weight_decay=weight_decay,
                                    lr_scheduler=lr_scheduler, factor=factor, min_lr=min_lr, mode=mode,
-                                   lr_scheduler_patience=lr_scheduler_patience, lr_verbose=lr_verbose)
+                                   lr_scheduler_patience=lr_scheduler_patience)
 
             val_metrics, _, _ = trainer.train(train_loader, val_loader)
 
