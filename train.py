@@ -157,9 +157,16 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
         data = GDB722TS(process=process, atom_mapping=atom_mapping, rxnmapper=rxnmapper, noH=noH, reverse=reverse, xtb=xtb, xtb_subset=xtb_subset)
     elif dataset=='proparg':
         data = Proparg21TS(process=process, atom_mapping=atom_mapping, rxnmapper=rxnmapper, noH=noH, xtb=xtb)
-    elif dataset.startswith('juliette:'): # eg "juliette:cmd:int_keep_Pd_sub"
-        _, react, geom = dataset.split(':')
-        data = Juliette(process=process, atom_mapping=atom_mapping, noH=noH, geometry=geom, reaction=react)
+    elif dataset.startswith('juliette:'): # eg "juliette:cmd:int_keep_Pd_sub" or "juliette:bde:sub" or "juliette:cmd:pdxe00:pdxebond00"
+        parts = dataset.split(':')
+        if len(parts) == 3:
+            _, react, geom = parts
+            data = Juliette(process=process, atom_mapping=atom_mapping, noH=noH, geometry=geom, reaction=react)
+        elif len(parts) == 4:
+            _, react, geom_r, geom_p = parts
+            data = Juliette(process=process, atom_mapping=atom_mapping, noH=noH, geometry=geom_r, reaction=react, geometry_p=geom_p)
+        else:
+            raise ValueError(f"Invalid dataset format: {dataset}. Expected 3 or 4 parts separated by ':'.")
     elif dataset=='homometric':
         data = HomometricHe(atom_mapping=atom_mapping)
     else:
