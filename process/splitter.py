@@ -2,7 +2,6 @@ import os
 import re
 import numpy as np
 import pandas as pd
-from chemprop.data.utils import get_data_from_smiles
 from process.scaffold import scaffold_split
 from rdkit import Chem
 
@@ -20,6 +19,10 @@ def get_product_from_reaction_smi(reaction_smiles):
 
 
 def get_scaffold_splits(df, dataset, indices=None, sizes=(0.8, 0.1, 0.1)):
+    import chemprop
+    if chemprop.__version__[0]!='1':
+        raise NotImplementedError('Cannot use scaffold split with chemprop 2')
+    from chemprop.data.utils import get_data_from_smiles
     if dataset == 'gdb':
         rsmiles = df['rsmi'].to_numpy()
     elif dataset == 'cyclo':

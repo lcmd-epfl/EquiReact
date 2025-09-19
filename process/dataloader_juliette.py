@@ -14,7 +14,7 @@ class Juliette(Dataset):
     def __init__(self, process=True,
                  processed_dir='data/juliette/processed/',
                  noH=True, atom_mapping=False,
-                 geometry='sub', reaction='cmd'):
+                 geometry='sub', reaction='cmd', geometry_p='sub',):
 
         self.version = 3  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
         self.max_number_of_reactants = 1
@@ -31,12 +31,14 @@ class Juliette(Dataset):
         if geometry not in geometries:
             raise NotImplementedError
         self.geometry = geometry
+        self.reaction = reaction
+        self.geometry_p = geometry_p
 
         if self.geometry == 'sub' and not noH:
             raise NotImplementedError
 
         if reaction.lower() == 'cmd':
-            csv_path='data/juliette/tscmd_pibond_INT.csv'
+            csv_path='data/juliette/CMD_TS_smiles_ok.csv'
             reaction = 'CMD'
         elif reaction.lower() == 'irb':
             csv_path='data/juliette/pibond_ICB_wE.csv'
