@@ -30,12 +30,12 @@ def train_wrapper():
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-d', '--dataset', default='sub', help='sub / int')
+parser.add_argument('-d', '--dataset', default='cmd:int:int', help='sub / int')
 args = parser.parse_args()
-dataset = f'juliette_{args.dataset}'
+dataset = f'juliette:{args.dataset}'
 
-epochs = {'juliette_sub': 128, 'juliette_int': 128}
-project = f'nequireact-{dataset.split("_")[0]}-80'
+epochs = {'juliette:cmd:sub:sub': 128, 'juliette:cmd:int:int': 128}
+project = f'nequireact-{dataset.replace(":", "_")}-80'
 run_dir = f'sweep_{dataset}'
 if not os.path.exists(run_dir):
     os.makedirs(run_dir)
