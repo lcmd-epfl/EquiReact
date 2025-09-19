@@ -9,9 +9,11 @@ import numpy as np
 import pandas as pd
 import chemprop
 
-chempropdir = os.path.abspath(f'{os.path.dirname(__file__)}/../')
-rootdir = os.path.abspath(f'{chempropdir}/../')
+#chempropdir = os.path.abspath(f'{os.path.dirname(__file__)}/../')
+rootdir = os.path.abspath(f"{os.path.dirname(__file__)}/../")
 sys.path.insert(0, rootdir)
+print(f'rootdir {rootdir}')
+
 from process.splitter import split_dataset
 
 
@@ -25,7 +27,7 @@ def argparse():
     g2.add_argument('-c', '--cyclo',   action='store_true', help='use curated Cyclo-23-TS dataset')
     g2.add_argument('-p', '--proparg', action='store_true', help='use Proparg-21-TS dataset with fragment-based SMILES')
     g2.add_argument('-g', '--gdb',     action='store_true', help='use curated GDB7-22-TS dataset')
-    g2.add_argument('-cmd', 'tscmd',     action='store_true', help='use curated TS-CMD dataset')  
+    g2.add_argument('-cmd', '--tscmd',     action='store_true', help='use curated TS-CMD dataset')  
     g3 = parser.add_mutually_exclusive_group(required=False)
     g3.add_argument('--scaffold',      action='store_true', help='use scaffold splits (random otherwise)')
     g3.add_argument('--yasc',          action='store_true', help='use yasc splits (random otherwise)')
