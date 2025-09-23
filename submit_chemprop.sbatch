@@ -17,5 +17,5 @@ module purge
 conda activate chemprop
 python -c 'import torch; print(torch.cuda.is_available())'
 
-srun python src/chemprop.py --cmd 
+srun python src/chemprop_equireact.py -cmd  
 
