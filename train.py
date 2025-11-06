@@ -54,6 +54,7 @@ def parse_arguments(arglist=sys.argv[1:]):
 
     g_run = p.add_argument_group('external run parameters')
     g_run.add_argument('--experiment_name'    , type=str           , default=''       ,  help='name that will be added to the runs folder output')
+    g_run.add_argument('--target_property'     , type=str           , default=None,  help='target property to predict, if none given, the default is loaded in dataloader')
     g_run.add_argument('--wandb_name'         , type=str           , default=None     ,  help='name of wandb run')
     g_run.add_argument('--device'             , type=str           , default='cuda'   ,  help='cuda or cpu')
     g_run.add_argument('--logdir'             , type=str           , default='logs'   ,  help='log dir')
@@ -110,7 +111,7 @@ def parse_arguments(arglist=sys.argv[1:]):
     return args, arg_groups
 
 
-def train(run_dir, run_name, project, wandb_name, hyper_dict,
+def train(run_dir, run_name, project, wandb_name, hyper_dict,target_column=None,
           #setup args
           device='cuda', seed0=123, eval_on_test=True,
           #dataset args
@@ -160,10 +161,10 @@ def train(run_dir, run_name, project, wandb_name, hyper_dict,
         parts = dataset.split(':')
         if len(parts) == 3:
             _, react, geom = parts
-            data = Juliette(process=process, atom_mapping=atom_mapping, noH=noH, geometry=geom, reaction=react)
+            data = Juliette(process=process, atom_mapping=atom_mapping, noH=noH, geometry=geom, reaction=react, target_column=target_column)
         elif len(parts) == 4:
             _, react, geom_r, geom_p = parts
-            data = Juliette(process=process, atom_mapping=atom_mapping, noH=noH, geometry=geom_r, reaction=react, geometry_p=geom_p)
+            data = Juliette(process=process, atom_mapping=atom_mapping, noH=noH, geometry=geom_r, reaction=react, geometry_p=geom_p, target_column=target_column)
         else:
             raise ValueError(f"Invalid dataset format: {dataset}. Expected 3 or 4 parts separated by ':'.")
     elif dataset=='homometric':
@@ -337,7 +338,7 @@ if __name__ == '__main__':
         train_frac = [args.train_frac]
     print(train_frac)
 
-    train(run_dir, logname, project, args.wandb_name, vars(arg_groups['hyperparameters']), seed0=args.seed,
+    train(run_dir, logname, project, args.wandb_name,  vars(arg_groups['hyperparameters']), seed0=args.seed,target_column=args.target_property,
           device=args.device, num_epochs=args.num_epochs, checkpoint=args.checkpoint,
           subset=args.subset, dataset=args.dataset, process=args.process,
           verbose=args.verbose, radius=args.radius, max_neighbors=args.max_neighbors, sum_mode=args.sum_mode,

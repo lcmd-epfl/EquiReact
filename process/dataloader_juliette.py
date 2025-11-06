@@ -14,19 +14,24 @@ class Juliette(Dataset):
     def __init__(self, process=True,
                  processed_dir='data/juliette/processed/',
                  noH=True, atom_mapping=False,
-                 geometry='sub', reaction='cmd', geometry_p='sub',):
+                 geometry='sub', reaction='cmd', geometry_p='sub',
+                 target_column=None
+                 ):
 
-        self.version = 3  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
+        self.version = 0  # INCREASE IF CHANGE THE DATA / DATALOADER / GRAPHS / ETC
         self.max_number_of_reactants = 1
         self.max_number_of_products = 1
         self.processed_dir = processed_dir + '/'
         self.atom_mapping = atom_mapping
         self.noH = noH
         if reaction.lower() != 'bde':
-            target_column = 'fw_td_kcalmol'#BDE_kcalmol
+            if not target_column:
+                target_column = 'fw_td_kcalmol'#BDE_kcalmol
+            else:
+                target_column = target_column
         elif reaction.lower() == 'bde':
             target_column = 'BDE_kcalmol'
-
+        print(f'Target column set to: {target_column}')
         geometries = ['sub', 'int', 'int_keep_Pd_sub', 'int_changePdtoHe', 'int_changePdtoKr', 'sub_opt', "sub_Xebond00", "sub_Xebond10", "sub_Xebond20", "sub_Xebond30", "sub_Xe00", "sub_Xe10", "sub_Xe20", "sub_H00", "sub_He00", "sub_C00", "sub_Kr00"]
         if geometry not in geometries:
             raise NotImplementedError
@@ -41,7 +46,7 @@ class Juliette(Dataset):
             csv_path='data/juliette/CMD_TS_smiles_ok.csv'
             reaction = 'CMD'
         elif reaction.lower() == 'irb':
-            csv_path='data/juliette/pibond_ICB_wE.csv'
+            csv_path='data/juliette/IrB_TS_smiles_kcalmolto20.csv'
             reaction = 'IrB'
         elif reaction.lower() == 'bde':
             csv_path = 'data/juliette/DFT-BDEs_sp2_sample2000_cleaned.csv'
